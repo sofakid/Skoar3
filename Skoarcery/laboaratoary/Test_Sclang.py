@@ -6,10 +6,10 @@ import subprocess
 
 class Test_Sclang(unittest.TestCase):
 
-    home = "/p/supercollider/build/Install/SuperCollider/SuperCollider.app/Contents/Resources/"
+    home = "C:/supercollider/supercollider/"
     sclang = home + "sclang"
 
-    testing_home = "/Users/lucas/PycharmProjects/Skoar/SuperCollider/testing/runtests.scd"
+    testing_home = "/dungeon/Skoar/SuperCollider/testing/runtests.scd"
 
     def print(self, msg):
         print("sclang: " + msg, end="")

@@ -14,7 +14,7 @@ SkoarTest : UnitTest {
 
 TestSkoarSanity : SkoarTest {
 
-    var <>skoarse;
+    var <>skoarce;
 
     setUp {
         // this will wait until the server is booted

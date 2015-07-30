@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0ee98c90-949d-420c-a2ac-1a570da68f66}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>
+    </StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>C:\dungeon\Skoarcery\</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>{9a7a9026-48c1-4688-9d5d-e5699d47d074}</InterpreterId>
+    <InterpreterVersion>3.4</InterpreterVersion>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Skoarcery\dragonsets.py" />
+    <Compile Include="Skoarcery\emissions_cpp.py" />
+    <Compile Include="Skoarcery\emissions_sc.py" />
+    <Compile Include="Skoarcery\emissions_py.py" />
+    <Compile Include="Skoarcery\emissions.py" />
+    <Compile Include="Skoarcery\factoary\Buildoar.py" />
+    <Compile Include="Skoarcery\factoary\Build_Py.py" />
+    <Compile Include="Skoarcery\factoary\Build_Sc.py" />
+    <Compile Include="Skoarcery\factoary\Code_Lexer_Py.py" />
+    <Compile Include="Skoarcery\factoary\Code_Lexer_Cpp.py" />
+    <Compile Include="Skoarcery\factoary\Code_Lexer_Sc.py" />
+    <Compile Include="Skoarcery\factoary\Code_Parser_Py.py" />
+    <Compile Include="Skoarcery\factoary\Code_Parser_Cpp.py" />
+    <Compile Include="Skoarcery\factoary\Code_Parser_Sc.py" />
+    <Compile Include="Skoarcery\factoary\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Skoarcery\laboaratoary\TestDragonSpells.py" />
+    <Compile Include="Skoarcery\laboaratoary\TestNonterminals.py" />
+    <Compile Include="Skoarcery\laboaratoary\TestParseTable.py" />
+    <Compile Include="Skoarcery\laboaratoary\TestTerminals.py" />
+    <Compile Include="Skoarcery\laboaratoary\Test_Sclang.py" />
+    <Compile Include="Skoarcery\laboaratoary\__init__.py" />
+    <Compile Include="Skoarcery\langoids.py" />
+    <Compile Include="Skoarcery\nonterminals.py" />
+    <Compile Include="Skoarcery\parsetable.py" />
+    <Compile Include="Skoarcery\SkoarPyon\apparatus.py" />
+    <Compile Include="Skoarcery\SkoarPyon\skoarmantics.py" />
+    <Compile Include="Skoarcery\SkoarPyon\skoarmantics_template.py" />
+    <Compile Include="Skoarcery\SkoarPyon\toke_inspector.py" />
+    <Compile Include="Skoarcery\SkoarPyon\toke_inspector_template.py" />
+    <Compile Include="Skoarcery\SkoarPyon\__init__.py" />
+    <Compile Include="Skoarcery\terminals.py" />
+    <Compile Include="Skoarcery\underskoar_cpp.py" />
+    <Compile Include="Skoarcery\underskoar.py" />
+    <Compile Include="Skoarcery\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Skoarcery" />
+    <Folder Include="Skoarcery\factoary" />
+    <Folder Include="Skoarcery\laboaratoary" />
+    <Folder Include="Skoarcery\SkoarPyon" />
+    <Folder Include="SuperCollider\" />
+    <Folder Include="SuperCollider\examples\" />
+    <Folder Include="SuperCollider\Skoar\" />
+    <Folder Include="SuperCollider\Testing\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\3.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SuperCollider\examples\drums.sc" />
+    <Content Include="SuperCollider\examples\funtime.sc" />
+    <Content Include="SuperCollider\examples\zelda.sc" />
+    <Content Include="SuperCollider\Skoar\apparatus.sc" />
+    <Content Include="SuperCollider\Skoar\beaty.sc" />
+    <Content Include="SuperCollider\Skoar\decorating.sc" />
+    <Content Include="SuperCollider\Skoar\fairy.sc" />
+    <Content Include="SuperCollider\Skoar\koar.sc" />
+    <Content Include="SuperCollider\Skoar\lex.sc" />
+    <Content Include="SuperCollider\Skoar\minstrel.sc" />
+    <Content Include="SuperCollider\Skoar\operatoars.sc" />
+    <Content Include="SuperCollider\Skoar\pitchy.sc" />
+    <Content Include="SuperCollider\Skoar\rdpp.sc" />
+    <Content Include="SuperCollider\Skoar\skoar.sc" />
+    <Content Include="SuperCollider\Skoar\skoarpions.sc" />
+    <Content Include="SuperCollider\Skoar\skoarpuscles.sc" />
+    <Content Include="SuperCollider\Skoar\toker.sc" />
+    <Content Include="SuperCollider\Testing\bigskoar.scd" />
+    <Content Include="SuperCollider\Testing\conditionals.scd" />
+    <Content Include="SuperCollider\Testing\runtests.scd" />
+    <Content Include="SuperCollider\Testing\unittests.sc" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>

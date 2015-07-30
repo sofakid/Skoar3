@@ -42,9 +42,9 @@ class Code_Lexer_Sc(unittest.TestCase):
     def typical_token(self, token):
         underskoar.typical_token(token)
 
-    def test_ScLexer(self):
+    def test_SC_lexer(self):
 
-        fd = open("../../SuperCollider/Skoar/lex.sc", mode="w")
+        fd = open("SuperCollider/Skoar/lex.sc", mode="w")
 
         emissions.SC.fd = fd
         emissions.SC.file_header("lex", "Code_Sc_Lexer")

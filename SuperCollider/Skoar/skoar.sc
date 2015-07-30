@@ -5,7 +5,7 @@ Skoar {
 
     classvar <ops;      // operations tables object
 
-    var   skoarse;      // the skoarse code
+    var   skoarce;      // the skoarce code
     var   parser;       // the parser
     var  <tree;         // root of tree
     var  <toker;        // toker
@@ -28,9 +28,9 @@ Skoar {
         var parse_time;
         var decorate_time;
 
-        skoarse = code ++ "\n";
+        skoarce = code ++ "\n";
         tree = nil;
-        toker = Toker(skoarse);
+        toker = Toker(skoarce);
         parser = SkoarParser.new(this);
 
         voices = ();

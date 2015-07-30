@@ -6,7 +6,7 @@ from Skoarcery.SkoarPyon.lex import Toke_Whitespace, Toke_EOF, SkoarToke
 class Toker:
 
     def __init__(I, code):
-        I.skoarse = code
+        I.skoarce = code
         I.am_here = 0
         I.saw = None
 
@@ -16,14 +16,14 @@ class Toker:
             if isinstance(I.saw, want):
                 return I.saw
         else:
-            I.saw = want.match(I.skoarse, I.am_here)
+            I.saw = want.match(I.skoarce, I.am_here)
             return I.saw
 
         return None
 
     def sees(I, wants):
 
-        I.am_here += Toke_Whitespace.burn(I.skoarse, I.am_here)
+        I.am_here += Toke_Whitespace.burn(I.skoarce, I.am_here)
 
         for want in wants:
             X = I.see(want)
@@ -42,14 +42,14 @@ class Toker:
         if isinstance(toke, want):
             I.saw = None
             I.am_here += toke.burn()
-            I.am_here += Toke_Whitespace.burn(I.skoarse, I.am_here)
+            I.am_here += Toke_Whitespace.burn(I.skoarce, I.am_here)
             return toke
 
         raise Exception("I tried to burn " + want.__name__ + ", but what I saw is " + toke.__class__.__name__)
 
     def eof(I):
         try:
-            Toke_EOF.burn(I.skoarse, I.am_here)
+            Toke_EOF.burn(I.skoarce, I.am_here)
         except:
             I.dump()
             raise
@@ -58,7 +58,7 @@ class Toker:
         print("\nToker Dump")
         print("here   : " + str(I.am_here))
         print("saw    : " + str(I.saw))
-        print("skoarse: " + I.skoarse[0:I.am_here] + "_$_" + I.skoarse[I.am_here:-1])
+        print("skoarce: " + I.skoarce[0:I.am_here] + "_$_" + I.skoarce[I.am_here:-1])
 
 
 # --------------
@@ -200,11 +200,11 @@ class SkoarIterator:
 
 class Skoar:
 
-    def __init__(self, skoarse):
+    def __init__(self, skoarce):
         from ..SkoarPyon import rdpp
-        self.skoarse = skoarse
+        self.skoarce = skoarce
         self.tree = None
-        self.toker = Toker(self.skoarse)
+        self.toker = Toker(self.skoarce)
         self.parser = rdpp.SkoarParser(self)
         self.markers = []
 
