@@ -15,6 +15,7 @@ class Code_Lexer_Cpp(unittest.TestCase):
         
     def preamble(self):
         emissions.CPP.raw("""#include "lex.hpp"
+#include "exception.hpp"
 """)
 
     def exceptions(self):
@@ -33,30 +34,9 @@ class Code_Lexer_Cpp(unittest.TestCase):
 
     def preamble_h(self):
         emissions.CPP.raw("""#pragma once
-#include "skoar.hpp"
+#include "skoarcery.hpp"
 """)
-    def exceptions_h(self):
-
-        emissions.CPP.raw("""class SkoarError: public exception
-{
-public:
-
-  std::string sWhat;
-  SkoarError() {
-    sWhat = string("Unknown");
-  }
-
-  SkoarError(std::string s) {
-    sWhat = s;
-  }
-
-  virtual const char* what() const throw()
-  {
-    return sWhat.c_str();
-  }
-};
-
-""")
+  
     def base_token_h(self):
         underskoar_cpp.skoarToke_h()
 
@@ -77,7 +57,6 @@ public:
         emissions.CPP.file_header("lex", "Code_Cpp_Lexer")
 
         self.preamble()
-        self.exceptions()
         self.base_token()
         self.odd_balls()
 
@@ -98,7 +77,6 @@ public:
         emissions.CPP.file_header("lex", "Code_Cpp_Lexer")
 
         self.preamble_h()
-        self.exceptions_h()
         self.base_token_h()
         self.odd_balls_h()
 
@@ -106,5 +84,24 @@ public:
         for token in terminals.tokens.values():
             if token not in terminals.odd_balls:
                 self.typical_token_h(token)
+
+        fd.close()
+
+        # fwd headers
+        fd = open("SkoarCpp/lex_fwd.hpp", mode="w")
+
+        HPP = emissions.CPP
+        HPP.fd = fd
+        HPP.file_header("lex_fwd", "Code_Cpp_Lexer")
+
+        HPP.raw("""#pragma once
+class SkoarToke;
+class Toke_Whitespace;
+class Toke_EOF;
+
+""")
+        for token in terminals.tokens.values():
+            if token not in terminals.odd_balls:
+                HPP.stmt("class "+ token.toker_name)
 
         fd.close()

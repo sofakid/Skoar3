@@ -1,13 +1,15 @@
 #include "toker.hpp"
+#include "lex.hpp"
+#include "exception.hpp"
 
 // =========
 // The Toker
 // =========
 
-SkoarToker::SkoarToker(std::string code) {
-	this->skoarce = code;
+SkoarToker::SkoarToker(string &skoarce) {
 	this->i_am_here = 0;
 	this->i_saw = nullptr;
+	this->skoarce = &skoarce;
 }
 
 SkoarToke *SkoarToker::see(SkoarToke *want) {
@@ -42,7 +44,7 @@ SkoarToke *SkoarToker::sees(std::list<SkoarToke *> *wants) {
 SkoarToke * SkoarToker::burn(SkoarToke *want) {
 
 	auto toke = i_saw;
-	std::string msg = nullptr;
+	string msg = nullptr;
 
 	if (toke == nullptr) {
 		toke = this->see(want);

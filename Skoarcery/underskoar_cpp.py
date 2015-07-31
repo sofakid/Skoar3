@@ -11,17 +11,17 @@ _ = _____ = _________ = _____________ = _________________ = ____________________
 # Symbols
 # -------
 SkoarToke_ = "SkoarToke"
-lexeme_ = Arg("string", "lexeme")
+lexeme_ = Arg("string *", "lexeme")
 regex_ = Arg("const regex", "rgx")
 size_ = Arg("size_t", "size")
 inspectable_ = "inspectable"
 burn_ = Arg("size_t", "burn")
 match_obj_ = Arg("smatch", "matches")
-buf_ = Arg("string ", "buf")
+buf_ = Arg("string *", "buf")
 offs_ = Arg("size_t", "offs")
 toke_class_ = "toke_class"
 match_toke_ = Arg("SkoarToke*", "match_toke")
-s_ = Arg("string", "s")
+s_ = Arg("string *", "s")
 n_ = Arg("size_t", "n")
 SkoarError_ = "SkoarError"
 SubclassResponsibilityError_ = "SubclassResponsibilityError"
@@ -126,6 +126,13 @@ def whitespace_token():
     _.cmt_hdr("Whitespace is special")
     _.set_class(Whitespace.toker_name)
 
+    xx_ = Arg("string *", 'nullptr')
+    xy_ = Arg("size_t", "0")
+    _.constructor()
+    _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
+    _____.stmt(_.v_ass(_.v_attr(size_), xy_))
+    _.end()
+
     aninstance_ = Arg(Whitespace.toker_name +" *", "aninstance")
     instance_ = Arg(Whitespace.toker_name +" *", "instance")
     
@@ -142,7 +149,7 @@ def whitespace_token():
     _.method(burn_, buf_, offs_)
     _____.var(match_obj_)
 
-    _____.stmt("auto found = std::regex_search(buf.cbegin() + offs, buf.cend(), "+ match_obj_.name +", "+ 
+    _____.stmt("auto found = std::regex_search(buf->cbegin() + offs, buf->cend(), "+ match_obj_.name +", "+ 
                Whitespace.toker_name +"::"+ regex_.name +", regex_constants::match_continuous)")
     
     _____.if_("!found")
@@ -166,6 +173,8 @@ def whitespace_token_h():
     aninstance_ = Arg(Whitespace.toker_name +" *", "aninstance")
     instance_ = Arg(Whitespace.toker_name +" *", "instance")
     _____.classvar_declare("", aninstance_)
+
+    _____.constructor_h()
     _____.static_method_h(instance_)
 
     _____.static_method_h(burn_, buf_, offs_)
@@ -182,6 +191,13 @@ def EOF_token():
     aninstance_ = Arg(EOF.toker_name +" *", "aninstance")
     instance_ = Arg(EOF.toker_name +" *", "instance")
     
+    xx_ = Arg("string *", 'nullptr')
+    xy_ = Arg("size_t", "0")
+    _.constructor()
+    _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
+    _____.stmt(_.v_ass(_.v_attr(size_), xy_))
+    _.end()
+
     _.classvar_assign(aninstance_, _.null)
     _.method(instance_)
     _____.stmt("if (aninstance == nullptr) {")
@@ -191,17 +207,17 @@ def EOF_token():
     _.end()
 
     _.method(burn_, buf_, offs_)
-    _____.if_(_.v_length(buf_.name) + " > " + offs_.name)
+    _____.if_(buf_.name + "->size() > " + offs_.name)
     _________.throw(SkoarError_, _.v_str("Tried to burn EOF when there's more input."))
     _____.end_if()
     _____.return_("0")
     _.end()
 
     _.method(match_toke_, buf_, offs_)
-    _____.if_(_.v_length(buf_.name) + " < " + offs_.name)
+    _____.if_(buf_.name + "->size() < " + offs_.name)
     _________.throw(SkoarError_, _.v_str("Tried to burn EOF when there's more input."))
     _____.end_if()
-    _____.if_(_.v_length(buf_.name) + " == " + offs_.name)
+    _____.if_(buf_.name + "->size() == " + offs_.name)
     _________.return_("new "+ EOF.toker_name +"()")
     _____.end_if()
     _____.return_(_.null)
@@ -221,6 +237,7 @@ def EOF_token_h():
     _____.static_method_h(instance_)
 
     _____.nl()
+    _____.constructor_h()
     _____.static_method_h(burn_, buf_, offs_)
     _____.static_method_h(match_toke_, buf_, offs_)
     _.end_class()
@@ -236,11 +253,18 @@ def typical_token_cpp(token):
     instance_ = Arg(token.toker_name +" *", "instance")
     
     _.classvar_assign(aninstance_, _.null)
-    _.static_method(instance_)
+    _.method(instance_)
     _____.stmt("if (aninstance == nullptr) {")
     _____.stmt("    aninstance = new "+ token.toker_name +"();")
     _____.stmt("}")
     _____.stmt("return aninstance;")
+    _.end()
+
+    xx_ = Arg("string *", 'nullptr')
+    xy_ = Arg("size_t", "0")
+    _.constructor()
+    _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
+    _____.stmt(_.v_ass(_.v_attr(size_), xy_))
     _.end()
 
     _.constructor(s_, n_)
@@ -250,13 +274,13 @@ def typical_token_cpp(token):
     
     _.method(match_toke_, buf_, offs_)
     _____.var(match_obj_)
-    _____.stmt("auto found = std::regex_search(buf.cbegin() + offs, buf.cend(), "+ match_obj_.name +", "+ 
+    _____.stmt("auto found = std::regex_search(buf->cbegin() + offs, buf->cend(), "+ match_obj_.name +", "+ 
                token.toker_name +"::"+ regex_.name +", regex_constants::match_continuous)")
     
     _____.if_("!found")
     _________.return_(_.null)
     _____.end_if()
-    _____.stmt("std::string s = "+ match_obj_.name +"[0]")
+    _____.stmt("string s = "+ match_obj_.name +"[0]")
     _____.return_("new "+ token.toker_name +"(s,s.length())")
     #_________.return_(SkoarToke_ + _.v_static_accessor() + match_toke_.name +"<"+ token.toker_name +">("+ buf_.name +", "+ offs_.name +")")
     _.end()
@@ -274,6 +298,7 @@ def typical_token_h(token):
     _____.static_method_h(instance_)
 
     _____.nl()
+    _____.constructor_h()
     _____.constructor_h(s_, n_)
     _____.static_method_h(match_toke_, buf_, offs_)
     _.end_class()

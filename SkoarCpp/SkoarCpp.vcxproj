@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -21,7 +29,20 @@
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
@@ -34,12 +55,28 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -63,15 +100,71 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="beaty.hpp" />
+    <ClInclude Include="beaty_fwd.hpp" />
+    <ClInclude Include="decorating.hpp" />
+    <ClInclude Include="decorating_fwd.hpp" />
+    <ClInclude Include="event.hpp" />
+    <ClInclude Include="event_fwd.hpp" />
+    <ClInclude Include="exception.hpp" />
+    <ClInclude Include="exception_fwd.hpp" />
+    <ClInclude Include="fairy.hpp" />
+    <ClInclude Include="fairy_fwd.hpp" />
+    <ClInclude Include="koar.hpp" />
+    <ClInclude Include="koar_fwd.hpp" />
+    <ClInclude Include="lex_fwd.hpp" />
+    <ClInclude Include="minstrel.hpp" />
+    <ClInclude Include="minstrel_fwd.hpp" />
+    <ClInclude Include="noad_fwd.hpp" />
+    <ClInclude Include="operators.hpp" />
+    <ClInclude Include="operators_fwd.hpp" />
+    <ClInclude Include="pitchy.hpp" />
+    <ClInclude Include="pitchy_fwd.hpp" />
+    <ClInclude Include="rdpp_fwd.hpp" />
+    <ClInclude Include="skoarcery.hpp" />
     <ClInclude Include="lex.hpp" />
+    <ClInclude Include="noad.hpp" />
     <ClInclude Include="rdpp.hpp" />
     <ClInclude Include="skoar.hpp" />
+    <ClInclude Include="skoarpion.hpp" />
+    <ClInclude Include="skoarpion_fwd.hpp" />
+    <ClInclude Include="skoarpuscle.hpp" />
+    <ClInclude Include="skoarpuscle_fwd.hpp" />
+    <ClInclude Include="skoar_fwd.hpp" />
     <ClInclude Include="toker.hpp" />
+    <ClInclude Include="toker_fwd.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="beaty.cpp" />
+    <ClCompile Include="decorating.cpp" />
+    <ClCompile Include="event.cpp" />
+    <ClCompile Include="exception.cpp" />
+    <ClCompile Include="fairy.cpp" />
+    <ClCompile Include="koar.cpp" />
     <ClCompile Include="lex.cpp" />
+    <ClCompile Include="minstrel.cpp" />
+    <ClCompile Include="operators.cpp" />
+    <ClCompile Include="pitchy.cpp" />
     <ClCompile Include="rdpp.cpp" />
+    <ClCompile Include="skoar.cpp" />
+    <ClCompile Include="noad.cpp" />
+    <ClCompile Include="skoarpions.cpp" />
+    <ClCompile Include="skoarpuscles.cpp" />
     <ClCompile Include="toker.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

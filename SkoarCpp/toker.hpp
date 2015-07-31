@@ -1,14 +1,14 @@
 #pragma once
-#include "skoar.hpp"
-#include "lex.hpp"
+#include "skoarcery.hpp"
+#include "lex_fwd.hpp"
 
 class SkoarToker {
 public:
-	string skoarce;
+	string *skoarce;
 	size_t i_am_here;
 	SkoarToke *i_saw;
 
-	SkoarToker(string code);
+	SkoarToker(string &skoarce);
 
 	SkoarToke *see(SkoarToke *want);
 	SkoarToke *sees(list<SkoarToke *> *wants);

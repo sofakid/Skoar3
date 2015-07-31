@@ -36,7 +36,6 @@ class Code_Parser_Cpp(unittest.TestCase):
         #     fail
         self.code_start()
 
-        CPP.tab += 1
         N = nonterminals.nonterminals.values()
 
         # precompute desirables
@@ -86,7 +85,7 @@ class Code_Parser_Cpp(unittest.TestCase):
                 else:
                     CPP.raw("};\n")
 
-        CPP.end()
+        CPP.end() # CPP.method(init_desirables)
 
         # write each nonterminal as a function
         for A in N:
@@ -107,7 +106,7 @@ class Code_Parser_Cpp(unittest.TestCase):
             if A.intermediate:
                 CPP.var(Noadx, Parentx.name)
             else:
-                CPP.var(Noadx, "new SkoarNoad(string(\""+ A.name +"\"), SkoarNoad* parent);")
+                CPP.var(Noadx, "new SkoarNoad(string(\""+ A.name +"\"), parent);")
 
             CPP.var(Desiresx, CPP.null)
             CPP.nl()
@@ -136,7 +135,7 @@ class Code_Parser_Cpp(unittest.TestCase):
 
                 for x in alpha:
                     if isinstance(x, Terminal):
-                        CPP.stmt('noad->add_toke("' + x.toker_name + '", toker.burn(' + x.toker_name + '))')
+                        CPP.stmt('noad->add_toke("' + x.toker_name + '", toker.burn(' + x.toker_name + '::instance()))')
 
                         # debugging
                         #CPP.print("burning: " + x.name)
@@ -165,9 +164,8 @@ class Code_Parser_Cpp(unittest.TestCase):
                 CPP.stmt("this->fail()")
                 CPP.return_(CPP.null)
 
-            CPP.end()
+            CPP.end() # CPP.method(Ax, Parentx)
 
-        CPP.end()
         HPP.end_class()
 
         fd.close()
@@ -181,27 +179,14 @@ class Code_Parser_Cpp(unittest.TestCase):
         HPP.file_header("rdpp", "Code_Parser_Cpp - Create Recursive Descent Predictive Parser")
 
         HPP.raw("""#pragma once
-#include "skoar.hpp"
-#include "toker.hpp"
+#include "skoarcery.hpp"
+#include "toker_fwd.hpp"
+#include "noad_fwd.hpp"
 
 """)
         CPP.raw("""#include "rdpp.hpp"
+#include "exception.hpp"
 """)
-        
-        s_ = Arg("string", "s")
-        HPP.class_("SkoarParseException", "SkoarError")
-        HPP.constructor_h()
-        HPP.constructor_h(s_)
-        HPP.end_class()
-
-        CPP.set_class("SkoarParseException")
-        CPP.constructor()
-        CPP.stmt("sWhat = string(\"Unknown reason.\")")
-        CPP.end()
-
-        CPP.constructor(s_)
-        CPP.stmt("sWhat = s");
-        CPP.end()
         
         HPP.class_("SkoarParser")
         CPP.set_class("SkoarParser")
@@ -222,18 +207,14 @@ class Code_Parser_Cpp(unittest.TestCase):
         CPP.end()
 
         HPP.raw("""
-    Skoar *runtime;
     SkoarToker toker;
     int deep;
     map<string, list<SkoarToke*>> desirables;
         """)
 
-        runtime_ = Arg("Skoar *", "runtime")
-        
-        HPP.constructor_h(runtime_)
-        CPP.constructor(runtime_)
+        HPP.constructor_h()
+        CPP.constructor()
         CPP.raw("""
-    this->runtime = runtime;
     this->deep = 0;
     this->init_desirables();
 """)
