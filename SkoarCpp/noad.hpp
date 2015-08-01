@@ -1,10 +1,10 @@
 #pragma once
 #include "skoarcery.hpp"
 
-class Skoarpuscle;
-class SkoarToke;
-class SkoarMinstrel;
-class SkoarDict;
+#include "skoarpuscle_fwd.hpp"
+#include "lex_fwd.hpp"
+#include "minstrel_fwd.hpp"
+#include "event_fwd.hpp"
 
 // ==========================
 // The Parse Tree - SkoarNoad
@@ -16,38 +16,35 @@ public:
 	SkoarNoad *parent;          // the parent noad
 	list<SkoarNoad*> children;  // a list of child noads
 
-	string name;            // name of the nonterminal (a \symbol)
-	Skoarpuscle *skoarpuscle;     // skoarpuscle types go here, just one.
+	string name;                // name of the nonterminal
+	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 	SkoarToke *toke;
 
 	function<void(SkoarMinstrel *minstrel)> on_enter;
 	
 	string *voice;           // what voice to use
-	void *skoap;           // what skoap are we in
+	void *skoap;             // what skoap are we in
 
 	SkoarNoad(string &nameArg, SkoarNoad *parentArg);
 
-	string asString();
+	string *asString();
 
 	// -------------------
 	// decorating the tree
 	// -------------------
 	void decorate_zero(string *v, void *s, list<int> &parent_address, int i);
-
 	void decorate(string *v, void *s, list<int> &parent_address, int i);
 
 	// ----------------
 	// growing the tree
 	// ----------------
 	void add_noad(SkoarNoad *noad);
-
 	void add_toke(string name, SkoarToke *t);
 
 	// ----------------
 	// showing the tree
 	// ----------------
 	string draw_tree(int tab = 1);
-
 	
 	// -----------------
 	// climbing the Tree
@@ -62,19 +59,16 @@ public:
 	void inorder(function<void(SkoarNoad *noad)> f);
 
 	// debug here if it's crashing while performing the skoar
-	void inorder_from_here(list<int> here, function<void(SkoarNoad *noad)> f); 
+	void inorder_from_here(list<int> &here, function<void(SkoarNoad *noad)> f); 
 	
 	// expect skoarpuscle
 	Skoarpuscle *next_skoarpuscle();
-
 	SkoarToke *next_toke();
-		
 
 	// -------------------
 	// performing the tree
 	// -------------------
 	void enter_noad(SkoarMinstrel* minstrel);
-		
 
 	// ------------------
 	// searching the tree

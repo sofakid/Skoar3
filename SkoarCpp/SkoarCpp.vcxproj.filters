@@ -152,16 +152,16 @@
     <ClCompile Include="pitchy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="skoarpions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="skoarpuscles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="minstrel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="skoarpuscle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="skoarpion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

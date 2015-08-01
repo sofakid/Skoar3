@@ -3,8 +3,6 @@ from Skoarcery import langoids, terminals, nonterminals, dragonsets, parsetable,
 from Skoarcery.langoids import Terminal, Nonterminal
 from Skoarcery.emissions import Arg    
 
-
-
 class Code_Parser_Cpp(unittest.TestCase):
 
     def setUp(self):
@@ -128,14 +126,14 @@ class Code_Parser_Cpp(unittest.TestCase):
 
                 CPP.cmt(str(P))
 
-                CPP.if_("toker.sees(desires) != nullptr")
+                CPP.if_("toker->sees(desires) != nullptr")
 
                 # debugging
                 #CPP.print(str(P))
 
                 for x in alpha:
                     if isinstance(x, Terminal):
-                        CPP.stmt('noad->add_toke("' + x.toker_name + '", toker.burn(' + x.toker_name + '::instance()))')
+                        CPP.stmt('noad->add_toke("' + x.toker_name + '", toker->burn(' + x.toker_name + '::instance()))')
 
                         # debugging
                         #CPP.print("burning: " + x.name)
@@ -180,12 +178,15 @@ class Code_Parser_Cpp(unittest.TestCase):
 
         HPP.raw("""#pragma once
 #include "skoarcery.hpp"
-#include "toker_fwd.hpp"
 #include "noad_fwd.hpp"
+#include "toker.hpp"
 
 """)
         CPP.raw("""#include "rdpp.hpp"
 #include "exception.hpp"
+#include "lex.hpp"
+#include "noad.hpp"
+
 """)
         
         HPP.class_("SkoarParser")
@@ -196,26 +197,28 @@ class Code_Parser_Cpp(unittest.TestCase):
         
         HPP.method_h(fail_)
         CPP.method(fail_)
-        CPP.stmt("toker.dump()")
+        CPP.stmt("toker->dump()")
         CPP.stmt("throw new SkoarParseException(\"Fail\");")
         CPP.end()
 
         HPP.method_h(fail_too_deep_)
         CPP.method(fail_too_deep_)
-        CPP.stmt("toker.dump()")
+        CPP.stmt("toker->dump()")
         CPP.stmt("throw new SkoarParseException(\"Parse tree too deep!\");")
         CPP.end()
 
         HPP.raw("""
-    SkoarToker toker;
+    SkoarToker *toker;
     int deep;
     map<string, list<SkoarToke*>> desirables;
         """)
-
-        HPP.constructor_h()
-        CPP.constructor()
+        toker_ = Arg("SkoarToker *", "toker")
+        HPP.constructor_h(toker_)
+        CPP.constructor(toker_)
         CPP.raw("""
     this->deep = 0;
+    this->toker = toker;
     this->init_desirables();
+    
 """)
         CPP.end()

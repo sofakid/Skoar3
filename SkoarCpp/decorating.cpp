@@ -9,7 +9,6 @@
 #include "skoar.hpp"
 #include "minstrel.hpp"
 
-
 // ==============
 // toke_inspector
 // ==============
@@ -200,7 +199,7 @@ Skoarmantics::Skoarmantics() {
 	};
 
 	table["skoarpion"] = [](Skoar *skoar, SkoarNoad *noad) {
-		auto x = new SkoarpuscleSkoarpion(Skoarpion(skoar, noad));
+		auto x = new SkoarpuscleSkoarpion(new Skoarpion(skoar, noad));
 		noad->skoarpuscle = x;
 		noad->children.empty();
 		noad->on_enter = [&](SkoarMinstrel *m) {
@@ -209,7 +208,7 @@ Skoarmantics::Skoarmantics() {
 	};
 
 	table["conditional"] = [](Skoar *skoar, SkoarNoad *noad) {
-		noad->skoarpuscle = new SkoarpuscleConditional(skoar, noad);
+		noad->skoarpuscle = new SkoarpuscleConditional(noad);
 		noad->children.empty();
 	};
 
@@ -228,19 +227,19 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table["loop"] = [](Skoar *skoar, SkoarNoad *noad) {
-		noad->skoarpuscle = new SkoarpuscleLoop(skoar, noad);
+		noad->skoarpuscle = new SkoarpuscleLoop(noad);
 		noad->children.empty();
 	};
 
     table["musical_keyword_misc"] = [](Skoar *skoar, SkoarNoad *noad) {
-		auto skoarpuscle = noad->next_skoarpuscle;
+		auto skoarpuscle = noad->next_skoarpuscle();
 	};
 
     table["ottavas"] = [](Skoar *skoar, SkoarNoad *noad) {
-		auto x = noad->next_skoarpuscle;
+		auto x = *noad->next_skoarpuscle();
 
 		noad->on_enter = [&](SkoarMinstrel *m) {
-			x->on_enter(m);
+			x.on_enter(m);
 		};
 	};
 
@@ -251,10 +250,10 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table["dynamic"] = [](Skoar *skoar, SkoarNoad *noad) {
-		auto x = noad->next_skoarpuscle;
+		auto x = *noad->next_skoarpuscle();
 
 		noad->on_enter = [&](SkoarMinstrel *m) {
-			x->on_enter(m);
+			x.on_enter(m);
 		};
 	};
 
@@ -267,15 +266,16 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table["marker"] = [](Skoar *skoar, SkoarNoad *noad) {
-		auto x = noad->next_skoarpuscle;
+		auto x = noad->next_skoarpuscle();
 
 		if (x != nullptr) {
+			auto y = *x;
 			noad->on_enter = [&](SkoarMinstrel *m) {
-				x->on_enter(m);
+				y.on_enter(m);
 			};
 
-			if (typeid(x) == typeid(SkoarpuscleBars)) {
-				x.noad = noad;
+			if (typeid(y) == typeid(SkoarpuscleBars)) {
+				//y.noad = noad;
 				noad->children.empty();
 			}
 		}
@@ -285,24 +285,24 @@ Skoarmantics::Skoarmantics() {
 	//                | Deref MsgName
     table["deref"] = [](Skoar *skoar, SkoarNoad *noad) {
 		SkoarpuscleDeref *x;
-		SkoarpuscleArgs *args;
+		Skoarpuscle *args = nullptr;
 		string *msg_name;
 
 		auto child = noad->children.begin();
 		child++;
-		msg_name = (*child)->skoarpuscle->val;
+		msg_name = (*child)->skoarpuscle->val.String;
 
 		if (noad->children.size() > 2) {
 			args = new SkoarpuscleArgs();
-		};
+		}
 
 		x = new SkoarpuscleDeref(msg_name, args);
 		noad->skoarpuscle = x;
 
 		// !f<x,y>
-		if (args.isKindOf(SkoarpuscleArgs)) {
+		if (args != nullptr) {
 
-			auto end_noad = new SkoarNoad(new string("deref_end"), noad);
+			auto end_noad = new SkoarNoad(string("deref_end"), noad);
 			end_noad->on_enter = [&](SkoarMinstrel *m) {
 				m->fairy->cast_arcane_magic();
 				x->on_enter(m);
@@ -321,7 +321,6 @@ Skoarmantics::Skoarmantics() {
 		};
 
 	};
-
 
     table["listy"] = [](Skoar *skoar, SkoarNoad *noad) {
 
@@ -350,12 +349,12 @@ Skoarmantics::Skoarmantics() {
 
 		}
 		else if (typeid(msg) == typeid(SkoarpuscleLoop)) {
-			noad->skoarpuscle = new SkoarpuscleLoopMsg(msg);
+			noad->skoarpuscle = new SkoarpuscleLoopMsg(msg->val.String);
 
 		}
 		else if (typeid(msg) == typeid(SkoarpuscleMsgName)) {
 			SkoarpuscleArgs *args = new SkoarpuscleArgs();
-			noad->skoarpuscle = new SkoarpuscleMsg(msg.val, args);
+			noad->skoarpuscle = new SkoarpuscleMsg(msg->val.String, args);
 		};
 
 		noad->children.empty();
@@ -364,7 +363,7 @@ Skoarmantics::Skoarmantics() {
     table["expr"] = [](Skoar *skoar, SkoarNoad *noad) {
 		// we insert a node at the end of the expression
 		// so we can impress the result
-		auto end_noad = new SkoarNoad("expr_end", noad);
+		auto end_noad = new SkoarNoad(string("expr_end"), noad);
 		end_noad->on_enter = [&](SkoarMinstrel *m) {
 			m->fairy->cast_arcane_magic();
 		};
@@ -377,7 +376,7 @@ Skoarmantics::Skoarmantics() {
 
 		// strip out the msg operators
 		for (auto x :noad->children) {
-			if (typeid(x) != typeid(Toke_MsgOp)) {
+			if (typeid(x->toke) != typeid(Toke_MsgOp*)) {
 				noads->emplace_back(x);
 			}
 		}
@@ -393,12 +392,12 @@ Skoarmantics::Skoarmantics() {
 				for (auto y : *noads) {
 					auto x = y->skoarpuscle;
 						
-					if (typeid(x) == typeid(SkoarpuscleMsg)) {
-						result = result->skoar_msg(x, m);
+					if (typeid(x) == typeid(SkoarpuscleMsg*)) {
+						//result = static_cast<SkoarpuscleMsg*>(result)->skoar_msg(x, m);
 
 					}
-					else if (typeid(x) == typeid(SkoarpuscleLoopMsg)) {
-						result = x->val->foreach(result);
+					else if (typeid(x) == typeid(SkoarpuscleLoopMsg*)) {
+						//result = static_cast<SkoarpuscleLoopMsg*>(x)->val->foreach(result);
 					}
 				}
 
@@ -421,18 +420,18 @@ Skoarmantics::Skoarmantics() {
 		if (*op == "=>") {
 			noad->on_enter = [=](SkoarMinstrel *m) {
 				auto x = m->fairy->cast_arcane_magic();
-				skoar->ops->assign(m, x, settable);
+				//skoar->ops->assign(m, x, settable);
 			};
 		}
 		else if (*op == "+>") {
-			noad->on_enter = [&](SkoarMinstrel *m) {
-				auto x = m->fairy->impression();
+			noad->on_enter = [=](SkoarMinstrel *m) {
+				auto x = m->fairy->impression;
 				// todo Skoar.ops.increment(m, x, settable);
 			};
 		}
 		else if (*op == "->") {
-			noad->on_enter = [&](SkoarMinstrel *m) {
-				auto x = m->fairy->impression();
+			noad->on_enter = [=](SkoarMinstrel *m) {
+				auto x = m->fairy->impression;
 				// todo Skoar.ops.decrement(m, x, settable);
 			};
 		}
@@ -444,11 +443,13 @@ Skoarmantics::Skoarmantics() {
 		noad->on_enter = [=](SkoarMinstrel *m) {
 			auto left = m->fairy->cast_arcane_magic();
 
-			m->fairy->charge_arcane_magic([=]() {
-				auto right = m->fairy->impression();
-				op->calculate(m, left, right);
-				m->fairy->impression();
-			});
+			m->fairy->charge_arcane_magic(
+				[=]() {
+					Skoarpuscle *right = m->fairy->impression;
+					//op->calculate(m, left, right);
+					return m->fairy->impression;
+				}
+			);
 
 		};
 

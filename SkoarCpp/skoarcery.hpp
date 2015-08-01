@@ -9,5 +9,6 @@ using namespace std;
 #include <set>
 
 #include <typeinfo>
+#include <type_traits>
 #include <exception>
 #include <functional>

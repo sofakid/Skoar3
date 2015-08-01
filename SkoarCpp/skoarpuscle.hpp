@@ -7,11 +7,97 @@
 #include "minstrel_fwd.hpp"
 #include "event_fwd.hpp"
 
+#include "skoarpuscle_fwd.hpp"
+
+#define SKOARPUSCLE(x) Skoarpuscle::wrap<decltype(x)>(x)
+
+union SkoarpuscleValue {
+	long long Int;
+	double Float;
+	bool Boolean;
+
+	string *String;
+	Skoarpion *Skoarpion;
+	Skoarpuscle *Skoarpuscle;
+	list<class Skoarpuscle *> *List;
+	void *Void;
+
+	SkoarNoad *Subtree;
+
+	SkoarpuscleValue(int x);
+	SkoarpuscleValue(long x);
+	SkoarpuscleValue(long long x);
+	SkoarpuscleValue(float x);
+	SkoarpuscleValue(double x);
+	SkoarpuscleValue(bool x);
+	SkoarpuscleValue(void *x);
+
+};
+
 class Skoarpuscle {
 public:
+	SkoarpuscleValue val;
 
 	function<void(SkoarMinstrel *m)> on_enter;
 
+	/*template <typename T>
+	static Skoarpuscle *wrap(T x) {
+
+		SkoarpuscleValue v = x;
+
+		if (is_pointer<T>::value) {
+			if ((void*)x == nullptr)
+				return new SkoarpuscleCrap();
+		}
+		if (typeid(x) == typeid(Skoarpuscle*))
+			return x;
+
+		if (typeid(x) == typeid(Skoarpion*))
+			return new SkoarpuscleSkoarpion(x);
+
+		if (typeid(x) == typeid(string*))
+			return new SkoarpuscleString(x);
+
+		if (typeid(x) == typeid(list<Skoarpuscle*>*))
+			return new SkoarpuscleList(x);
+	
+		if (typeid(x) == typeid(int))
+			return new SkoarpuscleInt(x);
+
+		if (typeid(x) == typeid(float))
+			return new SkoarpuscleFloat(x);
+
+		if (typeid(x) == typeid(double))
+			return new SkoarpuscleFloat(x);
+
+		if (typeid(x) == typeid(bool)) {
+			if (x)
+				return new SkoarpuscleTrue();
+			return new SkoarpuscleFalse();
+		}
+
+		return new SkoarpuscleUnknown(new string(typeid(x).name()));
+	} */
+
+	bool isNoatworthy() {
+		return false;
+	}
+};
+
+
+class SkoarpuscleCrap : public Skoarpuscle{
+public:
+	SkoarpuscleCrap();
+};
+
+class SkoarpuscleTrue : public Skoarpuscle {
+public:
+	SkoarpuscleTrue();
+};
+
+class SkoarpuscleFalse : public Skoarpuscle {
+public:
+	SkoarpuscleFalse();
 };
 
 class SkoarpuscleFreq : public Skoarpuscle {
@@ -134,6 +220,22 @@ public:
     SkoarpuscleMathOp(SkoarToke *);
 };
 
+class SkoarpuscleList : public Skoarpuscle {
+public:
+	SkoarpuscleList();
+
+	SkoarpuscleList(list<Skoarpuscle*>* listy);
+	list<Skoarpuscle *> *list() {
+		return val.List;
+	}
+};
+
+class SkoarpuscleArgsSpec : public SkoarpuscleList {
+public:
+	SkoarpuscleArgsSpec();
+	SkoarpuscleArgsSpec(SkoarNoad *);
+};
+
 class SkoarpuscleListSep : public Skoarpuscle {
 public:
 	SkoarpuscleListSep();
@@ -155,3 +257,61 @@ public:
 
 	void on_enter(SkoarMinstrel *m);
 };
+
+class SkoarpuscleProjection : public Skoarpuscle {
+public:
+	SkoarpuscleProjection(SkoarProjection *);
+};
+
+class SkoarpuscleDeref : public Skoarpuscle {
+public:
+	SkoarpuscleDeref();
+	SkoarpuscleDeref(string *msg_name, Skoarpuscle *);
+
+	Skoarpuscle *lookup(SkoarMinstrel* minstrel);
+};
+
+class SkoarpuscleConditional : public Skoarpuscle {
+public:
+	SkoarpuscleConditional();
+	SkoarpuscleConditional(SkoarNoad *);
+};
+
+class SkoarpuscleBoolean : public Skoarpuscle {
+public:
+	SkoarpuscleBoolean();
+	SkoarpuscleBoolean(SkoarNoad *);
+
+};
+
+class SkoarpuscleLoop : public Skoarpuscle {
+public:
+	SkoarpuscleLoop();
+	SkoarpuscleLoop(SkoarNoad *);
+
+	Skoarpuscle *lookup(SkoarMinstrel* minstrel);
+};
+
+class SkoarpuscleGoto : public Skoarpuscle {
+public:
+	SkoarpuscleGoto();
+	SkoarpuscleGoto(SkoarNoad *);
+};
+
+class SkoarpuscleArgs : public Skoarpuscle {
+public:
+	SkoarpuscleArgs();
+};
+
+class SkoarpuscleLoopMsg : public Skoarpuscle {
+public:
+	SkoarpuscleLoopMsg();
+	SkoarpuscleLoopMsg(string *);
+};
+
+class SkoarpuscleMsg : public Skoarpuscle {
+public:
+	SkoarpuscleMsg();
+	SkoarpuscleMsg(string*, SkoarpuscleArgs *);
+};
+

@@ -15,8 +15,8 @@ SkoarNoad::SkoarNoad(string &nameArg, SkoarNoad *parentArg) {
 	name = nameArg;
 }
 
-string SkoarNoad::asString() {
-	return name;
+string *SkoarNoad::asString() {
+	return &name;
 }
 
 // -------------------
@@ -155,8 +155,9 @@ void SkoarNoad::inorder(function<void(SkoarNoad *noad)> f) {
 	//debug("<<< inorder: " ++ name);
 }
 
-// debug here if it's crashing while performing the skoar
-void SkoarNoad::inorder_from_here(list<int> here, function<void(SkoarNoad *noad)> f) {
+// - debug here if it's crashing while performing the skoar
+// - modifies &here
+void SkoarNoad::inorder_from_here(list<int> &here, function<void(SkoarNoad *noad)> f) {
 	
 
 	//debug("inorder_from_here: j:" ++ j ++ " " ++ name);
@@ -169,15 +170,17 @@ void SkoarNoad::inorder_from_here(list<int> here, function<void(SkoarNoad *noad)
 		int j = here.back();
 		here.pop_back();
 		
-		for (auto child = children.begin(); child != children.end(); ++i, ++child) {
-			if (i < j) 
+		for (auto child: children) {
+			if (i < j)
+				++i;
 				continue;
 
 			if (i == j)
-				(*child)->inorder_from_here(here, f);
+				child->inorder_from_here(here, f);
 			else 
-				(*child)->inorder(f);
-
+				child->inorder(f);
+			
+			++i;
 		}
 		
 	}

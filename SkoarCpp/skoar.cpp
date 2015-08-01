@@ -14,14 +14,14 @@
 // =====
 Skoar::Skoar(std::string &skoarce) {
 	this->skoarce = skoarce;
-	long start_time;
-	long parse_time;
-	long decorate_time;
+	//long start_time;
+	//long parse_time;
+	//long decorate_time;
 
 	this->skoarce = skoarce + "\n";
 	tree = nullptr;
 	toker = new SkoarToker(skoarce);
-	auto parser = new SkoarParser();
+	auto parser = new SkoarParser(toker);
 
 	all_voice = new SkoarKoar(new string("all"));
 	voices["all"] = all_voice;

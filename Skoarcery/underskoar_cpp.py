@@ -280,8 +280,8 @@ def typical_token_cpp(token):
     _____.if_("!found")
     _________.return_(_.null)
     _____.end_if()
-    _____.stmt("string s = "+ match_obj_.name +"[0]")
-    _____.return_("new "+ token.toker_name +"(s,s.length())")
+    _____.stmt("string *s = new string("+ match_obj_.name +"[0])")
+    _____.return_("new "+ token.toker_name +"(s,s->length())")
     #_________.return_(SkoarToke_ + _.v_static_accessor() + match_toke_.name +"<"+ token.toker_name +">("+ buf_.name +", "+ offs_.name +")")
     _.end()
 

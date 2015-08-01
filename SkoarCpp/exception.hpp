@@ -4,20 +4,10 @@
 class SkoarError : public exception
 {
 public:
-
 	std::string sWhat;
-	SkoarError() {
-		sWhat = string("Unknown");
-	}
-
-	SkoarError(std::string s) {
-		sWhat = s;
-	}
-
-	virtual const char* what() const throw()
-	{
-		return sWhat.c_str();
-	}
+	SkoarError();
+	SkoarError(std::string s);
+	virtual const char* what() const throw();
 };
 
 class SkoarParseException : public SkoarError {

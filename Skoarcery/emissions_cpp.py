@@ -219,7 +219,7 @@ class CppTongue(Tongue):
         return "this->" + attr.name
 
     def v_def_regex(self, regex):
-        return 'regex("' + regex + '")'
+        return 'regex("' + regex.replace('\\','\\\\') + '")'
 
     def v_match(self, match):
         return match

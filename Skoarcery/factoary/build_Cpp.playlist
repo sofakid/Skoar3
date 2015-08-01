@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="Skoarcery\factoary\Code_Lexer_Cpp.py::Code_Lexer_Cpp::test_CPP_lexer" /><Add Test="Skoarcery\factoary\Code_Lexer_Cpp.py::Code_Lexer_Cpp::test_HPP_lexer" /><Add Test="Skoarcery\factoary\Code_Parser_Cpp.py::Code_Parser_Cpp::test_CPP_rdpp" /></Playlist>

@@ -1,4 +1,4 @@
 #pragma once
 
-class SkoarDict;
+class SkoarDic;
 class SkoarEvent;
