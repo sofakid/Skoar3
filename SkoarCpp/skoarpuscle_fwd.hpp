@@ -1,6 +1,6 @@
 class Skoarpuscle;
 
-
+class SkoarpuscleUnknown;
 class SkoarpuscleCrap;
 class SkoarpuscleTrue;
 class SkoarpuscleFalse;

@@ -22,6 +22,7 @@ public:
 
 class SkoarProjection {
 public:
+
 	SkoarNoad *performMsg(list<string*> &msg_arr);
 
 	list<int> *map_dst(SkoarNoad *dst);

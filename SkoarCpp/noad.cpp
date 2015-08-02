@@ -127,7 +127,7 @@ string SkoarNoad::draw_tree(int tab)	{
 //
 // if it's crashing during the decorating stage, here's a good place to
 // start debugging
-void SkoarNoad::depth_visit(function<void(SkoarNoad *noad)> f) {
+void SkoarNoad::depth_visit(SpellOfNoads f) {
 	//var s = " " ++ if (toke.notNil) {toke.lexeme} {""};
 	//debug(">>> depth_visit: " ++ name ++ s);
 
@@ -144,7 +144,7 @@ void SkoarNoad::depth_visit(function<void(SkoarNoad *noad)> f) {
 
 }
 
-void SkoarNoad::inorder(function<void(SkoarNoad *noad)> f) {
+void SkoarNoad::inorder(SpellOfNoads f) {
 
 	f(this);
 
@@ -157,7 +157,7 @@ void SkoarNoad::inorder(function<void(SkoarNoad *noad)> f) {
 
 // - debug here if it's crashing while performing the skoar
 // - modifies &here
-void SkoarNoad::inorder_from_here(list<int> &here, function<void(SkoarNoad *noad)> f) {
+void SkoarNoad::inorder_from_here(list<int> &here, SpellOfNoads f) {
 	
 
 	//debug("inorder_from_here: j:" ++ j ++ " " ++ name);
@@ -213,7 +213,7 @@ SkoarToke *SkoarNoad::next_toke() {
 // performing the tree
 // -------------------
 void SkoarNoad::enter_noad(SkoarMinstrel* minstrel) {
-	if (on_enter != nullptr) {
+	if (on_enter) {
 		on_enter(minstrel);
 	}
 }

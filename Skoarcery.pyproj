@@ -98,6 +98,13 @@
     <Content Include="SuperCollider\Testing\runtests.scd" />
     <Content Include="SuperCollider\Testing\unittests.sc" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Users\lucas\Documents\GitHub\UnrealEngine\Engine\Source\Programs\AutomationTool\Android\Android.Automation.csproj">
+      <Name>Android.Automation</Name>
+      <Project>{32e3a47e-359a-4f78-ae6c-703b87de0b97}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
 </Project>

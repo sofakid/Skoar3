@@ -1,9 +1,8 @@
 #pragma once
 #include "skoarcery.hpp"
 #include "skoarpuscle.hpp"
+#include "spells.hpp"
 
-typedef function<Skoarpuscle*()> ArcaneMagic;
-#define HarmlessMagic [](){return nullptr;}
 
 class SkoarFairy {
 public:

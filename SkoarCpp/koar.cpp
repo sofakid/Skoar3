@@ -98,7 +98,7 @@ void SkoarKoar::set_args(
 		// foreach arg name defined, set the value from args
 		auto arg_it = args->begin();
 
-		for (auto k_skoarpuscle : *args_spec->list() ) {
+		for (auto k_skoarpuscle : *args_spec->val.List ) {
 			auto k = k_skoarpuscle->val.String;
 
 			//("k: " ++ k).postln;

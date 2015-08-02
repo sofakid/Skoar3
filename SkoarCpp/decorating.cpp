@@ -208,7 +208,7 @@ Skoarmantics::Skoarmantics() {
 	};
 
 	table["conditional"] = [](Skoar *skoar, SkoarNoad *noad) {
-		noad->skoarpuscle = new SkoarpuscleConditional(noad);
+		noad->skoarpuscle = new SkoarpuscleConditional(skoar, noad);
 		noad->children.empty();
 	};
 
@@ -227,7 +227,7 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table["loop"] = [](Skoar *skoar, SkoarNoad *noad) {
-		noad->skoarpuscle = new SkoarpuscleLoop(noad);
+		noad->skoarpuscle = new SkoarpuscleLoop(skoar, noad);
 		noad->children.empty();
 	};
 
@@ -285,7 +285,7 @@ Skoarmantics::Skoarmantics() {
 	//                | Deref MsgName
     table["deref"] = [](Skoar *skoar, SkoarNoad *noad) {
 		SkoarpuscleDeref *x;
-		Skoarpuscle *args = nullptr;
+		SkoarpuscleArgs *args = nullptr;
 		string *msg_name;
 
 		auto child = noad->children.begin();

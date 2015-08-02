@@ -8,6 +8,7 @@
 #include "rdpp.hpp"
 #include "operators.hpp"
 #include "skoarpion.hpp"
+#include "spells.hpp"
 
 // =====
 // Skoar
@@ -101,7 +102,7 @@ void Skoar::cthulhu(SkoarNoad *noad) {
 	// TODO more
 	//"^^(;,;)^^".postln;
 	//dump();
-	throw SkoarError("^^(;,;)^^");
+	throw new SkoarError("^^(;,;)^^");
 
 }
 

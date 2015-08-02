@@ -5,7 +5,7 @@
 //
 Skoarpuscle {
 
-    var <>val;
+    var <>val;						
 
     *new { | v | ^super.new.init(v); }
     init { | v | val = v; }

@@ -5,6 +5,7 @@
 #include "lex_fwd.hpp"
 #include "minstrel_fwd.hpp"
 #include "event_fwd.hpp"
+#include "spells.hpp"
 
 // ==========================
 // The Parse Tree - SkoarNoad
@@ -20,7 +21,7 @@ public:
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 	SkoarToke *toke;
 
-	function<void(SkoarMinstrel *minstrel)> on_enter;
+	SpellOfMinstrels on_enter;
 	
 	string *voice;           // what voice to use
 	void *skoap;             // what skoap are we in
@@ -54,12 +55,12 @@ public:
 	//
 	// if it's crashing during the decorating stage, here's a good place to
 	// start debugging
-	void depth_visit(function<void(SkoarNoad *noad)> f);
+	void depth_visit(SpellOfNoads f);
 	
-	void inorder(function<void(SkoarNoad *noad)> f);
+	void inorder(SpellOfNoads f);
 
 	// debug here if it's crashing while performing the skoar
-	void inorder_from_here(list<int> &here, function<void(SkoarNoad *noad)> f); 
+	void inorder_from_here(list<int> &here, SpellOfNoads f);
 	
 	// expect skoarpuscle
 	Skoarpuscle *next_skoarpuscle();
