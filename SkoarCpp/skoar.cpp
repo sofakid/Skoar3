@@ -131,3 +131,8 @@ void Skoar::draw_skoarpions() {
 		}
 	}
 }
+
+#include <Windows.h>
+int main(int argc, TCHAR *argv[]) {
+
+}

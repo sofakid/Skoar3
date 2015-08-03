@@ -87,3 +87,6 @@ Skoarpuscle *SkoarFairy::pop() {
 	return impression;
 }
 
+SkoarpuscleFairy::SkoarpuscleFairy() {
+
+}

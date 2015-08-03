@@ -15,6 +15,14 @@
 //
 // Here we pick the values out of the tokens
 // and set its attributes appropriately
+SkoarTokeInspector::SkoarTokeInspector() {
+
+}
+
+void SkoarTokeInspector::decorate(SkoarToke *toke, SkoarNoad* noad)	{
+	;
+};
+
 void SkoarTokeInspector::decorate(Toke_Fairy *toke, SkoarNoad* noad)	{
 	noad->skoarpuscle = new SkoarpuscleFairy();
 };

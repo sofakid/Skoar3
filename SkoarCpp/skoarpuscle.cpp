@@ -8,11 +8,44 @@
 #include "noad.hpp"
 #include "skoarpion.hpp"
 
+
 // Skoarpuscles are the closest thing we have to "types".
 //
 // They represent value types, as well as most things that
 // can be spoken of as things, like a statement, boolean expression, etc.
 //
+
+SkoarpuscleValue::SkoarpuscleValue() {
+	Int = 0;
+}
+
+SkoarpuscleValue::SkoarpuscleValue(int x) {
+	Int = x;
+}
+
+SkoarpuscleValue::SkoarpuscleValue(long x) {
+	Int = x;
+}
+
+SkoarpuscleValue::SkoarpuscleValue(long long x) {
+	Int = x;
+}
+
+SkoarpuscleValue::SkoarpuscleValue(float x) {
+	Float = (double) x;
+}
+
+SkoarpuscleValue::SkoarpuscleValue(double x) {
+	Float = x;
+}
+
+SkoarpuscleValue::SkoarpuscleValue(bool x) {
+	Boolean = x;
+}
+
+SkoarpuscleValue::SkoarpuscleValue(void *x) {
+	Void = x;
+}
 
 Skoarpuscle::Skoarpuscle() {
 }
@@ -86,6 +119,31 @@ void *SkoarpuscleFreq::asNoat() {
 	return nullptr;
 	//return new SkoarNoat_Freq(val.asFloat);
 }
+
+
+
+SkoarpuscleNoat::SkoarpuscleNoat(string *) {
+}
+	
+bool SkoarpuscleNoat::isNoatworthy() {
+	return true;
+}
+
+void *SkoarpuscleNoat::asNoat() {
+	return nullptr;
+}
+
+SkoarpuscleChoard::SkoarpuscleChoard(string *) {
+}
+
+bool SkoarpuscleChoard::isNoatworthy() {
+	return true;
+}
+
+void *SkoarpuscleChoard::asNoat() {
+	return nullptr;
+}
+			
 
 
 
@@ -438,6 +496,11 @@ SkoarpuscleLoop *SkoarpuscleLoop::foreach(SkoarpuscleList *listy) {
 
 SkoarpuscleLoopMsg::SkoarpuscleLoopMsg() {
 }
+
+SkoarpuscleLoopMsg::SkoarpuscleLoopMsg(string *s) {
+	val.String = s;
+}
+
 
 SkoarpuscleExprEnd::SkoarpuscleExprEnd() {
 	on_enter = [](SkoarMinstrel *m) {
