@@ -152,6 +152,7 @@
     <ClInclude Include="pitchy.hpp" />
     <ClInclude Include="pitchy_fwd.hpp" />
     <ClInclude Include="rdpp_fwd.hpp" />
+    <ClInclude Include="skoarbuf.hpp" />
     <ClInclude Include="skoarcery.hpp" />
     <ClInclude Include="lex.hpp" />
     <ClInclude Include="noad.hpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="skoar_fwd.hpp" />
     <ClInclude Include="skoar_public.hpp" />
     <ClInclude Include="spells.hpp" />
+    <ClInclude Include="templates.hpp" />
     <ClInclude Include="toker.hpp" />
     <ClInclude Include="toker_fwd.hpp" />
   </ItemGroup>

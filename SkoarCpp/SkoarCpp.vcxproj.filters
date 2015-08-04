@@ -123,6 +123,12 @@
     <ClInclude Include="skoar_public.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="skoarbuf.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="templates.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="toker.cpp">

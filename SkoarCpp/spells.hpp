@@ -7,6 +7,7 @@ typedef long long SkoarInt;
 typedef double SkoarFloat;
 
 typedef function<void(SkoarMinstrel *)> SpellOfMinstrels;
+typedef function<void(SkoarNoad *)> SpellOfScrying;
 typedef function<void(SkoarNoad *)> SpellOfNoads;
 typedef function<void(Skoarpuscle *)> SpellOfSkoarpucles;
 

@@ -13,10 +13,11 @@
 SkoarNoad::SkoarNoad(wstring &nameArg, SkoarNoad *parentArg) {
 	parent = parentArg;
 	name = nameArg;
+	skoarce = L"";
 }
 
 wstring *SkoarNoad::asString() {
-	return &name;
+	return new wstring(name + L": " + skoarce);
 }
 
 // -------------------
@@ -59,9 +60,12 @@ void SkoarNoad::decorate(wstring *v, void *s, list<int> &parent_address, int i) 
 	skoap = s;
 
 	i = 0;
+	skoarce_len = 0;
 	for (SkoarNoad *y : children) {
 		y->decorate(v, s, address, i);
 		i = i + 1;
+		skoarce += y->skoarce;
+		skoarce_len += y->skoarce_len;
 	}
 
 }
@@ -82,6 +86,9 @@ void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
 	auto x = new SkoarNoad(*typeid_name, this);
 	x->toke = t;
 	children.emplace_back(x);
+
+	x->skoarce = *t->lexeme;
+	x->skoarce_len = t->size;
 }
 
 // ----------------
@@ -89,7 +96,38 @@ void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
 // ----------------
 wstring SkoarNoad::draw_tree(int tab)	{
 	int n = 16;
-	wstring s = L"";
+	
+	int tabby = tab * 2;
+	wchar_t *tabs = new wchar_t[tabby];
+	wchar_t *p = tabs;
+	for (int i = 0; i < tabby; ++i)
+		*p++ = L' ';
+	*p = L'\0';
+
+	wstring s = wstring(tabs);
+
+	//delete tabs;
+
+	if (voice != nullptr) {
+		s += *voice + L":";
+	}
+	else {
+		s += L" novoice :";
+	}
+
+	if (skoarpuscle != nullptr) {
+		s += skoarpuscle->asString() + L" - ";
+	}
+	s += name + L" __{ " + skoarce + L" }__";
+
+	s += L"\n";
+
+	for (auto x : children) {
+		s += x->draw_tree(tab + 1);
+	}
+
+	return s;
+
 	//wstring sa = skoap->asString() + ":";
 	//stirng *sv;
 
@@ -123,6 +161,15 @@ wstring SkoarNoad::draw_tree(int tab)	{
 	return s;
 }
 
+void SkoarNoad::scry(SpellOfScrying f) {
+
+	this->depth_visit([f](SkoarNoad *noad){
+		
+
+
+	});
+
+}
 
 // -----------------
 // climbing the Tree

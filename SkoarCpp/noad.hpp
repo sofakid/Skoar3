@@ -20,6 +20,8 @@ public:
 	wstring name;                // name of the nonterminal
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 	SkoarToke *toke;
+	wstring skoarce; 
+	size_t skoarce_len;
 
 	SpellOfMinstrels on_enter;
 	
@@ -46,11 +48,11 @@ public:
 	// showing the tree
 	// ----------------
 	wstring draw_tree(int tab = 1);
+	void scry(SpellOfScrying f);
 	
 	// -----------------
 	// climbing the Tree
 	// -----------------
-
 	// depth-first, find the leaves, run handler, working towards trunk
 	//
 	// if it's crashing during the decorating stage, here's a good place to
