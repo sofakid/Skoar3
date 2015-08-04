@@ -26,21 +26,21 @@ public:
 	SkoarDic		*skoarboard;   //
 	list<SkoarDic*> *stack;        // stack of vars visible to the skoar code
 	list<SkoarDic*> *state_stack;  // stack of vars invisible to the skoar code
-	string          *name;         // name of voice as Symbol
+	wstring          *name;         // name of voice as Symbol
 
-	string *garbage;
+	wstring *garbage;
 
-	SkoarKoar(string *nom);
+	SkoarKoar(wstring *nom);
 	// ---------------------
 	// State and scope stuff
 	// ---------------------
-	void put(string *k, Skoarpuscle *v);
-	Skoarpuscle *at(string*k);
+	void put(wstring *k, Skoarpuscle *v);
+	Skoarpuscle *at(wstring*k);
 
-	void state_put(string *k, Skoarpuscle *v);
+	void state_put(wstring *k, Skoarpuscle *v);
 	
-	Skoarpuscle *state_at(string *k);
-	inline Skoarpuscle *state_at(string k) {
+	Skoarpuscle *state_at(wstring *k);
+	inline Skoarpuscle *state_at(wstring k) {
 		return state_at(&k);
 	}
 	SkoarEvent *event(SkoarMinstrel *minstrel);
@@ -52,7 +52,7 @@ public:
 	void do_skoarpion(
 		Skoarpion *skoarpion, 
 		SkoarMinstrel *minstrel, 
-		list<string*> &msg_arr, 
+		list<wstring*> &msg_arr, 
 		list<Skoarpuscle *> *args);
 
 	void nav_loop(

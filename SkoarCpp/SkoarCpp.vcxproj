@@ -30,7 +30,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -65,7 +65,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\..\Users\lucas\Documents\Unreal Projects\Skoarditor\Libraries\SkoarCpp\Libraries\</OutDir>
+    <TargetName>$(ProjectName).$(Platform)</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -81,11 +84,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
     </Link>
+    <CustomBuildStep>
+      <Command>copy $(ProjectDir)*.hpp $(OutDir)..\Includes\</Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -136,6 +143,7 @@
     <ClInclude Include="koar.hpp" />
     <ClInclude Include="koar_fwd.hpp" />
     <ClInclude Include="lex_fwd.hpp" />
+    <ClInclude Include="logging.hpp" />
     <ClInclude Include="minstrel.hpp" />
     <ClInclude Include="minstrel_fwd.hpp" />
     <ClInclude Include="noad_fwd.hpp" />
@@ -154,6 +162,7 @@
     <ClInclude Include="skoarpuscle.hpp" />
     <ClInclude Include="skoarpuscle_fwd.hpp" />
     <ClInclude Include="skoar_fwd.hpp" />
+    <ClInclude Include="skoar_public.hpp" />
     <ClInclude Include="spells.hpp" />
     <ClInclude Include="toker.hpp" />
     <ClInclude Include="toker_fwd.hpp" />
@@ -166,6 +175,7 @@
     <ClCompile Include="fairy.cpp" />
     <ClCompile Include="koar.cpp" />
     <ClCompile Include="lex.cpp" />
+    <ClCompile Include="logging.cpp" />
     <ClCompile Include="minstrel.cpp" />
     <ClCompile Include="operators.cpp" />
     <ClCompile Include="pitchy.cpp" />

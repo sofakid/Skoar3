@@ -9,19 +9,21 @@
 #include "noad.hpp"
 
 
-SkoarKoar::SkoarKoar(string *nom) {
+SkoarKoar::SkoarKoar(wstring *nom) {
 	name = nom;
+	stack = new list<SkoarDic*>;
+	skoarboard = new SkoarDic();
 	stack->emplace_back(skoarboard);
 }
 
 // ---------------------
 // State and scope stuff
 // ---------------------
-void SkoarKoar::put(string *k, Skoarpuscle *v) {
+void SkoarKoar::put(wstring *k, Skoarpuscle *v) {
 	(*stack->back())[k] = v;
 }
 
-Skoarpuscle *SkoarKoar::at(string *k) {
+Skoarpuscle *SkoarKoar::at(wstring *k) {
 	Skoarpuscle *out = nullptr;
 
 	for (auto skrb = stack->rbegin(); skrb != stack->rend(); skrb++) {
@@ -34,11 +36,11 @@ Skoarpuscle *SkoarKoar::at(string *k) {
 	return out;
 }
 
-void SkoarKoar::state_put(string *k, Skoarpuscle *v) {
+void SkoarKoar::state_put(wstring *k, Skoarpuscle *v) {
 	(*state_stack->back())[k] = v;
 }
 
-Skoarpuscle *SkoarKoar::state_at(string *k) {
+Skoarpuscle *SkoarKoar::state_at(wstring *k) {
 	Skoarpuscle *out = nullptr;
 
 	for (auto skrb = stack->rbegin(); skrb != stack->rend(); skrb++) {
@@ -119,9 +121,9 @@ void SkoarKoar::push_state() {
 
 	state_stack->emplace_back(state);
 
-	//(*state)[&string("colons_burned")] = new SkoarpuscleList(new list<SkoarNoad *>());
-	//(*state)[&string("al_fine")] = new SkoarpuscleFalse();
-	//(*state)[&string("projections")] = new SkoarpuscleProjections(projections);
+	//(*state)[&wstring(L"colons_burned")] = new SkoarpuscleList(new list<SkoarNoad *>());
+	//(*state)[&wstring(L"al_fine")] = new SkoarpuscleFalse();
+	//(*state)[&wstring(L"projections")] = new SkoarpuscleProjections(projections);
 
 	stack->emplace_back(new SkoarDic());
 	
@@ -135,23 +137,23 @@ void SkoarKoar::pop_state() {
 void SkoarKoar::do_skoarpion(
 	Skoarpion *skoarpion,
 	SkoarMinstrel *minstrel,
-	list<string*> &msg_arr,
+	list<wstring*> &msg_arr,
 	list<Skoarpuscle *> *args) {
 	
 	SkoarNoad *subtree;
 	SkoarProjection *projection = nullptr;
-	map<string, SkoarpuscleProjection*> projections;
-	string *msg_name;
+	map<wstring, SkoarpuscleProjection*> projections;
+	wstring *msg_name;
 	bool inlined;
 
 	// default behaviour (when unmessaged)
 	if (msg_arr.empty()) {
-		//msg_arr.emplace_back(string("block"));
+		//msg_arr.emplace_back(wstring(L"block"));
 	}
 
 	msg_name = msg_arr.front();
 
-	inlined = (*msg_name == string("inline"));
+	inlined = (*msg_name == wstring(L"inline"));
 	if (inlined == false) {
 		this->push_state();
 	}
@@ -159,7 +161,7 @@ void SkoarKoar::do_skoarpion(
 	// load arg values into their names
 	set_args(minstrel, skoarpion->args_spec, args);
 
-	//projections = state_at(string("projections"));
+	//projections = state_at(wstring(L"projections"));
 	if (skoarpion->name != nullptr) {
 		//projection = projections[*skoarpion->name];
 
@@ -219,7 +221,7 @@ void SkoarKoar::nav_loop(
 				break;
 
 			case SkoarNav::SEGNO:
-				/*dst = this->state_at("segno_seen");
+				/*dst = this->state_at(L"segno_seen");
 
 				if ((dst !? (_->skoap)) != subtree->skoap) {
 					this->bubble_up_nav(nav_result, inlined);
@@ -227,7 +229,7 @@ void SkoarKoar::nav_loop(
 				break;
 
 			case SkoarNav::COLON:
-				//dst = this->state_at("colon_seen");
+				//dst = this->state_at(L"colon_seen");
 
 				//if ((dst !? (_->skoap)) != subtree->skoap) {
 				this->bubble_up_nav(nav_result, inlined);

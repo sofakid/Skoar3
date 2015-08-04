@@ -10,19 +10,19 @@
 // ==========================
 // The Parse Tree - SkoarNoad
 // ==========================
-SkoarNoad::SkoarNoad(string &nameArg, SkoarNoad *parentArg) {
+SkoarNoad::SkoarNoad(wstring &nameArg, SkoarNoad *parentArg) {
 	parent = parentArg;
 	name = nameArg;
 }
 
-string *SkoarNoad::asString() {
+wstring *SkoarNoad::asString() {
 	return &name;
 }
 
 // -------------------
 // decorating the tree
 // -------------------
-void SkoarNoad::decorate_zero(string *v, void *s, list<int> &parent_address, int i) {
+void SkoarNoad::decorate_zero(wstring *v, void *s, list<int> &parent_address, int i) {
 
 	if (voice == nullptr) {
 		voice = v;
@@ -44,7 +44,7 @@ void SkoarNoad::decorate_zero(string *v, void *s, list<int> &parent_address, int
 
 }
 
-void SkoarNoad::decorate(string *v, void *s, list<int> &parent_address, int i) {
+void SkoarNoad::decorate(wstring *v, void *s, list<int> &parent_address, int i) {
 
 	if (voice == nullptr) {
 		voice = v;
@@ -73,8 +73,13 @@ void SkoarNoad::add_noad(SkoarNoad *noad) {
 	children.emplace_back(noad);
 }
 
-void SkoarNoad::add_toke(string name, SkoarToke *t) {
-	auto x = new SkoarNoad(string(typeid(t).name()), this);
+void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
+	// argh
+	auto s = new string(typeid(t).name());
+	auto typeid_name = new wstring();
+	typeid_name->assign(s->begin(), s->end());
+
+	auto x = new SkoarNoad(*typeid_name, this);
 	x->toke = t;
 	children.emplace_back(x);
 }
@@ -82,10 +87,10 @@ void SkoarNoad::add_toke(string name, SkoarToke *t) {
 // ----------------
 // showing the tree
 // ----------------
-string SkoarNoad::draw_tree(int tab)	{
+wstring SkoarNoad::draw_tree(int tab)	{
 	int n = 16;
-	string s = "";
-	//string sa = skoap->asString() + ":";
+	wstring s = L"";
+	//wstring sa = skoap->asString() + ":";
 	//stirng *sv;
 
 	/*address.reverseDo{

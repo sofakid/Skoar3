@@ -93,7 +93,7 @@ class Code_Parser_Cpp(unittest.TestCase):
             #CPP.cmt(str(A))
             
             Ax = Arg("SkoarNoad*", A.name)
-            AStrx = Arg("string", '"'+ A.name +'"')
+            AStrx = Arg("wstring", '"'+ A.name +'"')
             Noadx = Arg("SkoarNoad*", "noad")
             Parentx = Arg("SkoarNoad*", "parent")
             Desiresx = Arg("list<SkoarToke *>*", "desires")
@@ -104,7 +104,7 @@ class Code_Parser_Cpp(unittest.TestCase):
             if A.intermediate:
                 CPP.var(Noadx, Parentx.name)
             else:
-                CPP.var(Noadx, "new SkoarNoad(string(\""+ A.name +"\"), parent);")
+                CPP.var(Noadx, "new SkoarNoad(wstring(L\""+ A.name +"\"), parent);")
 
             CPP.var(Desiresx, CPP.null)
             CPP.nl()
@@ -133,7 +133,7 @@ class Code_Parser_Cpp(unittest.TestCase):
 
                 for x in alpha:
                     if isinstance(x, Terminal):
-                        CPP.stmt('noad->add_toke("' + x.toker_name + '", toker->burn(' + x.toker_name + '::instance()))')
+                        CPP.stmt('noad->add_toke(L"' + x.toker_name + '", toker->burn(' + x.toker_name + '::instance()))')
 
                         # debugging
                         #CPP.print("burning: " + x.name)
@@ -198,19 +198,19 @@ class Code_Parser_Cpp(unittest.TestCase):
         HPP.method_h(fail_)
         CPP.method(fail_)
         CPP.stmt("toker->dump()")
-        CPP.stmt("throw new SkoarParseException(\"Fail\");")
+        CPP.stmt("throw new SkoarParseException(L\"Fail\");")
         CPP.end()
 
         HPP.method_h(fail_too_deep_)
         CPP.method(fail_too_deep_)
         CPP.stmt("toker->dump()")
-        CPP.stmt("throw new SkoarParseException(\"Parse tree too deep!\");")
+        CPP.stmt("throw new SkoarParseException(L\"Parse tree too deep!\");")
         CPP.end()
 
         HPP.raw("""
     SkoarToker *toker;
     int deep;
-    map<string, list<SkoarToke*>> desirables;
+    map<wstring, list<SkoarToke*>> desirables;
         """)
         toker_ = Arg("SkoarToker *", "toker")
         HPP.constructor_h(toker_)

@@ -6,7 +6,7 @@
 
 class SkoarFairy {
 public:
-	string * name;
+	wstring * name;
 	SkoarMinstrel *minstrel;
 	Skoarpuscle *impression;
 	Skoarpuscle *noat;
@@ -15,7 +15,7 @@ public:
 	list<list<Skoarpuscle *> *> listy_stack;
 	list<ArcaneMagic> magic_stack;
 
-	SkoarFairy(string *nom, SkoarMinstrel *m);
+	SkoarFairy(wstring *nom, SkoarMinstrel *m);
 	Skoarpuscle *impress(Skoarpuscle *x);
 
 	void charge_arcane_magic(ArcaneMagic spell);
@@ -60,7 +60,7 @@ on_enter {
 | m, nav |
 var x = m.fairy.impression;
 
-"performing fairy impression: ".post; x.dump;
+L"performing fairy impression: ".post; x.dump;
 
 if (x.isKindOf(Skoarpuscle)) {
 x.perform(m, nav);
@@ -73,7 +73,7 @@ skoar_msg {
 | msg, minstrel |
 msg_arr = msg.get_msg_arr(minstrel);
 
-"Fairy got msg: ".post; msg_arr.dump;
+L"Fairy got msg: ".post; msg_arr.dump;
 
 ^this;
 }

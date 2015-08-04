@@ -103,7 +103,7 @@ void *SkoarpuscleFloat::asNoat() {
 
 
 
-SkoarpuscleFreq::SkoarpuscleFreq(string *lexeme) {
+SkoarpuscleFreq::SkoarpuscleFreq(wstring *lexeme) {
 	val.String = lexeme; // todo chop off Hz
 	
 	on_enter = [this](SkoarMinstrel *m) {
@@ -122,7 +122,7 @@ void *SkoarpuscleFreq::asNoat() {
 
 
 
-SkoarpuscleNoat::SkoarpuscleNoat(string *) {
+SkoarpuscleNoat::SkoarpuscleNoat(wstring *) {
 }
 	
 bool SkoarpuscleNoat::isNoatworthy() {
@@ -133,7 +133,7 @@ void *SkoarpuscleNoat::asNoat() {
 	return nullptr;
 }
 
-SkoarpuscleChoard::SkoarpuscleChoard(string *) {
+SkoarpuscleChoard::SkoarpuscleChoard(wstring *) {
 }
 
 bool SkoarpuscleChoard::isNoatworthy() {
@@ -147,7 +147,7 @@ void *SkoarpuscleChoard::asNoat() {
 
 
 
-SkoarpuscleString::SkoarpuscleString(string *s) {
+SkoarpuscleString::SkoarpuscleString(wstring *s) {
 	val.String = s;
 	on_enter = [this](SkoarMinstrel *m) {
 		m->fairy->impress(this);
@@ -155,14 +155,14 @@ SkoarpuscleString::SkoarpuscleString(string *s) {
 }
 
 
-SkoarpuscleSymbolName::SkoarpuscleSymbolName(string *s) {
+SkoarpuscleSymbolName::SkoarpuscleSymbolName(wstring *s) {
 	val.String = s;
 	on_enter = [this](SkoarMinstrel *m) {
 		m->fairy->impress(this);
 	};
 }
 
-SkoarpuscleSymbol::SkoarpuscleSymbol(string *s) {
+SkoarpuscleSymbol::SkoarpuscleSymbol(wstring *s) {
 	val.String = s;
 	on_enter = [this](SkoarMinstrel *m) {
 		m->fairy->impress(this);
@@ -180,7 +180,7 @@ Skoarpuscle *SkoarpuscleSymbol::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *mi
 
 
 
-SkoarpuscleDeref::SkoarpuscleDeref(string *v, SkoarpuscleArgs *a) {
+SkoarpuscleDeref::SkoarpuscleDeref(wstring *v, SkoarpuscleArgs *a) {
 	val = v;
 	args = a;
 	
@@ -497,7 +497,7 @@ SkoarpuscleLoop *SkoarpuscleLoop::foreach(SkoarpuscleList *listy) {
 SkoarpuscleLoopMsg::SkoarpuscleLoopMsg() {
 }
 
-SkoarpuscleLoopMsg::SkoarpuscleLoopMsg(string *s) {
+SkoarpuscleLoopMsg::SkoarpuscleLoopMsg(wstring *s) {
 	val.String = s;
 }
 
@@ -557,10 +557,10 @@ Skoarpuscle *SkoarpuscleList::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *mins
 	auto name = msg->val.String;
 	Skoarpuscle *ret = nullptr;
 
-	if (*name == "next") {
+	if (*name == L"next") {
 		//ret = val.performMsg(o);
 	}
-	else if (*name == "last") {
+	else if (*name == L"last") {
 		//ret = val.performMsg(o);
 	} 
 	else {
@@ -595,7 +595,7 @@ SkoarpuscleMsg::SkoarpuscleMsg() {
 	args = nullptr;
 }
 	
-SkoarpuscleMsg::SkoarpuscleMsg(string *v, SkoarpuscleArgs *a) {
+SkoarpuscleMsg::SkoarpuscleMsg(wstring *v, SkoarpuscleArgs *a) {
 	val.String = v;
 	args = a;
 }
@@ -612,7 +612,7 @@ SkoarpuscleMsg::SkoarpuscleMsg(string *v, SkoarpuscleArgs *a) {
 	return x;
 }  */
 
-SkoarpuscleMsgName::SkoarpuscleMsgName(string *s) {
+SkoarpuscleMsgName::SkoarpuscleMsgName(wstring *s) {
 	val.String = s;
 }
 

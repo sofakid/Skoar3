@@ -1,23 +1,23 @@
 #include "exception.hpp"
 
 SkoarError::SkoarError() {
-	sWhat = string("Unknown");
+	sWhat = wstring(L"Unknown");
 }
 
-SkoarError::SkoarError(string s) {
+SkoarError::SkoarError(wstring s) {
 	sWhat = s;
 }
 
-const char* SkoarError::what() const throw() {
+const wchar_t* SkoarError::wwhat() const throw() {
 	return sWhat.c_str();
 }
 
 
 SkoarParseException::SkoarParseException() {
-	sWhat = string("Parse fail.");
+	sWhat = wstring(L"Parse fail.");
 }
 
-SkoarParseException::SkoarParseException(string s) {
+SkoarParseException::SkoarParseException(wstring s) {
 	sWhat = s;
 }
 

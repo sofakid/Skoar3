@@ -4,11 +4,11 @@
 
 class SkoarToker {
 public:
-	string *skoarce;
+	wstring *skoarce;
 	size_t i_am_here;
 	SkoarToke *i_saw;
 
-	SkoarToker(string &skoarce);
+	SkoarToker(wstring &skoarce);
 
 	SkoarToke *see(SkoarToke *want);
 	SkoarToke *sees(list<SkoarToke *> *wants);

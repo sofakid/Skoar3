@@ -4,14 +4,14 @@
 
 class SkoarDic {
 public:
-	map<string, Skoarpuscle*> table;
+	map<wstring, Skoarpuscle*> table;
 
 	//Skoarpuscle *not_found;
 
 	SkoarDic();
 
-	Skoarpuscle* &SkoarDic::operator[](string *key);
-	Skoarpuscle* &SkoarDic::operator[](string key);
+	Skoarpuscle* &SkoarDic::operator[](wstring *key);
+	Skoarpuscle* &SkoarDic::operator[](wstring key);
 };
 
 class SkoarEvent : SkoarDic {

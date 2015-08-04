@@ -10,7 +10,7 @@ src = """
 
 <e>:            unused
 EOF:            unused
-Whitespace:     [ \\t]*
+Whitespace:     [ \\t]+
 Newline:        [\\n\\r\\f][\\n\\r\\f \\t]*
 
 Voice*:         \\.(([a-zA-Z_][a-zA-Z0-9_]*)?|\\.+)

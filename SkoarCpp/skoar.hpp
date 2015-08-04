@@ -1,5 +1,5 @@
 #pragma once
-#include "skoarcery.hpp"
+#include "skoar_public.hpp"
 
 #include "noad_fwd.hpp"
 #include "toker_fwd.hpp"
@@ -8,26 +8,31 @@
 #include "operators_fwd.hpp"
 #include "skoarpion_fwd.hpp"
 
+#include "logging.hpp"
+
 class Skoar {
 public:
+
+	ISkoarLog *log;
+
 	// todo: make this static
 	SkoarOps *ops;      // operations tables object
 
-	string skoarce;      // the skoarce code
+	std::wstring skoarce;      // the skoarce code
 	SkoarNoad *tree;         // root of tree
 	SkoarToker *toker;        // toker
-	map<string, SkoarKoar*>  voices;       // all the voices
+	std::map<std::wstring, SkoarKoar*>  voices;       // all the voices
 	SkoarKoar *all_voice;    // the all voice
-	list<Skoarpion *> skoarpions;   // all the skoarpions
+	std::list<Skoarpion *> skoarpions;   // all the skoarpions
 
-	Skoar(string &skoarce);
+	Skoar(std::wstring &skoarce, ISkoarLog *log);
 
 	void decorate();
-	SkoarKoar *get_voice(string *k);
+	SkoarKoar *get_voice(std::wstring *k);
 	void cthulhu(SkoarNoad *noad);
 	void play();
 	void pskoar();
-	void pvoice(string *voice_name);
+	void pvoice(std::wstring *voice_name);
 	void draw_skoarpions();
 };
 

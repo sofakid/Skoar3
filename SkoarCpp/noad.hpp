@@ -17,35 +17,35 @@ public:
 	SkoarNoad *parent;          // the parent noad
 	list<SkoarNoad*> children;  // a list of child noads
 
-	string name;                // name of the nonterminal
+	wstring name;                // name of the nonterminal
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 	SkoarToke *toke;
 
 	SpellOfMinstrels on_enter;
 	
-	string *voice;           // what voice to use
+	wstring *voice;           // what voice to use
 	void *skoap;             // what skoap are we in
 
-	SkoarNoad(string &nameArg, SkoarNoad *parentArg);
+	SkoarNoad(wstring &nameArg, SkoarNoad *parentArg);
 
-	string *asString();
+	wstring *asString();
 
 	// -------------------
 	// decorating the tree
 	// -------------------
-	void decorate_zero(string *v, void *s, list<int> &parent_address, int i);
-	void decorate(string *v, void *s, list<int> &parent_address, int i);
+	void decorate_zero(wstring *v, void *s, list<int> &parent_address, int i);
+	void decorate(wstring *v, void *s, list<int> &parent_address, int i);
 
 	// ----------------
 	// growing the tree
 	// ----------------
 	void add_noad(SkoarNoad *noad);
-	void add_toke(string name, SkoarToke *t);
+	void add_toke(wstring name, SkoarToke *t);
 
 	// ----------------
 	// showing the tree
 	// ----------------
-	string draw_tree(int tab = 1);
+	wstring draw_tree(int tab = 1);
 	
 	// -----------------
 	// climbing the Tree

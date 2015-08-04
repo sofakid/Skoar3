@@ -12,3 +12,5 @@ using namespace std;
 #include <type_traits>
 #include <exception>
 #include <functional>
+
+#include "logging.hpp"

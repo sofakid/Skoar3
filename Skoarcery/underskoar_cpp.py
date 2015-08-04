@@ -11,17 +11,17 @@ _ = _____ = _________ = _____________ = _________________ = ____________________
 # Symbols
 # -------
 SkoarToke_ = "SkoarToke"
-lexeme_ = Arg("string *", "lexeme")
-regex_ = Arg("const regex", "rgx")
+lexeme_ = Arg("wstring *", "lexeme")
+regex_ = Arg("const wregex", "rgx")
 size_ = Arg("size_t", "size")
 inspectable_ = "inspectable"
 burn_ = Arg("size_t", "burn")
-match_obj_ = Arg("smatch", "matches")
-buf_ = Arg("string *", "buf")
+match_obj_ = Arg("wsmatch", "matches")
+buf_ = Arg("wstring *", "buf")
 offs_ = Arg("size_t", "offs")
 toke_class_ = "toke_class"
 match_toke_ = Arg("SkoarToke*", "match_toke")
-s_ = Arg("string *", "s")
+s_ = Arg("wstring *", "s")
 n_ = Arg("size_t", "n")
 SkoarError_ = "SkoarError"
 SubclassResponsibilityError_ = "SubclassResponsibilityError"
@@ -103,7 +103,7 @@ def skoarToke_h():
     _____.method_h(burn_)
     
     _____.cmt("match requested toke")
-    _____.method_h(match_toke_, buf_, offs_)
+    _____.virtual_method_h(match_toke_, buf_, offs_)
     #_____.stmt("template<typename T>", end="\n")
     #_____.static_method(match_toke_, buf_,offs_)
     #_________.var(match_obj_)
@@ -126,7 +126,7 @@ def whitespace_token():
     _.cmt_hdr("Whitespace is special")
     _.set_class(Whitespace.toker_name)
 
-    xx_ = Arg("string *", 'nullptr')
+    xx_ = Arg("wstring *", 'nullptr')
     xy_ = Arg("size_t", "0")
     _.constructor()
     _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
@@ -191,7 +191,7 @@ def EOF_token():
     aninstance_ = Arg(EOF.toker_name +" *", "aninstance")
     instance_ = Arg(EOF.toker_name +" *", "instance")
     
-    xx_ = Arg("string *", 'nullptr')
+    xx_ = Arg("wstring *", 'nullptr')
     xy_ = Arg("size_t", "0")
     _.constructor()
     _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
@@ -214,9 +214,9 @@ def EOF_token():
     _.end()
 
     _.method(match_toke_, buf_, offs_)
-    _____.if_(buf_.name + "->size() < " + offs_.name)
-    _________.throw(SkoarError_, _.v_str("Tried to burn EOF when there's more input."))
-    _____.end_if()
+    #_____.if_(buf_.name + "->size() < " + offs_.name)
+    #_________.throw(SkoarError_, _.v_str("Tried to burn EOF when there's more input."))
+    #_____.end_if()
     _____.if_(buf_.name + "->size() == " + offs_.name)
     _________.return_("new "+ EOF.toker_name +"()")
     _____.end_if()
@@ -239,7 +239,7 @@ def EOF_token_h():
     _____.nl()
     _____.constructor_h()
     _____.static_method_h(burn_, buf_, offs_)
-    _____.static_method_h(match_toke_, buf_, offs_)
+    _____.method_override_h(match_toke_, buf_, offs_)
     _.end_class()
 
 def typical_token_cpp(token):
@@ -247,7 +247,7 @@ def typical_token_cpp(token):
     #inspectable = _.true if token.name in terminals.inspectables else _.false
     _.set_class(token.toker_name)
 
-    _.stmt("const std::regex "+ token.toker_name +"::"+ regex_.name +" = "+ _.v_def_regex(token.regex))
+    _.stmt("const std::wregex "+ token.toker_name +"::"+ regex_.name +" = "+ _.v_def_regex(token.regex))
     
     aninstance_ = Arg(token.toker_name +" *", "aninstance")
     instance_ = Arg(token.toker_name +" *", "instance")
@@ -260,7 +260,7 @@ def typical_token_cpp(token):
     _____.stmt("return aninstance;")
     _.end()
 
-    xx_ = Arg("string *", 'nullptr')
+    xx_ = Arg("wstring *", 'nullptr')
     xy_ = Arg("size_t", "0")
     _.constructor()
     _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
@@ -280,7 +280,7 @@ def typical_token_cpp(token):
     _____.if_("!found")
     _________.return_(_.null)
     _____.end_if()
-    _____.stmt("string *s = new string("+ match_obj_.name +"[0])")
+    _____.stmt("wstring *s = new wstring("+ match_obj_.name +"[0])")
     _____.return_("new "+ token.toker_name +"(s,s->length())")
     #_________.return_(SkoarToke_ + _.v_static_accessor() + match_toke_.name +"<"+ token.toker_name +">("+ buf_.name +", "+ offs_.name +")")
     _.end()
@@ -300,7 +300,7 @@ def typical_token_h(token):
     _____.nl()
     _____.constructor_h()
     _____.constructor_h(s_, n_)
-    _____.static_method_h(match_toke_, buf_, offs_)
+    _____.method_override_h(match_toke_, buf_, offs_)
     _.end_class()
 
     x = Arg(SkoarToke_ +"&", "SkoarToke::"+ match_toke_.name +"<"+ token.toker_name +">")

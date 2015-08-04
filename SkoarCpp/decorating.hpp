@@ -52,7 +52,7 @@ public:
 
 class Skoarmantics {
 public:
-	map<string, function<void(Skoar *skoar, SkoarNoad *noad)>> table;
+	map<wstring, function<void(Skoar *skoar, SkoarNoad *noad)>> table;
 
 	Skoarmantics();
 

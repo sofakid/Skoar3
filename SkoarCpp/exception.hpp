@@ -4,14 +4,14 @@
 class SkoarError : public exception
 {
 public:
-	std::string sWhat;
+	std::wstring sWhat;
 	SkoarError();
-	SkoarError(std::string s);
-	virtual const char* what() const throw();
+	SkoarError(std::wstring s);
+	virtual const wchar_t* wwhat() const throw();
 };
 
 class SkoarParseException : public SkoarError {
 public:
 	SkoarParseException();
-	SkoarParseException(string s);
+	SkoarParseException(wstring s);
 };

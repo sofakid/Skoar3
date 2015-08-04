@@ -3,7 +3,7 @@
 #include "exception.hpp"
 #include "skoarpuscle.hpp"
 
-SkoarFairy::SkoarFairy(string *nom, SkoarMinstrel *m) {
+SkoarFairy::SkoarFairy(wstring *nom, SkoarMinstrel *m) {
 	name = nom;
 	minstrel = m;
 	magic = HarmlessMagic;
@@ -71,7 +71,7 @@ void SkoarFairy::push() {
 
 Skoarpuscle *SkoarFairy::pop() {
 	if (magic_stack.empty()) {
-		throw SkoarError("Magic Stack Underflow");
+		throw SkoarError(L"Magic Stack Underflow");
 	}
 
 	magic = magic_stack.back();

@@ -19,7 +19,7 @@ union SkoarpuscleValue {
 	SkoarFloat Float;
 	bool Boolean;
 
-	string *String;
+	wstring *String;
 	Skoarpion *Skoarpion;
 	Skoarpuscle *Skoarpuscle;
 	list<class Skoarpuscle *> *List;
@@ -61,7 +61,7 @@ public:
 		if (typeid(x) == typeid(Skoarpion*))
 			return new SkoarpuscleSkoarpion(x);
 
-		if (typeid(x) == typeid(string*))
+		if (typeid(x) == typeid(wstring*))
 			return new SkoarpuscleString(x);
 
 		if (typeid(x) == typeid(list<Skoarpuscle*>*))
@@ -82,7 +82,7 @@ public:
 			return new SkoarpuscleFalse();
 		}
 
-		return new SkoarpuscleUnknown(new string(typeid(x).name()));
+		return new SkoarpuscleUnknown(new wstring(typeid(x).name()));
 	} */
 
 	virtual bool isNoatworthy() {
@@ -100,8 +100,8 @@ public:
 		return val.Int;
 	}
 	
-	virtual string Skoarpuscle::asString() {
-		return string("Skoarpuscle");
+	virtual wstring Skoarpuscle::asString() {
+		return wstring(L"Skoarpuscle");
 	}
 
 
@@ -129,7 +129,7 @@ public:
 
 class SkoarpuscleFreq : public Skoarpuscle {
 public:
-    SkoarpuscleFreq(string *);
+    SkoarpuscleFreq(wstring *);
 	bool isNoatworthy() override;
 	void *asNoat() override;
 };
@@ -150,33 +150,33 @@ public:
 
 class SkoarpuscleNoat : public Skoarpuscle {
 public:
-    SkoarpuscleNoat(string *);
+    SkoarpuscleNoat(wstring *);
 	bool isNoatworthy() override;
 	void *asNoat() override;
 };
 
 class SkoarpuscleChoard : public Skoarpuscle {
 public:
-    SkoarpuscleChoard(string *);
+    SkoarpuscleChoard(wstring *);
 	bool isNoatworthy() override;
 	void *asNoat() override;
 };
 
 class SkoarpuscleString : public Skoarpuscle {
 public:
-    SkoarpuscleString(string *);
+    SkoarpuscleString(wstring *);
 };
 
 class SkoarpuscleSymbol : public Skoarpuscle {
 public:
-    SkoarpuscleSymbol(string *);
+    SkoarpuscleSymbol(wstring *);
 	Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) override;
 
 };
 
 class SkoarpuscleSymbolName : public Skoarpuscle {
 public:
-    SkoarpuscleSymbolName(string *);
+    SkoarpuscleSymbolName(wstring *);
 };
 
 class SkoarpuscleRest : public Skoarpuscle {
@@ -262,7 +262,7 @@ public:
 
 class SkoarpuscleMsgName : public Skoarpuscle {
 public:
-    SkoarpuscleMsgName(string *);
+    SkoarpuscleMsgName(wstring *);
 };
 
 class SkoarpuscleMathOp : public Skoarpuscle {
@@ -303,7 +303,7 @@ public:
 
 class SkoarpuscleSkoarpion : public Skoarpuscle {
 public:
-	list<string*> *msg_arr;
+	list<wstring*> *msg_arr;
 
 	SkoarpuscleSkoarpion(Skoarpion *);
 	SkoarpuscleSkoarpion(Skoarpion *, SkoarNoad *);
@@ -320,11 +320,11 @@ public:
 
 class SkoarpuscleDeref : public Skoarpuscle {
 public:
-	list<string*> msg_arr;
+	list<wstring*> msg_arr;
 	SkoarpuscleArgs * args;
 
 	SkoarpuscleDeref();
-	SkoarpuscleDeref(string *msg_name, SkoarpuscleArgs *);
+	SkoarpuscleDeref(wstring *msg_name, SkoarpuscleArgs *);
 
 	Skoarpuscle *lookup(SkoarMinstrel* minstrel);
 };
@@ -366,7 +366,7 @@ public:
 
 class SkoarpuscleGoto : public Skoarpuscle {
 public:
-	string *nav_cmd;
+	wstring *nav_cmd;
 	bool al_fine;
 
 	SkoarpuscleGoto(SkoarNoad *);
@@ -380,14 +380,14 @@ public:
 class SkoarpuscleLoopMsg : public Skoarpuscle {
 public:
 	SkoarpuscleLoopMsg();
-	SkoarpuscleLoopMsg(string *);
+	SkoarpuscleLoopMsg(wstring *);
 };
 
 class SkoarpuscleMsg : public Skoarpuscle {
 public:
 	SkoarpuscleArgs *args;
 	SkoarpuscleMsg();
-	SkoarpuscleMsg(string *v, SkoarpuscleArgs *a);
+	SkoarpuscleMsg(wstring *v, SkoarpuscleArgs *a);
 	//void *get_msg_arr(SkoarMinstrel *m);
 };
 

@@ -9,29 +9,32 @@
 #include "operators.hpp"
 #include "skoarpion.hpp"
 #include "spells.hpp"
+#include "logging.hpp"
 
 // =====
 // Skoar
 // =====
-Skoar::Skoar(std::string &skoarce) {
+
+Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
+	this->log = log;
 	this->skoarce = skoarce;
 	//long start_time;
 	//long parse_time;
 	//long decorate_time;
 
-	this->skoarce = skoarce + "\n";
+	this->skoarce = skoarce + L"\n";
 	tree = nullptr;
-	toker = new SkoarToker(skoarce);
+	toker = new SkoarToker(this->skoarce);
 	auto parser = new SkoarParser(toker);
 
-	all_voice = new SkoarKoar(new string("all"));
-	voices["all"] = all_voice;
+	all_voice = new SkoarKoar(new wstring(L"all"));
+	voices[L"all"] = all_voice;
 
 	//skoarpions = List[];
 
 	//start_time = Process.elapsedTime;
 
-	//log(">>> parsing skoar...");
+	log->i(L">>> parsing skoar...");
 	tree = parser->skoar(nullptr);
 
 	try {
@@ -83,7 +86,7 @@ void Skoar::decorate() {
 // ----
 
 // creates a new one if needed
-SkoarKoar *Skoar::get_voice(string *k) {
+SkoarKoar *Skoar::get_voice(wstring *k) {
 	SkoarKoar *voice = nullptr;
 
 	auto found = voices[*k];
@@ -102,7 +105,7 @@ void Skoar::cthulhu(SkoarNoad *noad) {
 	// TODO more
 	//"^^(;,;)^^".postln;
 	//dump();
-	throw new SkoarError("^^(;,;)^^");
+	throw new SkoarError(L"^^(;,;)^^");
 
 }
 
@@ -114,7 +117,7 @@ void Skoar::pskoar() {
 	//return new Skoarchestra(this)->pfunk();
 }
 
-void Skoar::pvoice(string *voice_name) {
+void Skoar::pvoice(wstring *voice_name) {
 //	return new SkoarMinstrel(this->tree, voices[voice_name], this)->pfunk();
 }
 

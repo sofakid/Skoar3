@@ -6,7 +6,7 @@
 // The Toker
 // =========
 
-SkoarToker::SkoarToker(string &skoarce) {
+SkoarToker::SkoarToker(wstring &skoarce) {
 	this->i_am_here = 0;
 	this->i_saw = nullptr;
 	this->skoarce = &skoarce;
@@ -44,13 +44,12 @@ SkoarToke *SkoarToker::sees(std::list<SkoarToke *> *wants) {
 SkoarToke * SkoarToker::burn(SkoarToke *want) {
 
 	auto toke = i_saw;
-	string msg = nullptr;
 
 	if (toke == nullptr) {
 		toke = this->see(want);
 	}
 
-	if (typeid(toke) == typeid(want)) {
+	if (toke != nullptr && typeid(*toke) == typeid(*want)) {
 		i_saw = nullptr;
 		i_am_here = i_am_here + toke->burn();
 		i_am_here = i_am_here + Toke_Whitespace::burn(skoarce, i_am_here);
@@ -60,10 +59,9 @@ SkoarToke * SkoarToker::burn(SkoarToke *want) {
 	//msg = "Tried to burn " + want->name + ", but saw " + toke->asString;
 
 	puts("Toker Fail.");
-	puts(msg.c_str());
 	this->dump();
 
-	throw new SkoarError(msg);
+	throw new SkoarError(*(new wstring(L"toker fail")));
 }
 
 void SkoarToker::eof() {

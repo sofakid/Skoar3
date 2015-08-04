@@ -155,12 +155,24 @@ class CppTongue(Tongue):
         s = name.type + " " + name.name + "("
         s += self.expand_args(*args, **kwargs) + ")"
         self.stmt(s, end=";\n")
-        
+    
+    def function_override_h(self, name, *args, **kwargs):
+        s = name.type + " " + name.name + "("
+        s += self.expand_args(*args, **kwargs) + ") override"
+        self.stmt(s, end=";\n")
+             
     def method_h(self, name, *args, **kwargs):
         self.function_h(name, *args, **kwargs)
 
+    def method_override_h(self, name, *args, **kwargs):
+        self.function_override_h(name, *args, **kwargs)
+
     def static_method_h(self, name, *args, **kwargs):
         self.stmt("static ", end="")
+        self.method_h(name, *args, **kwargs)
+
+    def virtual_method_h(self, name, *args, **kwargs):
+        self.stmt("virtual ", end="")
         self.method_h(name, *args, **kwargs)
     
     def static_function_h(self, name, *args, **kwargs):
@@ -219,19 +231,19 @@ class CppTongue(Tongue):
         return "this->" + attr.name
 
     def v_def_regex(self, regex):
-        return 'regex("' + regex.replace('\\','\\\\') + '")'
+        return 'wregex(L"' + regex.replace('\\','\\\\') + '")'
 
     def v_match(self, match):
         return match
 
     def dict_new(self, name):
-        self.stmt("map<string,list<SkoarToke*>> *" + name + " = new map<string, list<SkoarToke*>>;", end="\n")
+        self.stmt("map<wstring,list<SkoarToke*>> *" + name + " = new map<wstring, list<SkoarToke*>>;", end="\n")
 
     def dict_set(self, name, str_key, value, end="\n"):
-        self.stmt(name + '["' + str_key + '"] = ' + value, end=end)
+        self.stmt(name + '[L"' + str_key + '"] = ' + value, end=end)
 
     def v_dict_get(self, name, str_key):
-        return name + '["' + str_key + '"]'
+        return name + '[L"' + str_key + '"]'
 
     def v_static_accessor(self):
         return "::"
@@ -241,6 +253,9 @@ class CppTongue(Tongue):
 
     def r_toke(self):
         return "SkoarToke"
+
+    def v_str(self, s):
+        return 'L"' + s + '"'
 
 def box(text, char="-"):
     n = len(text)
