@@ -13,20 +13,26 @@ EOF:            unused
 Whitespace:     [ \\t]+
 Newline:        [\\n\\r\\f][\\n\\r\\f \\t]*
 
+True:           yes
+False:          no
+Crap:           crap
+
 Voice*:         \\.(([a-zA-Z_][a-zA-Z0-9_]*)?|\\.+)
 
 Comment:        <[?](.|[\\n\\r\\f])*?[?]>
 
 # careful not to match ottavas ending in (ma,mb,va,vb), or steal from floats
-Int*:           (-)?(0|[1-9][0-9]*)(?!Hz|[mv][ab]|\\.[0-9]|/)
+Int*:           (-)?(0|[1-9][0-9]*)(?![0-9]*Hz|[mv][ab]|\\.[0-9]|/)
 Float*:         (-)?(0|[1-9][0-9]*)\\.[0-9]+(?!Hz)
 
 Freq*:          (0|[1-9][0-9]*)(\\.[0-9]+)?Hz
 
 Meter*:         [1-9][0-9]*/[1-9][0-9]*
 
+ArgSpec:        <[a-zA-Z]+(,[a-zA-Z]+)*>
+
 ListS:          <(?![=?])
-ListE:          >
+ListE:          >(?![=])
 ListSep:        ,
 
 # one ^ but don't eat ^^( which is cthulhu's left wing
@@ -44,6 +50,8 @@ Eighths*:       \\.?\\]+(?:__?)?\\.?
 Caesura:        //
 Slash:          /(?![/0-9])
 
+HashLevel:      \\[#*[ ]*\\]
+
 
 # we can't allow f for forte as f is a noat, so we allow
 #
@@ -54,18 +62,19 @@ Slash:          /(?![/0-9])
 #  default velocity:
 #    ppp (16), pp (32), p (48), mp (64), mf (80), f (96), ff (112), fff (127)
 
-DynPiano*:        (mp|p+)(iano)?
-DynForte*:        mf(orte)?|f+orte|ff+
+DynPiano*:        (m(ezzo)?p|p+)(iano)?
+DynForte*:        m(ezzo)?f(orte)?|f+orte|ff+
 DynSFZ:           sfz
 DynFP:            fp
 
 AssOp:            =>|[+]>|->
 MsgOp:            \\.(?![)\\]])
-MathOp:           [+x\\-](?!>)
+MathOp:           [+x\\-](?!>|or)
 
-NamedNoat*:       (?:_?)(?:[a-eg]|f(?![ac-zA-Z_]))(#*|b*)
-BooleanOp*:       ==|!=|<(?!=)|<=|>(?!=)|>=|and|or|xor
-Choard*:          (D(?![a.])|[ABCEFG])([Mm0-9]|sus|dim)*
+NamedNoat*:       (?:_?)(?:[a-g](?![ac-zA-Z_]))(#|b)?
+Choard*:          [ABCDEFG](?![ce-ln-rt-zA-LN-Z])(#|b)?([Mm0-9]|sus|dim|aug|dom|add)*
+
+BooleanOp*:       ==|!=|<=|>=|and|or|xor
 CondS:            [{][?][\\n]*
 CondIf:           [?][?](?![}])
 CondE:            [?][}]
@@ -93,8 +102,8 @@ Nosey:            ,
 DaCapo:           D\\.C\\.|Da Capo
 DalSegno:         D\\.S\\.|Dal Segno
 Fine:             fine
-Segno*:           ,segno`(?:_[a-zA-Z_][a-zA-Z0-9_]*`)*
-Coda:             \\([+]\\)
+Segno*:           ,[Ss](?:egno)?`(?:[a-zA-Z_][a-zA-Z0-9_]*`)*
+Coda:             \\([+]\\)(?:`(?:[a-zA-Z_][a-zA-Z0-9_]*`)*)?
 Rep*:             %+
 AlCoda:           al(la)? coda
 AlSegno:          al segno
@@ -120,6 +129,7 @@ Bars*:            :?\\|+:?
 PedalDown:        Ped\\.?
 PedalUp:          [*](?!>)
 
+Times:            [Tt]imes
 """
 
 #

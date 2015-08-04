@@ -6,10 +6,12 @@ import subprocess
 
 class Test_Sclang(unittest.TestCase):
 
-    home = "C:/supercollider/supercollider/"
-    sclang = home + "sclang"
+    #home = "/p/supercollider/build/Install/SuperCollider/SuperCollider.app/Contents/Resources/"
+    #home = "C:\\supercollider\\SuperCollider\\"
+    home = "C:\\Users\\lucas\\Documents\\GitHub\\supercollider\\build\\x64\\Release\\SuperCollider\\"
 
-    testing_home = "/dungeon/Skoar/SuperCollider/testing/runtests.scd"
+    #sclang = home + "sclang"
+    sclang = home + "sclang.exe"
 
     def print(self, msg):
         print("sclang: " + msg, end="")
@@ -87,5 +89,23 @@ class Test_Sclang(unittest.TestCase):
 
         self.assertTrue(tests_passed, "scland unit tests failed.")
 
-    def test_sanity(self):
-        self.exec(Test_Sclang.testing_home)
+    def test_SC_sanity(self):
+        self.exec("SuperCollider/testing/sanity.scd")
+
+    def test_SC_dev(self):
+        self.exec("SuperCollider/testing/dev.scd")
+
+    def test_SC_ops(self):
+        self.exec("SuperCollider/testing/ops.scd")
+
+    def test_SC_ops_dev(self):
+        self.exec("SuperCollider/testing/ops_dev.scd")
+
+    def test_SC_noaty(self):
+        self.exec("SuperCollider/testing/noaty.scd")
+
+    def test_SC_levels(self):
+        self.exec("SuperCollider/testing/levels.scd")
+
+    def test_SC_increments(self):
+        self.exec("SuperCollider/testing/increments.scd")

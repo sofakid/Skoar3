@@ -101,22 +101,28 @@ SkoarKoar {
     }
 
     set_args {
-        | minstrel, args_spec, args |
+        | minstrel, arg_spec, args |
         var i = 0;
         var vars = stack[stack.size - 1];
 
-        if (args_spec.isKindOf(SkoarpuscleArgsSpec)) {
+		"ARG_SPEC: ".post; arg_spec.dump;
+		"ARGS    : ".post; args.dump;
+
+        if (arg_spec.isKindOf(SkoarpuscleArgSpec)) {
             var passed_args, n;
 
-            passed_args = if (args.isNil) { [] } { args };
+            passed_args = if (args.isKindOf(SkoarpuscleList)) { args.val } { [] };
             n = passed_args.size;
 
             // foreach arg name defined, set the value from args
-            args_spec.val.do {
+            arg_spec.val.do {
                 | k |
-                //("k: " ++ k).postln;
+				if (k.isKindOf(SkoarpuscleSymbolName)) {
+					k = k.val;
+				};
+                ("k: " ++ k).postln;
                 vars[k] = if (i < n) {
-                    args[i]
+                    passed_args[i]
                 } {
                     // this defaults to passing 0 when not enough args are sent.
                     SkoarpuscleInt(0)
@@ -141,15 +147,21 @@ SkoarKoar {
         state[\projections] = projections;
 
         stack = stack.add(IdentityDictionary.new);
+
+		// this is where i want this, but i don't have a fairy here.
+		// fairy.push_times_seen;
+
     }
 
     pop_state {
         stack.pop;
         state_stack.pop;
+		// this is where i want this, but i don't have a fairy here.
+		// fairy.pop_times_seen;
     }
 
     do_skoarpion {
-        | skoarpion, minstrel, up_nav, msg_arr, args, stinger |
+        | skoarpion, minstrel, up_nav, msg_arr, args |
 
         var subtree;
         var projection;
@@ -172,10 +184,11 @@ SkoarKoar {
         inlined = (msg_name == \inline);
         if (inlined == false) {
             this.push_state;
+			minstrel.fairy.push_times_seen;
         };
 
         // load arg values into their names
-        this.set_args(minstrel, skoarpion.args_spec, args);
+        this.set_args(minstrel, skoarpion.arg_spec, args);
 
         projections = this.state_at(\projections);
         if (skoarpion.name.notNil) {
@@ -192,15 +205,16 @@ SkoarKoar {
 
         subtree = projection.performMsg(msg_arr);
 
-        this.nav_loop(subtree, projection, minstrel, up_nav, stinger, inlined);
+        this.nav_loop(subtree, projection, minstrel, up_nav, inlined);
 
         if (inlined == false) {
             this.pop_state;
+			minstrel.fairy.pop_times_seen;
         };
     }
 
     nav_loop {
-        | dst, projection, minstrel, up_nav, stinger, inlined |
+        | dst, projection, minstrel, up_nav, inlined |
 
         var nav_result;
         var running = true;
@@ -219,13 +233,14 @@ SkoarKoar {
                     here,
 
                     {   | x |
-                        x.enter_noad(minstrel, nav, stinger); },
-
-                    stinger);
+                        x.enter_noad(minstrel, nav); });
 
                 // our metaphorical throws look like this,
                 // you'll also find them in the navigational
                 // skoarpuscles' on_enters. (segno, bars, etc..)
+				//
+				// that is, once nav.(\something) is called, execution is aborted and continues
+				// at the top of this this block, with block returning the \something into nav_result.
                 nav.(\nav_done);
             };
 
@@ -237,7 +252,7 @@ SkoarKoar {
                 }
 
                 {\nav_fine} {
-                    this.bubble_up_nav(up_nav, \nav_fine, inlined);
+                    this.bubble_up_nav(minstrel, up_nav, \nav_fine, inlined);
                 }
 
                 {\nav_coda} {
@@ -245,14 +260,14 @@ SkoarKoar {
                 }
 
                 {\nav_da_capo} {
-                    this.bubble_up_nav(up_nav, \nav_da_capo, inlined);
+                    this.bubble_up_nav(minstrel, up_nav, \nav_da_capo, inlined);
                 }
 
                 {\nav_segno} {
                     dst = this.state_at(\segno_seen);
 
                     if ((dst !? (_.skoap)) != subtree.skoap) {
-                        this.bubble_up_nav(up_nav, \nav_segno, inlined);
+                        this.bubble_up_nav(minstrel, up_nav, \nav_segno, inlined);
                     };
                 }
 
@@ -260,7 +275,7 @@ SkoarKoar {
                     dst = this.state_at(\colon_seen);
 
                     if ((dst !? (_.skoap)) != subtree.skoap) {
-                        this.bubble_up_nav(up_nav, \nav_colon, inlined);
+                        this.bubble_up_nav(minstrel, up_nav, \nav_colon, inlined);
                     };
                 };
 
@@ -268,12 +283,13 @@ SkoarKoar {
     }
 
     bubble_up_nav {
-        | nav, cmd, inlined |
+        | minstrel, nav, cmd, inlined |
 
         // the nav command will abort do_skoarpion,
         // we have to clean up here.
         if (inlined == false) {
             this.pop_state;
+			minstrel.fairy.pop_times_seen;
         };
 
         // metaphorically rethrowing to a higher level

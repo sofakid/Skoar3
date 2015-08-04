@@ -4,6 +4,7 @@ __*
 
 *.sdf
 *.opensdf
-
+*.suo
+*.user
 Debug
 x64

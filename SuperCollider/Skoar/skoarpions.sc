@@ -5,9 +5,8 @@ Skoarpion {
     var <n;
 
     var <body;
-    var <stinger;
 
-    var <args_spec;
+    var <arg_spec;
 
     *new {
         | skr, noad |
@@ -73,6 +72,14 @@ Skoarpion {
         n = subtree.size;
     }
 
+	/*                          :      skoarpion
+nil:                            :       Toke_SkoarpionStart
+nil:                            :       skrp_sig
+nil:                            :       skrp_suffix
+nil:                            :        beat
+nil:                            :         Toke_Eighths
+nil:                            :        Toke_SkoarpionEnd
+*/
     init {
         | skr, noad |
         var kids = noad.children;
@@ -88,20 +95,19 @@ Skoarpion {
         // 0 - start
         // 1 - sig
         sig = kids[1];
-        // 2 - sep
-        // 3 - suffix
-        suffix = kids[3];
+        // 2 - suffix
+        suffix = kids[2];
 
         sig.children.do {
             | x |
             case {x.skoarpuscle.isKindOf(SkoarpuscleSymbolName)} {
                 name = x.skoarpuscle.val;
-            } {x.name == \args} {
-                args_spec = x.skoarpuscle;
+            } {x.skoarpuscle.isKindOf(SkoarpuscleArgSpec)} {
+                arg_spec = x.skoarpuscle;
             };
         };
 
-        //"SIG: ".post; name.post; args_spec.postln;
+        //"SIG: ".post; name.post; arg_spec.postln;
 
         suffix.children.do {
             | x |
@@ -149,14 +155,7 @@ Skoarpion {
         };
 
         body = sections[0];
-        if (sections.size == 1) {
-            stinger = nil;
-        } {
-            stinger = SkoarNoad(\stinger);
-            stinger.children = sections[1..];
-            stinger.skoap = stinger.children[0].skoap;
-        };
-
+        
         n = body.size;
 
     }
@@ -171,10 +170,10 @@ Skoarpion {
 
         debug("---< Skoarpion " ++ s ++ " >---");
 
-        if (args_spec.notNil) {
-            "args_spec: ".post; args_spec.postln;
+        if (arg_spec.notNil) {
+            "arg_spec: ".post; arg_spec.postln;
 
-            args_spec.val.do {
+            arg_spec.val.do {
                 | x |
                 if (x.isKindOf(Skoarpuscle)) {
                     x.val.post; " ".post;
@@ -188,11 +187,6 @@ Skoarpion {
         if (body.notNil) {
             "body:".postln;
             body.draw_tree.post;
-        };
-
-        if (stinger.notNil) {
-            "stinger: ".postln;
-            stinger.draw_tree.post;
         };
 
         "".postln;

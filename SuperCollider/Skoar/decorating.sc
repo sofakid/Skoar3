@@ -48,7 +48,7 @@ SkoarTokeInspector {
 
             Toke_String: {
                 | skoar, noad, toke |
-                noad.skoarpuscle = SkoarpuscleString(toke.lexeme.asString);
+                noad.skoarpuscle = SkoarpuscleString(toke.lexeme[1..toke.lexeme.size-2]);
                 noad.toke = nil;
             },
 
@@ -146,7 +146,7 @@ SkoarTokeInspector {
                 noad.toke = nil;
             },
 
-            Toke_OttavaB : {
+            Toke_OttavaB: {
                 | skoar, noad, toke |
                 noad.skoarpuscle = SkoarpuscleOctaveShift(toke);
                 noad.toke = nil;
@@ -154,7 +154,6 @@ SkoarTokeInspector {
 
             Toke_QuindicesimaA: {
                 | skoar, noad, toke |
-
                 noad.skoarpuscle = SkoarpuscleOctaveShift(toke);
                 noad.toke = nil;
             },
@@ -167,7 +166,7 @@ SkoarTokeInspector {
 
             Toke_BooleanOp: {
                 | skoar, noad, toke |
-                noad.skoarpuscle = SkoarpuscleBooleanOp(toke);
+                noad.skoarpuscle = SkoarpuscleBooleanOp(noad, toke);
                 noad.toke = nil;
             },
 
@@ -216,25 +215,47 @@ SkoarTokeInspector {
 
             Toke_ListSep: {
                 | skoar, noad, toke |
-                var x = SkoarpuscleListSep.new;
-                noad.skoarpuscle = x;
+                noad.skoarpuscle = SkoarpuscleListSep.new;
                 noad.toke = nil;
-                noad.on_enter = {
-                    | m, nav |
-                    x.on_enter(m, nav);
-                };
             },
 
             Toke_ListE: {
                 | skoar, noad, toke |
-                var x = SkoarpuscleListEnd.new;
-                noad.skoarpuscle = x;
+                noad.skoarpuscle = SkoarpuscleListEnd.new;
                 noad.toke = nil;
-                noad.on_enter = {
-                    | m, nav |
-                    x.on_enter(m, nav);
-                };
-            }
+            },
+
+			Toke_Times: {
+                | skoar, noad, toke |
+                noad.skoarpuscle = SkoarpuscleTimes.new;
+                noad.toke = nil;
+            },
+
+			Toke_ArgSpec: {
+			    | skoar, noad, toke |
+                noad.skoarpuscle = SkoarpuscleArgSpec(toke);
+                noad.toke = nil;
+            },
+
+			Toke_HashLevel: {
+			    | skoar, noad, toke |
+                noad.skoarpuscle = SkoarpuscleHashLevel(toke);
+                noad.toke = nil;
+            },
+
+			Toke_True: {
+			    | skoar, noad, toke |
+                noad.skoarpuscle = SkoarpuscleTrue.new;
+                noad.toke = nil;
+            },
+
+			Toke_False: {
+			    | skoar, noad, toke |
+                noad.skoarpuscle = SkoarpuscleFalse.new;
+                noad.toke = nil;
+            },
+
+
 
         );
     }
@@ -266,66 +287,61 @@ Skoarmantics {
             skoar: {
                 | skoar, noad |
                 noad.skoarpuscle = SkoarpuscleSkoarpion(Skoarpion.new_from_skoar(skoar));
-                noad.children = [];
+                noad.children = #[];
             },
 
             skoarpion: {
                 | skoar, noad |
-                var x = SkoarpuscleSkoarpion(Skoarpion(skoar, noad));
-                noad.skoarpuscle = x;
-                noad.children = [];
-                noad.on_enter = {
-                    | m, nav |
-                    x.on_enter(m,nav);
-                };
+                noad.skoarpuscle = SkoarpuscleSkoarpion(Skoarpion(skoar, noad));
+                noad.children = #[];
             },
 
             conditional: {
                 | skoar, noad |
                 noad.skoarpuscle = SkoarpuscleConditional(skoar, noad);
-                noad.children = [];
             },
 
             boolean: {
                 | skoar, noad |
-                noad.skoarpuscle = SkoarpuscleBoolean(noad);
-                noad.children = [];
+				// we insert a node at the end of the expression
+                // so we can evaluate the result
+                var end_noad = SkoarNoad(\boolean_end, noad);
+				var x = SkoarpuscleBoolean(noad);
+				noad.skoarpuscle = x;
+				
+				end_noad.on_enter = {
+                    | m, nav |
+					var l_value = m.fairy.l_value;
+                    var y;
+					var imp = m.fairy.impression;
+					
+					("derp " ++ l_value.asString ++ " imp: " ++ imp.asString).postln;
+					y = x.evaluate(m, nav, l_value, imp);
+
+					m.fairy.impress(y);
+					m.fairy.pop_compare;
+                };
+
+                noad.add_noad(end_noad);
             },
 
             beat: {
                 | skoar, noad |
-                var x = noad.next_skoarpuscle;
-                noad.skoarpuscle = x;
-                noad.on_enter = {
-                    | m, nav |
-                    x.on_enter(m, nav);
-                };
-                noad.children = [];
+                noad.skoarpuscle = noad.next_skoarpuscle;
+                noad.children = #[];
             },
 
             loop: {
                 | skoar, noad |
-                noad.skoarpuscle = SkoarpuscleLoop(skoar, noad);
-                noad.children = [];
+				var x = SkoarpuscleLoop(skoar, noad);
+                noad.skoarpuscle = x; 
+                noad.children = #[];
             },
 
             musical_keyword_misc: {
                 | skoar, noad |
-                var skoarpuscle = noad.next_skoarpuscle;
-
-                if (skoarpuscle.isKindOf(SkoarpuscleCarrots)) {
-                    noad.one_shots = {"TODO stress noat".postln;};
-                };
-            },
-
-            ottavas: {
-                | skoar, noad |
-                var x = noad.next_skoarpuscle;
-
-                noad.on_enter = {
-                    | m, nav |
-                    x.on_enter(m, nav);
-                };
+                noad.skoarpuscle = noad.next_skoarpuscle;
+				noad.children = #[];
             },
 
             cthulhu: {
@@ -333,41 +349,20 @@ Skoarmantics {
                 noad.on_enter = {skoar.cthulhu(noad);};
             },
 
-            dynamic: {
-                | skoar, noad |
-                var x = noad.next_skoarpuscle;
-
-                noad.on_enter = {
-                    | m, nav |
-                    x.on_enter(m, nav);
-                };
-            },
-
             dal_goto: {
                 | skoar, noad |
-                var x = SkoarpuscleGoto(noad);
-
-                noad.on_enter = {
-                    | m, nav |
-                    x.on_enter(m, nav);
-                };
+                noad.skoarpuscle = SkoarpuscleGoto(noad);
             },
 
             marker: {
                 | skoar, noad |
 
                 var x = noad.next_skoarpuscle;
+				noad.skoarpuscle = x;
 
-                if (x.notNil) {
-                    noad.on_enter = {
-                        | m, nav |
-                        x.on_enter(m, nav);
-                    };
-
-                    if (x.isKindOf(SkoarpuscleBars)) {
-                        x.noad = noad;
-                        noad.children = [];
-                    };
+                if (x.isKindOf(SkoarpuscleBars)) {
+                    x.noad = noad;
+                    noad.children = [];
                 };
             },
 
@@ -395,45 +390,23 @@ Skoarmantics {
                     var end_noad = SkoarNoad(\deref_end, noad);
                     end_noad.on_enter = {
                         | m, nav |
-                        m.fairy.cast_arcane_magic;
-                        x.on_enter(m, nav);
+						x.on_exit(m, nav);
                     };
 
                     noad.add_noad(end_noad);
-                    noad.on_enter = {
-                        | m, nav |
-                        args.on_enter(m, nav);
-                    };
-
-                // !f
-                } {
-                    noad.on_enter = {
-                        | m, nav |
-                        x.on_enter(m, nav);
-                    };
-                };
-
+                    
+				};
             },
-
 
             listy: {
                 | skoar, noad |
-
-                var x = SkoarpuscleList.new;
-
-                noad.skoarpuscle = x;
-                noad.on_enter = {
-                    | m, nav |
-                    x.on_enter(m, nav);
-                };
-
+                noad.skoarpuscle = SkoarpuscleList.new;
             },
 
             args: {
                 | skoar, noad |
-                var x = SkoarpuscleArgsSpec(noad);
-                noad.skoarpuscle = x;
-                noad.children = [];
+                noad.skoarpuscle = SkoarpuscleArgSpec(noad);
+                noad.children = #[];
             },
 
             msg: {
@@ -447,10 +420,19 @@ Skoarmantics {
                     // i'm not sure what i want this to mean
 
                 } {msg.isKindOf(SkoarpuscleLoop)} {
-                    noad.skoarpuscle = SkoarpuscleLoopMsg(msg);
+					noad.skoarpuscle = SkoarpuscleLoopMsg(msg);
+					
+					// this sets up the skoarpuscle to foreach, but the looping 
+					// happens in the skoarpuscle.on_enter
+					noad.on_enter = {
+						| m, nav |
+						var listy = m.fairy.impression;
+						msg.foreach(listy);
+						msg.on_enter(m, nav);
+					};
 
                 } {msg.isKindOf(SkoarpuscleMsgName)} {
-                    args = SkoarpuscleArgs.new;
+					args = SkoarpuscleArgs.new;
                     noad.skoarpuscle = SkoarpuscleMsg(msg.val, args);
                 };
 
@@ -473,40 +455,46 @@ Skoarmantics {
             msgable: {
                 | skoar, noad |
                 var noads = List[];
-
+				var has_messages = false;
+				
                 // strip out the msg operators
                 noad.children.do {
                     | x |
                     if (x.toke.isKindOf(Toke_MsgOp) == false) {
                         noads.add(x);
-                    };
+                    } {
+						has_messages = true;
+					};
                 };
 
-                noad.children = noads.asArray;
-                noads = noad.children;
+				if (has_messages == true) {
+				 
+					noad.children = noads.asArray;
+					noads = noad.children;
 
-                // evaluate a chain of messages, returning the result
-                noad.on_enter = {
-                    | m, nav |
-                    var result = noads[0].next_skoarpuscle;
+					// evaluate a chain of messages, returning the result
+					noad.on_enter = {
+						| m, nav |
+						var result = noads[0].next_skoarpuscle;
+						"msgable::noads: ".post; noads.postln;
+						"msgable::result: ".post; result.postln;
+						if (result.notNil) {
+							noads.do {
+								| y |
+								var x = y.skoarpuscle;
+								"msgable::x: ".post; x.postln;
+								case {x.isKindOf(SkoarpuscleMsg)} {
+									result = result.skoar_msg(x, m);
+									"msgable::msg_result: ".post; result.postln;
+								};
+							};
 
-                    if (result.notNil) {
-                        noads.do {
-                            | y |
-                            var x = y.skoarpuscle;
-                            case {x.isKindOf(SkoarpuscleMsg)} {
-                                result = result.skoar_msg(x, m);
+							"msgable:impressing ".post; result.postln;
+							m.fairy.impress(result);
+						};
 
-                            } {x.isKindOf(SkoarpuscleLoopMsg)} {
-                                result = x.val.foreach(result);
-                            };
-                        };
-
-                        //"msgable: ".post; result.postln;
-                        m.fairy.impress(result);
-                    };
-
-                };
+					};
+				};
             },
 
             assignment: {
@@ -516,24 +504,32 @@ Skoarmantics {
 
                 op = noad.children[0].toke.lexeme;
                 settable = noad.children[1].next_skoarpuscle;
+				settable.impressionable = false;
 
                 noad.on_enter = switch (op)
                     {"+>"} {{
                         | m, nav |
                         var x = m.fairy.impression;
-                        // todo Skoar.ops.increment(m, x, settable);
+                        Skoar.ops.increment(m, x, settable);
                     }}
 
                     {"->"} {{
                         | m, nav |
                         var x = m.fairy.impression;
-                        // todo Skoar.ops.decrement(m, x, settable);
+                        Skoar.ops.decrement(m, x, settable);
                     }}
 
                     {"=>"} {{
                         | m, nav |
                         var x = m.fairy.cast_arcane_magic;
                         Skoar.ops.assign(m, x, settable);
+						m.fairy.impress(x);
+                    }}
+					
+					{"x>"} {{
+                        | m, nav |
+                        var x = m.fairy.impression;
+                        Skoar.ops.multr(m, x, settable);
                     }};
             },
 

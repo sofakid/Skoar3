@@ -6,15 +6,25 @@
 Skoarpuscle {
 
     var <>val;						
+	var <>impressionable;
+	var <>county;
 
     *new { | v | ^super.new.init(v); }
-    init { | v | val = v; }
+    init { 
+		| v | 
+		val = v;
+		impressionable = true;
+	}
 
-    on_enter { | m, nav, stinger=nil | }
+    on_enter { | m, nav | }
 
     // override and implement .asNoat;
     isNoatworthy { ^false; }
     asNoat {SkoarError("asNoat called on " ++ this.class.asString ++ ", which is not noatworthy.").throw;}
+
+	// override and implement .asCount;
+    isCounty { ^false; }
+    asCount {SkoarError("asCount called on " ++ this.class.asString ++ ", which is not county.").throw;}
 
     flatten { | m | ^val; }
 
@@ -34,37 +44,45 @@ Skoarpuscle {
     *wrap {
         | x |
         case {x.isNil} {
-            "x nil".postln;
+            //"wrapping: crap".postln;
             ^SkoarpuscleCrap();
 
+		} {x == false} {
+            //"wrapping: False".postln;
+            ^SkoarpuscleFalse();
+
+        } {x == true} {
+            //"wrapping: True".postln;
+            ^SkoarpuscleTrue();
+
         } {x.isKindOf(Skoarpuscle)} {
-            "already wrapped".postln;
+            //"already wrapped".postln;
             ^x;
 
         } {x.isKindOf(Skoarpion)} {
-            "x skoarpion".postln;
+            //"wrapping: skoarpion".postln;
             ^SkoarpuscleSkoarpion(x);
 
         } {x.isKindOf(Integer)} {
-            debug("x int: " ++ x.asString);
+            //("wrapping: int: " ++ x.asString).postln;
             ^SkoarpuscleInt(x);
 
         } {x.isKindOf(Number)} {
-            "x float".postln;
+            //"wrapping: float".postln;
             ^SkoarpuscleFloat(x);
 
         } {x.isKindOf(String)} {
-            "x str".postln;
+            //"wrapping: str".postln;
             ^SkoarpuscleString(x);
 
         } {x.isKindOf(Symbol)} {
-            "x symbol".postln;
+            //"wrapping: symbol".postln;
             ^SkoarpuscleSymbol(x);
 
         } {x.isKindOf(Array)} {
             var a = Array.newClear(x.size);
             var i = -1;
-            "x array".postln;
+            "wrapping: array".postln;
             x.do {
                 | el |
                 i = i + 1;
@@ -73,7 +91,7 @@ Skoarpuscle {
 
             ^SkoarpuscleList(a);
         } {
-            "x unknown: ".post; x.dump;
+            "wrapping: unknown: ".post; x.dump;
             ^SkoarpuscleUnknown(x);
         };
 
@@ -88,11 +106,55 @@ SkoarpuscleUnknown : Skoarpuscle {
 // Is the value any good? no, it's crap.
 // What did we get back? oh, crap.
 SkoarpuscleCrap : Skoarpuscle {
-    asString {"crap"}
+
+	init {
+		val = "crap";
+	}
+
+    asString {^"crap"}
 
     // these aren't doing nothing, they are returning this crap
     skoar_msg {}
     flatten {^nil}
+
+	on_enter {
+        | m, nav |
+        m.fairy.impress(this);
+    }
+}
+
+SkoarpuscleFalse : Skoarpuscle {
+	
+	init {
+		val = false;
+	}
+
+	asString {^"no"}
+
+    skoar_msg {}
+    flatten {^false}
+
+	on_enter {
+        | m, nav |
+        m.fairy.impress(this);
+    }
+}
+
+SkoarpuscleTrue : Skoarpuscle {
+
+	init {
+		val = true;
+	}
+
+	asString {^"yes"}
+
+    skoar_msg {}
+    flatten {^true}
+	
+	on_enter {
+        | m, nav |
+        m.fairy.impress(this);
+    }
 }
 
 SkoarpuscleInt : Skoarpuscle {
@@ -103,12 +165,18 @@ SkoarpuscleInt : Skoarpuscle {
         ^SkoarNoat_Degree(val.asInteger);
     }
 
+    isCounty { ^true; }
+
+    asCount {
+        ^val.asInteger;
+    }
+
     flatten {
         | m |
         ^val.asInteger;
     }
 
-    on_enter {
+	on_enter {
         | m, nav |
         m.fairy.impress(this);
     }
@@ -128,24 +196,28 @@ SkoarpuscleFloat : Skoarpuscle {
         ^val.asFloat;
     }
 
-    on_enter {
+	on_enter {
         | m, nav |
         m.fairy.impress(this);
     }
+
 }
 
 SkoarpuscleFreq : Skoarpuscle {
 
     init {
         | lexeme |
-        val = lexeme; // todo chop off Hz
+		if (lexeme.isKindOf(String)) {
+			val = lexeme[0..lexeme.size-3].asFloat;
+		} {
+			val = lexeme.asFloat;
+		};
+	}
 
-    }
-
-    isNoatworthy { ^false; } // todo
+    isNoatworthy { ^true; }
 
     asNoat {
-        ^SkoarNoat_Freq(val.asFloat);
+        ^SkoarNoat_Freq(val);
     }
 
     on_enter {
@@ -168,6 +240,15 @@ SkoarpuscleSymbolName : Skoarpuscle {
 
 SkoarpuscleSymbol : Skoarpuscle {
 
+	init {
+		| v |
+
+		if (v.isKindOf(Symbol) == false) {
+			v = v.asSymbol;
+		};
+		val = v;
+	}
+
     on_enter {
         | m, nav |
         m.fairy.impress(this);
@@ -186,7 +267,7 @@ SkoarpuscleSymbol : Skoarpuscle {
 SkoarpuscleDeref : Skoarpuscle {
 
     var msg_arr;
-    var args;
+    var <args;
 
     *new {
         | v, a |
@@ -211,17 +292,33 @@ SkoarpuscleDeref : Skoarpuscle {
 
     on_enter {
         | m, nav |
-        var x = this.lookup(m);
-
-        //"deref:on_enter: SYMBOL LOOKEDUP : ".post; val.post; " ".post; x.postln;
-        x = Skoarpuscle.wrap(x);
-
-        if (x.isKindOf(SkoarpuscleSkoarpion)) {
-            m.koar.do_skoarpion(x.val, m, nav, msg_arr, m.fairy.impression);
-        } {
-            m.fairy.impress(x);
-        };
+		if (args.isNil) {
+			this.do_deref(m, nav);
+		} {
+			args.on_enter(m, nav);
+		};
     }
+
+	on_exit {
+		| m, nav |
+		this.do_deref(m, nav);
+	}
+
+	do_deref {
+		| m, nav |
+		var x = this.lookup(m);
+
+		//"deref:on_enter: SYMBOL LOOKEDUP : ".post; val.post; " ".post; x.postln;
+		x = Skoarpuscle.wrap(x);
+
+		if (x.isKindOf(SkoarpuscleSkoarpion)) {
+			var impression = m.fairy.impression;
+			"passing args: ".post; impression.class.asString.postln;													
+			m.koar.do_skoarpion(x.val, m, nav, msg_arr, impression);
+		} {
+			m.fairy.impress(x);
+		};
+	}
 
     skoar_msg {
         | msg, minstrel |
@@ -272,7 +369,7 @@ SkoarpuscleMathOp : Skoarpuscle {
 
             {"-"}  {{
                 | minstrel, a, b |
-                // todo minstrel.skoar.ops.sub(minstrel, a, b);
+                Skoar.ops.sub(minstrel, a, b);
             }};
     }
 
@@ -288,10 +385,17 @@ SkoarpuscleMathOp : Skoarpuscle {
 SkoarpuscleBooleanOp : Skoarpuscle {
 
     var f;
+	var <noad;
 
-    init {
-        | toke |
+    *new {
+        | n, toke |
+        ^super.new.init_two(n, toke);
+    }
+
+    init_two {
+        | n, toke |
         val = toke.lexeme;
+		noad = n;
 
         // ==|!=|<=|>=|in|nin|and|or|xor
         f = switch (val)
@@ -317,7 +421,7 @@ SkoarpuscleBooleanOp : Skoarpuscle {
             }}
             {">"}  {{
                 | a, b |
-                a < b
+                a > b
             }}
             {"and"} {{
                 | a, b |
@@ -335,52 +439,51 @@ SkoarpuscleBooleanOp : Skoarpuscle {
     }
 
     compare {
-        | a, b, m, nav |
-        var x;
-        var y;
-
-        a.on_enter(m, nav);
-        x = m.fairy.impression;
-
-        b.on_enter(m, nav);
-        y = m.fairy.impression;
-
-        if (x.isKindOf(Skoarpuscle)) {
-            debug(x);
-            x = x.flatten(m);
+        | m, nav, a, b |
+     
+        if (a.isKindOf(Skoarpuscle)) {
+            debug(a);
+            a = a.flatten(m);
         };
 
-        if (y.isKindOf(Skoarpuscle)) {
-            debug(y);
-            y = y.flatten(m);
+        if (b.isKindOf(Skoarpuscle)) {
+            debug(b);
+            b = b.flatten(m);
         };
 
-        debug("{? " ++ x.asString ++ " " ++ val ++ " " ++ y.asString ++ " ?}");
+        debug("{? " ++ a.asString ++ " " ++ val ++ " " ++ b.asString ++ " ?}");
 
-        x !? y !? {^f.(x, y)};
-
-        false
+		a !? b !? {^f.(a, b)};
+		
+        ^false
     }
+
+	on_enter {
+		| m, nav |
+		m.fairy.cast_arcane_magic;
+		m.fairy.compare_impress(m);
+	}
 
 }
 
 SkoarpuscleBoolean : Skoarpuscle {
 
-    var a, b, op;
+    var <op;
 
     init {
         | noad |
-        // a and b are exprs
-        a = noad.children[0];
-        op = noad.children[1].next_skoarpuscle;
-        b = noad.children[2];
-
-        noad.children = [];
+        op = noad.children[0].next_skoarpuscle;
     }
 
+	on_enter {
+		| m, nav |
+		m.fairy.push_compare;
+	}
+
     evaluate {
-        | m, nav |
-        ^op.compare(a, b, m, nav);
+        | m, nav, a, b |
+		("slrp " ++ a.asString ++ " imp: " ++ b.asString).postln;
+        ^op.compare(m, nav, a, b);
     }
 
 }
@@ -397,12 +500,12 @@ SkoarpuscleConditional : Skoarpuscle {
 
     init_two {
         | skoar, noad |
-
+		var i = 0;
         ifs = [];
 
         noad.collect(\cond_if).do {
             | x |
-            var condition = x.children[0].next_skoarpuscle;
+            var condition = Skoarpion.new_from_subtree(skoar, x.children[0]);
             var if_body;
             var else_body;
 
@@ -415,6 +518,7 @@ SkoarpuscleConditional : Skoarpuscle {
 
             ifs = ifs.add([condition, if_body, else_body]);
         };
+		noad.children = #[];
 
     }
 
@@ -423,12 +527,22 @@ SkoarpuscleConditional : Skoarpuscle {
 
         ifs.do {
             | x |
-            var c = x[0];
-            var i = x[1];
-            var e = x[2];
+            var condition = x[0];
+            var if_body = x[1];
+            var else_body = x[2];
+			var impression;
 
+			m.koar.do_skoarpion(condition,
+                m, nav, [\inline], nil
+            );
+
+			impression = m.fairy.impression;
             m.koar.do_skoarpion(
-                if (c.evaluate(m, nav) == true) {i} {e},
+                if (impression.isKindOf(SkoarpuscleFalse) or: impression.isKindOf(SkoarpuscleCrap)) {
+						else_body
+					} {
+						if_body
+					},
                 m, nav, [\inline], nil
             );
         };
@@ -453,8 +567,33 @@ SkoarpuscleSkoarpion : Skoarpuscle {
         };
 
         if (msg_arr.notNil) {
-            m.koar.do_skoarpion(val, m, nav, msg_arr, nil);
+			m.fairy.impression.postln;
+			msg_arr.postln;
+
+            m.koar.do_skoarpion(val, m, nav, msg_arr, m.fairy.impression);
         };
+
+		if (val.name.isNil) {
+			m.fairy.impress(this);
+		};
+    }
+
+}
+
+SkoarpuscleTimes : Skoarpuscle {
+
+	on_enter {
+        | m, nav |
+		var desired_times = m.fairy.impression;
+		
+		if (desired_times.isCounty) {
+			var times_seen = m.fairy.how_many_times_have_you_seen(this);
+			desired_times = desired_times.asCount;
+
+			("desired_times: " ++ desired_times.asString ++ "\n times seen: " ++ times_seen.asString).postln;
+			m.fairy.impress( (desired_times > times_seen) );
+		};
+		 
     }
 
 }
@@ -475,9 +614,9 @@ SkoarpuscleLoop : Skoarpuscle {
 
         noad.collect(\loop_condition).do {
             | x |
-            if (x.children.size != 0) {
-                condition = x.children[1].next_skoarpuscle;
-            };
+			if (x.children.size > 0) {
+				condition = Skoarpion.new_from_subtree(skoar, x);
+			};
         };
 
         noad.collect(\loop_body).do {
@@ -490,9 +629,8 @@ SkoarpuscleLoop : Skoarpuscle {
 
     on_enter {
         | m, nav |
-        var i = 0;
-
-        m.koar[\i] = 0;
+        
+		m.fairy.push_i;
 
         block {
             | break |
@@ -501,21 +639,22 @@ SkoarpuscleLoop : Skoarpuscle {
                     | element |
 
                     // this is how we foreach
-                    if (element.notNil) {
-                        element.on_enter(m, nav);
+                    if (element.isKindOf(Skoarpuscle)) {
+                        m.fairy.impress(element);
                     };
-"eh?".postln;
+
                     m.koar.do_skoarpion(body, m, nav, [\inline], m.fairy.impression);
+                    m.fairy.incr_i;
 
-                    i = i + 1;
-                    m.koar[\i] = i;
+					if (condition.notNil) {
+						var x;
 
-                    if (condition.notNil) {
-                        if (condition.evaluate(m) == false) {
-                            break.();
-                        };
+						m.koar.do_skoarpion(condition, m, nav, [\inline]);
+                        x = m.fairy.impression;
+						if (x.isKindOf(SkoarpuscleFalse) or: x.isKindOf(SkoarpuscleCrap)) {
+							break.();
+						};
                     };
-
                 };
 
                 if (each.isNil) {
@@ -528,12 +667,15 @@ SkoarpuscleLoop : Skoarpuscle {
                         f.(element);
                     };
                 };
-
+				
+				"zorp: condition: ".post; condition.postln;
                 if (condition.isNil) {
                     break.();
                 };
             };
         };
+
+		m.fairy.pop_i;
     }
 
     // when we send a loop as a message, the receiver
@@ -547,7 +689,6 @@ SkoarpuscleLoop : Skoarpuscle {
 
 
 SkoarpuscleLoopMsg : Skoarpuscle {
-
 }
 
 SkoarpuscleExprEnd : Skoarpuscle {
@@ -631,8 +772,6 @@ SkoarpuscleList : Skoarpuscle {
         ^Skoarpuscle.wrap(ret);
     }
 
-
-
 }
 
 SkoarpuscleArgs : SkoarpuscleList {
@@ -640,17 +779,21 @@ SkoarpuscleArgs : SkoarpuscleList {
 }
 
 // {! f<a,b,c> !! '[\a,\b,\c] is the ArgsSpec' !}
-SkoarpuscleArgsSpec : Skoarpuscle {
+SkoarpuscleArgSpec : Skoarpuscle {
 
     init {
-        | noad |
-        val = [];
-        noad.collect_skoarpuscles.do {
-            | x |
-            if (x.isKindOf(SkoarpuscleSymbolName)) {
-                val = val.add(x.val);
-            };
-        };
+        | toke |
+        var matches = toke.lexeme.findRegexp("[a-zA-Z_]*",1);
+
+		if (matches.notNil) {
+			matches.do {
+				| x |
+				var m = x[1];
+				if (m != "") {
+					val = val.add(SkoarpuscleSymbolName(m.asSymbol));
+				};
+			};
+		};
     }
 }
 
@@ -679,9 +822,11 @@ SkoarpuscleMsg : Skoarpuscle {
         var x = Array.newClear(args.size + 1);
         var i = 0;
 
+		"snerp".postln;
         x[0] = val;
         args.flatten(m).do {
             | y |
+			"y: ".post; y.postln;
             i = i + 1;
             x[i] = y;
         };
@@ -863,21 +1008,23 @@ SkoarpuscleDynamic : Skoarpuscle {
         var s = toke.lexeme;
 
         val = switch (s)
-            {"ppp"}     {1}
-            {"pppiano"} {1}
-            {"pp"}      {2}
-            {"ppiano"}  {2}
-            {"p"}       {3}
-            {"piano"}   {3}
-            {"mp"}      {4}
-            {"mpiano"}  {4}
-            {"mf"}      {5}
-            {"mforte"}  {5}
-            {"forte"}   {6}
-            {"ff"}      {7}
-            {"fforte"}  {7}
-            {"fff"}     {8}
-            {"ffforte"} {8};
+            {"ppp"}			{1}
+            {"pppiano"}		{1}
+            {"pp"}			{2}
+            {"ppiano"}		{2}
+            {"p"}			{3}
+            {"piano"}		{3}
+            {"mp"}			{4}
+            {"mpiano"}		{4}
+			{"mezzopiano"}  {4}
+            {"mf"}			{5}
+            {"mforte"}		{5}
+            {"mezzoforte"}  {5}
+            {"forte"}		{6}
+            {"ff"}			{7}
+            {"fforte"}		{7}
+            {"fff"}			{8}
+            {"ffforte"}		{8};
     }
 
     amp {
@@ -939,3 +1086,28 @@ SkoarpuscleRep : Skoarpuscle {
     }
 
 }
+
+SkoarpuscleHashLevel : SkoarpuscleFloat {
+
+	init {
+		| toke |
+		var n = -2, i = 0;
+		toke.lexeme.do {
+			| x |
+			if (x.notNil) {
+				n = n + 1;
+				if (x == $#) {
+					i = i + 1;
+				};
+			}; 
+		};
+
+		val = if (n <= 0) {
+			0.0
+		} {
+			i/n
+		};
+	}
+
+}
+
