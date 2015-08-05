@@ -21,7 +21,9 @@ public:
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 	SkoarToke *toke;
 	wstring skoarce; 
+	size_t skoarce_offs;
 	size_t skoarce_len;
+
 
 	SpellOfMinstrels on_enter;
 	

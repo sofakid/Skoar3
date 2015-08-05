@@ -56,8 +56,9 @@ def skoarToke_cpp():
     _.constructor()
     _.end()
 
-    _.constructor(s_, n_)
+    _.constructor(s_, offs_, n_)
     _____.stmt(_.v_ass(_.v_attr(lexeme_), s_))
+    _____.stmt(_.v_ass(_.v_attr(offs_), n_))
     _____.stmt(_.v_ass(_.v_attr(size_), n_))
     _.end()
 
@@ -91,13 +92,15 @@ def skoarToke_h():
     _____.static_method_h(instance_)
 
     _____.attrvar("<", lexeme_)
+    _____.attrvar("", offs_)
     _____.attrvar("", size_)
+
 
     _____.nl()
 
     _____.constructor_h()
     
-    _____.constructor_h(s_, n_)
+    _____.constructor_h(s_, offs_, n_)
     
     _____.cmt("how many characters to burn from the buffer")
     _____.method_h(burn_)
@@ -130,6 +133,7 @@ def whitespace_token():
     xy_ = Arg("size_t", "0")
     _.constructor()
     _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
+    _____.stmt(_.v_ass(_.v_attr(offs_), xy_))
     _____.stmt(_.v_ass(_.v_attr(size_), xy_))
     _.end()
 
@@ -195,6 +199,7 @@ def EOF_token():
     xy_ = Arg("size_t", "0")
     _.constructor()
     _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
+    _____.stmt(_.v_ass(_.v_attr(offs_), xy_))
     _____.stmt(_.v_ass(_.v_attr(size_), xy_))
     _.end()
 
@@ -262,13 +267,16 @@ def typical_token_cpp(token):
 
     xx_ = Arg("wstring *", 'nullptr')
     xy_ = Arg("size_t", "0")
+    
     _.constructor()
     _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
+    _____.stmt(_.v_ass(_.v_attr(offs_), xy_))
     _____.stmt(_.v_ass(_.v_attr(size_), xy_))
     _.end()
 
-    _.constructor(s_, n_)
+    _.constructor(s_, offs_, n_)
     _____.stmt(_.v_ass(_.v_attr(lexeme_), s_))
+    _____.stmt(_.v_ass(_.v_attr(offs_), offs_))
     _____.stmt(_.v_ass(_.v_attr(size_), n_))
     _.end()
     
@@ -281,7 +289,7 @@ def typical_token_cpp(token):
     _________.return_(_.null)
     _____.end_if()
     _____.stmt("wstring *s = new wstring("+ match_obj_.name +"[0])")
-    _____.return_("new "+ token.toker_name +"(s,s->length())")
+    _____.return_("new "+ token.toker_name +"(s,offs,s->length())")
     #_________.return_(SkoarToke_ + _.v_static_accessor() + match_toke_.name +"<"+ token.toker_name +">("+ buf_.name +", "+ offs_.name +")")
     _.end()
 
@@ -299,7 +307,7 @@ def typical_token_h(token):
 
     _____.nl()
     _____.constructor_h()
-    _____.constructor_h(s_, n_)
+    _____.constructor_h(s_, offs_, n_)
     _____.method_override_h(match_toke_, buf_, offs_)
     _.end_class()
 

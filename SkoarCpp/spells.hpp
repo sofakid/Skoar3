@@ -2,6 +2,7 @@
 #include "skoarcery.hpp"
 #include "minstrel_fwd.hpp"
 #include "skoarpuscle_fwd.hpp"
+#include "noad_fwd.hpp"
 
 typedef long long SkoarInt;
 typedef double SkoarFloat;

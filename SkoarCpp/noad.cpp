@@ -79,9 +79,9 @@ void SkoarNoad::add_noad(SkoarNoad *noad) {
 
 void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
 	// argh
-	auto s = new string(typeid(t).name());
+	auto s = new string(typeid(*t).name());
 	auto typeid_name = new wstring();
-	typeid_name->assign(s->begin(), s->end());
+	typeid_name->assign(s->begin()+6/*"class "*/, s->end());
 
 	auto x = new SkoarNoad(*typeid_name, this);
 	x->toke = t;
@@ -97,15 +97,8 @@ void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
 wstring SkoarNoad::draw_tree(int tab)	{
 	int n = 16;
 	
-	int tabby = tab * 2;
-	wchar_t *tabs = new wchar_t[tabby];
-	wchar_t *p = tabs;
-	for (int i = 0; i < tabby; ++i)
-		*p++ = L' ';
-	*p = L'\0';
-
-	wstring s = wstring(tabs);
-
+	wstring s = wstring(tab * 2, L' ');
+	
 	//delete tabs;
 
 	if (voice != nullptr) {
@@ -118,7 +111,7 @@ wstring SkoarNoad::draw_tree(int tab)	{
 	if (skoarpuscle != nullptr) {
 		s += skoarpuscle->asString() + L" - ";
 	}
-	s += name + L" __{ " + skoarce + L" }__";
+	s += name;// +L" __{ " + skoarce + L" }__";
 
 	s += L"\n";
 
@@ -247,7 +240,14 @@ Skoarpuscle *SkoarNoad::next_skoarpuscle() {
 	if (children.empty())
 		return nullptr;
 
-	return children.front()->next_skoarpuscle();
+	for (auto child : children) {
+		auto x = child->next_skoarpuscle();
+		if (x != nullptr) {
+			return x;
+		}
+	}
+
+	return nullptr;
 
 }
 

@@ -226,11 +226,16 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table[L"beat"] = [](Skoar *skoar, SkoarNoad *noad) {
-		auto x = noad->next_skoarpuscle();
-		noad->skoarpuscle = x;
-		noad->on_enter = [&](SkoarMinstrel *m) {
-			x->on_enter(m);
-		};
+		auto xp = noad->next_skoarpuscle();
+
+		if (xp != nullptr) {
+			noad->skoarpuscle = xp;
+			auto x = *xp;
+
+			noad->on_enter = [&](SkoarMinstrel *m) {
+				x.on_enter(m);
+			};
+		}
 		noad->children.empty();
 	};
 
@@ -244,11 +249,14 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table[L"ottavas"] = [](Skoar *skoar, SkoarNoad *noad) {
-		auto x = *noad->next_skoarpuscle();
+		auto xp = noad->next_skoarpuscle();
 
-		noad->on_enter = [&](SkoarMinstrel *m) {
-			x.on_enter(m);
-		};
+		if (xp != nullptr) {
+			auto x = *xp;
+			noad->on_enter = [&](SkoarMinstrel *m) {
+				x.on_enter(m);
+			};
+		}
 	};
 
     table[L"cthulhu"] = [](Skoar *skoar, SkoarNoad *noad) {
@@ -258,11 +266,15 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table[L"dynamic"] = [](Skoar *skoar, SkoarNoad *noad) {
-		auto x = *noad->next_skoarpuscle();
+		auto xp = noad->next_skoarpuscle();
 
-		noad->on_enter = [&](SkoarMinstrel *m) {
-			x.on_enter(m);
-		};
+		if (xp != nullptr) {
+			auto x = *xp;
+			noad->on_enter = [&](SkoarMinstrel *m) {
+				x.on_enter(m);
+			};
+		}
+		
 	};
 
     table[L"dal_goto"] = [](Skoar *skoar, SkoarNoad *noad) {
@@ -294,12 +306,29 @@ Skoarmantics::Skoarmantics() {
     table[L"deref"] = [](Skoar *skoar, SkoarNoad *noad) {
 		SkoarpuscleDeref *x;
 		SkoarpuscleArgs *args = nullptr;
-		wstring *msg_name;
+		wstring *msg_name = nullptr;
 
-		auto child = noad->children.begin();
-		child++;
-		msg_name = (*child)->skoarpuscle->val.String;
+		if (noad->children.empty() != true) {
+			auto child = noad->children.begin();
+			child++;
+			auto y = (*child)->skoarpuscle;
 
+			if (typeid(y) == typeid(SkoarpuscleMsgName*)) {
+				msg_name = y->val.String;
+			}
+			else if (y == nullptr) {
+				skoar->log->e(wstring(L"WTF Skoarpuscle is nullptr."));
+
+			}
+			else {
+				skoar->log->e(wstring(L"WTF Skoarpuscle: ") + y->asString());
+			}
+		}
+		
+		if (msg_name == nullptr) {
+			msg_name = new wstring(L"nomsgname");
+		}
+		
 		if (noad->children.size() > 2) {
 			args = new SkoarpuscleArgs();
 		}
@@ -352,18 +381,20 @@ Skoarmantics::Skoarmantics() {
 
 		msg = noad->next_skoarpuscle();
 
-		if (typeid(msg) == typeid(SkoarpuscleList)) {
-			// i'm not sure what i want this to mean
+		if (msg != nullptr) {
+			if (typeid(msg) == typeid(SkoarpuscleList*)) {
+				// i'm not sure what i want this to mean
 
-		}
-		else if (typeid(msg) == typeid(SkoarpuscleLoop)) {
-			noad->skoarpuscle = new SkoarpuscleLoopMsg(msg->val.String);
+			}
+			else if (typeid(msg) == typeid(SkoarpuscleLoop*)) {
+				noad->skoarpuscle = new SkoarpuscleLoopMsg(msg->val.String);
 
+			}
+			else if (typeid(msg) == typeid(SkoarpuscleMsgName*)) {
+				SkoarpuscleArgs *args = new SkoarpuscleArgs();
+				noad->skoarpuscle = new SkoarpuscleMsg(msg->val.String, args);
+			}
 		}
-		else if (typeid(msg) == typeid(SkoarpuscleMsgName)) {
-			SkoarpuscleArgs *args = new SkoarpuscleArgs();
-			noad->skoarpuscle = new SkoarpuscleMsg(msg->val.String, args);
-		};
 
 		noad->children.empty();
 	};

@@ -10,3 +10,4 @@
 #include "logging.hpp"
 #include "skoar.hpp"
 #include "exception.hpp"
+#include "noad.hpp"
