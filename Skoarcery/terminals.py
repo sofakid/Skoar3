@@ -11,7 +11,7 @@ src = """
 <e>:            unused
 Eof:            unused
 Whitespace:     [ \\t]+
-Newline:        [\\n\\r\\f][\\n\\r\\f \\t]*
+Newline:        [\\n\\r\\f \\t]*[\\n\\r\\f]
 
 True:           yes
 False:          no
