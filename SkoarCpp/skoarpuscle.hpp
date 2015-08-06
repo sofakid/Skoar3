@@ -46,45 +46,6 @@ public:
 
 	SpellOfMinstrels on_enter;
 
-	/*template <typename T>
-	static Skoarpuscle *wrap(T x) {
-
-		SkoarpuscleValue v = x;
-
-		if (is_pointer<T>::value) {
-			if ((void*)x == nullptr)
-				return new SkoarpuscleCrap();
-		}
-		if (typeid(x) == typeid(Skoarpuscle*))
-			return x;
-
-		if (typeid(x) == typeid(Skoarpion*))
-			return new SkoarpuscleSkoarpion(x);
-
-		if (typeid(x) == typeid(wstring*))
-			return new SkoarpuscleString(x);
-
-		if (typeid(x) == typeid(list<Skoarpuscle*>*))
-			return new SkoarpuscleList(x);
-	
-		if (typeid(x) == typeid(int))
-			return new SkoarpuscleInt(x);
-
-		if (typeid(x) == typeid(float))
-			return new SkoarpuscleFloat(x);
-
-		if (typeid(x) == typeid(double))
-			return new SkoarpuscleFloat(x);
-
-		if (typeid(x) == typeid(bool)) {
-			if (x)
-				return new SkoarpuscleTrue();
-			return new SkoarpuscleFalse();
-		}
-
-		return new SkoarpuscleUnknown(new wstring(typeid(x).name()));
-	} */
-
 	virtual bool isNoatworthy() {
 		return false;
 	}

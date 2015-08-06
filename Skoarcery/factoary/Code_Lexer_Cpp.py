@@ -1,6 +1,6 @@
 import unittest
 
-from Skoarcery import terminals, emissions, underskoar_cpp
+from Skoarcery import terminals, nonterminals, emissions, underskoar_cpp
 
 
 bs = "{"
@@ -11,11 +11,36 @@ class Code_Lexer_Cpp(unittest.TestCase):
 
     def setUp(self):
         terminals.init()
+        nonterminals.init()
         emissions.init()
         
     def preamble(self):
         emissions.CPP.raw("""#include "lex.hpp"
 #include "exception.hpp"
+
+""")
+
+    def dispensary(self):
+        emissions.CPP.raw("""
+   
+SkoarDispensary::SkoarDispensary() {
+""")
+        for token in terminals.tokens.values():
+            if token not in terminals.odd_balls:
+                emissions.CPP.raw("table[ESkoarToke::"+ token.name +"""] = 
+        [](wstring *buf, size_t offs) {
+            return """+ token.toker_name +"""::match_toke(buf, offs);
+        };
+""")
+        emissions.CPP.raw("""
+}
+
+SkoarToke *SkoarDispensary::match_toke(ESkoarToke::Kind want, wstring *buf, size_t offs) {
+    auto f = table[want];
+    if (f) 
+        return f(buf, offs);
+    return nullptr;
+}
 """)
 
     def exceptions(self):
@@ -26,22 +51,64 @@ class Code_Lexer_Cpp(unittest.TestCase):
         underskoar_cpp.skoarToke_cpp()
 
     def odd_balls(self):
-        underskoar_cpp.EOF_token()
+        underskoar_cpp.Eof_token()
         underskoar_cpp.whitespace_token()
 
     def typical_token(self, token):
         underskoar_cpp.typical_token_cpp(token)
 
     def preamble_h(self):
-        emissions.CPP.raw("""#pragma once
+        CPP = emissions.CPP
+        CPP.raw("""#pragma once
 #include "skoarcery.hpp"
 """)
   
+    def enum_h(self):
+        ____CPP = CPP = emissions.CPP
+        CPP.raw("""
+
+namespace ESkoarToke {
+enum Kind {
+        Unknown = 0,
+        Eof,
+        Whitespace,
+""")
+        for token in terminals.tokens.values():
+            if token not in terminals.odd_balls:
+                CPP.raw("    " + token.name + ",\n")
+
+        CPP.raw("""
+};
+};
+
+namespace ESkoarNoad {
+enum Kind {
+    unknown = 0,
+    toke,
+    artificial,
+    args,
+""")
+
+        for x in nonterminals.nonterminals.values():
+            CPP.raw("    " + x.name + ",\n")
+
+        CPP.raw("\n};\n};\n")
+
+    def dispensary_h(self):
+        emissions.CPP.raw("""
+class SkoarDispensary {
+    map<ESkoarToke::Kind, function<SkoarToke*(wstring *buf, size_t offs)>> table;
+public: 
+    SkoarDispensary();   
+    SkoarToke *match_toke(ESkoarToke::Kind want, wstring *buf, size_t offs);
+};
+""")
+
     def base_token_h(self):
         underskoar_cpp.skoarToke_h()
 
     def odd_balls_h(self):
-        underskoar_cpp.EOF_token_h()
+        underskoar_cpp.Eof_token_h()
         underskoar_cpp.whitespace_token_h()
 
     def typical_token_h(self, token):
@@ -65,6 +132,7 @@ class Code_Lexer_Cpp(unittest.TestCase):
             if token not in terminals.odd_balls:
                 self.typical_token(token)
 
+        self.dispensary()
         fd.close()
 
     def test_HPP_lexer(self):
@@ -77,6 +145,7 @@ class Code_Lexer_Cpp(unittest.TestCase):
         emissions.CPP.file_header("lex", "Code_Cpp_Lexer")
 
         self.preamble_h()
+        self.enum_h()
         self.base_token_h()
         self.odd_balls_h()
 
@@ -85,6 +154,7 @@ class Code_Lexer_Cpp(unittest.TestCase):
             if token not in terminals.odd_balls:
                 self.typical_token_h(token)
 
+        self.dispensary_h()
         fd.close()
 
         # fwd headers
@@ -95,9 +165,17 @@ class Code_Lexer_Cpp(unittest.TestCase):
         HPP.file_header("lex_fwd", "Code_Cpp_Lexer")
 
         HPP.raw("""#pragma once
+
+namespace ESkoarToke {
+    enum Kind;
+};
+namespace ESkoarNoad {
+    enum Kind;
+};
+class SkoarDispensary;
 class SkoarToke;
 class Toke_Whitespace;
-class Toke_EOF;
+class Toke_Eof;
 
 """)
         for token in terminals.tokens.values():

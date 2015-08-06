@@ -34,7 +34,7 @@ class TestTokens(unittest.TestCase):
 
         unused = []
 
-        skip = [terminals.Empty, terminals.EOF, terminals.Whitespace]
+        skip = [terminals.Empty, terminals.Eof, terminals.Whitespace]
 
         for t in T.values():
 

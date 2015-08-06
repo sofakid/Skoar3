@@ -15,7 +15,7 @@ M = None
 def init():
     from collections import defaultdict
     from Skoarcery.dragonsets import FIRST, FOLLOW
-    from Skoarcery.terminals import Empty, EOF
+    from Skoarcery.terminals import Empty, Eof
 
     global M
 

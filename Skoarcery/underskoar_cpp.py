@@ -23,6 +23,8 @@ toke_class_ = "toke_class"
 match_toke_ = Arg("SkoarToke*", "match_toke")
 s_ = Arg("wstring *", "s")
 n_ = Arg("size_t", "n")
+kind_ = Arg("ESkoarToke::Kind", "kind");
+  
 SkoarError_ = "SkoarError"
 SubclassResponsibilityError_ = "SubclassResponsibilityError"
 
@@ -42,24 +44,15 @@ def skoarToke_cpp():
 
     _.last_class = SkoarToke_
 
-    aninstance_ = Arg("SkoarToke *", "aninstance")
-    instance_ = Arg("SkoarToke *", "instance")
-    
-    _.classvar_assign(aninstance_, _.null)
-    _.method(instance_)
-    _____.stmt("if (aninstance == nullptr) {")
-    _____.stmt("    aninstance = new SkoarToke();")
-    _____.stmt("}")
-    _____.stmt("return aninstance;")
-    _.end()
-
     _.constructor()
+    _____.stmt("kind = ESkoarToke::Unknown");
     _.end()
 
     _.constructor(s_, offs_, n_)
     _____.stmt(_.v_ass(_.v_attr(lexeme_), s_))
     _____.stmt(_.v_ass(_.v_attr(offs_), n_))
     _____.stmt(_.v_ass(_.v_attr(size_), n_))
+    _____.stmt("kind = ESkoarToke::Unknown")
     _.end()
 
     _.cmt("how many characters to burn from the buffer")
@@ -67,10 +60,10 @@ def skoarToke_cpp():
     _____.return_(size_)
     _.end()
 
-    _.cmt("we override and return " + _.null + " for no match, new toke otherwise")
-    _.method(match_toke_, buf_, offs_)
-    _____.return_("nullptr")
-    _.end()
+    #_.cmt("we override and return " + _.null + " for no match, new toke otherwise")
+    #_.method(match_toke_, buf_, offs_)
+    #_____.return_("nullptr")
+    #_.end()
 
     #_____.abstract_static_method(match_meth_, buf_, offs_)
     #_________.throw(SubclassResponsibilityError_, _.v_str("What are you doing human?"))
@@ -85,28 +78,21 @@ def skoarToke_h():
 
     _.abstract_class(SkoarToke_)
 
-    aninstance_ = Arg("SkoarToke *", "aninstance")
-    instance_ = Arg("SkoarToke *", "instance")
-    
-    _____.classvar_declare("", aninstance_)
-    _____.static_method_h(instance_)
-
     _____.attrvar("<", lexeme_)
     _____.attrvar("", offs_)
     _____.attrvar("", size_)
-
+    _____.attrvar("", kind_)
 
     _____.nl()
 
     _____.constructor_h()
-    
     _____.constructor_h(s_, offs_, n_)
     
     _____.cmt("how many characters to burn from the buffer")
     _____.method_h(burn_)
     
-    _____.cmt("match requested toke")
-    _____.virtual_method_h(match_toke_, buf_, offs_)
+    #_____.cmt("match requested toke")
+    #_____.virtual_method_h(match_toke_, buf_, offs_)
     #_____.stmt("template<typename T>", end="\n")
     #_____.static_method(match_toke_, buf_,offs_)
     #_________.var(match_obj_)
@@ -128,25 +114,6 @@ def whitespace_token():
 
     _.cmt_hdr("Whitespace is special")
     _.set_class(Whitespace.toker_name)
-
-    xx_ = Arg("wstring *", 'nullptr')
-    xy_ = Arg("size_t", "0")
-    _.constructor()
-    _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
-    _____.stmt(_.v_ass(_.v_attr(offs_), xy_))
-    _____.stmt(_.v_ass(_.v_attr(size_), xy_))
-    _.end()
-
-    aninstance_ = Arg(Whitespace.toker_name +" *", "aninstance")
-    instance_ = Arg(Whitespace.toker_name +" *", "instance")
-    
-    _.classvar_assign(aninstance_, _.null)
-    _.method(instance_)
-    _____.stmt("if (aninstance == nullptr) {")
-    _____.stmt("    aninstance = new "+ Whitespace.toker_name +"();")
-    _____.stmt("}")
-    _____.stmt("return aninstance;")
-    _.end()
 
     _.classvar_assign(regex_, _.v_def_regex(Whitespace.regex))
     _.nl()
@@ -174,77 +141,49 @@ def whitespace_token_h():
     _____.classvar_declare("<", regex_)
     _____.nl()
 
-    aninstance_ = Arg(Whitespace.toker_name +" *", "aninstance")
-    instance_ = Arg(Whitespace.toker_name +" *", "instance")
-    _____.classvar_declare("", aninstance_)
-
-    _____.constructor_h()
-    _____.static_method_h(instance_)
-
     _____.static_method_h(burn_, buf_, offs_)
     _.end_class()
 
     
-def EOF_token():
+def Eof_token():
 
-    EOF = terminals.EOF
+    Eof = terminals.Eof
 
-    _.cmt_hdr("EOF is special")
-    _.set_class(EOF.toker_name)
+    _.cmt_hdr("Eof is special")
+    _.set_class(Eof.toker_name)
     
-    aninstance_ = Arg(EOF.toker_name +" *", "aninstance")
-    instance_ = Arg(EOF.toker_name +" *", "instance")
-    
-    xx_ = Arg("wstring *", 'nullptr')
-    xy_ = Arg("size_t", "0")
     _.constructor()
-    _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
-    _____.stmt(_.v_ass(_.v_attr(offs_), xy_))
-    _____.stmt(_.v_ass(_.v_attr(size_), xy_))
-    _.end()
-
-    _.classvar_assign(aninstance_, _.null)
-    _.method(instance_)
-    _____.stmt("if (aninstance == nullptr) {")
-    _____.stmt("    aninstance = new "+ EOF.toker_name +"();")
-    _____.stmt("}")
-    _____.stmt("return aninstance;")
+    _____.stmt("kind = ESkoarToke::Eof")
     _.end()
 
     _.method(burn_, buf_, offs_)
     _____.if_(buf_.name + "->size() > " + offs_.name)
-    _________.throw(SkoarError_, _.v_str("Tried to burn EOF when there's more input."))
+    _________.throw(SkoarError_, _.v_str("Tried to burn Eof when there's more input."))
     _____.end_if()
     _____.return_("0")
     _.end()
 
     _.method(match_toke_, buf_, offs_)
     #_____.if_(buf_.name + "->size() < " + offs_.name)
-    #_________.throw(SkoarError_, _.v_str("Tried to burn EOF when there's more input."))
+    #_________.throw(SkoarError_, _.v_str("Tried to burn Eof when there's more input."))
     #_____.end_if()
     _____.if_(buf_.name + "->size() == " + offs_.name)
-    _________.return_("new "+ EOF.toker_name +"()")
+    _________.return_("new "+ Eof.toker_name +"()")
     _____.end_if()
     _____.return_(_.null)
     _.end()
    
-def EOF_token_h():
+def Eof_token_h():
 
-    EOF = terminals.EOF
+    Eof = terminals.Eof
 
-    _.cmt_hdr("EOF is special")
-    _.class_(EOF.toker_name, SkoarToke_)
+    _.cmt_hdr("Eof is special")
+    _.class_(Eof.toker_name, SkoarToke_)
     
-    aninstance_ = Arg(EOF.toker_name +" *", "aninstance")
-    instance_ = Arg(EOF.toker_name +" *", "instance")
-    
-    _____.classvar_declare("", aninstance_)
-    _____.static_method_h(instance_)
-
     _____.nl()
     _____.constructor_h()
     _____.static_method_h(burn_, buf_, offs_)
-    _____.method_override_h(match_toke_, buf_, offs_)
+    _____.static_method_h(match_toke_, buf_, offs_)
     _.end_class()
 
 def typical_token_cpp(token):
@@ -253,31 +192,14 @@ def typical_token_cpp(token):
     _.set_class(token.toker_name)
 
     _.stmt("const std::wregex "+ token.toker_name +"::"+ regex_.name +" = "+ _.v_def_regex(token.regex))
-    
-    aninstance_ = Arg(token.toker_name +" *", "aninstance")
-    instance_ = Arg(token.toker_name +" *", "instance")
-    
-    _.classvar_assign(aninstance_, _.null)
-    _.method(instance_)
-    _____.stmt("if (aninstance == nullptr) {")
-    _____.stmt("    aninstance = new "+ token.toker_name +"();")
-    _____.stmt("}")
-    _____.stmt("return aninstance;")
-    _.end()
-
-    xx_ = Arg("wstring *", 'nullptr')
-    xy_ = Arg("size_t", "0")
-    
-    _.constructor()
-    _____.stmt(_.v_ass(_.v_attr(lexeme_), xx_))
-    _____.stmt(_.v_ass(_.v_attr(offs_), xy_))
-    _____.stmt(_.v_ass(_.v_attr(size_), xy_))
-    _.end()
+  
+    kind_token_ = Arg("ESkoarToke::Kind", "ESkoarToke::" + token.name);
 
     _.constructor(s_, offs_, n_)
     _____.stmt(_.v_ass(_.v_attr(lexeme_), s_))
     _____.stmt(_.v_ass(_.v_attr(offs_), offs_))
     _____.stmt(_.v_ass(_.v_attr(size_), n_))
+    _____.stmt(_.v_ass(_.v_attr(kind_), kind_token_))
     _.end()
     
     _.method(match_toke_, buf_, offs_)
@@ -298,17 +220,10 @@ def typical_token_h(token):
     _.class_(token.toker_name, SkoarToke_)
     _____.classvar_declare("<", regex_)
     _____.nl()
-    
-    aninstance_ = Arg(token.toker_name +" *", "aninstance")
-    instance_ = Arg(token.toker_name +" *", "instance")
-    
-    _____.classvar_declare("", aninstance_)
-    _____.static_method_h(instance_)
-
+   
     _____.nl()
-    _____.constructor_h()
     _____.constructor_h(s_, offs_, n_)
-    _____.method_override_h(match_toke_, buf_, offs_)
+    _____.static_method_h(match_toke_, buf_, offs_)
     _.end_class()
 
     x = Arg(SkoarToke_ +"&", "SkoarToke::"+ match_toke_.name +"<"+ token.toker_name +">")

@@ -79,7 +79,7 @@ Toker {
     }
 
     eof {
-        Toke_EOF.burn(skoarse, i_am_here);
+        Toke_Eof.burn(skoarse, i_am_here);
     }
 
     dump {

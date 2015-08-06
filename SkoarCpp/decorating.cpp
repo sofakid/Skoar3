@@ -177,10 +177,6 @@ void SkoarTokeInspector::decorate(Toke_ListE *toke, SkoarNoad* noad) {
 	};
 }
 
-void decorate(SkoarToke *toke, SkoarNoad* noad) {
-	// do nothing
-};
-
 // ============
 // Skoarmantics
 // ============
@@ -201,12 +197,12 @@ so children are processed first.
 
 Skoarmantics::Skoarmantics() {
 
-	table[L"skoar"] = [](Skoar *skoar, SkoarNoad *noad) {
+	table[ESkoarNoad::skoar] = [](Skoar *skoar, SkoarNoad *noad) {
 		noad->skoarpuscle = new SkoarpuscleSkoarpion(Skoarpion::new_from_skoar(skoar));
 		noad->children.empty();
 	};
 
-	table[L"skoarpion"] = [](Skoar *skoar, SkoarNoad *noad) {
+	table[ESkoarNoad::skoarpion] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto x = new SkoarpuscleSkoarpion(new Skoarpion(skoar, noad));
 		noad->skoarpuscle = x;
 		noad->children.empty();
@@ -215,17 +211,17 @@ Skoarmantics::Skoarmantics() {
 		};
 	};
 
-	table[L"conditional"] = [](Skoar *skoar, SkoarNoad *noad) {
+	table[ESkoarNoad::conditional] = [](Skoar *skoar, SkoarNoad *noad) {
 		noad->skoarpuscle = new SkoarpuscleConditional(skoar, noad);
 		noad->children.empty();
 	};
 
-    table[L"boolean"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::boolean] = [](Skoar *skoar, SkoarNoad *noad) {
 		noad->skoarpuscle = new SkoarpuscleBoolean(noad);
 		noad->children.empty();
 	};
 
-    table[L"beat"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::beat] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto xp = noad->next_skoarpuscle();
 
 		if (xp != nullptr) {
@@ -239,16 +235,16 @@ Skoarmantics::Skoarmantics() {
 		noad->children.empty();
 	};
 
-    table[L"loop"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::loop] = [](Skoar *skoar, SkoarNoad *noad) {
 		noad->skoarpuscle = new SkoarpuscleLoop(skoar, noad);
 		noad->children.empty();
 	};
 
-    table[L"musical_keyword_misc"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::musical_keyword_misc] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto skoarpuscle = noad->next_skoarpuscle();
 	};
 
-    table[L"ottavas"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::ottavas] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto xp = noad->next_skoarpuscle();
 
 		if (xp != nullptr) {
@@ -259,13 +255,13 @@ Skoarmantics::Skoarmantics() {
 		}
 	};
 
-    table[L"cthulhu"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::cthulhu] = [](Skoar *skoar, SkoarNoad *noad) {
 		noad->on_enter = [&](SkoarMinstrel *m) {
 			skoar->cthulhu(noad);
 		};
 	};
 
-    table[L"dynamic"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::dynamic] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto xp = noad->next_skoarpuscle();
 
 		if (xp != nullptr) {
@@ -277,7 +273,7 @@ Skoarmantics::Skoarmantics() {
 		
 	};
 
-    table[L"dal_goto"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::dal_goto] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto x = new SkoarpuscleGoto(noad);
 
 		noad->on_enter = [&](SkoarMinstrel *m) {
@@ -285,7 +281,7 @@ Skoarmantics::Skoarmantics() {
 		};
 	};
 
-    table[L"marker"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::marker] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto x = noad->next_skoarpuscle();
 
 		if (x != nullptr) {
@@ -303,7 +299,7 @@ Skoarmantics::Skoarmantics() {
 
 	// deref*         : Deref MsgNameWithArgs listy_suffix
 	//                | Deref MsgName
-    table[L"deref"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::deref] = [](Skoar *skoar, SkoarNoad *noad) {
 		SkoarpuscleDeref *x;
 		SkoarpuscleArgs *args = nullptr;
 		wstring *msg_name = nullptr;
@@ -339,7 +335,7 @@ Skoarmantics::Skoarmantics() {
 		// !f<x,y>
 		if (args != nullptr) {
 
-			auto end_noad = new SkoarNoad(wstring(L"deref_end"), noad);
+			auto end_noad = new SkoarNoad(wstring(L"deref_end"), ESkoarNoad::artificial, noad);
 			end_noad->on_enter = [&](SkoarMinstrel *m) {
 				m->fairy->cast_arcane_magic();
 				x->on_enter(m);
@@ -359,7 +355,7 @@ Skoarmantics::Skoarmantics() {
 
 	};
 
-    table[L"listy"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::listy] = [](Skoar *skoar, SkoarNoad *noad) {
 
 		auto x = new SkoarpuscleList();
 
@@ -370,13 +366,13 @@ Skoarmantics::Skoarmantics() {
 
 	};
 
-    table[L"args"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::args] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto x = new SkoarpuscleArgsSpec(noad);
 		noad->skoarpuscle = x;
 		noad->children.empty();
 	};
 
-    table[L"msg"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::msg] = [](Skoar *skoar, SkoarNoad *noad) {
 		Skoarpuscle *msg = nullptr;
 
 		msg = noad->next_skoarpuscle();
@@ -399,10 +395,10 @@ Skoarmantics::Skoarmantics() {
 		noad->children.empty();
 	};
 
-    table[L"expr"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::expr] = [](Skoar *skoar, SkoarNoad *noad) {
 		// we insert a node at the end of the expression
 		// so we can impress the result
-		auto end_noad = new SkoarNoad(wstring(L"expr_end"), noad);
+		auto end_noad = new SkoarNoad(wstring(L"expr_end"), ESkoarNoad::artificial, noad);
 		end_noad->on_enter = [&](SkoarMinstrel *m) {
 			m->fairy->cast_arcane_magic();
 		};
@@ -410,7 +406,7 @@ Skoarmantics::Skoarmantics() {
 		noad->add_noad(end_noad);
 	};
 
-    table[L"msgable"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::msgable] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto noads = new list<SkoarNoad *>;
 
 		// strip out the msg operators
@@ -447,7 +443,7 @@ Skoarmantics::Skoarmantics() {
 		};
 	};
 
-	table[L"assignment"] = [](Skoar *skoar, SkoarNoad *noad) {
+	table[ESkoarNoad::assignment] = [](Skoar *skoar, SkoarNoad *noad) {
 
 		auto child = noad->children.begin();
 		wstring *op = (*child)->toke->lexeme;
@@ -476,7 +472,7 @@ Skoarmantics::Skoarmantics() {
 		}
 	};
 		
-    table[L"math"] = [](Skoar *skoar, SkoarNoad *noad) {
+    table[ESkoarNoad::math] = [](Skoar *skoar, SkoarNoad *noad) {
 		auto op = noad->children.front()->skoarpuscle;
 
 		noad->on_enter = [=](SkoarMinstrel *m) {

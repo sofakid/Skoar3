@@ -71,7 +71,7 @@ class Code_Parser_Cpp(unittest.TestCase):
                 n = len(desires)
                 CPP.dict_set("desirables", str(P), "{", end="")
                 for toke in desires:
-                    CPP.raw(toke.toker_name +"::instance()")
+                    CPP.raw("ESkoarToke::" + toke.name)
                     i += 1
                     if i != n:
                         if i % 5 == 0:
@@ -96,7 +96,7 @@ class Code_Parser_Cpp(unittest.TestCase):
             AStrx = Arg("wstring", '"'+ A.name +'"')
             Noadx = Arg("SkoarNoad*", "noad")
             Parentx = Arg("SkoarNoad*", "parent")
-            Desiresx = Arg("list<SkoarToke *>*", "desires")
+            Desiresx = Arg("list<ESkoarToke::Kind>*", "desires")
             
             HPP.method_h(Ax, Parentx)
             CPP.method(Ax, Parentx)
@@ -104,7 +104,7 @@ class Code_Parser_Cpp(unittest.TestCase):
             if A.intermediate:
                 CPP.var(Noadx, Parentx.name)
             else:
-                CPP.var(Noadx, "new SkoarNoad(wstring(L\""+ A.name +"\"), parent);")
+                CPP.var(Noadx, "new SkoarNoad(wstring(L\""+ A.name +"\"), ESkoarNoad::"+ A.name +", parent);")
 
             CPP.var(Desiresx, CPP.null)
             CPP.nl()
@@ -133,7 +133,7 @@ class Code_Parser_Cpp(unittest.TestCase):
 
                 for x in alpha:
                     if isinstance(x, Terminal):
-                        CPP.stmt('noad->add_toke(L"' + x.toker_name + '", toker->burn(' + x.toker_name + '::instance()))')
+                        CPP.stmt('noad->add_toke(L"' + x.toker_name + '", toker->burn(ESkoarToke::' + x.name + '))')
 
                         # debugging
                         #CPP.print("burning: " + x.name)
@@ -182,6 +182,7 @@ class Code_Parser_Cpp(unittest.TestCase):
 #include "toker.hpp"
 
 """)
+
         CPP.raw("""#include "rdpp.hpp"
 #include "exception.hpp"
 #include "lex.hpp"
@@ -210,7 +211,7 @@ class Code_Parser_Cpp(unittest.TestCase):
         HPP.raw("""
     SkoarToker *toker;
     int deep;
-    map<wstring, list<SkoarToke*>> desirables;
+    map<wstring, list<ESkoarToke::Kind>> desirables;
         """)
         toker_ = Arg("SkoarToker *", "toker")
         HPP.constructor_h(toker_)

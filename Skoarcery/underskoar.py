@@ -132,36 +132,36 @@ def whitespace_token_h():
     _.end_class()
 
     
-def EOF_token():
+def Eof_token():
 
-    EOF = terminals.EOF
+    Eof = terminals.Eof
 
-    _.cmt_hdr("EOF is special")
-    _.set_class(EOF.toker_name)
+    _.cmt_hdr("Eof is special")
+    _.set_class(Eof.toker_name)
     
     _.method(burn_, buf_, offs_)
     _____.if_(_.v_length(buf_.name) + " > " + offs_.name)
-    _________.throw(SkoarError_, _.v_str("Tried to burn EOF when there's more input."))
+    _________.throw(SkoarError_, _.v_str("Tried to burn Eof when there's more input."))
     _____.end_if()
     _____.return_("0")
     _.end()
 
     _.method(match_toke_, buf_, offs_)
     _____.if_(_.v_length(buf_.name) + " < " + offs_.name)
-    _________.throw(SkoarError_, _.v_str("Tried to burn EOF when there's more input."))
+    _________.throw(SkoarError_, _.v_str("Tried to burn Eof when there's more input."))
     _____.end_if()
     _____.if_(_.v_length(buf_.name) + " == " + offs_.name)
-    _________.return_(_.v_new(EOF.toker_name, ""))
+    _________.return_(_.v_new(Eof.toker_name, ""))
     _____.end_if()
     _____.return_("nullptr")
     _.end()
    
-def EOF_token_h():
+def Eof_token_h():
 
-    EOF = terminals.EOF
+    Eof = terminals.Eof
 
-    _.cmt_hdr("EOF is special")
-    _.class_(EOF.toker_name, SkoarToke_)
+    _.cmt_hdr("Eof is special")
+    _.class_(Eof.toker_name, SkoarToke_)
     _____.static_method_h(burn_, buf_, offs_)
     _____.static_method_h(match_toke_, buf_, offs_)
     _.end_class()

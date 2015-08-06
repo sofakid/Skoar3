@@ -2,7 +2,7 @@
 #include "skoarcery.hpp"
 
 #include "skoarpuscle_fwd.hpp"
-#include "lex_fwd.hpp"
+#include "lex.hpp"
 #include "minstrel_fwd.hpp"
 #include "event_fwd.hpp"
 #include "spells.hpp"
@@ -18,7 +18,10 @@ public:
 	list<SkoarNoad*> children;  // a list of child noads
 
 	wstring name;                // name of the nonterminal
+	ESkoarNoad::Kind kind;
+
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
+
 	SkoarToke *toke;
 	wstring skoarce; 
 	size_t skoarce_offs;
@@ -30,7 +33,7 @@ public:
 	wstring *voice;           // what voice to use
 	void *skoap;             // what skoap are we in
 
-	SkoarNoad(wstring &nameArg, SkoarNoad *parentArg);
+	SkoarNoad(wstring &nameArg, ESkoarNoad::Kind kindArg, SkoarNoad *parentArg);
 
 	wstring *asString();
 
@@ -49,6 +52,7 @@ public:
 	// ----------------
 	// showing the tree
 	// ----------------
+	void log_tree(ISkoarLog *log, int tab = 1);
 	wstring draw_tree(int tab = 1);
 	void scry(SpellOfScrying f);
 	

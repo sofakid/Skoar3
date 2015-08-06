@@ -325,7 +325,7 @@ SkoarParser {
                    Toke_DynForte, Toke_ListS, Toke_Slash, Toke_DynPiano, Toke_Freq,
                    Toke_DynFP, Toke_DalSegno, Toke_DaCapo, Toke_Newline, Toke_Carrot,
                    Toke_LWing, Toke_False, Toke_OttavaB, Toke_Symbol, Toke_OttavaA,
-                   Toke_Coda, Toke_CondS, Toke_Meter, Toke_EOF, Toke_Quarters,
+                   Toke_Coda, Toke_CondS, Toke_Meter, Toke_Eof, Toke_Quarters,
                    Toke_Fairy, Toke_PedalUp, Toke_Choard, Toke_Voice, Toke_Loco,
                    Toke_Float, Toke_QuindicesimaA, Toke_Comment, Toke_Crotchets, Toke_LoopS,
                    Toke_PedalDown, Toke_String]);
@@ -782,7 +782,7 @@ SkoarParser {
 
         // skoar
         desirables.put('skoar -> branches', [Toke_Meter, Toke_String, Toke_QuindicesimaA, Toke_Carrot, Toke_Coda,
-                   Toke_EOF, Toke_Quavers, Toke_Choard, Toke_Bars, Toke_DynFP,
+                   Toke_Eof, Toke_Quavers, Toke_Choard, Toke_Bars, Toke_DynFP,
                    Toke_Crotchets, Toke_LoopS, Toke_Float, Toke_QuindicesimaB, Toke_Volta,
                    Toke_Newline, Toke_Symbol, Toke_Rep, Toke_Eighths, Toke_DynForte,
                    Toke_Caesura, Toke_SkoarpionStart, Toke_OttavaA, Toke_DynSFZ, Toke_Segno,

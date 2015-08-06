@@ -90,14 +90,14 @@ Toke_Whitespace : SkoarToke {
 }
 
 // --------------
-// EOF is special
+// Eof is special
 // --------------
-Toke_EOF : SkoarToke {
+Toke_Eof : SkoarToke {
     *burn {
         | buf, offs |
 
         if (buf.size > offs) {
-            SkoarError("Tried to burn EOF when there's more input.").throw;
+            SkoarError("Tried to burn Eof when there's more input.").throw;
         };
 
         ^0;
@@ -107,11 +107,11 @@ Toke_EOF : SkoarToke {
         | buf, offs |
 
         if (buf.size < offs) {
-            SkoarError("Tried to burn EOF when there's more input.").throw;
+            SkoarError("Tried to burn Eof when there's more input.").throw;
         };
 
         if (buf.size == offs) {
-            ^Toke_EOF.new();
+            ^Toke_Eof.new();
         };
 
         ^nil;

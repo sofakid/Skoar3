@@ -31,8 +31,8 @@ class SkoarError(AssertionError):
     def base_token(self):
         underskoar.skoarToke()
 
-    def EOF_token(self):
-        underskoar.EOF_token()
+    def Eof_token(self):
+        underskoar.Eof_token()
 
     def whitespace_token(self):
         underskoar.whitespace_token()
@@ -50,7 +50,7 @@ class SkoarError(AssertionError):
         self.imports()
         self.base_token()
         self.whitespace_token()
-        self.EOF_token()
+        self.Eof_token()
 
         emissions.PY.cmt_hdr("Everyday Tokes")
         for token in terminals.tokens.values():

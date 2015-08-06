@@ -19,7 +19,7 @@ class Verify_LL_1(unittest.TestCase):
     def test_make_table(self):
         from collections import defaultdict
         from Skoarcery.dragonsets import FIRST, FOLLOW
-        from Skoarcery.terminals import Empty, EOF
+        from Skoarcery.terminals import Empty, Eof
 
         # M[ Nonterm, Term ] = Production
         M = defaultdict(dict)

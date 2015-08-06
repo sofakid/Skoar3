@@ -48,17 +48,19 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
 	// parse_time = (Process.elapsedTime - start_time).round(0.01);
 	
 	//"---< Undecorated Skoar Tree >---".postln; tree.draw_tree.postln;
-	log->i(L"---< Undecorated Skoar Tree >---" + tree->draw_tree());
+	log->i(L"---< Undecorated Skoar Tree >---");
+	tree->log_tree(log);
 
 	log->i(L"<<< tree created, now decorating...");
 	decorate();
 	// decorate_time = (Process.elapsedTime - start_time - parse_time).round(0.01);
 
-	log->i(L"---< Decorated Skoar Tree >---" + tree->draw_tree());
+	log->i(L"---< Decorated Skoar Tree >---");
+	tree->log_tree(log);
 
 	draw_skoarpions();
 
-	log->i(L"+++ Skoar Parsed +++" + tree->draw_tree());
+	log->i(L"+++ Skoar Parsed +++");// +tree->draw_tree());
 	// debug("Skoar parsed in " ++parse_time++ " seconds, decorated in  "
 	//	++decorate_time++ ". Total: " ++(parse_time + decorate_time)++ " sec.");
 }
@@ -82,9 +84,9 @@ void Skoar::decorate() {
 			inspector->decorate(t, noad);
 		}
 		else {
-			auto g = skoarmantics->table[noad->name];
+			auto g = skoarmantics->table[noad->kind];
 			
-			if (g != nullptr) {
+			if (g) {
 				g(this, noad);
 			}
 		}

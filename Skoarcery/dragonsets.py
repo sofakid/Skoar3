@@ -177,13 +177,13 @@ def FIRST_SEQ(list_of_langoids):
 
 #noinspection PyPep8Naming
 def compute_follows():
-    from Skoarcery.terminals import EOF, Empty
+    from Skoarcery.terminals import Eof, Empty
     from Skoarcery.nonterminals import nonterminals as N, SKOAR
 
     global FIRST, FOLLOW
 
     # start symbol gets end symbol
-    FOLLOW(SKOAR).add(EOF)
+    FOLLOW(SKOAR).add(Eof)
 
     # repeat until nothing can be added to any follow set
     last = 0

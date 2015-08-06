@@ -9,7 +9,7 @@ src = """
 #
 
 <e>:            unused
-EOF:            unused
+Eof:            unused
 Whitespace:     [ \\t]+
 Newline:        [\\n\\r\\f][\\n\\r\\f \\t]*
 
@@ -140,7 +140,7 @@ list_of_names = None
 inspectables = None
 tokens = None
 Empty = None
-EOF = None
+Eof = None
 Whitespace = None
 
 odd_balls = None
@@ -148,7 +148,7 @@ odd_balls = None
 
 def init():
     from Skoarcery.langoids import Terminal
-    global src, list_of_names, tokens, EOF, Empty, Whitespace, odd_balls, inspectables
+    global src, list_of_names, tokens, Eof, Empty, Whitespace, odd_balls, inspectables
 
     list_of_names = []
     inspectables = []
@@ -175,9 +175,9 @@ def init():
     #print("# tokens initialized.")
 
     Empty = Terminal("<e>", None)
-    EOF = Terminal("EOF", None)
+    Eof = Terminal("Eof", None)
     Whitespace = tokens["Whitespace"]
 
-    odd_balls = {Empty, EOF, Whitespace}
+    odd_balls = {Empty, Eof, Whitespace}
 
 

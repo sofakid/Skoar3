@@ -10,10 +10,11 @@
 // ==========================
 // The Parse Tree - SkoarNoad
 // ==========================
-SkoarNoad::SkoarNoad(wstring &nameArg, SkoarNoad *parentArg) {
+SkoarNoad::SkoarNoad(wstring &nameArg, ESkoarNoad::Kind kindArg, SkoarNoad *parentArg) {
 	parent = parentArg;
 	name = nameArg;
 	skoarce = L"";
+	kind = kindArg;
 }
 
 wstring *SkoarNoad::asString() {
@@ -78,12 +79,8 @@ void SkoarNoad::add_noad(SkoarNoad *noad) {
 }
 
 void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
-	// argh
-	auto s = new string(typeid(*t).name());
-	auto typeid_name = new wstring();
-	typeid_name->assign(s->begin()+6/*"class "*/, s->end());
-
-	auto x = new SkoarNoad(*typeid_name, this);
+	
+	auto x = new SkoarNoad(name, ESkoarNoad::toke, this);
 	x->toke = t;
 	children.emplace_back(x);
 
@@ -94,6 +91,35 @@ void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
 // ----------------
 // showing the tree
 // ----------------
+void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
+	int n = 16;
+
+	wstring s = wstring(tab * 2, L' ');
+
+	//delete tabs;
+
+	if (voice != nullptr) {
+		s += *voice + L":";
+	}
+	else {
+		s += L" novoice :";
+	}
+
+	if (skoarpuscle != nullptr) {
+		s += skoarpuscle->asString() + L" - ";
+	}
+	s += name;// +L" __{ " + skoarce + L" }__";
+
+	//s += L"\n";
+	
+	log->w(s);
+
+	for (auto x : children) {
+		x->log_tree(log, tab + 1);
+	}
+
+}
+
 wstring SkoarNoad::draw_tree(int tab)	{
 	int n = 16;
 	
@@ -176,9 +202,9 @@ void SkoarNoad::depth_visit(SpellOfNoads f) {
 	//var s = " " ++ if (toke.notNil) {toke.lexeme} {""};
 	//debug(">>> depth_visit: " ++ name ++ s);
 
-	for (auto y: children) {
-		y->depth_visit(f);
-	}
+	if (!children.empty())
+		for (auto y: children)
+			y->depth_visit(f);
 
 	//debug("--- depth_visit: " ++ name ++ s);
 
@@ -193,40 +219,39 @@ void SkoarNoad::inorder(SpellOfNoads f) {
 
 	f(this);
 
-	for (auto y : children) {
-		y->inorder(f);
-	};
-
+	if (!children.empty())
+		for (auto y : children)
+			y->inorder(f);
+	
 	//debug("<<< inorder: " ++ name);
 }
 
 // - debug here if it's crashing while performing the skoar
 // - modifies &here
 void SkoarNoad::inorder_from_here(list<int> &here, SpellOfNoads f) {
-	
-
 	//debug("inorder_from_here: j:" ++ j ++ " " ++ name);
 
-	if (here.empty()) {
+	if (here.empty())
 		inorder(f);
-	} 
+	
 	else {
 		int i = 0;
 		int j = here.back();
 		here.pop_back();
 		
-		for (auto child: children) {
-			if (i < j)
-				++i;
-				continue;
+		if (!children.empty())
+			for (auto child: children) {
+				if (i < j)
+					++i;
+					continue;
 
-			if (i == j)
-				child->inorder_from_here(here, f);
-			else 
-				child->inorder(f);
+				if (i == j)
+					child->inorder_from_here(here, f);
+				else 
+					child->inorder(f);
 			
-			++i;
-		}
+				++i;
+			}
 		
 	}
 }

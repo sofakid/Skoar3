@@ -10,27 +10,28 @@ SkoarToker::SkoarToker(wstring &skoarce) {
 	this->i_am_here = 0;
 	this->i_saw = nullptr;
 	this->skoarce = &skoarce;
+	this->dispensary = new SkoarDispensary();
 }
 
-SkoarToke *SkoarToker::see(SkoarToke *want) {
+SkoarToke *SkoarToker::see(ESkoarToke::Kind want) {
 
 	if (i_saw != nullptr) {
-		if (typeid(*i_saw) == typeid(*want)) {
+		if (i_saw->kind == want) {
 			return i_saw;
 		}
-	} else {
-		i_saw = want->match_toke(skoarce, i_am_here);
-		return i_saw;
-	}
-
-	return nullptr;
+		return nullptr;
+	} 
+	
+	i_saw = dispensary->match_toke(want, skoarce, i_am_here);
+	return i_saw;
+	
 }
 
-SkoarToke *SkoarToker::sees(std::list<SkoarToke *> *wants) {
+SkoarToke *SkoarToker::sees(std::list<ESkoarToke::Kind> *wants) {
 
 	i_am_here = i_am_here + Toke_Whitespace::burn(skoarce, i_am_here);
 
-	for (SkoarToke *want : *wants) {
+	for (auto want : *wants) {
 		auto x = this->see(want);
 
 		if (x != nullptr) {
@@ -41,7 +42,7 @@ SkoarToke *SkoarToker::sees(std::list<SkoarToke *> *wants) {
 	return nullptr;
 }
 
-SkoarToke * SkoarToker::burn(SkoarToke *want) {
+SkoarToke * SkoarToker::burn(ESkoarToke::Kind want) {
 
 	auto toke = i_saw;
 
@@ -49,7 +50,7 @@ SkoarToke * SkoarToker::burn(SkoarToke *want) {
 		toke = this->see(want);
 	}
 
-	if (toke != nullptr && typeid(*toke) == typeid(*want)) {
+	if (toke != nullptr && toke->kind == want) {
 		i_saw = nullptr;
 		i_am_here = i_am_here + toke->burn();
 		i_am_here = i_am_here + Toke_Whitespace::burn(skoarce, i_am_here);
@@ -65,7 +66,7 @@ SkoarToke * SkoarToker::burn(SkoarToke *want) {
 }
 
 void SkoarToker::eof() {
-	Toke_EOF::burn(skoarce, i_am_here);
+	Toke_Eof::burn(skoarce, i_am_here);
 }
 
 void SkoarToker::dump() {
