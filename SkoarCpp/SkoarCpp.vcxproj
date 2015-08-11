@@ -162,6 +162,7 @@
     <ClInclude Include="skoarpion_fwd.hpp" />
     <ClInclude Include="skoarpuscle.hpp" />
     <ClInclude Include="skoarpuscle_fwd.hpp" />
+    <ClInclude Include="skoarstyles_unreal.hpp" />
     <ClInclude Include="skoar_fwd.hpp" />
     <ClInclude Include="skoar_public.hpp" />
     <ClInclude Include="spells.hpp" />

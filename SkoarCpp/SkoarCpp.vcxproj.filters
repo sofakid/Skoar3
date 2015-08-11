@@ -129,6 +129,9 @@
     <ClInclude Include="templates.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="skoarstyles_unreal.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="toker.cpp">
