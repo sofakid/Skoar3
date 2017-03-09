@@ -74,31 +74,31 @@ SkoarToke *SkoarDispensary::match_toke(ESkoarToke::Kind want, wstring *buf, size
         CPP.raw("""
 
 namespace ESkoarToke {
-enum Kind {
+    enum Kind {
         Unknown = 0,
         Eof,
         Whitespace,
 """)
         for token in SortedTerminals:
             if token not in terminals.odd_balls:
-                CPP.raw("    " + token.name + ",\n")
+                CPP.raw("        " + token.name + ",\n")
 
         CPP.raw("""
-};
+    };
 };
 
 namespace ESkoarNoad {
-enum Kind {
-    unknown = 0,
-    toke,
-    artificial,
-    args,
+    enum Kind {
+        unknown = 0,
+        toke,
+        artificial,
+        args,
 """)
 
         for x in SortedNonterminals:
-            CPP.raw("    " + x.name + ",\n")
+            CPP.raw("        " + x.name + ",\n")
 
-        CPP.raw("\n};\n};\n")
+        CPP.raw("    \n};\n};\n")
 
     def dispensary_h(self):
         emissions.CPP.raw("""

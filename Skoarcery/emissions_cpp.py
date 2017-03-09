@@ -261,7 +261,7 @@ class CppTongue(Tongue):
         return name + '[L"' + str_key + '"]'
 
     def array_new(self, name, length):
-        self.stmt("static list<ESkoarToke::Kind> " + name + "[" + str(length) + "];", end="\n")
+        self.stmt("list<ESkoarToke::Kind> " + name + "[" + str(length) + "];", end="\n")
 
     def array_set(self, name, index, value, end="\n"):
         self.stmt(name + '[' + str(index) + '] = ' + value, end=end)

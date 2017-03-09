@@ -36,6 +36,7 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
 
 	log->i(">>> parsing skoar...");
 	tree = parser->skoar(nullptr);
+    parser->sortDesirables();
 
 	try {
 		toker->eof();

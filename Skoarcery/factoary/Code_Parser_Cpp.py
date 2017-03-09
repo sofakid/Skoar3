@@ -3,17 +3,22 @@ from Skoarcery import langoids, terminals, nonterminals, dragonsets, parsetable,
 from Skoarcery.langoids import Terminal, Nonterminal
 from Skoarcery.emissions import Arg    
 
+SortedTerminals = []
+
 class Code_Parser_Cpp(unittest.TestCase):
 
     def setUp(self):
+        global SortedTerminals
         terminals.init()
         nonterminals.init()
         langoids.init()
         dragonsets.init()
         parsetable.init()
         emissions.init()
+        SortedTerminals = sorted(terminals.tokens.values())
 
     def test_CPP_rdpp(self):
+        global SortedTerminals
         from Skoarcery.dragonsets import FIRST, FOLLOW
         from Skoarcery.terminals import Empty
 
@@ -47,15 +52,16 @@ class Code_Parser_Cpp(unittest.TestCase):
                 P.index = num_productions
                 num_productions = num_productions + 1
 
-        CPP.array_new("desirables", num_productions)
+        CPP.set_class("SkoarStats")
+        CPP.constructor()
+        
+        for token in SortedTerminals:
+            if token not in terminals.odd_balls:
+                ____CPP.raw("    tokeFreq[ESkoarToke::" + token.name + "] = 0.0f;\n")
 
-        CPP.set_class("SkoarParser")
-
-        init_desirables = Arg("void", "init_desirables")
-        HPP.method_h(init_desirables)
-
-        CPP.method(init_desirables)
-
+        ____CPP.nl()
+        ____CPP.stmt("desirables = new list<ESkoarToke::Kind>[" + str(num_productions) + "]")
+       
         for A in N:
 
             R = A.production_rules
@@ -86,16 +92,33 @@ class Code_Parser_Cpp(unittest.TestCase):
                     CPP.raw("ESkoarToke::" + toke.name)
                     i += 1
                     if i != n:
-                        if i % 5 == 0:
+                        if i % 4 == 0:
                             CPP.raw(",\n")
-                            CPP.stmt("           ", end="")
+                            CPP.stmt("                  ", end="")
                         else:
                             CPP.raw(", ")
 
                 else:
                     CPP.raw("};\n")
 
-        CPP.end() # CPP.method(init_desirables)
+        CPP.end() # CPP.constructor
+
+        CPP.raw("""
+static SkoarStats skoarStats;
+
+bool localCmp(const ESkoarToke::Kind &a, const ESkoarToke::Kind &b) {
+    return skoarStats.tokeFreq[a] > skoarStats.tokeFreq[b]; 
+}
+    
+void localSortDesirables() {
+    for (int i = 0; i < """ + str(num_productions) + """; ++i) {
+        skoarStats.desirables[i].sort(localCmp);    
+    }
+}
+
+""")
+
+        CPP.set_class("SkoarParser")
 
         # write each nonterminal as a function
         for A in N:
@@ -135,7 +158,7 @@ class Code_Parser_Cpp(unittest.TestCase):
                 alpha = P.production
 
                 CPP.cmt(str(P))
-                CPP.stmt("desires = &" + CPP.v_array_get("desirables", P.index))
+                CPP.stmt("desires = &" + CPP.v_array_get("skoarStats.desirables", P.index))
 
 
                 CPP.if_("toker->sees(desires) != nullptr")
@@ -145,6 +168,7 @@ class Code_Parser_Cpp(unittest.TestCase):
 
                 for x in alpha:
                     if isinstance(x, Terminal):
+                        CPP.stmt('skoarStats.tokeFreq[ESkoarToke::' + x.name + '] += 0.1f')
                         CPP.stmt('noad->add_toke(L"' + x.toker_name + '", toker->burn(ESkoarToke::' + x.name + '))')
 
                         # debugging
@@ -176,6 +200,13 @@ class Code_Parser_Cpp(unittest.TestCase):
 
             CPP.end() # CPP.method(Ax, Parentx)
 
+        CPP.nl()
+
+        SortDesirables = Arg("void", "sortDesirables")
+        HPP.method_h(SortDesirables)
+        CPP.method(SortDesirables)
+        CPP.stmt("localSortDesirables()")
+        CPP.end()
         HPP.end_class()
 
         fd.close()
@@ -192,6 +223,15 @@ class Code_Parser_Cpp(unittest.TestCase):
 #include "skoarcery.hpp"
 #include "noad_fwd.hpp"
 #include "toker.hpp"
+
+struct SkoarStats {
+
+    SkoarStats();
+
+    map<ESkoarToke::Kind, float> tokeFreq;
+    list<ESkoarToke::Kind> *desirables;
+
+};
 
 """)
 
@@ -224,13 +264,12 @@ class Code_Parser_Cpp(unittest.TestCase):
     SkoarToker *toker;
     int deep;
 """)
-        toker_ = Arg("SkoarToker *", "toker")
+        toker_ = Arg("SkoarToker *", "tokr")
         HPP.constructor_h(toker_)
         CPP.constructor(toker_)
         CPP.raw("""
-    this->deep = 0;
-    this->toker = toker;
-    this->init_desirables();
+    deep = 0;
+    toker = tokr;
     
 """)
         CPP.end()
