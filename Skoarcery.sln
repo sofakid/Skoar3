@@ -1,12 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Skoarcery", "Skoarcery.pyproj", "{0EE98C90-949D-420C-A2AC-1A570DA68F66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4285A29B-31B9-467E-B7C0-AD980FC0668C}"
 	ProjectSection(SolutionItems) = preProject
+		Skoar_CPP.testsettings = Skoar_CPP.testsettings
 		Skoar_SC.testsettings = Skoar_SC.testsettings
 	EndProjectSection
 EndProject

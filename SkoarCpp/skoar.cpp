@@ -17,7 +17,7 @@
 
 Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
 	this->log = log;
-	this->skoarce = skoarce;
+	//this->skoarce = skoarce;
 	//long start_time;
 	//long parse_time;
 	//long decorate_time;
@@ -34,7 +34,7 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
 
 	//start_time = Process.elapsedTime;
 
-	log->i(L">>> parsing skoar...");
+	log->i(">>> parsing skoar...");
 	tree = parser->skoar(nullptr);
 
 	try {
@@ -48,19 +48,21 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
 	// parse_time = (Process.elapsedTime - start_time).round(0.01);
 	
 	//"---< Undecorated Skoar Tree >---".postln; tree.draw_tree.postln;
-	log->i(L"---< Undecorated Skoar Tree >---");
-	tree->log_tree(log);
+	log->i("---< Undecorated Skoar Tree >---");
+	//tree->log_tree(log);
 
-	log->i(L"<<< tree created, now decorating...");
+	log->i("<<< tree created, now decorating...");
 	decorate();
 	// decorate_time = (Process.elapsedTime - start_time - parse_time).round(0.01);
 
-	log->i(L"---< Decorated Skoar Tree >---");
+	log->i("---< Decorated Skoar Tree >---");
 	tree->log_tree(log);
 
-	draw_skoarpions();
+	//draw_skoarpions();
 
-	log->i(L"+++ Skoar Parsed +++");// +tree->draw_tree());
+    log->d("derp", 1, 2.0);
+
+	log->i("+++ Skoar Parsed +++");// +tree->draw_tree());
 	// debug("Skoar parsed in " ++parse_time++ " seconds, decorated in  "
 	//	++decorate_time++ ". Total: " ++(parse_time + decorate_time)++ " sec.");
 }
@@ -76,7 +78,7 @@ void Skoar::decorate() {
 
 		noad->skoarce_len = 0;
 		for (SkoarNoad *y : noad->children) {
-			noad->skoarce += y->skoarce;
+			//noad->skoarce += y->skoarce;
 			noad->skoarce_len += y->skoarce_len;
 		}
 

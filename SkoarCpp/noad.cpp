@@ -13,12 +13,15 @@
 SkoarNoad::SkoarNoad(wstring &nameArg, ESkoarNoad::Kind kindArg, SkoarNoad *parentArg) {
 	parent = parentArg;
 	name = nameArg;
-	skoarce = L"";
+	skoarce = nullptr;
 	kind = kindArg;
 }
 
 wstring *SkoarNoad::asString() {
-	return new wstring(name + L": " + skoarce);
+    if (skoarce == nullptr)
+        return new wstring(name + L": nullptr");
+
+	return new wstring(name + L": " + *skoarce);
 }
 
 // -------------------
@@ -65,7 +68,7 @@ void SkoarNoad::decorate(wstring *v, void *s, list<int> &parent_address, int i) 
 	for (SkoarNoad *y : children) {
 		y->decorate(v, s, address, i);
 		i = i + 1;
-		skoarce += y->skoarce;
+		//skoarce += y->skoarce;
 		skoarce_len += y->skoarce_len;
 	}
 
@@ -84,7 +87,7 @@ void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
 	x->toke = t;
 	children.emplace_back(x);
 
-	x->skoarce = *t->lexeme;
+	x->skoarce = t->lexeme;
 	x->skoarce_len = t->size;
 }
 
@@ -112,7 +115,7 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 
 	//s += L"\n";
 	
-	log->w(s);
+	log->d(s);
 
 	for (auto x : children) {
 		x->log_tree(log, tab + 1);

@@ -40,6 +40,8 @@ def init(tongue):
 
 def skoarToke_cpp():
 
+    _.static_var(match_obj_)
+
     _.cmt_hdr("Abstract SkoarToke")
 
     _.last_class = SkoarToke_
@@ -118,7 +120,7 @@ def whitespace_token():
     _.classvar_assign(regex_, _.v_def_regex(Whitespace.regex))
     _.nl()
     _.method(burn_, buf_, offs_)
-    _____.var(match_obj_)
+    #_____.var(match_obj_)
 
     _____.stmt("auto found = std::regex_search(buf->cbegin() + offs, buf->cend(), "+ match_obj_.name +", "+ 
                Whitespace.toker_name +"::"+ regex_.name +", regex_constants::match_continuous)")
@@ -202,15 +204,19 @@ def typical_token_cpp(token):
     _____.stmt(_.v_ass(_.v_attr(kind_), kind_token_))
     _.end()
     
+    _.destructor()
+    _____.stmt("delete lexeme")
+    _.end()
+
     _.method(match_toke_, buf_, offs_)
-    _____.var(match_obj_)
+    #_____.var(match_obj_)
     _____.stmt("auto found = std::regex_search(buf->cbegin() + offs, buf->cend(), "+ match_obj_.name +", "+ 
                token.toker_name +"::"+ regex_.name +", regex_constants::match_continuous)")
     
     _____.if_("!found")
     _________.return_(_.null)
     _____.end_if()
-    _____.stmt("wstring *s = new wstring("+ match_obj_.name +"[0])")
+    _____.stmt("wstring *s = new wstring("+ match_obj_.name +".str())")
     _____.return_("new "+ token.toker_name +"(s,offs,s->length())")
     #_________.return_(SkoarToke_ + _.v_static_accessor() + match_toke_.name +"<"+ token.toker_name +">("+ buf_.name +", "+ offs_.name +")")
     _.end()
@@ -223,6 +229,8 @@ def typical_token_h(token):
    
     _____.nl()
     _____.constructor_h(s_, offs_, n_)
+    _____.destructor_h()
+
     _____.static_method_h(match_toke_, buf_, offs_)
     _.end_class()
 

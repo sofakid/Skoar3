@@ -5,11 +5,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0ee98c90-949d-420c-a2ac-1a570da68f66}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>build_cpp.py</StartupFile>
     <SearchPath>
     </SearchPath>
-    <WorkingDirectory>C:\dungeon\Skoarcery\</WorkingDirectory>
+    <WorkingDirectory>C:\p\SkoarCpp\</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
@@ -25,6 +24,9 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="build_cpp.py" />
+    <Compile Include="build_sc.py" />
+    <Compile Include="sanity_sc.py" />
     <Compile Include="Skoarcery\dragonsets.py" />
     <Compile Include="Skoarcery\emissions_cpp.py" />
     <Compile Include="Skoarcery\emissions_sc.py" />
@@ -32,6 +34,7 @@
     <Compile Include="Skoarcery\emissions.py" />
     <Compile Include="Skoarcery\factoary\Buildoar.py" />
     <Compile Include="Skoarcery\factoary\Build_Py.py" />
+    <Compile Include="Skoarcery\factoary\Build_Cpp.py" />
     <Compile Include="Skoarcery\factoary\Build_Sc.py" />
     <Compile Include="Skoarcery\factoary\Code_Lexer_Py.py" />
     <Compile Include="Skoarcery\factoary\Code_Lexer_Cpp.py" />

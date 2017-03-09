@@ -2,12 +2,13 @@
 def init():
     print("langoids initialized.")
 
-
 class Production:
 
     def __init__(self, name, list_of_langoids):
         from Skoarcery.terminals import Empty
 
+        self.index = 0
+        
         self.name = name
         self.production = list_of_langoids
         self.derives_empty = self.first == Empty
@@ -23,8 +24,7 @@ class Production:
     @property
     def first(self):
         return self.production[0]
-
-
+    
 class Langoid:
 
     def __init__(self, name):

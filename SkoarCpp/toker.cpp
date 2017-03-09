@@ -6,11 +6,11 @@
 // The Toker
 // =========
 
-SkoarToker::SkoarToker(wstring &skoarce) {
-	this->i_am_here = 0;
-	this->i_saw = nullptr;
-	this->skoarce = &skoarce;
-	this->dispensary = new SkoarDispensary();
+SkoarToker::SkoarToker(wstring &s) {
+	i_am_here = 0;
+	i_saw = nullptr;
+	skoarce = &s;
+	dispensary = new SkoarDispensary();
 }
 
 SkoarToke *SkoarToker::see(ESkoarToke::Kind want) {
@@ -29,10 +29,10 @@ SkoarToke *SkoarToker::see(ESkoarToke::Kind want) {
 
 SkoarToke *SkoarToker::sees(std::list<ESkoarToke::Kind> *wants) {
 
-	i_am_here = i_am_here + Toke_Whitespace::burn(skoarce, i_am_here);
+	i_am_here += Toke_Whitespace::burn(skoarce, i_am_here);
 
 	for (auto want : *wants) {
-		auto x = this->see(want);
+		auto x = see(want);
 
 		if (x != nullptr) {
 			return x;

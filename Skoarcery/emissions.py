@@ -293,6 +293,6 @@ def init():
     SC = ScTongue()
     PY = PyTongue()
     CPP = CppTongue()
-    HPP = CppTongue()
+    HPP = CppTongue(".hpp")
 
     tongues = [SC, PY, CPP, HPP]

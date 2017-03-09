@@ -23,7 +23,7 @@ public:
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 
 	SkoarToke *toke;
-	wstring skoarce; 
+	wstring *skoarce; 
 	size_t skoarce_offs;
 	size_t skoarce_len;
 

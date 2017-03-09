@@ -6,9 +6,10 @@ from Skoarcery.emissions import Tongue, Arg
 
 class CppTongue(Tongue):
 
-    def __init__(self):
+    def __init__(self, ext=".cpp"):
         super().__init__()
-        self.last_class = "";
+        self.last_class = ""
+        self._ext = ext
 
     @property
     def cmt_char(self):
@@ -20,7 +21,7 @@ class CppTongue(Tongue):
 
     @property
     def ext(self):
-        return ".cpp"
+        return self._ext
 
     @property
     def this(self):
@@ -109,11 +110,17 @@ class CppTongue(Tongue):
     def classvar_declare(self, prefix, arg, val=None):
         self.stmt("static "+ arg.type +" "+ arg.name)
 
+    def static_var(self, arg, val=None):
+        self.stmt("static "+ arg.type +" "+ arg.name)
+
     def classvar_assign(self, arg, val=None):
         self.stmt(arg.type +" "+ self.last_class + "::"+ arg.name +" = "+ val)
 
     def attrvar(self, prefix, name, val=None):
         self.var(name, val)
+
+    def static_var(self, arg, val=None):
+        self.stmt("static "+ arg.type +" "+ arg.name)
 
     def var(self, arg, val=None):
         s = arg.type +" "+ arg.name
@@ -126,6 +133,10 @@ class CppTongue(Tongue):
 
     def constructor(self, *args, **kwargs):
         name = Arg("", self.last_class +"::"+ self.last_class)
+        self.function(name, *args, **kwargs)
+
+    def destructor(self, *args, **kwargs):
+        name = Arg("", self.last_class +"::~"+ self.last_class)
         self.function(name, *args, **kwargs)
 
     def function(self, name, *args, **kwargs):
@@ -149,6 +160,10 @@ class CppTongue(Tongue):
 
     def constructor_h(self, *args, **kwargs):
         name = Arg("", self.last_class)
+        self.method_h(name, *args, **kwargs)
+
+    def destructor_h(self, *args, **kwargs):
+        name = Arg("", "~" + self.last_class)
         self.method_h(name, *args, **kwargs)
 
     def function_h(self, name, *args, **kwargs):
@@ -244,6 +259,15 @@ class CppTongue(Tongue):
 
     def v_dict_get(self, name, str_key):
         return name + '[L"' + str_key + '"]'
+
+    def array_new(self, name, length):
+        self.stmt("static list<ESkoarToke::Kind> " + name + "[" + str(length) + "];", end="\n")
+
+    def array_set(self, name, index, value, end="\n"):
+        self.stmt(name + '[' + str(index) + '] = ' + value, end=end)
+
+    def v_array_get(self, name, index):
+        return name + '[' + str(index) + ']'
 
     def v_static_accessor(self):
         return "::"

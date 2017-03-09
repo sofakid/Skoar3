@@ -37,11 +37,23 @@ class Code_Parser_Cpp(unittest.TestCase):
         N = nonterminals.nonterminals.values()
 
         # precompute desirables
-        #HPP.class_("SkoarParser")
+        num_productions = 0
+        for A in N:
+            R = A.production_rules
+            # each production
+            for P in R:
+                if P.derives_empty:
+                    continue
+                P.index = num_productions
+                num_productions = num_productions + 1
+
+        CPP.array_new("desirables", num_productions)
+
         CPP.set_class("SkoarParser")
 
         init_desirables = Arg("void", "init_desirables")
         HPP.method_h(init_desirables)
+
         CPP.method(init_desirables)
 
         for A in N:
@@ -69,7 +81,7 @@ class Code_Parser_Cpp(unittest.TestCase):
                 i = 0
 
                 n = len(desires)
-                CPP.dict_set("desirables", str(P), "{", end="")
+                CPP.array_set("desirables", P.index, "{", end="")
                 for toke in desires:
                     CPP.raw("ESkoarToke::" + toke.name)
                     i += 1
@@ -109,7 +121,7 @@ class Code_Parser_Cpp(unittest.TestCase):
             CPP.var(Desiresx, CPP.null)
             CPP.nl()
 
-            CPP.if_("++deep > 100")
+            CPP.if_("++deep > 1000")
             ____CPP.stmt("this->fail_too_deep()")
             CPP.end_if()
 
@@ -122,9 +134,9 @@ class Code_Parser_Cpp(unittest.TestCase):
                 # A -> alpha
                 alpha = P.production
 
-                CPP.stmt("desires = &" + CPP.v_dict_get("desirables", str(P)))
-
                 CPP.cmt(str(P))
+                CPP.stmt("desires = &" + CPP.v_array_get("desirables", P.index))
+
 
                 CPP.if_("toker->sees(desires) != nullptr")
 
@@ -143,7 +155,7 @@ class Code_Parser_Cpp(unittest.TestCase):
                         else:
                             CPP.stmt("noad->add_noad(this->" + x.name + "(noad))")
                 else:
-                    CPP.stmt("--deep;")
+                    CPP.stmt("--deep")
                     CPP.return_("noad")
 
                 CPP.end_if()
@@ -211,8 +223,7 @@ class Code_Parser_Cpp(unittest.TestCase):
         HPP.raw("""
     SkoarToker *toker;
     int deep;
-    map<wstring, list<ESkoarToke::Kind>> desirables;
-        """)
+""")
         toker_ = Arg("SkoarToker *", "toker")
         HPP.constructor_h(toker_)
         CPP.constructor(toker_)
