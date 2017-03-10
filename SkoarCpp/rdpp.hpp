@@ -7,12 +7,10 @@
 #include "toker.hpp"
 
 struct SkoarStats {
-
     SkoarStats();
 
     map<ESkoarToke::Kind, float> tokeFreq;
     list<ESkoarToke::Kind> *desirables;
-
 };
 
 class SkoarParser {
@@ -22,7 +20,7 @@ public:
 
     SkoarToker *toker;
     int deep;
-     SkoarParser(SkoarToker * tokr);
+    SkoarParser(SkoarToker * tokr);
     SkoarNoad* branches(SkoarNoad* parent);
     SkoarNoad* skoar(SkoarNoad* parent);
     SkoarNoad* branch(SkoarNoad* parent);
