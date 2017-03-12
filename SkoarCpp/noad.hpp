@@ -6,6 +6,7 @@
 #include "minstrel_fwd.hpp"
 #include "event_fwd.hpp"
 #include "spells.hpp"
+#include "colouring.hpp"
 
 // ==========================
 // The Parse Tree - SkoarNoad
@@ -17,24 +18,25 @@ public:
 	SkoarNoad *parent;          // the parent noad
 	list<SkoarNoad*> children;  // a list of child noads
 
-	wstring name;                // name of the nonterminal
+	wstring name;               // name of the nonterminal
 	ESkoarNoad::Kind kind;
+    SkoarColouring::EStyle style;
 
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 
 	SkoarToke *toke;
 	wstring *skoarce; 
-	size_t skoarce_offs;
-	size_t skoarce_len;
 
+    NoaditeList *noadites;
+	size_t offs;
+	size_t size;
 
 	SpellOfMinstrels on_enter;
 	
 	wstring *voice;           // what voice to use
-	void *skoap;             // what skoap are we in
+	void *skoap;              // what skoap are we in
 
 	SkoarNoad(wstring &nameArg, ESkoarNoad::Kind kindArg, SkoarNoad *parentArg);
-
 	wstring *asString();
 
 	// -------------------
@@ -66,6 +68,7 @@ public:
 	void depth_visit(SpellOfNoads f);
 	
 	void inorder(SpellOfNoads f);
+    void inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g);
 
 	// debug here if it's crashing while performing the skoar
 	void inorder_from_here(list<int> &here, SpellOfNoads f);
@@ -98,7 +101,15 @@ public:
 	| j = 0 |
 
 	*/
+
+    friend std::wostream & operator<<(wostream &out, SkoarNoad &noad) {
+        out << L"SkoarNoad: offs: " << noad.offs 
+            << L", size: " << noad.size 
+            << L", " << noad.name;
+        return out;
+    }
 };
+
 
 
 

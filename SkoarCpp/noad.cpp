@@ -7,14 +7,19 @@
 #include "toker.hpp"
 #include "noad.hpp"
 
+// colouring.cpp
+extern SkoarColouring SkoarStyles;
+
 // ==========================
 // The Parse Tree - SkoarNoad
 // ==========================
-SkoarNoad::SkoarNoad(wstring &nameArg, ESkoarNoad::Kind kindArg, SkoarNoad *parentArg) {
-	parent = parentArg;
-	name = nameArg;
-	skoarce = nullptr;
-	kind = kindArg;
+SkoarNoad::SkoarNoad(wstring &nameArg, ESkoarNoad::Kind kindArg, SkoarNoad *parentArg) :
+    parent(parentArg),
+    name(nameArg),
+    skoarce(nullptr),
+    kind(kindArg),
+    style(SkoarStyles.getNoadStyle(kindArg))
+{
 }
 
 wstring *SkoarNoad::asString() {
@@ -59,17 +64,17 @@ void SkoarNoad::decorate(wstring *v, void *s, list<int> &parent_address, int i) 
 		v = voice;
 	}
 
-	address.emplace_back(i);
+	address.push_back(i);
 	address.splice(address.end(), parent_address);
 	skoap = s;
 
 	i = 0;
-	skoarce_len = 0;
+	size = 0;
 	for (SkoarNoad *y : children) {
 		y->decorate(v, s, address, i);
 		i = i + 1;
 		//skoarce += y->skoarce;
-		skoarce_len += y->skoarce_len;
+        size += y->size;
 	}
 
 }
@@ -78,17 +83,17 @@ void SkoarNoad::decorate(wstring *v, void *s, list<int> &parent_address, int i) 
 // growing the tree
 // ----------------
 void SkoarNoad::add_noad(SkoarNoad *noad) {
-	children.emplace_back(noad);
+	children.push_back(noad);
 }
 
 void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
 	
 	auto x = new SkoarNoad(name, ESkoarNoad::toke, this);
 	x->toke = t;
-	children.emplace_back(x);
+	children.push_back(x);
 
 	x->skoarce = t->lexeme;
-	x->skoarce_len = t->size;
+	x->size = t->size;
 }
 
 // ----------------
@@ -227,6 +232,20 @@ void SkoarNoad::inorder(SpellOfNoads f) {
 			y->inorder(f);
 	
 	//debug("<<< inorder: " ++ name);
+}
+
+void SkoarNoad::inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g) {
+
+    f(this);
+
+    if (!children.empty())
+        for (auto y : children)
+            y->inorderBeforeAfter(f, g);
+
+    g(this);
+
+
+    //debug("<<< inorder: " ++ name);
 }
 
 // - debug here if it's crashing while performing the skoar

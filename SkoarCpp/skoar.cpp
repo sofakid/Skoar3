@@ -10,6 +10,7 @@
 #include "skoarpion.hpp"
 #include "spells.hpp"
 #include "logging.hpp"
+#include "colouring.hpp"
 
 #include <ctime>
 
@@ -87,10 +88,10 @@ void Skoar::decorate() {
 	tree->depth_visit([&](SkoarNoad *noad) {
 		auto t = noad->toke;
 
-		noad->skoarce_len = 0;
+		noad->size = 0;
 		for (SkoarNoad *y : noad->children) {
 			//noad->skoarce += y->skoarce;
-			noad->skoarce_len += y->skoarce_len;
+			noad->size += y->size;
 		}
 
 		if (t != nullptr) {
@@ -160,7 +161,66 @@ void Skoar::draw_skoarpions() {
 	}
 }
 
-#include <Windows.h>
-int main(int argc, TCHAR *argv[]) {
+// --------------------------------------------------------------------------------
+// for highlighting
+
+SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
+    this->skoarce = skoarce + L"\n"; // i don't like this + L"\n" business.
+
+    toker = new SkoarToker(this->skoarce);
+    auto parser = new SkoarParser(toker);
+    parsedOk = false;
+    try {
+        tree = parser->skoar(nullptr);
+        parser->sortDesirables();
+        toker->eof();
+        parsedOk = true;
+    }
+    catch (...) {
+        // someday we can like, underline the error or something.
+        log->e("parse fail");
+    }
+    
+    if (parsedOk) {
+        //log->i("parsing...", "noadites");
+        //auto iter = noadites.elements.cbegin();
+
+        size_t pos = 0;
+        
+        SkoarColouring colouring;
+
+        tree->inorderBeforeAfter(
+            
+            // Before
+            [&](SkoarNoad *noad) {
+                auto toke = noad->toke;
+
+                if (toke != nullptr) {
+                    pos = toke->offs + toke->size;
+                    noad->offs = toke->offs;
+                    log->i(*noad, toke->style);
+                } else {
+                    noad->offs = pos;
+                    log->i(*noad, noad->style);
+                }
+
+                
+            },  
+
+            // After
+            [&](SkoarNoad *noad) {
+                noad->size = pos - noad->offs;
+            });
+
+        
+
+        //noadites.compact();
+
+    }
+}
+
+SkoarLite::~SkoarLite() {
 
 }
+
+

@@ -24,6 +24,10 @@ class Code_Lexer_Cpp(unittest.TestCase):
         emissions.CPP.raw("""#include "lex.hpp"
 #include "exception.hpp"
 
+// colouring.cpp
+extern SkoarColouring SkoarStyles;
+
+
 """)
 
     def dispensary(self):
@@ -67,6 +71,7 @@ SkoarToke *SkoarDispensary::match_toke(ESkoarToke::Kind want, wstring *buf, size
         CPP = emissions.CPP
         CPP.raw("""#pragma once
 #include "skoarcery.hpp"
+
 """)
   
     def enum_h(self):
@@ -98,7 +103,11 @@ namespace ESkoarNoad {
         for x in SortedNonterminals:
             CPP.raw("        " + x.name + ",\n")
 
-        CPP.raw("    \n};\n};\n")
+        CPP.raw('''    \n};\n};
+
+#include "colouring.hpp"
+
+''')
 
     def dispensary_h(self):
         emissions.CPP.raw("""

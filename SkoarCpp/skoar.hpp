@@ -16,16 +16,17 @@ public:
 	ISkoarLog *log;
 
 	// todo: make this static
-	SkoarOps *ops;      // operations tables object
+	SkoarOps *ops;                               // operations tables object
 
-	std::wstring skoarce;      // the skoarce code
-	SkoarNoad *tree;         // root of tree
-	SkoarToker *toker;        // toker
-	std::map<std::wstring, SkoarKoar*>  voices;       // all the voices
-	SkoarKoar *all_voice;    // the all voice
-	std::list<Skoarpion *> skoarpions;   // all the skoarpions
+	std::wstring skoarce;                        // the skoarce code
+	SkoarNoad *tree;                             // root of tree
+	SkoarToker *toker;                           // toker
+	std::map<std::wstring, SkoarKoar*>  voices;  // all the voices
+	SkoarKoar *all_voice;                        // the all voice
+	std::list<Skoarpion *> skoarpions;           // all the skoarpions
 
 	Skoar(std::wstring &skoarce, ISkoarLog *log);
+    ~Skoar();
 
 	void decorate();
 	SkoarKoar *get_voice(std::wstring *k);
@@ -36,4 +37,15 @@ public:
 	void draw_skoarpions();
 };
 
+class SkoarLite {
+public:
+    SkoarLite(std::wstring &skoarce, ISkoarLog *log);
+    ~SkoarLite();
+
+    std::wstring skoarce;      // the skoarce code
+    SkoarNoad *tree;           // root of tree
+    SkoarToker *toker;         // toker
+
+    bool parsedOk;
+};
 

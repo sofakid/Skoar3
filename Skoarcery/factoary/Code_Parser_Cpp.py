@@ -228,6 +228,8 @@ struct SkoarStats {
 
     SkoarStats();
 
+    // use a float so it never overflows when adding a small constant to it, 
+    // just eventually stops making a difference.
     map<ESkoarToke::Kind, float> tokeFreq;
     list<ESkoarToke::Kind> *desirables;
 
