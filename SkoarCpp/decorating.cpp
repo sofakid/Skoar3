@@ -335,7 +335,7 @@ Skoarmantics::Skoarmantics() {
 		// !f<x,y>
 		if (args != nullptr) {
 
-			auto end_noad = new SkoarNoad(wstring(L"deref_end"), ESkoarNoad::artificial, noad);
+			auto end_noad = SkoarNoad::New<ESkoarNoad::artificial>(wstring(L"deref_end"), noad);
 			end_noad->on_enter = [&](SkoarMinstrel *m) {
 				m->fairy->cast_arcane_magic();
 				x->on_enter(m);
@@ -398,7 +398,7 @@ Skoarmantics::Skoarmantics() {
     table[ESkoarNoad::expr] = [](Skoar *skoar, SkoarNoad *noad) {
 		// we insert a node at the end of the expression
 		// so we can impress the result
-		auto end_noad = new SkoarNoad(wstring(L"expr_end"), ESkoarNoad::artificial, noad);
+        auto end_noad = SkoarNoad::New<ESkoarNoad::artificial>(wstring(L"expr_end"), noad);
 		end_noad->on_enter = [&](SkoarMinstrel *m) {
 			m->fairy->cast_arcane_magic();
 		};

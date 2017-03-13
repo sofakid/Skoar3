@@ -6,21 +6,11 @@
 #include "skoarpuscle.hpp"
 #include "toker.hpp"
 #include "noad.hpp"
-
-// colouring.cpp
-extern SkoarColouring SkoarStyles;
+#include "styles.hpp"
 
 // ==========================
 // The Parse Tree - SkoarNoad
 // ==========================
-SkoarNoad::SkoarNoad(wstring &nameArg, ESkoarNoad::Kind kindArg, SkoarNoad *parentArg) :
-    parent(parentArg),
-    name(nameArg),
-    skoarce(nullptr),
-    kind(kindArg),
-    style(SkoarStyles.getNoadStyle(kindArg))
-{
-}
 
 wstring *SkoarNoad::asString() {
     if (skoarce == nullptr)
@@ -88,7 +78,7 @@ void SkoarNoad::add_noad(SkoarNoad *noad) {
 
 void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
 	
-	auto x = new SkoarNoad(name, ESkoarNoad::toke, this);
+	auto x = New<ESkoarNoad::toke>(name, this);
 	x->toke = t;
 	children.push_back(x);
 

@@ -24,10 +24,6 @@ class Code_Lexer_Cpp(unittest.TestCase):
         emissions.CPP.raw("""#include "lex.hpp"
 #include "exception.hpp"
 
-// colouring.cpp
-extern SkoarColouring SkoarStyles;
-
-
 """)
 
     def dispensary(self):
@@ -105,7 +101,7 @@ namespace ESkoarNoad {
 
         CPP.raw('''    \n};\n};
 
-#include "colouring.hpp"
+#include "styles.hpp"
 
 ''')
 

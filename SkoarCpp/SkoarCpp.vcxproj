@@ -143,7 +143,7 @@
   <ItemGroup>
     <ClInclude Include="beaty.hpp" />
     <ClInclude Include="beaty_fwd.hpp" />
-    <ClInclude Include="colouring.hpp" />
+    <ClInclude Include="styles.hpp" />
     <ClInclude Include="decorating.hpp" />
     <ClInclude Include="decorating_fwd.hpp" />
     <ClInclude Include="event.hpp" />
@@ -184,7 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="beaty.cpp" />
-    <ClCompile Include="colouring.cpp" />
     <ClCompile Include="decorating.cpp" />
     <ClCompile Include="event.cpp" />
     <ClCompile Include="exception.cpp" />
@@ -200,6 +199,7 @@
     <ClCompile Include="noad.cpp" />
     <ClCompile Include="skoarpion.cpp" />
     <ClCompile Include="skoarpuscle.cpp" />
+    <ClCompile Include="styles.cpp" />
     <ClCompile Include="toker.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -132,7 +132,7 @@
     <ClInclude Include="skoarstyles_unreal.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="colouring.hpp">
+    <ClInclude Include="styles.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -188,7 +188,7 @@
     <ClCompile Include="lex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="colouring.cpp">
+    <ClCompile Include="styles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

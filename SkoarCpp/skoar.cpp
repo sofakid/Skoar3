@@ -10,7 +10,7 @@
 #include "skoarpion.hpp"
 #include "spells.hpp"
 #include "logging.hpp"
-#include "colouring.hpp"
+#include "styles.hpp"
 
 #include <ctime>
 
@@ -187,8 +187,6 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
 
         size_t pos = 0;
         
-        SkoarColouring colouring;
-
         tree->inorderBeforeAfter(
             
             // Before
@@ -198,10 +196,8 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
                 if (toke != nullptr) {
                     pos = toke->offs + toke->size;
                     noad->offs = toke->offs;
-                    log->i(*noad, toke->style);
                 } else {
                     noad->offs = pos;
-                    log->i(*noad, noad->style);
                 }
 
                 
@@ -211,10 +207,6 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
             [&](SkoarNoad *noad) {
                 noad->size = pos - noad->offs;
             });
-
-        
-
-        //noadites.compact();
 
     }
 }

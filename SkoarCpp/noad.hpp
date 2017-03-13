@@ -6,7 +6,7 @@
 #include "minstrel_fwd.hpp"
 #include "event_fwd.hpp"
 #include "spells.hpp"
-#include "colouring.hpp"
+#include "styles.hpp"
 
 // ==========================
 // The Parse Tree - SkoarNoad
@@ -18,16 +18,15 @@ public:
 	SkoarNoad *parent;          // the parent noad
 	list<SkoarNoad*> children;  // a list of child noads
 
-	wstring name;               // name of the nonterminal
-	ESkoarNoad::Kind kind;
-    SkoarColouring::EStyle style;
+	const wstring name;               // name of the nonterminal
+	const ESkoarNoad::Kind kind;
+    const SkoarStyles::EStyle style;
 
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 
 	SkoarToke *toke;
 	wstring *skoarce; 
 
-    NoaditeList *noadites;
 	size_t offs;
 	size_t size;
 
@@ -36,7 +35,32 @@ public:
 	wstring *voice;           // what voice to use
 	void *skoap;              // what skoap are we in
 
-	SkoarNoad(wstring &nameArg, ESkoarNoad::Kind kindArg, SkoarNoad *parentArg);
+	//SkoarNoad(wstring &nameArg, const ESkoarNoad::Kind kindArg, SkoarNoad *parentArg);
+    
+    //SkoarNoad() :
+    //    parent(nullptr),
+    //    name(L""),
+    //    skoarce(nullptr),
+    //    kind(ESkoarNoad::unknown),
+    //    style(SkoarStyles::EStyle::nostyle);
+
+    
+
+    SkoarNoad(wstring &nameArg, SkoarNoad *parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg) :
+        parent(parentArg),
+        name(nameArg),
+        skoarce(nullptr),
+        kind(kindArg),
+        style(styleArg)
+    {}
+
+    // can't figure out how to do this as a constructor..
+    template<const ESkoarNoad::Kind kindArg>
+    static SkoarNoad* New(wstring &nameArg, SkoarNoad *parentArg)
+    {
+        return new SkoarNoad(nameArg, parentArg, kindArg, SkoarStyles::style<kindArg>());
+    }
+
 	wstring *asString();
 
 	// -------------------

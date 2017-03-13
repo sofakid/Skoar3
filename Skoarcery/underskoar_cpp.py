@@ -24,7 +24,7 @@ match_toke_ = Arg("SkoarToke*", "match_toke")
 s_ = Arg("wstring *", "s")
 n_ = Arg("size_t", "n")
 kind_ = Arg("ESkoarToke::Kind", "kind");
-style_ = Arg("SkoarColouring::EStyle", "style")
+style_ = Arg("SkoarStyles::EStyle", "style")
   
 SkoarError_ = "SkoarError"
 SubclassResponsibilityError_ = "SubclassResponsibilityError"
@@ -49,7 +49,7 @@ def skoarToke_cpp():
 
     _.constructor()
     _____.stmt("kind = ESkoarToke::Unknown")
-    _____.stmt("style = SkoarColouring::EStyle::nostyle")
+    _____.stmt("style = SkoarStyles::EStyle::nostyle")
     _.end()
 
     _.constructor(s_, offs_, n_)
@@ -57,7 +57,7 @@ def skoarToke_cpp():
     _____.stmt(_.v_ass(_.v_attr(offs_), offs_))
     _____.stmt(_.v_ass(_.v_attr(size_), n_))
     _____.stmt("kind = ESkoarToke::Unknown")
-    _____.stmt("style = SkoarColouring::EStyle::nostyle")
+    _____.stmt("style = SkoarStyles::EStyle::nostyle")
     _.end()
 
     _.cmt("how many characters to burn from the buffer")
@@ -201,7 +201,7 @@ def typical_token_cpp(token):
     _.stmt("const std::wregex "+ token.toker_name +"::"+ regex_.name +" = "+ _.v_def_regex(token.regex))
   
     kind_token_ = Arg("ESkoarToke::Kind", "ESkoarToke::" + token.name);
-    style_token_ = Arg("SkoarColouring::EStyle", "SkoarStyles.getTokeStyle(ESkoarToke::" + token.name + ")")
+    style_token_ = Arg("SkoarStyles::EStyle", "SkoarStyles::style<ESkoarToke::" + token.name + ">()")
 
     _.constructor(s_, offs_, n_)
     _____.stmt(_.v_ass(_.v_attr(lexeme_), s_))

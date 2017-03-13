@@ -139,7 +139,7 @@ void localSortDesirables() {
             if A.intermediate:
                 CPP.var(Noadx, Parentx.name)
             else:
-                CPP.var(Noadx, "new SkoarNoad(wstring(L\""+ A.name +"\"), ESkoarNoad::"+ A.name +", parent);")
+                CPP.var(Noadx, "SkoarNoad::New<ESkoarNoad::"+ A.name +">(wstring(L\""+ A.name +"\"), parent);")
 
             CPP.var(Desiresx, CPP.null)
             CPP.nl()
