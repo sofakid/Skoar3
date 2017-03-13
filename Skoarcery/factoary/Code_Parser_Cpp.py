@@ -135,7 +135,7 @@ void localSortDesirables() {
             
             HPP.method_h(Ax, Parentx)
             CPP.method(Ax, Parentx)
-            
+
             if A.intermediate:
                 CPP.var(Noadx, Parentx.name)
             else:
@@ -145,8 +145,12 @@ void localSortDesirables() {
             CPP.nl()
 
             CPP.if_("++deep > 1000")
-            ____CPP.stmt("this->fail_too_deep()")
+            ____CPP.stmt("this->fail_too_deep(parent)")
             CPP.end_if()
+
+            if A.name == "skoar":
+                CPP.raw("    try {\n")
+                CPP.tab += 1
 
             # each production
             for P in R:
@@ -197,9 +201,18 @@ void localSortDesirables() {
 
             else:
                 CPP.cmt("Error State")
-                CPP.stmt("this->fail()")
+                CPP.stmt("this->fail(noad)")
                 CPP.return_(CPP.null)
 
+            if A.name == "skoar":
+                CPP.raw("""
+    }
+    catch (SkoarError &e) {
+        this->toker_fail(e, noad);
+    }
+""")
+                CPP.tab -= 1
+                CPP.return_(CPP.null)
             CPP.end() # CPP.method(Ax, Parentx)
 
         CPP.nl()
@@ -224,6 +237,7 @@ void localSortDesirables() {
         HPP.raw("""#pragma once
 #include "skoarcery.hpp"
 #include "noad_fwd.hpp"
+#include "exception_fwd.hpp"
 #include "toker.hpp"
 #include "spells.hpp"
 
@@ -251,18 +265,29 @@ struct SkoarStats {
         CPP.set_class("SkoarParser")
         
         fail_ = Arg("void","fail")
+        noad_ = Arg("SkoarNoadPtr","noad")
+
         fail_too_deep_ = Arg("void","fail_too_deep")
+
+        toker_fail_ = Arg("void","toker_fail")
+        skoar_error_ = Arg("SkoarError&","e")
         
-        HPP.method_h(fail_)
-        CPP.method(fail_)
+        HPP.method_h(fail_, noad_)
+        CPP.method(fail_, noad_)
         CPP.stmt("toker->dump()")
-        CPP.stmt("throw new SkoarParseException(L\"Fail\");")
+        CPP.stmt("throw new SkoarParseException(L\"Fail\", noad)")
         CPP.end()
 
-        HPP.method_h(fail_too_deep_)
-        CPP.method(fail_too_deep_)
+        HPP.method_h(fail_too_deep_, noad_)
+        CPP.method(fail_too_deep_, noad_)
         CPP.stmt("toker->dump()")
-        CPP.stmt("throw new SkoarParseException(L\"Parse tree too deep!\");")
+        CPP.stmt("throw new SkoarParseException(L\"Parse tree too deep!\", noad)")
+        CPP.end()
+
+        HPP.method_h(toker_fail_, skoar_error_, noad_)
+        CPP.method(toker_fail_, skoar_error_, noad_)
+        CPP.stmt("toker->dump()")
+        CPP.stmt("throw new SkoarParseException(e.wwhat(), noad)")
         CPP.end()
 
         HPP.raw("""

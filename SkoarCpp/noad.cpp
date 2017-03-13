@@ -24,6 +24,17 @@ SkoarNoad::SkoarNoad(wstring &nameArg, SkoarNoadPtr parentArg, const ESkoarNoad:
     ++SkoarMemories.Noads;
 }
 
+SkoarNoadPtr SkoarNoad::New(wstring &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
+{
+    SkoarNoadPtr x = std::make_shared<SkoarNoad>(nameArg, parentArg, ESkoarNoad::toke, toke->style);
+    x->skoarce = &toke->lexeme;
+    x->size = toke->size;
+    x->toke = std::move(toke);
+
+    return x;
+}
+
+
 SkoarNoad::~SkoarNoad() {
     --SkoarMemories.Noads;
 
@@ -35,14 +46,13 @@ SkoarNoad::~SkoarNoad() {
     children.clear();
 }
 
-SkoarNoadPtr SkoarNoad::New(wstring &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
-{
-    SkoarNoadPtr x = std::make_shared<SkoarNoad>(nameArg, parentArg, ESkoarNoad::toke, toke->style);
-    x->skoarce = &toke->lexeme;
-    x->size = toke->size;
-    x->toke = std::move(toke);
-
-    return x;
+void SkoarNoad::clear() {
+    // visit the noads depth-first, clear children and unset all shared_ptrs. 
+    // should then trigger destruction.
+    depth_visit([](SkoarNoad *noad) {
+        noad->children.clear();
+        noad->parent = nullptr;
+    });
 }
 
 wstring *SkoarNoad::asString() {

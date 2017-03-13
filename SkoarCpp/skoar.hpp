@@ -20,7 +20,7 @@ public:
 	SkoarOps *ops;                               // operations tables object
 
 	std::wstring skoarce;                        // the skoarce code
-	SkoarNoadPtr tree;                             // root of tree
+	SkoarNoadPtr tree;                           // root of tree
 	SkoarToker *toker;                           // toker
 	std::map<std::wstring, SkoarKoar*>  voices;  // all the voices
 	SkoarKoar *all_voice;                        // the all voice
@@ -46,7 +46,7 @@ public:
     ISkoarLog *log;
 
     std::wstring skoarce;      // the skoarce code
-    SkoarNoadPtr tree;           // root of tree
+    SkoarNoadPtr tree;         // root of tree
     SkoarToker *toker;         // toker
 
     bool parsedOk;

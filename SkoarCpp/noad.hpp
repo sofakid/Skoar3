@@ -57,6 +57,8 @@ public:
 
     static SkoarNoadPtr New(wstring &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke);
 
+    void clear();
+
 	wstring *asString();
 
 	// -------------------

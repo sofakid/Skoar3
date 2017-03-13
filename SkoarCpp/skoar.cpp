@@ -43,16 +43,37 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
 	start_time = clock();
 
 	log->i(">>> parsing skoar...");
-	tree = parser->skoar(nullptr);
+    try {
+        tree = parser->skoar(nullptr);
+    }
+    catch (SkoarParseException *e) {
+        // someday we can like, underline the error or something.
+        log->e("parse fail", e->wwhat());
+
+        // delete the unfinished tree
+        auto x = e->noad;
+        while (x->parent != nullptr)
+            x = x->parent;
+
+        x->clear();
+        x = nullptr;
+        e->noad = nullptr;
+
+        return;
+    }
     parser->sortDesirables();
 
 	try {
 		toker->eof();
-	} catch (SkoarError &e) {
-		//log(e.what());
-		toker->dump();
-		throw e;
 	}
+    catch (SkoarError &e) {
+        // someday we can like, underline the error or something.
+        log->e("parse fail", e.wwhat());
+
+        // delete the broken tree
+        tree->clear();
+        tree = nullptr;
+    }
 
 	parse_time = clock() - start_time;
 	
@@ -180,12 +201,34 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
     try {
         tree = parser->skoar(nullptr);
         parser->sortDesirables();
-        toker->eof();
-        parsedOk = true;
+        
     }
-    catch (...) {
+    catch (SkoarParseException *e) {
         // someday we can like, underline the error or something.
-        log->e("parse fail");
+        log->e("parse fail", e->wwhat());
+       
+        // delete the unfinished tree
+        auto x = e->noad;
+        while (x->parent != nullptr)
+            x = x->parent;
+
+        x->clear();
+        x = nullptr;
+        e->noad = nullptr;
+        return;
+    }
+
+    try {
+        toker->eof();
+        parsedOk = true; 
+    }
+    catch (SkoarError *e) {
+        // someday we can like, underline the error or something.
+        log->e("parse fail", e->wwhat());
+
+        // delete the broken tree
+        tree->clear();
+        tree = nullptr;
     }
     
     if (parsedOk) {
@@ -231,10 +274,9 @@ SkoarLite::~SkoarLite() {
     log->i("Deleting SkoarLite...");
     log->w("Memories", SkoarMemories);
 
-    tree->depth_visit([](SkoarNoad *noad) {
-        noad->children.clear();
-        noad->parent = nullptr;
-    });
+    if (parsedOk) {
+        tree->clear();
+    }
     tree = nullptr;
 
     elapsed_time = clock() - start_time;
