@@ -13,7 +13,7 @@ SkoarToker::SkoarToker(wstring &s) {
 	dispensary = new SkoarDispensary();
 }
 
-SkoarToke *SkoarToker::see(ESkoarToke::Kind want) {
+SkoarToke* SkoarToker::see(ESkoarToke::Kind want) {
 
 	if (i_saw != nullptr) {
 		if (i_saw->kind == want) {
@@ -27,7 +27,7 @@ SkoarToke *SkoarToker::see(ESkoarToke::Kind want) {
 	
 }
 
-SkoarToke *SkoarToker::sees(std::list<ESkoarToke::Kind> *wants) {
+SkoarToke* SkoarToker::sees(std::list<ESkoarToke::Kind> *wants) {
 
 	i_am_here += Toke_Whitespace::burn(skoarce, i_am_here);
 
@@ -42,19 +42,19 @@ SkoarToke *SkoarToker::sees(std::list<ESkoarToke::Kind> *wants) {
 	return nullptr;
 }
 
-SkoarToke * SkoarToker::burn(ESkoarToke::Kind want) {
+SkoarTokePtr SkoarToker::burn(ESkoarToke::Kind want) {
 
 	auto toke = i_saw;
 
 	if (toke == nullptr) {
-		toke = this->see(want);
+		toke = see(want);
 	}
 
 	if (toke != nullptr && toke->kind == want) {
 		i_saw = nullptr;
 		i_am_here = i_am_here + toke->burn();
 		i_am_here = i_am_here + Toke_Whitespace::burn(skoarce, i_am_here);
-		return toke;
+		return unique_ptr<SkoarToke>(toke);
 	};
 
 	//msg = "Tried to burn " + want->name + ", but saw " + toke->asString;

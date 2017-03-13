@@ -9,6 +9,7 @@
 #include "skoarpion_fwd.hpp"
 
 #include "logging.hpp"
+#include "spells.hpp"
 
 class Skoar {
 public:
@@ -19,7 +20,7 @@ public:
 	SkoarOps *ops;                               // operations tables object
 
 	std::wstring skoarce;                        // the skoarce code
-	SkoarNoad *tree;                             // root of tree
+	SkoarNoadPtr tree;                             // root of tree
 	SkoarToker *toker;                           // toker
 	std::map<std::wstring, SkoarKoar*>  voices;  // all the voices
 	SkoarKoar *all_voice;                        // the all voice
@@ -42,8 +43,10 @@ public:
     SkoarLite(std::wstring &skoarce, ISkoarLog *log);
     ~SkoarLite();
 
+    ISkoarLog *log;
+
     std::wstring skoarce;      // the skoarce code
-    SkoarNoad *tree;           // root of tree
+    SkoarNoadPtr tree;           // root of tree
     SkoarToker *toker;         // toker
 
     bool parsedOk;

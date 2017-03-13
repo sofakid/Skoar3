@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="beaty.hpp" />
     <ClInclude Include="beaty_fwd.hpp" />
+    <ClInclude Include="memories.hpp" />
     <ClInclude Include="styles.hpp" />
     <ClInclude Include="decorating.hpp" />
     <ClInclude Include="decorating_fwd.hpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="koar.cpp" />
     <ClCompile Include="lex.cpp" />
     <ClCompile Include="logging.cpp" />
+    <ClCompile Include="memories.cpp" />
     <ClCompile Include="minstrel.cpp" />
     <ClCompile Include="operators.cpp" />
     <ClCompile Include="pitchy.cpp" />

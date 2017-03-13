@@ -6,6 +6,8 @@
 
 #include "skoarpion_fwd.hpp"
 
+#include "spells.hpp"
+
 class Skoarpion {
 public:
 

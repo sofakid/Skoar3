@@ -14,6 +14,8 @@
 
 #include <ctime>
 
+#include "memories.hpp"
+
 // =====
 // Skoar
 // =====
@@ -79,17 +81,21 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
         "seconds total: ", f_parse_time + f_decorate_time);
 }
 
+Skoar::~Skoar() {
+    tree = nullptr;
+}
+
 
 void Skoar::decorate() {
 
 	auto inspector = new SkoarTokeInspector();
 	auto skoarmantics = new Skoarmantics();
 
-	tree->depth_visit([&](SkoarNoad *noad) {
-		auto t = noad->toke;
+	tree->depth_visit([&](SkoarNoad* noad) {
+		auto t = noad->toke.get();
 
 		noad->size = 0;
-		for (SkoarNoad *y : noad->children) {
+		for (auto y : noad->children) {
 			//noad->skoarce += y->skoarce;
 			noad->size += y->size;
 		}
@@ -166,6 +172,7 @@ void Skoar::draw_skoarpions() {
 
 SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
     this->skoarce = skoarce + L"\n"; // i don't like this + L"\n" business.
+    this->log = log;
 
     toker = new SkoarToker(this->skoarce);
     auto parser = new SkoarParser(toker);
@@ -190,8 +197,8 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
         tree->inorderBeforeAfter(
             
             // Before
-            [&](SkoarNoad *noad) {
-                auto toke = noad->toke;
+            [&](SkoarNoad* noad) {
+                auto toke = noad->toke.get();
 
                 if (toke != nullptr) {
                     pos = toke->offs + toke->size;
@@ -204,7 +211,7 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
             },  
 
             // After
-            [&](SkoarNoad *noad) {
+            [&](SkoarNoad* noad) {
                 noad->size = pos - noad->offs;
             });
 
@@ -212,6 +219,30 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
 }
 
 SkoarLite::~SkoarLite() {
+    clock_t start_time;
+    clock_t elapsed_time;
+
+    float f_elapsed_time;
+
+    start_time = clock();
+
+    log->i("\n\n");
+    log->i("----------------------------------");
+    log->i("Deleting SkoarLite...");
+    log->w("Memories", SkoarMemories);
+
+    tree->depth_visit([](SkoarNoad *noad) {
+        noad->children.clear();
+        noad->parent = nullptr;
+    });
+    tree = nullptr;
+
+    elapsed_time = clock() - start_time;
+    f_elapsed_time = static_cast<float>(elapsed_time) / CLOCKS_PER_SEC;
+
+    log->i("Deleted SkoarLite.", "elapsed_time", f_elapsed_time);
+    log->w("Memories", SkoarMemories);
+    log->i("----------------------------------\n\n");
 
 }
 

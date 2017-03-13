@@ -11,7 +11,7 @@ _ = _____ = _________ = _____________ = _________________ = ____________________
 # Symbols
 # -------
 SkoarToke_ = "SkoarToke"
-lexeme_ = Arg("wstring *", "lexeme")
+lexeme_ = Arg("wstring", "lexeme")
 regex_ = Arg("const wregex", "rgx")
 size_ = Arg("size_t", "size")
 inspectable_ = "inspectable"
@@ -21,7 +21,7 @@ buf_ = Arg("wstring *", "buf")
 offs_ = Arg("size_t", "offs")
 toke_class_ = "toke_class"
 match_toke_ = Arg("SkoarToke*", "match_toke")
-s_ = Arg("wstring *", "s")
+s_ = Arg("wstring", "s")
 n_ = Arg("size_t", "n")
 kind_ = Arg("ESkoarToke::Kind", "kind");
 style_ = Arg("SkoarStyles::EStyle", "style")
@@ -58,6 +58,11 @@ def skoarToke_cpp():
     _____.stmt(_.v_ass(_.v_attr(size_), n_))
     _____.stmt("kind = ESkoarToke::Unknown")
     _____.stmt("style = SkoarStyles::EStyle::nostyle")
+    _____.stmt("++SkoarMemories.Tokes")
+    _.end()
+    
+    _.destructor()
+    _____.stmt("--SkoarMemories.Tokes")
     _.end()
 
     _.cmt("how many characters to burn from the buffer")
@@ -94,6 +99,8 @@ def skoarToke_h():
 
     _____.constructor_h()
     _____.constructor_h(s_, offs_, n_)
+
+    _____.destructor_h()
     
     _____.cmt("how many characters to burn from the buffer")
     _____.method_h(burn_)
@@ -161,6 +168,11 @@ def Eof_token():
     
     _.constructor()
     _____.stmt("kind = ESkoarToke::Eof")
+    _____.stmt("++SkoarMemories.Tokes")
+    _.end()
+    
+    _.destructor()
+    _____.stmt("--SkoarMemories.Tokes")
     _.end()
 
     _.method(burn_, buf_, offs_)
@@ -189,6 +201,8 @@ def Eof_token_h():
     
     _____.nl()
     _____.constructor_h()
+    _____.destructor_h()
+    
     _____.static_method_h(burn_, buf_, offs_)
     _____.static_method_h(match_toke_, buf_, offs_)
     _.end_class()
@@ -209,10 +223,11 @@ def typical_token_cpp(token):
     _____.stmt(_.v_ass(_.v_attr(size_), n_))
     _____.stmt(_.v_ass(_.v_attr(kind_), kind_token_))
     _____.stmt(_.v_ass(_.v_attr(style_), style_token_))
+    _____.stmt("++SkoarMemories.Tokes")
     _.end()
     
     _.destructor()
-    _____.stmt("delete lexeme")
+    _____.stmt("--SkoarMemories.Tokes")
     _.end()
 
     _.method(match_toke_, buf_, offs_)
@@ -223,8 +238,8 @@ def typical_token_cpp(token):
     _____.if_("!found")
     _________.return_(_.null)
     _____.end_if()
-    _____.stmt("wstring *s = new wstring("+ match_obj_.name +".str())")
-    _____.return_("new "+ token.toker_name +"(s,offs,s->length())")
+    _____.stmt("auto s = wstring("+ match_obj_.name +".str())")
+    _____.return_("new "+ token.toker_name +"(s,offs,s.length())")
     #_________.return_(SkoarToke_ + _.v_static_accessor() + match_toke_.name +"<"+ token.toker_name +">("+ buf_.name +", "+ offs_.name +")")
     _.end()
 
@@ -241,7 +256,4 @@ def typical_token_h(token):
     _____.static_method_h(match_toke_, buf_, offs_)
     _.end_class()
 
-    x = Arg(SkoarToke_ +"&", "SkoarToke::"+ match_toke_.name +"<"+ token.toker_name +">")
-    #_.static_function_h(x, buf_, offs_)
-    
 

@@ -6,6 +6,7 @@
 #include "skoarpuscle_fwd.hpp"
 #include "skoarpion_fwd.hpp"
 #include "minstrel_fwd.hpp"
+#include "spells.hpp"
 
 class SkoarNav {
 public:

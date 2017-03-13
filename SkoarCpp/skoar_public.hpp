@@ -6,6 +6,7 @@
 
 #include <exception>
 #include <functional>
+#include <memory>
 
 #include "logging.hpp"
 #include "skoar.hpp"

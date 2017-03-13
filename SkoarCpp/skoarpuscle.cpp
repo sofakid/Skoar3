@@ -237,7 +237,7 @@ Skoarpuscle *SkoarpuscleDeref::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *min
 */
 
 SkoarpuscleMathOp::SkoarpuscleMathOp(SkoarToke *toke) {
-	val.String = toke->lexeme;
+	val.String = &toke->lexeme;
 
 	/*f = switch (val)
 	{
@@ -265,7 +265,7 @@ void SkoarpuscleMathOp::calculate(SkoarMinstrel *m, Skoarpuscle* left, Skoarpusc
 }
 
 SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarToke *toke) {
-	val.String = toke->lexeme;
+	val.String = &toke->lexeme;
 
 	// ==|!=|<=|>=|in|nin|and|or|xor
 	/*f = switch (val)
@@ -623,7 +623,7 @@ SkoarpuscleMsgName::SkoarpuscleMsgName(wstring *s) {
 
 SkoarpuscleBars::SkoarpuscleBars(SkoarToke *toke) {
 
-	val.String = toke->lexeme;
+	val.String = &toke->lexeme;
 	auto n = val.String->length() - 1;
 	bool pre_repeat = (*val.String)[0] == ':';
 	bool post_repeat = (*val.String)[n] == ':';
@@ -659,7 +659,7 @@ SkoarpuscleFine::SkoarpuscleFine() {
 
 
 SkoarpuscleSegno::SkoarpuscleSegno(SkoarNoad *nod, SkoarToke *toke) {
-	auto s = toke->lexeme;
+	auto s = &toke->lexeme;
 	auto n = s->length();
 
 	noad = nod;
@@ -718,18 +718,18 @@ SkoarpuscleMeter::SkoarpuscleMeter(SkoarToke *toke) {
 }
 
 SkoarpuscleCarrots::SkoarpuscleCarrots(SkoarToke *toke) {
-	val.Int = toke->lexeme->length();
+	val.Int = toke->lexeme.length();
 }
 
 SkoarpuscleTuplet::SkoarpuscleTuplet(SkoarToke *toke) {
-	val.Int = toke->lexeme->length();
+	val.Int = toke->lexeme.length();
 }
 			
 
 
 
 SkoarpuscleDynamic::SkoarpuscleDynamic(SkoarToke *toke) {
-	auto s = toke->lexeme;
+	auto s = &toke->lexeme;
 
 	/*val = switch (*s)
 	{
@@ -783,13 +783,13 @@ SkoarpuscleOctaveShift::SkoarpuscleOctaveShift(SkoarToke *toke) {
 }
 
 SkoarpuscleVoice::SkoarpuscleVoice(SkoarToke *toke) {
-	auto s = toke->lexeme;
+	auto s = &toke->lexeme;
 	auto n = s->length() - 1;
 	//val = s[1..n].asSymbol;
 }
 
 
 SkoarpuscleRep::SkoarpuscleRep(SkoarToke *toke) {
-	val.Int = toke->lexeme->length();
+	val.Int = toke->lexeme.length();
 }
 

@@ -7,6 +7,7 @@ using namespace std;
 #include <regex>
 #include <map>
 #include <set>
+#include <memory>
 
 #include <typeinfo>
 #include <type_traits>

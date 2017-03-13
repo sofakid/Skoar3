@@ -135,6 +135,9 @@
     <ClInclude Include="styles.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="memories.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="toker.cpp">
@@ -189,6 +192,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="styles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="memories.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

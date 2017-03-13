@@ -25,7 +25,7 @@ union SkoarpuscleValue {
 	list<class Skoarpuscle *> *List;
 	void *Void;
 
-	SkoarNoad *Subtree;
+	SkoarNoad **Subtree; // ???????
 
 	SkoarpuscleValue();
 	SkoarpuscleValue(int x);
@@ -43,6 +43,8 @@ public:
 	SkoarpuscleValue val;
 
 	Skoarpuscle();
+    ~Skoarpuscle() {
+    }
 
 	SpellOfMinstrels on_enter;
 
@@ -161,7 +163,7 @@ public:
 class SkoarpuscleVolta : public Skoarpuscle {
 public:
 	SkoarNoad *noad;
-	SkoarpuscleVolta(SkoarNoad *, SkoarToke *);
+	SkoarpuscleVolta(SkoarNoad * , SkoarToke *);
 };
 
 class SkoarpuscleMeter : public Skoarpuscle {

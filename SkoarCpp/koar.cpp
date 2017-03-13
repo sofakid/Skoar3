@@ -200,7 +200,7 @@ void SkoarKoar::nav_loop(
 
 			subtree->inorder_from_here(
 				*here,
-				[&](SkoarNoad *x) {
+				[&](SkoarNoad* x) {
 				x->enter_noad(minstrel);
 			});
 

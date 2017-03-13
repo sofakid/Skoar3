@@ -8,9 +8,42 @@
 #include "noad.hpp"
 #include "styles.hpp"
 
+#include "memories.hpp"
+
 // ==========================
 // The Parse Tree - SkoarNoad
 // ==========================
+
+SkoarNoad::SkoarNoad(wstring &nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg) :
+    parent(parentArg),
+    name(nameArg),
+    skoarce(nullptr),
+    kind(kindArg),
+    style(styleArg)
+{
+    ++SkoarMemories.Noads;
+}
+
+SkoarNoad::~SkoarNoad() {
+    --SkoarMemories.Noads;
+
+    parent = nullptr;
+    skoarce = nullptr;
+    toke = nullptr;
+    size = 0;
+    offs = 0;
+    children.clear();
+}
+
+SkoarNoadPtr SkoarNoad::New(wstring &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
+{
+    SkoarNoadPtr x = std::make_shared<SkoarNoad>(nameArg, parentArg, ESkoarNoad::toke, toke->style);
+    x->skoarce = &toke->lexeme;
+    x->size = toke->size;
+    x->toke = std::move(toke);
+
+    return x;
+}
 
 wstring *SkoarNoad::asString() {
     if (skoarce == nullptr)
@@ -37,7 +70,7 @@ void SkoarNoad::decorate_zero(wstring *v, void *s, list<int> &parent_address, in
 	skoap = s;
 
 	i = 0;
-	for (SkoarNoad *y : children) {
+	for (auto y : children) {
 		y->decorate(v, s, address, i);
 		++i;
 	}
@@ -60,7 +93,7 @@ void SkoarNoad::decorate(wstring *v, void *s, list<int> &parent_address, int i) 
 
 	i = 0;
 	size = 0;
-	for (SkoarNoad *y : children) {
+	for (auto y : children) {
 		y->decorate(v, s, address, i);
 		i = i + 1;
 		//skoarce += y->skoarce;
@@ -72,18 +105,8 @@ void SkoarNoad::decorate(wstring *v, void *s, list<int> &parent_address, int i) 
 // ----------------
 // growing the tree
 // ----------------
-void SkoarNoad::add_noad(SkoarNoad *noad) {
+void SkoarNoad::add_noad(SkoarNoadPtr noad) {
 	children.push_back(noad);
-}
-
-void SkoarNoad::add_toke(wstring name, SkoarToke *t) {
-	
-	auto x = New<ESkoarNoad::toke>(name, this);
-	x->toke = t;
-	children.push_back(x);
-
-	x->skoarce = t->lexeme;
-	x->size = t->size;
 }
 
 // ----------------
@@ -180,7 +203,7 @@ wstring SkoarNoad::draw_tree(int tab)	{
 
 void SkoarNoad::scry(SpellOfScrying f) {
 
-	this->depth_visit([f](SkoarNoad *noad){
+	this->depth_visit([f](SkoarNoad* noad){
 		
 
 
@@ -290,7 +313,7 @@ Skoarpuscle *SkoarNoad::next_skoarpuscle() {
 
 SkoarToke *SkoarNoad::next_toke() {
 	if (toke != nullptr)
-		return toke;
+		return toke.get();
 
 	if (children.empty())
 		return nullptr;

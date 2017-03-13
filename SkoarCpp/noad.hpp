@@ -15,8 +15,9 @@ class SkoarNoad {
 public:
 
 	list<int>  address;         // a list code to find the noad quickly
-	SkoarNoad *parent;          // the parent noad
-	list<SkoarNoad*> children;  // a list of child noads
+    SkoarNoadPtr parent;          // the parent noad
+
+	list<SkoarNoadPtr> children;  // a list of child noads
 
 	const wstring name;               // name of the nonterminal
 	const ESkoarNoad::Kind kind;
@@ -24,7 +25,7 @@ public:
 
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 
-	SkoarToke *toke;
+	SkoarTokePtr toke;
 	wstring *skoarce; 
 
 	size_t offs;
@@ -35,7 +36,7 @@ public:
 	wstring *voice;           // what voice to use
 	void *skoap;              // what skoap are we in
 
-	//SkoarNoad(wstring &nameArg, const ESkoarNoad::Kind kindArg, SkoarNoad *parentArg);
+	//SkoarNoad(wstring &nameArg, const ESkoarNoad::Kind kindArg, SkoarNoadPtr parentArg);
     
     //SkoarNoad() :
     //    parent(nullptr),
@@ -44,22 +45,17 @@ public:
     //    kind(ESkoarNoad::unknown),
     //    style(SkoarStyles::EStyle::nostyle);
 
-    
-
-    SkoarNoad(wstring &nameArg, SkoarNoad *parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg) :
-        parent(parentArg),
-        name(nameArg),
-        skoarce(nullptr),
-        kind(kindArg),
-        style(styleArg)
-    {}
+    SkoarNoad(wstring &nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg);
+    ~SkoarNoad();
 
     // can't figure out how to do this as a constructor..
     template<const ESkoarNoad::Kind kindArg>
-    static SkoarNoad* New(wstring &nameArg, SkoarNoad *parentArg)
+    static SkoarNoadPtr New(wstring &nameArg, SkoarNoadPtr parentArg)
     {
-        return new SkoarNoad(nameArg, parentArg, kindArg, SkoarStyles::style<kindArg>());
+        return std::make_shared<SkoarNoad>(nameArg, parentArg, kindArg, SkoarStyles::style<kindArg>());
     }
+
+    static SkoarNoadPtr New(wstring &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke);
 
 	wstring *asString();
 
@@ -72,7 +68,7 @@ public:
 	// ----------------
 	// growing the tree
 	// ----------------
-	void add_noad(SkoarNoad *noad);
+	void add_noad(SkoarNoadPtr noad);
 	void add_toke(wstring name, SkoarToke *t);
 
 	// ----------------

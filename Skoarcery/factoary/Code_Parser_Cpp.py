@@ -127,10 +127,10 @@ void localSortDesirables() {
 
             #CPP.cmt(str(A))
             
-            Ax = Arg("SkoarNoad*", A.name)
+            Ax = Arg("SkoarNoadPtr", A.name)
             AStrx = Arg("wstring", '"'+ A.name +'"')
-            Noadx = Arg("SkoarNoad*", "noad")
-            Parentx = Arg("SkoarNoad*", "parent")
+            Noadx = Arg("SkoarNoadPtr", "noad")
+            Parentx = Arg("SkoarNoadPtr", "parent")
             Desiresx = Arg("list<ESkoarToke::Kind>*", "desires")
             
             HPP.method_h(Ax, Parentx)
@@ -139,7 +139,7 @@ void localSortDesirables() {
             if A.intermediate:
                 CPP.var(Noadx, Parentx.name)
             else:
-                CPP.var(Noadx, "SkoarNoad::New<ESkoarNoad::"+ A.name +">(wstring(L\""+ A.name +"\"), parent);")
+                CPP.var(Noadx, "SkoarNoad::New<ESkoarNoad::"+ A.name +">(wstring(L\""+ A.name +"\"), parent)")
 
             CPP.var(Desiresx, CPP.null)
             CPP.nl()
@@ -162,6 +162,7 @@ void localSortDesirables() {
 
 
                 CPP.if_("toker->sees(desires) != nullptr")
+                ____CPP.stmt('SkoarNoadPtr toke_noad')
 
                 # debugging
                 #CPP.print(str(P))
@@ -169,7 +170,8 @@ void localSortDesirables() {
                 for x in alpha:
                     if isinstance(x, Terminal):
                         CPP.stmt('skoarStats.tokeFreq[ESkoarToke::' + x.name + '] += 0.1f')
-                        CPP.stmt('noad->add_toke(L"' + x.toker_name + '", toker->burn(ESkoarToke::' + x.name + '))')
+                        CPP.stmt('toke_noad = SkoarNoad::New(wstring(L"' + x.toker_name + '"), noad, toker->burn(ESkoarToke::' + x.name + '))')
+                        CPP.stmt('noad->add_noad(toke_noad)')
 
                         # debugging
                         #CPP.print("burning: " + x.name)
@@ -223,6 +225,7 @@ void localSortDesirables() {
 #include "skoarcery.hpp"
 #include "noad_fwd.hpp"
 #include "toker.hpp"
+#include "spells.hpp"
 
 struct SkoarStats {
 
