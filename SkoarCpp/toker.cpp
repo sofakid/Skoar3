@@ -6,11 +6,12 @@
 // The Toker
 // =========
 
+static SkoarDispensary dispensary;
+
 SkoarToker::SkoarToker(wstring &s) {
 	i_am_here = 0;
 	i_saw = nullptr;
 	skoarce = &s;
-	dispensary = new SkoarDispensary();
 }
 
 SkoarToke* SkoarToker::see(ESkoarToke::Kind want) {
@@ -22,7 +23,7 @@ SkoarToke* SkoarToker::see(ESkoarToke::Kind want) {
 		return nullptr;
 	} 
 	
-	i_saw = dispensary->match_toke(want, skoarce, i_am_here);
+	i_saw = dispensary.match_toke(want, skoarce, i_am_here);
 	return i_saw;
 	
 }

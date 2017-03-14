@@ -191,16 +191,16 @@ void Skoar::draw_skoarpions() {
 // --------------------------------------------------------------------------------
 // for highlighting
 
-SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
-    this->skoarce = skoarce + L"\n"; // i don't like this + L"\n" business.
-    this->log = log;
-
-    toker = new SkoarToker(this->skoarce);
-    auto parser = new SkoarParser(toker);
+SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) :
+    skoarce(skoarce + L"\n"), // i don't like this + L"\n" business.
+    log(log),
+    toker(this->skoarce)
+{
+    auto parser = SkoarParser(&toker);
     parsedOk = false;
     try {
-        tree = parser->skoar(nullptr);
-        parser->sortDesirables();
+        tree = parser.skoar(nullptr);
+        parser.sortDesirables();
         
     }
     catch (SkoarParseException &e) {
@@ -219,7 +219,7 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
     }
 
     try {
-        toker->eof();
+        toker.eof();
         parsedOk = true; 
     }
     catch (SkoarError &e) {

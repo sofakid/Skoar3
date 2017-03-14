@@ -5,7 +5,6 @@
 
 class SkoarToker {
 public:
-	SkoarDispensary *dispensary;
 	wstring *skoarce;
 	size_t i_am_here;
 	SkoarToke* i_saw;
