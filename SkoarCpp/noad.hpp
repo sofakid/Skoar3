@@ -52,7 +52,7 @@ public:
     template<const ESkoarNoad::Kind kindArg>
     static SkoarNoadPtr New(wstring &nameArg, SkoarNoadPtr parentArg)
     {
-        return std::make_shared<SkoarNoad>(nameArg, parentArg, kindArg, SkoarStyles::style<kindArg>());
+        return std::make_shared<SkoarNoad>(nameArg, parentArg, kindArg, SkoarStyles::Noad::style<kindArg>());
     }
 
     static SkoarNoadPtr New(wstring &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke);

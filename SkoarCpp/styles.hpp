@@ -6,7 +6,8 @@
 namespace SkoarStyles {
 
     const enum class EStyle {
-        nostyle,
+        nostyle = 0,
+        parseFail,
 
         False,
         True,
@@ -44,7 +45,6 @@ namespace SkoarStyles {
         cthulhu,
 
         marker,
-        ugen,
         deref,
         ottavas,
         listy,
@@ -56,12 +56,13 @@ namespace SkoarStyles {
 
         //lute,
         //meditation,
+        //ugen,
         //arg_listy,
 
 
     };
 
-    // --- generic noads and tokes ----------------------------------------
+    // --- tokes ----------------------------------------
     namespace Toke {
         template <const ESkoarToke::Kind tokeKind>
         constexpr const EStyle style(void) {
@@ -192,6 +193,7 @@ namespace SkoarStyles {
         */
     }
 
+    // --- tokes ----------------------------------------
     namespace Noad {
 
         template <ESkoarNoad::Kind noadKind>
@@ -273,6 +275,12 @@ namespace SkoarStyles {
         */
     }
 
+    
+    /*   
+    
+    // these don't work in VS2015.. They work sometimes, but many tokes get styled as nostyle. 
+    // it seems the specialization doesn't always apply.
+
     template <ESkoarNoad::Kind noadKind>
     constexpr const EStyle style() {
         return Noad::style<noadKind>();
@@ -282,7 +290,7 @@ namespace SkoarStyles {
     constexpr const EStyle style() {
         return Toke::style<tokeKind>();
     }
-
+    */
     
     std::wostream& operator << (std::wostream& out, const EStyle& obj);
 

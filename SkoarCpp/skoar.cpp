@@ -158,7 +158,7 @@ void Skoar::cthulhu(SkoarNoadPtr noad) {
 	// TODO more
 	//"^^(;,;)^^".postln;
 	//dump();
-	throw new SkoarError(L"^^(;,;)^^");
+	throw SkoarError(L"^^(;,;)^^");
 
 }
 
@@ -205,7 +205,7 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
     }
     catch (SkoarParseException &e) {
         // someday we can like, underline the error or something.
-        log->e("parse fail", e.wwhat());
+        log->d("parse fail", e.wwhat());
        
         // delete the unfinished tree
         auto x = e.noad;
@@ -224,7 +224,7 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
     }
     catch (SkoarError &e) {
         // someday we can like, underline the error or something.
-        log->e("parse fail", e.wwhat());
+        log->d("parse fail", e.wwhat());
 
         // delete the broken tree
         tree->clear();
@@ -259,6 +259,8 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
             });
 
     }
+
+    //log->e("False style", SkoarStyles::style<ESkoarToke::False>());
 }
 
 SkoarLite::~SkoarLite() {
@@ -269,10 +271,10 @@ SkoarLite::~SkoarLite() {
 
     start_time = clock();
 
-    log->i("\n\n");
-    log->i("----------------------------------");
-    log->i("Deleting SkoarLite...");
-    log->w("Memories", SkoarMemories);
+    //log->i("\n\n");
+    //log->i("----------------------------------");
+    //log->i("Deleting SkoarLite...");
+    //log->w("Memories", SkoarMemories);
 
     if (parsedOk) {
         tree->clear();
@@ -282,9 +284,9 @@ SkoarLite::~SkoarLite() {
     elapsed_time = clock() - start_time;
     f_elapsed_time = static_cast<float>(elapsed_time) / CLOCKS_PER_SEC;
 
-    log->i("Deleted SkoarLite.", "elapsed_time", f_elapsed_time);
-    log->w("Memories", SkoarMemories);
-    log->i("----------------------------------\n\n");
+    //log->i("Deleted SkoarLite.", "elapsed_time", f_elapsed_time);
+    //log->w("Memories", SkoarMemories);
+    //log->i("----------------------------------\n\n");
 
 }
 

@@ -129,7 +129,7 @@ class CppTongue(Tongue):
         self.stmt(s)
 
     def throw(self, name, msg):
-        self.stmt("throw new "+ name +"("+ msg +")")
+        self.stmt("throw "+ name +"("+ msg +")")
 
     def constructor(self, *args, **kwargs):
         name = Arg("", self.last_class +"::"+ self.last_class)

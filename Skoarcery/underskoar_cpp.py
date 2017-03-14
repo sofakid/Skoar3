@@ -215,7 +215,7 @@ def typical_token_cpp(token):
     _.stmt("const std::wregex "+ token.toker_name +"::"+ regex_.name +" = "+ _.v_def_regex(token.regex))
   
     kind_token_ = Arg("ESkoarToke::Kind", "ESkoarToke::" + token.name);
-    style_token_ = Arg("SkoarStyles::EStyle", "SkoarStyles::style<ESkoarToke::" + token.name + ">()")
+    style_token_ = Arg("SkoarStyles::EStyle", "SkoarStyles::Toke::style<ESkoarToke::" + token.name + ">()")
 
     _.constructor(s_, offs_, n_)
     _____.stmt(_.v_ass(_.v_attr(lexeme_), s_))
@@ -239,7 +239,7 @@ def typical_token_cpp(token):
     _________.return_(_.null)
     _____.end_if()
     _____.stmt("auto s = wstring("+ match_obj_.name +".str())")
-    _____.return_("new "+ token.toker_name +"(s,offs,s.length())")
+    _____.return_("new "+ token.toker_name +"(s, offs, s.length())")
     #_________.return_(SkoarToke_ + _.v_static_accessor() + match_toke_.name +"<"+ token.toker_name +">("+ buf_.name +", "+ offs_.name +")")
     _.end()
 

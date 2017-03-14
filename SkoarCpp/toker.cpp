@@ -62,7 +62,7 @@ SkoarTokePtr SkoarToker::burn(ESkoarToke::Kind want) {
 	puts("Toker Fail.");
 	this->dump();
 
-	throw new SkoarError(*(new wstring(L"toker fail")));
+	throw SkoarError(wstring(L"toker fail"));
 }
 
 void SkoarToker::eof() {
