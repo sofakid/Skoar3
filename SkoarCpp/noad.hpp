@@ -83,14 +83,18 @@ public:
 	// -----------------
 	// climbing the Tree
 	// -----------------
-	// depth-first, find the leaves, run handler, working towards trunk
-	//
-	// if it's crashing during the decorating stage, here's a good place to
-	// start debugging
-	void depth_visit(SpellOfNoads f);
-	
+
+    // static versions for use with shared_ptrs
+    static void SkoarNoad::depth_visit(SkoarNoadPtr p, SpellOfNoadPtrs f);
+    static void SkoarNoad::inorder(SkoarNoadPtr p, SpellOfNoadPtrs f);
+    static void SkoarNoad::inorderBeforeAfter(SkoarNoadPtr p, SpellOfNoadPtrs f, SpellOfNoadPtrs g);
+
+
+    void depth_visit(SpellOfNoads f);
 	void inorder(SpellOfNoads f);
     void inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g);
+
+
 
 	// debug here if it's crashing while performing the skoar
 	void inorder_from_here(list<int> &here, SpellOfNoads f);

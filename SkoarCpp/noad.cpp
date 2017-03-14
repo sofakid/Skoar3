@@ -225,6 +225,31 @@ void SkoarNoad::scry(SpellOfScrying f) {
 // climbing the Tree
 // -----------------
 
+// static versions for use with shared_ptrs
+void SkoarNoad::depth_visit(SkoarNoadPtr p, SpellOfNoadPtrs f) {
+    if (!p->children.empty())
+        for (auto y : p->children)
+            SkoarNoad::depth_visit(y, f);
+    f(p);
+}
+
+void SkoarNoad::inorder(SkoarNoadPtr p, SpellOfNoadPtrs f) {
+    f(p);
+    if (!p->children.empty())
+        for (auto y : p->children)
+            SkoarNoad::inorder(p, f);
+}
+
+void SkoarNoad::inorderBeforeAfter(SkoarNoadPtr p, SpellOfNoadPtrs f, SpellOfNoadPtrs g) {
+    f(p);
+    if (!p->children.empty())
+        for (auto y : p->children)
+            SkoarNoad::inorderBeforeAfter(p, f, g);
+    g(p);
+}
+
+
+
 // depth-first, find the leaves, run handler, working towards trunk
 //
 // if it's crashing during the decorating stage, here's a good place to

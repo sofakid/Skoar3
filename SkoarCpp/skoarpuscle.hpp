@@ -25,7 +25,7 @@ union SkoarpuscleValue {
 	list<class Skoarpuscle *> *List;
 	void *Void;
 
-	SkoarNoad **Subtree; // ???????
+	SkoarNoadPtr* Subtree; // ???????
 
 	SkoarpuscleValue();
 	SkoarpuscleValue(int x);
@@ -153,7 +153,7 @@ public:
 };
 
 class SkoarpuscleBars : public Skoarpuscle {
-	SkoarNoad *noad;
+	SkoarNoadPtr noad;
 	bool pre_repeat;
 	bool post_repeat;
 public:
@@ -162,8 +162,8 @@ public:
 
 class SkoarpuscleVolta : public Skoarpuscle {
 public:
-	SkoarNoad *noad;
-	SkoarpuscleVolta(SkoarNoad * , SkoarToke *);
+	SkoarNoadPtr noad;
+	SkoarpuscleVolta(SkoarNoadPtr, SkoarToke *);
 };
 
 class SkoarpuscleMeter : public Skoarpuscle {
@@ -208,9 +208,9 @@ public:
 
 class SkoarpuscleSegno : public Skoarpuscle {
 public:
-	SkoarNoad *noad;
+	SkoarNoadPtr noad;
 
-	SkoarpuscleSegno(SkoarNoad *, SkoarToke *);
+	SkoarpuscleSegno(SkoarNoadPtr, SkoarToke *);
 };
 
 class SkoarpuscleRep : public Skoarpuscle {
@@ -261,7 +261,7 @@ public:
 class SkoarpuscleArgsSpec : public SkoarpuscleList {
 public:
 	SkoarpuscleArgsSpec();
-	SkoarpuscleArgsSpec(SkoarNoad *);
+	SkoarpuscleArgsSpec(SkoarNoadPtr);
 };
 
 class SkoarpuscleSkoarpion : public Skoarpuscle {
@@ -269,7 +269,7 @@ public:
 	list<wstring*> *msg_arr;
 
 	SkoarpuscleSkoarpion(Skoarpion *);
-	SkoarpuscleSkoarpion(Skoarpion *, SkoarNoad *);
+	SkoarpuscleSkoarpion(Skoarpion *, SkoarNoadPtr);
 
 	Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) override;
 
@@ -297,7 +297,7 @@ public:
 	list<Skoarpuscle *> *ifs;
 
 	SkoarpuscleConditional();
-	SkoarpuscleConditional(Skoar *, SkoarNoad *);
+	SkoarpuscleConditional(Skoar *, SkoarNoadPtr);
 
 	
 };
@@ -305,7 +305,7 @@ public:
 class SkoarpuscleBoolean : public Skoarpuscle {
 public:
 	SkoarpuscleBoolean();
-	SkoarpuscleBoolean(SkoarNoad *);
+	SkoarpuscleBoolean(SkoarNoadPtr);
 
 	bool evaluate(SkoarMinstrel *m);
 	
@@ -320,7 +320,7 @@ public:
 	list<Skoarpuscle*> *each;
 
 	SkoarpuscleLoop();
-	SkoarpuscleLoop(Skoar *, SkoarNoad *);
+	SkoarpuscleLoop(Skoar *, SkoarNoadPtr);
 
 	Skoarpuscle *lookup(SkoarMinstrel* minstrel);
 
@@ -332,7 +332,7 @@ public:
 	wstring *nav_cmd;
 	bool al_fine;
 
-	SkoarpuscleGoto(SkoarNoad *);
+	SkoarpuscleGoto(SkoarNoadPtr);
 };
 
 class SkoarpuscleArgs : public Skoarpuscle {

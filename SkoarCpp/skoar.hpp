@@ -31,7 +31,7 @@ public:
 
 	void decorate();
 	SkoarKoar *get_voice(std::wstring *k);
-	void cthulhu(SkoarNoad *noad);
+	void cthulhu(SkoarNoadPtr noad);
 	void play();
 	void pskoar();
 	void pvoice(std::wstring *voice_name);

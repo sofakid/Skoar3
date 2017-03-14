@@ -10,7 +10,7 @@ Skoarpion* Skoarpion::new_from_skoar(Skoar *skoar) {
 	return nullptr;
 }
 
-Skoarpion::Skoarpion(Skoar *skoar, SkoarNoad *node) {
+Skoarpion::Skoarpion(Skoar *skoar, SkoarNoadPtr node) {
 }
 
 SkoarProjection *Skoarpion::projection(wstring *name) {

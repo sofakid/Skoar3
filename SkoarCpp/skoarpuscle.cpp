@@ -339,7 +339,7 @@ bool SkoarpuscleBooleanOp::compare(Skoarpuscle *a, Skoarpuscle *b, SkoarMinstrel
 }
 
 
-SkoarpuscleBoolean::SkoarpuscleBoolean(SkoarNoad *noad) {
+SkoarpuscleBoolean::SkoarpuscleBoolean(SkoarNoadPtr noad) {
 	// a and b are exprs
 	/*a = noad.children[0];
 	op = noad.children[1].next_skoarpuscle;
@@ -359,7 +359,7 @@ SkoarpuscleConditional::SkoarpuscleConditional() {
 }
 
 
-SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoad *noad) {
+SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) {
 
 	ifs = new list<Skoarpuscle*>();
 	/*
@@ -399,7 +399,7 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(Skoarpion *) {
 	};
 }
 
-SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(Skoarpion *, SkoarNoad *) {
+SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(Skoarpion *, SkoarNoadPtr) {
 	on_enter = [this](SkoarMinstrel *m) {
 		this->on_enter_method(m);
 	};
@@ -422,7 +422,7 @@ void SkoarpuscleSkoarpion::on_enter_method(SkoarMinstrel *m) {
 }
 
 
-SkoarpuscleLoop::SkoarpuscleLoop(Skoar *skoar, SkoarNoad *noad) {
+SkoarpuscleLoop::SkoarpuscleLoop(Skoar *skoar, SkoarNoadPtr noad) {
 
 	/*for (auto x : noad->collect("loop_condition")) {
 		if (x->children.size != 0) {
@@ -581,7 +581,7 @@ SkoarpuscleArgs::SkoarpuscleArgs(){
 SkoarpuscleArgsSpec::SkoarpuscleArgsSpec() {
 }
 
-SkoarpuscleArgsSpec::SkoarpuscleArgsSpec(SkoarNoad *noad) {
+SkoarpuscleArgsSpec::SkoarpuscleArgsSpec(SkoarNoadPtr noad) {
 	val.List = new list<Skoarpuscle*>;
 	
 	/*for (auto x : *(noad->collect_skoarpuscles())) {
@@ -658,7 +658,7 @@ SkoarpuscleFine::SkoarpuscleFine() {
 }
 
 
-SkoarpuscleSegno::SkoarpuscleSegno(SkoarNoad *nod, SkoarToke *toke) {
+SkoarpuscleSegno::SkoarpuscleSegno(SkoarNoadPtr nod, SkoarToke *toke) {
 	auto s = &toke->lexeme;
 	auto n = s->length();
 
@@ -678,7 +678,7 @@ SkoarpuscleSegno::SkoarpuscleSegno(SkoarNoad *nod, SkoarToke *toke) {
 }
 
 
-SkoarpuscleGoto::SkoarpuscleGoto(SkoarNoad *noad) {
+SkoarpuscleGoto::SkoarpuscleGoto(SkoarNoadPtr noad) {
 
 /*	auto toke = noad->children[0]->next_toke();
 	auto al_x = noad->children[1];
@@ -706,7 +706,7 @@ SkoarpuscleGoto::SkoarpuscleGoto(SkoarNoad *noad) {
 }
 
 
-SkoarpuscleVolta::SkoarpuscleVolta(SkoarNoad *nod, SkoarToke *toke) {
+SkoarpuscleVolta::SkoarpuscleVolta(SkoarNoadPtr nod, SkoarToke *toke) {
 	//val = toke.lexeme.strip("[.]").asInteger;
 	noad = nod;
 }

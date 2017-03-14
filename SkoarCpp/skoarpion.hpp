@@ -13,7 +13,7 @@ public:
 
 	static Skoarpion *new_from_skoar(Skoar *skoar);
 
-	Skoarpion(Skoar *skoar, SkoarNoad *node);
+	Skoarpion(Skoar *skoar, SkoarNoadPtr node);
 
 	wstring *name;
 	SkoarpuscleArgsSpec *args_spec;

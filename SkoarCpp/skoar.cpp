@@ -112,7 +112,7 @@ void Skoar::decorate() {
 	auto inspector = new SkoarTokeInspector();
 	auto skoarmantics = new Skoarmantics();
 
-	tree->depth_visit([&](SkoarNoad* noad) {
+	SkoarNoad::depth_visit(tree, [&](SkoarNoadPtr noad) {
 		auto t = noad->toke.get();
 
 		noad->size = 0;
@@ -153,7 +153,7 @@ SkoarKoar *Skoar::get_voice(wstring *k) {
 	return voice;
 }
 
-void Skoar::cthulhu(SkoarNoad *noad) {
+void Skoar::cthulhu(SkoarNoadPtr noad) {
 
 	// TODO more
 	//"^^(;,;)^^".postln;
@@ -203,18 +203,18 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
         parser->sortDesirables();
         
     }
-    catch (SkoarParseException *e) {
+    catch (SkoarParseException &e) {
         // someday we can like, underline the error or something.
-        log->e("parse fail", e->wwhat());
+        log->e("parse fail", e.wwhat());
        
         // delete the unfinished tree
-        auto x = e->noad;
+        auto x = e.noad;
         while (x->parent != nullptr)
             x = x->parent;
 
         x->clear();
         x = nullptr;
-        e->noad = nullptr;
+        e.noad = nullptr;
         return;
     }
 
@@ -222,9 +222,9 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) {
         toker->eof();
         parsedOk = true; 
     }
-    catch (SkoarError *e) {
+    catch (SkoarError &e) {
         // someday we can like, underline the error or something.
-        log->e("parse fail", e->wwhat());
+        log->e("parse fail", e.wwhat());
 
         // delete the broken tree
         tree->clear();

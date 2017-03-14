@@ -275,19 +275,19 @@ struct SkoarStats {
         HPP.method_h(fail_, noad_)
         CPP.method(fail_, noad_)
         CPP.stmt("toker->dump()")
-        CPP.stmt("throw new SkoarParseException(L\"Fail\", noad)")
+        CPP.stmt("throw SkoarParseException(L\"Fail\", noad)")
         CPP.end()
 
         HPP.method_h(fail_too_deep_, noad_)
         CPP.method(fail_too_deep_, noad_)
         CPP.stmt("toker->dump()")
-        CPP.stmt("throw new SkoarParseException(L\"Parse tree too deep!\", noad)")
+        CPP.stmt("throw SkoarParseException(L\"Parse tree too deep!\", noad)")
         CPP.end()
 
         HPP.method_h(toker_fail_, skoar_error_, noad_)
         CPP.method(toker_fail_, skoar_error_, noad_)
         CPP.stmt("toker->dump()")
-        CPP.stmt("throw new SkoarParseException(e.wwhat(), noad)")
+        CPP.stmt("throw SkoarParseException(e.wwhat(), noad)")
         CPP.end()
 
         HPP.raw("""
