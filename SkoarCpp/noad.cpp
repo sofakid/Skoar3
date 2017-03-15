@@ -211,15 +211,6 @@ wstring SkoarNoad::draw_tree(int tab)	{
 	return s;
 }
 
-void SkoarNoad::scry(SpellOfScrying f) {
-
-	this->depth_visit([f](SkoarNoad* noad){
-		
-
-
-	});
-
-}
 
 // -----------------
 // climbing the Tree
@@ -255,20 +246,12 @@ void SkoarNoad::inorderBeforeAfter(SkoarNoadPtr p, SpellOfNoadPtrs f, SpellOfNoa
 // if it's crashing during the decorating stage, here's a good place to
 // start debugging
 void SkoarNoad::depth_visit(SpellOfNoads f) {
-	//var s = " " ++ if (toke.notNil) {toke.lexeme} {""};
-	//debug(">>> depth_visit: " ++ name ++ s);
-
-	if (!children.empty())
+	
+    if (!children.empty())
 		for (auto y: children)
 			y->depth_visit(f);
 
-	//debug("--- depth_visit: " ++ name ++ s);
-
-	// note: leaves first
 	f(this);
-
-	//debug("<<< depth_visit: " ++ name ++ s);
-
 }
 
 void SkoarNoad::inorder(SpellOfNoads f) {
@@ -278,8 +261,6 @@ void SkoarNoad::inorder(SpellOfNoads f) {
 	if (!children.empty())
 		for (auto y : children)
 			y->inorder(f);
-	
-	//debug("<<< inorder: " ++ name);
 }
 
 void SkoarNoad::inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g) {
@@ -291,15 +272,11 @@ void SkoarNoad::inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g) {
             y->inorderBeforeAfter(f, g);
 
     g(this);
-
-
-    //debug("<<< inorder: " ++ name);
 }
 
 // - debug here if it's crashing while performing the skoar
 // - modifies &here
 void SkoarNoad::inorder_from_here(list<int> &here, SpellOfNoads f) {
-	//debug("inorder_from_here: j:" ++ j ++ " " ++ name);
 
 	if (here.empty())
 		inorder(f);
@@ -326,7 +303,6 @@ void SkoarNoad::inorder_from_here(list<int> &here, SpellOfNoads f) {
 	}
 }
 
-// expect skoarpuscle
 Skoarpuscle *SkoarNoad::next_skoarpuscle() {
 	
 	if (skoarpuscle != nullptr) 

@@ -28,7 +28,7 @@ void SkoarTokeInspector::decorate(Toke_Fairy *toke, SkoarNoadPtr noad)	{
 };
 
 void SkoarTokeInspector::decorate(Toke_Freq *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleFreq(&toke->lexeme);
+	noad->skoarpuscle = new SkoarpuscleFreq(toke->lexeme);
 }
 
 void SkoarTokeInspector::decorate(Toke_Int *toke, SkoarNoadPtr noad) {
@@ -40,23 +40,23 @@ void SkoarTokeInspector::decorate(Toke_Float *toke, SkoarNoadPtr noad) {
 }
 
 void SkoarTokeInspector::decorate(Toke_NamedNoat *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleNoat(&toke->lexeme);
+	noad->skoarpuscle = new SkoarpuscleNoat(toke->lexeme);
 }
 
 void SkoarTokeInspector::decorate(Toke_Choard *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleChoard(&toke->lexeme);
+	noad->skoarpuscle = new SkoarpuscleChoard(toke->lexeme);
 }
 
 void SkoarTokeInspector::decorate(Toke_String *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleString(&toke->lexeme);
+	noad->skoarpuscle = new SkoarpuscleString(toke->lexeme);
 }
 
 void SkoarTokeInspector::decorate(Toke_Symbol *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleSymbol(&toke->lexeme.substr(1));
+	noad->skoarpuscle = new SkoarpuscleSymbol(toke->lexeme.substr(1));
 }
 
 void SkoarTokeInspector::decorate(Toke_SymbolName *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleSymbolName(&toke->lexeme);
+	noad->skoarpuscle = new SkoarpuscleSymbolName(toke->lexeme);
 }
 
 // rests
@@ -148,13 +148,13 @@ void SkoarTokeInspector::decorate(Toke_Fine *toke, SkoarNoadPtr noad) {
 }
 
 void SkoarTokeInspector::decorate(Toke_MsgName *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleMsgName(&toke->lexeme);
+	noad->skoarpuscle = new SkoarpuscleMsgName(toke->lexeme);
 }
 
 void SkoarTokeInspector::decorate(Toke_MsgNameWithArgs *toke, SkoarNoadPtr noad) {
 	auto s = toke->lexeme;
 	auto n = s.length() - 2;
-	noad->skoarpuscle = new SkoarpuscleMsgName(&s.substr(0,n));
+	noad->skoarpuscle = new SkoarpuscleMsgName(s.substr(0,n));
 }
 
 void SkoarTokeInspector::decorate(Toke_MathOp *toke, SkoarNoadPtr noad) {
@@ -302,7 +302,7 @@ Skoarmantics::Skoarmantics() {
     table[ESkoarNoad::deref] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		SkoarpuscleDeref *x;
 		SkoarpuscleArgs *args = nullptr;
-		wstring *msg_name = nullptr;
+		SkoarString msg_name(L"");
 
 		if (noad->children.empty() != true) {
 			auto child = noad->children.begin();
@@ -310,7 +310,7 @@ Skoarmantics::Skoarmantics() {
 			auto y = (*child)->skoarpuscle;
 
 			if (typeid(y) == typeid(SkoarpuscleMsgName*)) {
-				msg_name = y->val.String;
+				msg_name = any_cast<SkoarString>(y->val);
 			}
 			else if (y == nullptr) {
 				skoar->log->e("WTF Skoarpuscle is nullptr.");
@@ -321,8 +321,8 @@ Skoarmantics::Skoarmantics() {
 			}
 		}
 		
-		if (msg_name == nullptr) {
-			msg_name = new wstring(L"nomsgname");
+		if (msg_name.size() == 0) {
+			msg_name = SkoarString(L"nomsgname");
 		}
 		
 		if (noad->children.size() > 2) {
@@ -373,9 +373,7 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table[ESkoarNoad::msg] = [](Skoar *skoar, SkoarNoadPtr noad) {
-		Skoarpuscle *msg = nullptr;
-
-		msg = noad->next_skoarpuscle();
+		Skoarpuscle *msg = noad->next_skoarpuscle();
 
 		if (msg != nullptr) {
 			if (typeid(msg) == typeid(SkoarpuscleList*)) {
@@ -383,12 +381,12 @@ Skoarmantics::Skoarmantics() {
 
 			}
 			else if (typeid(msg) == typeid(SkoarpuscleLoop*)) {
-				noad->skoarpuscle = new SkoarpuscleLoopMsg(msg->val.String);
+				noad->skoarpuscle = new SkoarpuscleLoopMsg(any_cast<SkoarString>(msg->val));
 
 			}
 			else if (typeid(msg) == typeid(SkoarpuscleMsgName*)) {
 				SkoarpuscleArgs *args = new SkoarpuscleArgs();
-				noad->skoarpuscle = new SkoarpuscleMsg(msg->val.String, args);
+				noad->skoarpuscle = new SkoarpuscleMsg(any_cast<SkoarString>(msg->val), args);
 			}
 		}
 

@@ -27,34 +27,32 @@ public:
 	SkoarDic		*skoarboard;   //
 	list<SkoarDic*> *stack;        // stack of vars visible to the skoar code
 	list<SkoarDic*> *state_stack;  // stack of vars invisible to the skoar code
-	wstring          *name;         // name of voice as Symbol
+	SkoarString      name;         // name of voice as Symbol
 
-	wstring *garbage;
+    SkoarString garbage;
 
-	SkoarKoar(wstring *nom);
+	SkoarKoar(SkoarString &nom);
 	// ---------------------
 	// State and scope stuff
 	// ---------------------
-	void put(wstring *k, Skoarpuscle *v);
-	Skoarpuscle *at(wstring*k);
+	void put(SkoarString k, Skoarpuscle *v);
+	Skoarpuscle *at(SkoarString &k);
 
-	void state_put(wstring *k, Skoarpuscle *v);
+	void state_put(SkoarString &k, Skoarpuscle *v);
 	
-	Skoarpuscle *state_at(wstring *k);
-	inline Skoarpuscle *state_at(wstring k) {
-		return state_at(&k);
-	}
+	Skoarpuscle *state_at(SkoarString &k);
+	
 	SkoarEvent *event(SkoarMinstrel *minstrel);
 	void set_args(SkoarMinstrel *minstrel, 
-		SkoarpuscleArgsSpec *args_spec, list<Skoarpuscle *> *args);
+		SkoarpuscleArgsSpec *args_spec, ListOfSkoarpusclesPtr args);
 
 	void push_state();
 	void pop_state();
 	void do_skoarpion(
 		Skoarpion *skoarpion, 
 		SkoarMinstrel *minstrel, 
-		list<wstring*> &msg_arr, 
-		list<Skoarpuscle *> *args);
+		list<SkoarString> &msg_arr, 
+		ListOfSkoarpusclesPtr args);
 
 	void nav_loop(
 		SkoarNoad *dst, 

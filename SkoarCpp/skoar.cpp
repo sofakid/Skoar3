@@ -20,8 +20,11 @@
 // Skoar
 // =====
 
-Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
-	this->log = log;
+Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) :
+    skoarce(skoarce + L"\n"), // i don't like this + L"\n" business.
+    log(log),
+    toker(this->skoarce)
+{
 	//this->skoarce = skoarce;
 	clock_t start_time;
     clock_t parse_time;
@@ -30,12 +33,10 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
     float f_parse_time;
     float f_decorate_time;
 
-	this->skoarce = skoarce + L"\n";
 	tree = nullptr;
-	toker = new SkoarToker(this->skoarce);
-	auto parser = new SkoarParser(toker);
+	auto parser = SkoarParser(&toker);
 
-	all_voice = new SkoarKoar(new wstring(L"all"));
+	all_voice = new SkoarKoar(wstring(L"all"));
 	voices[L"all"] = all_voice;
 
 	//skoarpions = List[];
@@ -44,7 +45,7 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
 
 	log->i(">>> parsing skoar...");
     try {
-        tree = parser->skoar(nullptr);
+        tree = parser.skoar(nullptr);
     }
     catch (SkoarParseException *e) {
         // someday we can like, underline the error or something.
@@ -61,10 +62,10 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) {
 
         return;
     }
-    parser->sortDesirables();
+    parser.sortDesirables();
 
 	try {
-		toker->eof();
+		toker.eof();
 	}
     catch (SkoarError &e) {
         // someday we can like, underline the error or something.
@@ -139,15 +140,15 @@ void Skoar::decorate() {
 // ----
 
 // creates a new one if needed
-SkoarKoar *Skoar::get_voice(wstring *k) {
+SkoarKoar *Skoar::get_voice(SkoarString &k) {
 	SkoarKoar *voice = nullptr;
 
-	auto found = voices[*k];
+	auto found = voices[k];
 	if (found != nullptr) {
 		voice = found;
 	} else {
 		voice = new SkoarKoar(k);
-		voices[*k] = voice;
+		voices[k] = voice;
 	}
 
 	return voice;
@@ -204,7 +205,7 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) :
         
     }
     catch (SkoarParseException &e) {
-        // someday we can like, underline the error or something.
+        // someday we can underline the error or something.
         log->d("parse fail", e.wwhat());
        
         // delete the unfinished tree
@@ -223,7 +224,7 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) :
         parsedOk = true; 
     }
     catch (SkoarError &e) {
-        // someday we can like, underline the error or something.
+        // someday we can underline the error or something.
         log->d("parse fail", e.wwhat());
 
         // delete the broken tree

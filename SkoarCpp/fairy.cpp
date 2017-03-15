@@ -3,10 +3,11 @@
 #include "exception.hpp"
 #include "skoarpuscle.hpp"
 
-SkoarFairy::SkoarFairy(wstring *nom, SkoarMinstrel *m) {
-	name = nom;
-	minstrel = m;
-	magic = HarmlessMagic;
+SkoarFairy::SkoarFairy(SkoarString nom, SkoarMinstrel *m) :
+    name(nom),
+    minstrel(m),
+    magic(HarmlessMagic)
+{
 }
 
 Skoarpuscle *SkoarFairy::impress(Skoarpuscle *x) {
@@ -46,7 +47,7 @@ Skoarpuscle *SkoarFairy::cast_arcane_magic() {
 }
 
 // magic stacks and list collecting
-list<Skoarpuscle*> *SkoarFairy::get_top_listy() {
+ListOfSkoarpusclesPtr SkoarFairy::get_top_listy() {
 	if (listy_stack.empty())
 		return nullptr;
 
@@ -57,15 +58,15 @@ void SkoarFairy::next_listy() {
 	auto listy = get_top_listy();
 
 	if (listy != nullptr) {
-		(*listy).emplace_back(impression);
+		(*listy).push_back(impression);
 	}
 }
 
 void SkoarFairy::push() {
-	magic_stack.emplace_back(magic);
+	magic_stack.push_back(magic);
 	magic = HarmlessMagic;
 
-	listy_stack.emplace_back(new list<Skoarpuscle*>);
+	listy_stack.push_back(make_shared<ListOfSkoarpuscles>());
 	//"$.push;".postln;
 }
 

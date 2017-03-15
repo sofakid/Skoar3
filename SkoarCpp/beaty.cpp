@@ -3,10 +3,10 @@
 #include "lex.hpp"
 
 SkoarpuscleRest::SkoarpuscleRest(SkoarToke *toke) {
-	val.Int = toke->lexeme.length();
+	val = toke->lexeme.length();
 }
 
 SkoarpuscleBeat::SkoarpuscleBeat(SkoarToke *toke) {
-	val.Int = 0;
+	val = 0;
 
 }

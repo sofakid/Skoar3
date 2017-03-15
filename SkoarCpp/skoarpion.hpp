@@ -15,17 +15,17 @@ public:
 
 	Skoarpion(Skoar *skoar, SkoarNoadPtr node);
 
-	wstring *name;
+    SkoarString name;
 	SkoarpuscleArgsSpec *args_spec;
 
-	SkoarProjection *projection(wstring *name);
+	SkoarProjection *projection(SkoarString name);
 
 };
 
 class SkoarProjection {
 public:
 
-	SkoarNoad *performMsg(list<wstring*> &msg_arr);
+	SkoarNoad *performMsg(list<SkoarString> &msg_arr);
 
 	list<int> *map_dst(SkoarNoad *dst);
 };

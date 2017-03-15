@@ -12,6 +12,11 @@ typedef double SkoarFloat;
 typedef unique_ptr<SkoarToke> SkoarTokePtr;
 typedef shared_ptr<SkoarNoad> SkoarNoadPtr;
 
+typedef list<Skoarpuscle*> ListOfSkoarpuscles;
+typedef shared_ptr<ListOfSkoarpuscles> ListOfSkoarpusclesPtr;
+typedef wstring SkoarString;
+
+
 typedef function<void(SkoarMinstrel *)> SpellOfMinstrels;
 typedef function<void(SkoarNoad *)> SpellOfScrying;
 typedef function<void(SkoarNoad *)> SpellOfNoads;

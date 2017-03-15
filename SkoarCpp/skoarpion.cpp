@@ -13,12 +13,11 @@ Skoarpion* Skoarpion::new_from_skoar(Skoar *skoar) {
 Skoarpion::Skoarpion(Skoar *skoar, SkoarNoadPtr node) {
 }
 
-SkoarProjection *Skoarpion::projection(wstring *name) {
+SkoarProjection *Skoarpion::projection(SkoarString name) {
 	return nullptr;
 }
 
-
-SkoarNoad *SkoarProjection::performMsg(list<wstring*> &msg_arr) {
+SkoarNoad *SkoarProjection::performMsg(list<SkoarString> &msg_arr) {
 	return nullptr;
 }
 

@@ -9,21 +9,21 @@
 #include "noad.hpp"
 
 
-SkoarKoar::SkoarKoar(wstring *nom) {
+SkoarKoar::SkoarKoar(SkoarString &nom) {
 	name = nom;
 	stack = new list<SkoarDic*>;
 	skoarboard = new SkoarDic();
-	stack->emplace_back(skoarboard);
+	stack->push_back(skoarboard);
 }
 
 // ---------------------
 // State and scope stuff
 // ---------------------
-void SkoarKoar::put(wstring *k, Skoarpuscle *v) {
+void SkoarKoar::put(SkoarString k, Skoarpuscle *v) {
 	(*stack->back())[k] = v;
 }
 
-Skoarpuscle *SkoarKoar::at(wstring *k) {
+Skoarpuscle *SkoarKoar::at(SkoarString &k) {
 	Skoarpuscle *out = nullptr;
 
 	for (auto skrb = stack->rbegin(); skrb != stack->rend(); skrb++) {
@@ -36,11 +36,11 @@ Skoarpuscle *SkoarKoar::at(wstring *k) {
 	return out;
 }
 
-void SkoarKoar::state_put(wstring *k, Skoarpuscle *v) {
+void SkoarKoar::state_put(SkoarString &k, Skoarpuscle *v) {
 	(*state_stack->back())[k] = v;
 }
 
-Skoarpuscle *SkoarKoar::state_at(wstring *k) {
+Skoarpuscle *SkoarKoar::state_at(SkoarString &k) {
 	Skoarpuscle *out = nullptr;
 
 	for (auto skrb = stack->rbegin(); skrb != stack->rend(); skrb++) {
@@ -87,7 +87,7 @@ SkoarEvent *SkoarKoar::event(SkoarMinstrel *minstrel) {
 void SkoarKoar::set_args(
 	SkoarMinstrel *minstrel, 
 	SkoarpuscleArgsSpec *args_spec, 
-	list<Skoarpuscle *> *args) 
+	ListOfSkoarpusclesPtr args) 
 {
 	size_t i = 0, n = 0;
 	auto vars = *stack->back();
@@ -100,8 +100,8 @@ void SkoarKoar::set_args(
 		// foreach arg name defined, set the value from args
 		auto arg_it = args->begin();
 
-		for (auto k_skoarpuscle : *args_spec->val.List ) {
-			auto k = k_skoarpuscle->val.String;
+		for (auto k_skoarpuscle : *any_cast<ListOfSkoarpusclesPtr>(args_spec->val) ) {
+			auto k = any_cast<SkoarString>(k_skoarpuscle->val);
 
 			//("k: " ++ k).postln;
 			if (i++ < n) {
@@ -137,13 +137,13 @@ void SkoarKoar::pop_state() {
 void SkoarKoar::do_skoarpion(
 	Skoarpion *skoarpion,
 	SkoarMinstrel *minstrel,
-	list<wstring*> &msg_arr,
-	list<Skoarpuscle *> *args) {
+	list<SkoarString> &msg_arr,
+	ListOfSkoarpusclesPtr args) {
 	
 	SkoarNoad *subtree;
 	SkoarProjection *projection = nullptr;
-	map<wstring, SkoarpuscleProjection*> projections;
-	wstring *msg_name;
+	map<SkoarString, SkoarpuscleProjection*> projections;
+	SkoarString msg_name;
 	bool inlined;
 
 	// default behaviour (when unmessaged)
@@ -153,7 +153,7 @@ void SkoarKoar::do_skoarpion(
 
 	msg_name = msg_arr.front();
 
-	inlined = (*msg_name == wstring(L"inline"));
+	inlined = (msg_name == wstring(L"inline"));
 	if (inlined == false) {
 		this->push_state();
 	}
@@ -162,7 +162,7 @@ void SkoarKoar::do_skoarpion(
 	set_args(minstrel, skoarpion->args_spec, args);
 
 	//projections = state_at(wstring(L"projections"));
-	if (skoarpion->name != nullptr) {
+	if (skoarpion->name.size() > 0) {
 		//projection = projections[*skoarpion->name];
 
 		// start a new one if we haven't seen it

@@ -11,36 +11,15 @@
 #include "skoar_fwd.hpp"
 
 #include "spells.hpp"
+#include <any>
 
 #define SKOARPUSCLE(x) Skoarpuscle::wrap<decltype(x)>(x)
 
-union SkoarpuscleValue {
-	SkoarInt Int;
-	SkoarFloat Float;
-	bool Boolean;
-
-	wstring *String;
-	Skoarpion *Skoarpion;
-	Skoarpuscle *Skoarpuscle;
-	list<class Skoarpuscle *> *List;
-	void *Void;
-
-	SkoarNoadPtr* Subtree; // ???????
-
-	SkoarpuscleValue();
-	SkoarpuscleValue(int x);
-	SkoarpuscleValue(long x);
-	SkoarpuscleValue(long long x);
-	SkoarpuscleValue(float x);
-	SkoarpuscleValue(double x);
-	SkoarpuscleValue(bool x);
-	SkoarpuscleValue(void *x);
-
-};
-
 class Skoarpuscle {
 public:
-	SkoarpuscleValue val;
+
+    std::any val;
+    
 
 	Skoarpuscle();
     ~Skoarpuscle() {
@@ -60,11 +39,13 @@ public:
 	}
 	
 	virtual SkoarInt Skoarpuscle::flatten(SkoarMinstrel *m) {
-		return val.Int;
+        std::any* v = &val;
+        SkoarInt* vp = std::any_cast<SkoarInt>(v);
+        return (vp == nullptr) ? static_cast<SkoarInt>(0) : *vp;
 	}
 	
-	virtual wstring Skoarpuscle::asString() {
-		return wstring(L"Skoarpuscle");
+	virtual SkoarString Skoarpuscle::asString() {
+		return SkoarString(L"Skoarpuscle");
 	}
 
 
@@ -92,7 +73,7 @@ public:
 
 class SkoarpuscleFreq : public Skoarpuscle {
 public:
-    SkoarpuscleFreq(wstring *);
+    SkoarpuscleFreq(SkoarString &);
 	bool isNoatworthy() override;
 	void *asNoat() override;
 };
@@ -113,33 +94,33 @@ public:
 
 class SkoarpuscleNoat : public Skoarpuscle {
 public:
-    SkoarpuscleNoat(wstring *);
+    SkoarpuscleNoat(SkoarString&);
 	bool isNoatworthy() override;
 	void *asNoat() override;
 };
 
 class SkoarpuscleChoard : public Skoarpuscle {
 public:
-    SkoarpuscleChoard(wstring *);
+    SkoarpuscleChoard(SkoarString&);
 	bool isNoatworthy() override;
 	void *asNoat() override;
 };
 
 class SkoarpuscleString : public Skoarpuscle {
 public:
-    SkoarpuscleString(wstring *);
+    SkoarpuscleString(SkoarString);
 };
 
 class SkoarpuscleSymbol : public Skoarpuscle {
 public:
-    SkoarpuscleSymbol(wstring *);
+    SkoarpuscleSymbol(SkoarString);
 	Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) override;
 
 };
 
 class SkoarpuscleSymbolName : public Skoarpuscle {
 public:
-    SkoarpuscleSymbolName(wstring *);
+    SkoarpuscleSymbolName(SkoarString);
 };
 
 class SkoarpuscleRest : public Skoarpuscle {
@@ -225,7 +206,7 @@ public:
 
 class SkoarpuscleMsgName : public Skoarpuscle {
 public:
-    SkoarpuscleMsgName(wstring *);
+    SkoarpuscleMsgName(SkoarString);
 };
 
 class SkoarpuscleMathOp : public Skoarpuscle {
@@ -240,7 +221,7 @@ class SkoarpuscleList : public Skoarpuscle {
 public:
 	SkoarpuscleList();
 
-	SkoarpuscleList(list<Skoarpuscle*>* listy);
+	SkoarpuscleList(ListOfSkoarpusclesPtr listy);
 	
 	bool isNoatworthy() override;
 	void *asNoat() override;
@@ -266,7 +247,7 @@ public:
 
 class SkoarpuscleSkoarpion : public Skoarpuscle {
 public:
-	list<wstring*> *msg_arr;
+	list<SkoarString> msg_arr;
 
 	SkoarpuscleSkoarpion(Skoarpion *);
 	SkoarpuscleSkoarpion(Skoarpion *, SkoarNoadPtr);
@@ -283,18 +264,18 @@ public:
 
 class SkoarpuscleDeref : public Skoarpuscle {
 public:
-	list<wstring*> msg_arr;
+	list<SkoarString> msg_arr;
 	SkoarpuscleArgs * args;
 
 	SkoarpuscleDeref();
-	SkoarpuscleDeref(wstring *msg_name, SkoarpuscleArgs *);
+	SkoarpuscleDeref(SkoarString msg_name, SkoarpuscleArgs *);
 
 	Skoarpuscle *lookup(SkoarMinstrel* minstrel);
 };
 
 class SkoarpuscleConditional : public Skoarpuscle {
 public:
-	list<Skoarpuscle *> *ifs;
+	ListOfSkoarpusclesPtr ifs;
 
 	SkoarpuscleConditional();
 	SkoarpuscleConditional(Skoar *, SkoarNoadPtr);
@@ -329,7 +310,7 @@ public:
 
 class SkoarpuscleGoto : public Skoarpuscle {
 public:
-	wstring *nav_cmd;
+	SkoarString nav_cmd;
 	bool al_fine;
 
 	SkoarpuscleGoto(SkoarNoadPtr);
@@ -343,14 +324,14 @@ public:
 class SkoarpuscleLoopMsg : public Skoarpuscle {
 public:
 	SkoarpuscleLoopMsg();
-	SkoarpuscleLoopMsg(wstring *);
+	SkoarpuscleLoopMsg(SkoarString);
 };
 
 class SkoarpuscleMsg : public Skoarpuscle {
 public:
 	SkoarpuscleArgs *args;
 	SkoarpuscleMsg();
-	SkoarpuscleMsg(wstring *v, SkoarpuscleArgs *a);
+	SkoarpuscleMsg(SkoarString v, SkoarpuscleArgs *a);
 	//void *get_msg_arr(SkoarMinstrel *m);
 };
 
