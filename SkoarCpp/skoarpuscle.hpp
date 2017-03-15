@@ -56,9 +56,9 @@ public:
 	SkoarpuscleUnknown();
 };
 
-class SkoarpuscleCrap : public Skoarpuscle{
+class SkoarpuscleCat : public Skoarpuscle{
 public:
-	SkoarpuscleCrap();
+	SkoarpuscleCat();
 };
 
 class SkoarpuscleTrue : public Skoarpuscle {
@@ -141,17 +141,6 @@ public:
 	SkoarpuscleBars(SkoarToke *);
 };
 
-class SkoarpuscleVolta : public Skoarpuscle {
-public:
-	SkoarNoadPtr noad;
-	SkoarpuscleVolta(SkoarNoadPtr, SkoarToke *);
-};
-
-class SkoarpuscleMeter : public Skoarpuscle {
-public:
-	SkoarpuscleMeter(SkoarToke *);
-};
-
 class SkoarpuscleCarrots : public Skoarpuscle {
 public:
 	SkoarpuscleCarrots(SkoarToke *);
@@ -192,11 +181,6 @@ public:
 	SkoarNoadPtr noad;
 
 	SkoarpuscleSegno(SkoarNoadPtr, SkoarToke *);
-};
-
-class SkoarpuscleRep : public Skoarpuscle {
-public:
-	SkoarpuscleRep(SkoarToke *);
 };
 
 class SkoarpuscleFine : public Skoarpuscle {

@@ -13,72 +13,95 @@ src = """
 
 skoar              : branches
 +branches          : branch branches | <e>
-branch             : optional_voice phrases Newline
+branch             : opt_voiced_phrases Newline
+
+opt_voiced_phrases : Voice phrases | phrases
 +optional_voice    : Voice | <e>
 
-+phrases           : phrasey phrases | <e>
-+phrasey           : Comment | marker | Meter | expr | dal_goto | beat
 
-skoarpion          : SkoarpionStart skrp_sig skrp_suffix
-skrp_sig           : ArgSpec SkoarpionSep | SymbolName opt_arg_spec SkoarpionSep | <e>
-opt_arg_spec       : ArgSpec | <e>
++phrases           : phrasey phrases | <e>
++phrasey           : Comment | marker | expr | dal_goto | beat
+
+skoarpion          : SkoarpionStartWithSig skrp_sig skrp_suffix | SkoarpionStart skrp_suffix
+
+skrp_sig           : SymbolName skrp_sig_prime | arg_listy SkoarpionSep
++skrp_sig_prime    : SkoarpionSep | arg_listy SkoarpionSep
+
 skrp_suffix        : skrp_lines SkoarpionEnd
 
-+skrp_lines        : optional_voice phrases skrp_moar_lines
++skrp_lines        : opt_voiced_phrases skrp_moar_lines
 +skrp_moar_lines   : Newline skrp_lines | <e>
 
 listy              : ListS listy_suffix
-+listy_suffix      : listy_entries ListE | ListE
++listy_suffix      : Newline listy_entries ListE | listy_entries ListE | ListE
 +listy_entries     : expr moar_listy_entries
-+moar_listy_entries: ListSep listy_entries | Newline | <e>
++moar_listy_entries: ListSep moar_listy_entries | Newline moar_listy_entries | listy_entries | <e>
 
-marker             : Segno | Fine | coda | Volta | Bars
+arg_listy              : ListS arg_listy_suffix
++arg_listy_suffix      : Newline arg_listy_entries ListE | arg_listy_entries ListE | ListE
++arg_listy_entries     : arg_expr moar_arg_listy_entries
++moar_arg_listy_entries: ListSep moar_arg_listy_entries | Newline moar_arg_listy_entries | arg_listy_entries | <e>
+arg_expr               : SymbolName | SymbolColon expr
+
+
+marker             : Segno | Fine | coda | Bars
 coda               : Coda optional_al_coda
 optional_al_coda   : AlCoda | <e>
 dal_goto           : DaCapo al_x | DalSegno al_x
 al_x               : AlCoda | AlSegno | AlFine | <e>
 
-beat               : Crotchets | Quavers | Quarters | Eighths | Slash
+beat               : regular_beat | exact_beat | exact_rest 
+regular_beat       : Crotchets | Quavers | Quarters | Eighths
+exact_beat         : ExactBeat expr Quarters
+exact_rest         : ExactRest expr Crotchets
 
-musical_keyword      : dynamic | ottavas | pedally | musical_keyword_misc
-musical_keyword_misc : Rep | Portamento | Carrot
-pedally              : PedalDown | PedalUp
+musical_keyword      : dynamic | ottavas | musical_keyword_misc
+musical_keyword_misc : Carrot
 ottavas              : OctaveShift | OttavaA | OttavaB | QuindicesimaA | QuindicesimaB | Loco
 dynamic              : DynPiano | DynForte | DynSFZ | DynFP
 
-nouny            : cthulhu | conditional | loop | nouny_literal | musical_keyword | listy | deref | skoarpion
-+nouny_literal   : Tuplet | Caesura | Freq | Int | Float | String | Choard | NamedNoat | Symbol | Fairy | HashLevel | False | True | Crap
+nouny            : cthulhu | meditation | conditional | loop | nouny_literal | musical_keyword | listy | deref | skoarpion
++nouny_literal   : Duration | ugen | Tuplet | Freq | Int | Float | String | Choard | NamedNoat | Symbol | Fairy | HashLevel | False | True | Cat | lute
+
+lute             : Lute | LuteWithArgs listy_suffix
 
 deref            : Deref deref_prime
 +deref_prime     : MsgNameWithArgs listy_suffix | MsgName
 
-expr             : msgable expr_prime
+expr             : SymbolColon expr | msgable expr_prime
 expr_prime       : assignment expr_prime | math expr_prime | boolean | times | <e> 
 
 times            : Times
 boolean          : BooleanOp expr
+boolean_expr     : expr
 math*            : MathOp msgable
 assignment       : AssOp settable
-+settable        : Caesura | Symbol | listy | Quarters | Eighths | Fairy
++settable        : Symbol | listy | Quarters | Eighths | Fairy
 
 msgable          : nouny msg_chain_node
 +msg_chain_node  : MsgOp msg msg_chain_node | <e>
 msg              : MsgNameWithArgs listy_suffix | MsgName | listy | loop
 
 cthulhu          : LWing Semicolon cthulhu_prime
-+cthulhu_prime   : expr Semicolon RWing | Nosey Semicolon RWing
++cthulhu_prime   : boolean_expr Semicolon RWing | Nosey Semicolon RWing
 
 conditional      : CondS cond_ifs CondE
 +cond_ifs        : cond_if cond_ifs_suffix
 +cond_ifs_suffix : Newline cond_ifs | <e>
-cond_if          : optional_voice expr CondIf if_body cond_else
+cond_if          : optional_voice boolean_expr CondIf if_body cond_else
 +cond_else       : CondIf if_body | <e>
 
 if_body          : phrases
 
 loop             : LoopS loop_body loop_condition LoopE
 loop_body        : phrases
-loop_condition   : LoopSep expr | <e>
+loop_condition   : LoopSep boolean_expr | <e>
+
+meditation       : MeditationS skrp_lines MeditationE
+
+ugen             : ugen_with_args | ugen_simple
+ugen_simple      : AUGen | KUGen | DUGen
+ugen_with_args   : AUGenWithArgs listy_suffix | KUGenWithArgs listy_suffix | DUGenWithArgs listy_suffix
 
 """
 

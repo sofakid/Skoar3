@@ -83,14 +83,6 @@ void SkoarTokeInspector::decorate(Toke_Bars *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleBars(toke);
 }
 
-void SkoarTokeInspector::decorate(Toke_Volta *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleVolta(noad, toke);
-}
-
-void SkoarTokeInspector::decorate(Toke_Meter *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleMeter(toke);
-}
-
 void SkoarTokeInspector::decorate(Toke_Carrot *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleCarrots(toke);
 }
@@ -137,10 +129,6 @@ void SkoarTokeInspector::decorate(Toke_Voice *toke, SkoarNoadPtr noad) {
 
 void SkoarTokeInspector::decorate(Toke_Segno *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleSegno(noad, toke);
-}
-
-void SkoarTokeInspector::decorate(Toke_Rep *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleRep(toke);
 }
 
 void SkoarTokeInspector::decorate(Toke_Fine *toke, SkoarNoadPtr noad) {

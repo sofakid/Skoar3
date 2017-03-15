@@ -10,28 +10,26 @@ src = """
 
 <e>:            unused
 Eof:            unused
-Whitespace:     [ \\t]+
-Newline:        [\\n\\r\\f \\t]*[\\n\\r\\f]
+Whitespace:     [ \\t]*
+Newline:        [\\n\\r][\\n\\r \\t]*
 
-True:           yes
-False:          no
-Crap:           crap
+True:           yes|true
+False:          no|false
+Cat:            =\\^\\.\\^=
 
 Voice*:         \\.(([a-zA-Z_][a-zA-Z0-9_]*)?|\\.+)
 
-Comment:        <[?](.|[\\n\\r\\f])*?[?]>
+Comment:        <[?](.|[\\n\\r])*?[?]>
 
 # careful not to match ottavas ending in (ma,mb,va,vb), or steal from floats
-Int*:           (-)?(0|[1-9][0-9]*)(?![0-9]*Hz|[mv][ab]|\\.[0-9]|/)
-Float*:         (-)?(0|[1-9][0-9]*)\\.[0-9]+(?!Hz)
+Int*:           (-)?(0|[1-9][0-9]*)(?![0-9]*Hz|[mv][ab]|\\.[0-9]|:[0-9])
+Float*:         (-)?(0|[1-9][0-9]*)\\.[0-9]+(?!Hz|:[0-9])
 
 Freq*:          (0|[1-9][0-9]*)(\\.[0-9]+)?Hz
 
-Meter*:         [1-9][0-9]*/[1-9][0-9]*
+#ArgSpec:        [a-zA-Z][A-Za-z0-9:@,_ \\t]*
 
-ArgSpec:        <[a-zA-Z]+(,[a-zA-Z]+)*>
-
-ListS:          <(?![=?])
+ListS:          <(?![=?])|<(?=[=]\\^\\.)
 ListE:          >(?![=])
 ListSep:        ,
 
@@ -44,13 +42,21 @@ Tuplet*:        /\\d+(:\\d+)?|(du|tri|quadru)plets?|(quin|sex|sep|oc)tuplets?
 Crotchets*:     [}]+\\.?
 Quavers*:       o+/\\.?
 
+ExactBeat:      [(](?![+])
+ExactRest:      [{](?![=?:!])
+Duration:       [0-9]+:[0-9]+(\\.[0-9]+)?
+
 Quarters*:      \\.?[)]+(?:__?)?\\.?
 Eighths*:       \\.?\\]+(?:__?)?\\.?
 
-Caesura:        //
-Slash:          /(?![/0-9])
+#Caesura:        //
+#Slash:          /(?![/0-9])
 
 HashLevel:      \\[#*[ ]*\\]
+
+Lute:           &(?!<)
+LuteWithArgs:   &<
+
 
 
 # we can't allow f for forte as f is a noat, so we allow
@@ -62,23 +68,26 @@ HashLevel:      \\[#*[ ]*\\]
 #  default velocity:
 #    ppp (16), pp (32), p (48), mp (64), mf (80), f (96), ff (112), fff (127)
 
-DynPiano*:        (m(ezzo)?p|p+)(iano)?
-DynForte*:        m(ezzo)?f(orte)?|f+orte|ff+
-DynSFZ:           sfz
-DynFP:            fp
+DynPiano*:        (m(ezzo)?p|p+)(iano)?(?![a-oq-zA-Z0-9_])
+DynForte*:        m(ezzo)?f(orte)?|f+orte|ff+(?![a-oq-zA-Z0-9_])
+DynSFZ:           sfz(?![a-oq-zA-Z0-9_])
+DynFP:            fp(?![a-oq-zA-Z0-9_])
 
-AssOp:            =>|[+]>|->
+AssOp:            =>|[+]>|->|[*]>
 MsgOp:            \\.(?![)\\]])
-MathOp:           [+x\\-](?!>|or)
+MathOp:           [+*\\-/%](?!>) 
 
-NamedNoat*:       (?:_?)(?:[a-g](?![ac-zA-Z_]))(#|b)?
-Choard*:          [ABCDEFG](?![ce-ln-rt-zA-LN-Z])(#|b)?([Mm0-9]|sus|dim|aug|dom|add)*
+NamedNoat*:       (?:_?)(?:[a-g](?![ac-zA-Z_]))(#|b)?(?![ \\t]*:(?![}:|]))
+Choard*:          ~*[ABCDEFG](?![.ce-ln-rt-zA-LN-Z]|a[l ])(#|b)?([Mm0-9]|sus|dim|aug|dom)*~*
 
 BooleanOp*:       ==|!=|<=|>=|and|or|xor
 CondS:            [{][?][\\n]*
 CondIf:           [?][?](?![}])
 CondE:            [?][}]
 Semicolon:        ;
+
+MeditationS:      [{]=[\\n]*
+MeditationE:      =[}]
 
 LoopS:            [{]:[\\n]*
 LoopE:            :[}]
@@ -90,13 +99,17 @@ Fairy:            [$]
 MsgName*:         [a-zA-Z_][a-zA-Z0-9_]*(?!<)
 MsgNameWithArgs*: [a-zA-Z_][a-zA-Z0-9_]*<
 
-Symbol*:          [\\\\@][a-zA-Z_][a-zA-Z0-9_]*
-SymbolName*:      [a-zA-Z_][a-zA-Z0-9_]*
-SkoarpionStart:   [{]!
-SkoarpionEnd:     ![}]
-SkoarpionSep:     !!
-Deref:            !(?![!}]|=)
+Symbol*:          [\\\\@][a-zA-Z0-9_][a-zA-Z0-9_]*
+SymbolName*:      [a-zA-Z0-9_][a-zA-Z0-9_]*(?![[a-zA-Z0-9_fi \\t]*:)
+SymbolColon*:     [a-zA-Z_][a-zA-Z0-9_]*[ \\t]*:(?![:|}])
 
+
+SkoarpionStartWithSig:  [{]!(?=(.(?!![}]))*!!)
+SkoarpionStart:         [{]!(?=(.(?!!!))*![}])
+SkoarpionEnd:           ![}]
+SkoarpionSep:           !!
+
+Deref:            !(?![!}]|=)
 Nosey:            ,
 
 DaCapo:           D\\.C\\.|Da Capo
@@ -104,10 +117,18 @@ DalSegno:         D\\.S\\.|Dal Segno
 Fine:             fine
 Segno*:           ,[Ss](?:egno)?`(?:[a-zA-Z_][a-zA-Z0-9_]*`)*
 Coda:             \\([+]\\)(?:`(?:[a-zA-Z_][a-zA-Z0-9_]*`)*)?
-Rep*:             %+
+#Rep*:             %+
 AlCoda:           al(la)? coda
 AlSegno:          al segno
 AlFine:           al fine
+
+AUGen*:           a[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
+AUGenWithArgs*:   a[A-Z][a-zA-Z0-9_]*<
+KUGen*:           k[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
+KUGenWithArgs*:   k[A-Z][a-zA-Z0-9_]*<
+DUGen*:           d[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
+DUGenWithArgs*:   d[A-Z][a-zA-Z0-9_]*<
+
 
 OctaveShift*:     ~+o|o~+
 
@@ -116,18 +137,12 @@ OttavaB:          8vb|ottava (bassa|sotto)
 
 QuindicesimaA:    15ma|alla quindicesima
 QuindicesimaB:    15mb
-
-Portamento:       port\\.?
 Loco:             loco
-Volta*:           \\[\\d+\\.\\]
 
 # TODO: deal with \"
 String*:          \'[^']*\'
 
 Bars*:            :?\\|+:?
-
-PedalDown:        Ped\\.?
-PedalUp:          [*](?!>)
 
 Times:            [Tt]imes
 """

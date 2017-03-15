@@ -25,8 +25,6 @@ public:
 	void decorate(Toke_Quarters *toke, SkoarNoadPtr noad);
 	void decorate(Toke_Eighths *toke, SkoarNoadPtr noad);
 	void decorate(Toke_Bars *toke, SkoarNoadPtr noad);
-	void decorate(Toke_Volta *toke, SkoarNoadPtr noad);
-	void decorate(Toke_Meter *toke, SkoarNoadPtr noad);
 	void decorate(Toke_Carrot *toke, SkoarNoadPtr noad);
 	void decorate(Toke_Tuplet *toke, SkoarNoadPtr noad);
 	void decorate(Toke_DynPiano *toke, SkoarNoadPtr noad);
@@ -39,7 +37,6 @@ public:
 	void decorate(Toke_BooleanOp *toke, SkoarNoadPtr noad);
 	void decorate(Toke_Voice *toke, SkoarNoadPtr noad);
 	void decorate(Toke_Segno *toke, SkoarNoadPtr noad);
-	void decorate(Toke_Rep *toke, SkoarNoadPtr noad);
 	void decorate(Toke_Fine *toke, SkoarNoadPtr noad);
 	void decorate(Toke_MsgName *toke, SkoarNoadPtr noad);
 	void decorate(Toke_MsgNameWithArgs *toke, SkoarNoadPtr noad);

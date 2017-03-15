@@ -36,9 +36,9 @@ namespace SkoarStyles {
         
         Float,
 
-        //SymbolColon,
-        //Duration,
-        //Cat,
+        SymbolColon,
+        Duration,
+        Cat,
 
         dynamic,
         msg,
@@ -54,10 +54,10 @@ namespace SkoarStyles {
         skoarpion,
         loop,
 
-        //lute,
-        //meditation,
-        //ugen,
-        //arg_listy,
+        lute,
+        meditation,
+        ugen,
+        arg_listy,
 
 
     };
@@ -175,7 +175,6 @@ namespace SkoarStyles {
             return EStyle::Float;
         }
 
-        /*
         template <>
         constexpr const EStyle style<ESkoarToke::SymbolColon>(void) {
             return EStyle::SymbolColon;
@@ -190,7 +189,6 @@ namespace SkoarStyles {
         constexpr const EStyle style<ESkoarToke::Cat>(void) {
             return EStyle::Cat;
         }
-        */
     }
 
     // --- tokes ----------------------------------------
@@ -257,7 +255,6 @@ namespace SkoarStyles {
             return EStyle::loop;
         }
 
-        /*
         template <>
         constexpr const EStyle style<ESkoarNoad::lute>(void) {
             return EStyle::lute;
@@ -272,7 +269,6 @@ namespace SkoarStyles {
         constexpr const EStyle style<ESkoarNoad::ugen>(void) {
             return EStyle::ugen;
         }
-        */
     }
 
     

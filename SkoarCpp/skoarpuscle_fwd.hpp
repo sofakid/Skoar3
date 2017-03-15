@@ -1,7 +1,7 @@
 class Skoarpuscle;
 
 class SkoarpuscleUnknown;
-class SkoarpuscleCrap;
+class SkoarpuscleCat;
 class SkoarpuscleTrue;
 class SkoarpuscleFalse;
 class SkoarpuscleFreq;
@@ -15,8 +15,6 @@ class SkoarpuscleSymbolName;
 class SkoarpuscleRest;
 class SkoarpuscleBeat;
 class SkoarpuscleBars;
-class SkoarpuscleVolta;
-class SkoarpuscleMeter;
 class SkoarpuscleCarrots;
 class SkoarpuscleTuplet;
 class SkoarpuscleDynamic;
@@ -24,7 +22,6 @@ class SkoarpuscleOctaveShift;
 class SkoarpuscleBooleanOp;
 class SkoarpuscleVoice;
 class SkoarpuscleSegno;
-class SkoarpuscleRep;
 class SkoarpuscleFine;
 class SkoarpuscleMsgName;
 class SkoarpuscleMathOp;

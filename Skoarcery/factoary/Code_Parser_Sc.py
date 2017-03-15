@@ -1,5 +1,5 @@
 import unittest
-from Skoarcery import langoids, terminals, nonterminals, dragonsets, parsetable, emissions
+from Skoarcery import langoids, terminals, terminals_colours, nonterminals, nonterminals_colours, dragonsets, parsetable, emissions
 from Skoarcery.langoids import Terminal, Nonterminal
 
 
@@ -7,7 +7,9 @@ class Code_Parser_Sc(unittest.TestCase):
 
     def setUp(self):
         terminals.init()
+        terminals_colours.init()
         nonterminals.init()
+        nonterminals_colours.init()
         langoids.init()
         dragonsets.init()
         parsetable.init()
@@ -33,7 +35,7 @@ class Code_Parser_Sc(unittest.TestCase):
         N = nonterminals.nonterminals.values()
 
         # precompute desirables
-        SC.method("init_desirables")
+        SC.static_method("init_desirables")
         for A in N:
 
             R = A.production_rules
@@ -92,7 +94,7 @@ class Code_Parser_Sc(unittest.TestCase):
             SC.nl()
 
             SC.stmt("deep = deep + 1")
-            SC.if_("deep > 100")
+            SC.if_("deep > 1000")
             ____SC.stmt("this.fail_too_deep")
             SC.end_if()
 
@@ -105,7 +107,7 @@ class Code_Parser_Sc(unittest.TestCase):
                 # A -> alpha
                 alpha = P.production
 
-                SC.stmt("desires = " + SC.v_dict_get("desirables", str(P)))
+                SC.stmt("desires = " + SC.v_dict_get("SkoarParser.desirables", str(P)))
 
                 SC.cmt(str(P))
 
@@ -116,7 +118,7 @@ class Code_Parser_Sc(unittest.TestCase):
 
                 for x in alpha:
                     if isinstance(x, Terminal):
-                        SC.stmt('noad.add_toke(' + SC.v_sym(x.toker_name) + ', toker.burn(' + x.toker_name + '))')
+                        SC.stmt('runtime.add_toke(noad, ' + SC.v_sym(x.toker_name) + ', toker.burn(' + x.toker_name + '))')
 
                         # debugging
                         #SC.print("burning: " + x.name)
@@ -160,31 +162,34 @@ SkoarParseException : Exception {
 
 SkoarParser {
 
-    var <runtime, <toker, <deep, desirables;
+    classvar <desirables;
+    var runtime, toker, deep;
 
     *new {
-        | runtime |
-        ^super.new.init( runtime )
+        | rt |
+        ^super.new.init( rt )
     }
 
     init {
-        | runtime |
-
-        runtime = runtime;
+        | rt |
+        runtime = rt;
         toker = runtime.toker;
         deep = 0;
+    }
+
+    *initClass {
         desirables = IdentityDictionary();
-        this.init_desirables();
+        SkoarParser.init_desirables;
     }
 
     fail {
-        toker.dump;
+        //toker.dump;
         SkoarParseException("Fail").throw;
     }
 
     fail_too_deep {
         "Parse tree too deep!".postln;
-        toker.dump;
+        //toker.dump;
         SkoarParseException("Parse tree too deep").throw;
     }
 
@@ -195,4 +200,41 @@ SkoarParser {
     //}
 
 """)
+
+    def test_SC_style_template(self):
+
+        fd = open("SuperCollider/Skoar/ui_colour_template.sc", mode="w")
+
+        _ = emissions.SC
+        _.fd = fd
+        _.file_header("ui_colour_template.sc", "Code_Sc_Parser")
+
+        _.cmt_hdr("Noad Colours")
+        _.raw("""
+SkoarUiColourTemplate {
+
+    classvar <defaults;
+
+    *initClass {
+        defaults = (
+            """)
+        x = ""
+        for token in terminals.tokens.values():
+            colour = terminals_colours.token_colours.get(token.name)
+            if colour is not None:
+                _.raw(x + "'" + token.toker_name + "': Color.fromHexString(\"" + colour + "\")")
+                x = ",\n            "
+
+        for noad in nonterminals.nonterminals.values():
+            colour = nonterminals_colours.nonterminals_colours.get(noad.name)
+            if colour is not None:
+                _.raw(x + "'" + noad.name + "': Color.fromHexString(\"" + colour + "\")")
+                x = ",\n            "
+
+        _.raw("""
+        );
+    }
+}
+        """)
+        fd.close()
 

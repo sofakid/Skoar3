@@ -1,16 +1,18 @@
 
 SkoarMinstrel {
 
-    var   skoar;
+    var  <skoar;
     var  <koar;
     var  <all_voice;
     var  <fairy;
 
     var   event_stream;
 
+	var <controls;
+
     *new {
         | nom, k, skr |
-        "new SkoarMinstrel: ".post; nom.postln;
+        //"new SkoarMinstrel: ".post; nom.postln;
         ^super.new.init(nom, k, skr);
     }
 
@@ -24,9 +26,18 @@ SkoarMinstrel {
         // some defaults
         koar[\octave] = 5;
         koar[\tempo] = 1;
-        koar[\amp] = 0.5;
+        koar[\amp] = 0.2;
+		koar[\legato] = 1;
+		koar[\stretch] = 1;
 
-        fairy = SkoarFairy("$"++nom, this);
+		koar[\num_impression] = SkoarpuscleInt.new(0);
+		koar[\sym_impression] = \lin;
+		koar[\dyn_impression] = SkoarpuscleCat.new;
+		
+
+		controls = SkoarControls(nom);
+
+        fairy = SkoarFairy("$" ++ nom, this); // emacs needs ->"
 
         all_voice = skr.all_voice;
 
@@ -50,7 +61,7 @@ SkoarMinstrel {
                     {\nav_fine} { running = false; }
 
                     {\nav_da_capo} {
-                        "Da Capo time.".postln;
+                        //"Da Capo time.".postln;
                         // do nothing, will enter skoarpion again
                     }
 
@@ -64,7 +75,12 @@ SkoarMinstrel {
 
             };
 
-            ("Minstrel " ++ koar.name ++ " done.").postln;
+            //("Minstrel " ++ koar.name ++ " done.").postln;
+			if (fairy.lute.notNil) {
+				fairy.lute.flush_everything;
+			};
+			
+			skoar.one_less_running;
         });
 
     }
@@ -76,8 +92,9 @@ SkoarMinstrel {
     pfunk {
         ^Pfunc({this.nextEvent;});
     }
-
+	
     reset_colons {
+		fairy.forget_that_you_have_seen(SkoarpuscleBars);
         koar.state_put(\colons_burned, Dictionary.new;);
     }
 
@@ -89,6 +106,7 @@ SkoarMinstrel {
 Skoarchestra {
 
     var minstrels;
+	var troll;
 
     *new {
         | skoar |
@@ -109,6 +127,9 @@ Skoarchestra {
                 };
             };
         };
+		
+		minstrels.add(skoar.skoarsfjord.troll);
+		skoar.running = minstrels.size;
     }
 
     eventStream {

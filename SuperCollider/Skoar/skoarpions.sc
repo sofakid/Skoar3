@@ -6,7 +6,7 @@ Skoarpion {
 
     var <body;
 
-    var <arg_spec;
+    var <arg_list;
 
     *new {
         | skr, noad |
@@ -64,6 +64,7 @@ Skoarpion {
 
             if (v.isKindOf(SkoarpuscleVoice)) {
                 line.voice = skoar.get_voice(v.val);
+				//(" VOICE :: " ++ line.voice).postln;
             };
 
         };
@@ -93,21 +94,18 @@ nil:                            :        Toke_SkoarpionEnd
         skoar.skoarpions.add(this);
 
         // 0 - start
-        // 1 - sig
-        sig = kids[1];
-        // 2 - suffix
-        suffix = kids[2];
+        // 1 - sig or suffix
+        sig = kids[1].skoarpuscle;
 
-        sig.children.do {
-            | x |
-            case {x.skoarpuscle.isKindOf(SkoarpuscleSymbolName)} {
-                name = x.skoarpuscle.val;
-            } {x.skoarpuscle.isKindOf(SkoarpuscleArgSpec)} {
-                arg_spec = x.skoarpuscle;
-            };
-        };
-
-        //"SIG: ".post; name.post; arg_spec.postln;
+		if (sig.isKindOf(SkoarpuscleSkoarpionSig)) {
+			name = sig.name;
+			arg_list = sig.arg_list;
+			suffix = kids[2];
+		} {
+			suffix = kids[1];
+		};
+        
+        //("SIG: " ++ name ++ " args: " ++ arg_list).postln;
 
         suffix.children.do {
             | x |
@@ -124,9 +122,7 @@ nil:                            :        Toke_SkoarpionEnd
             };
 
             case {x.toke.isKindOf(Toke_SkoarpionSep)} {
-
                 process_line.();
-
                 sections.add(section);
 
                 section = SkoarNoad(\section);
@@ -150,14 +146,11 @@ nil:                            :        Toke_SkoarpionEnd
         sections.do {
             | sec |
             var i = 0;
-
             sec.decorate_zero(skoar.all_voice, sec, [], i);
         };
 
-        body = sections[0];
-        
+        body = sections[0];        
         n = body.size;
-
     }
 
     projection {
@@ -170,10 +163,10 @@ nil:                            :        Toke_SkoarpionEnd
 
         debug("---< Skoarpion " ++ s ++ " >---");
 
-        if (arg_spec.notNil) {
-            "arg_spec: ".post; arg_spec.postln;
+        if (arg_list.notNil) {
+            "arg_list: ".post; arg_list.postln;
 
-            arg_spec.val.do {
+            arg_list.val.do {
                 | x |
                 if (x.isKindOf(Skoarpuscle)) {
                     x.val.post; " ".post;
@@ -191,7 +184,139 @@ nil:                            :        Toke_SkoarpionEnd
 
         "".postln;
     }
+
+    draw_tree {
+        var s = name ?? "anonymous";
+
+        var out = "---< Skoarpion " ++ s ++ " >---\n";
+
+        if (arg_list.notNil) {
+            out = out ++ "arg_list: " ++ arg_list ++ "\n";
+
+            arg_list.val.do {
+                | x |
+                if (x.isKindOf(Skoarpuscle)) {
+                    out = out ++ x.val ++ " ";
+                } {
+                    out = out ++ x ++ " ";
+                };
+            };
+            out = out ++ "\n";
+        };
+
+        if (body.notNil) {
+            out = out ++ "body:\n" ++ body.draw_tree;
+        };
+
+        ^out ++ "\n";
+    }
 }
+
+/*
+nil:                            :        skrp_sig
+nil:                            :         Toke_SymbolName
+nil:                            :         arg_listy
+nil:                            :          Toke_ListS
+nil:                            :          arg_expr
+nil:                            :           Toke_SymbolName
+nil:                            :          Toke_ListSep
+nil:                            :          arg_expr
+nil:                            :           Toke_SymbolColon
+nil:                            :           expr
+*/
+SkoarpuscleSkoarpionSig : Skoarpuscle {
+
+	var <name;
+	var <arg_list;
+	
+	init {
+		| noad |
+		var x = noad.children[0].skoarpuscle;
+
+		//x.dump;
+		
+		if (x.isKindOf(SkoarpuscleSymbolName)) {
+			name = x.val;
+			x = noad.children[1].skoarpuscle;
+			//("SIG::: name: " ++ name).postln;
+		};
+			
+		if (x.isKindOf(SkoarpuscleArgList)) {
+			arg_list = x;
+		};
+	}
+}
+
+/*
+nil:                            :          arg_expr
+nil:                            :           Toke_SymbolName
+nil:                            :          Toke_ListSep
+nil:                            :          arg_expr
+nil:                            :           Toke_SymbolColon
+nil:                            :           expr
+*/
+SkoarpuscleArgExpr : Skoarpuscle {
+
+	var <name;
+	var <expr;
+
+	init {
+		| noad |
+		var x = noad.next_skoarpuscle;
+
+		name = x.val;
+		//("ARG EXPR :: name: " ++ name).postln;
+		
+		if (noad.children.size > 0) {
+			expr = SkoarpuscleExpr(noad.children[1]);
+		};
+	}
+}
+
+/*
+nil:                            :         arg_listy
+nil:                            :          Toke_ListS
+nil:                            :          arg_expr
+nil:                            :          Toke_ListSep
+nil:                            :          arg_expr
+*/
+SkoarpuscleArgList : SkoarpuscleList {
+
+	var <args_dict;
+	var <args_names;
+	
+	isNoatWorthy { ^false; }
+	asNoat {}
+	skoar_msg {"What?".postln;}
+
+	init {
+		| noad |
+		args_dict = ();
+		args_names = [];
+
+		noad.collect_skoarpuscles.do {
+			| x |
+			
+			//("SkoarpuscleArgList:: x:" ++ x).postln; 
+			if (x.isKindOf(SkoarpuscleArgExpr)) {
+				args_dict[x.name] = x.expr;
+				args_names = args_names.add(x.name);
+			};
+		};
+		//("SkoarpuscleArgList:: args_names:" ++ args_names).postln; 
+		
+	}
+
+	on_enter {
+		| m, nav |
+		m.fairy.push_noating;
+		m.fairy.push;
+	}
+	
+}
+	
+
+
 
 SkoarIteratoar {
     var arr;
@@ -240,6 +365,7 @@ SkoarpionProjection : SkoarIteratoar {
     var body;
     var proj;
     var <skip_to;
+	var <name;
 
     *new {
         | skrp, koar_name |
@@ -251,6 +377,7 @@ SkoarpionProjection : SkoarIteratoar {
         var kids = skrp.body.children;
         i = -1;
         proj = SkoarNoad(\projection);
+		name = koar_name;
 
         // map indexes in skoap to indexes in this projection
         skip_to = Array.newClear(kids.size);
@@ -282,6 +409,11 @@ SkoarpionProjection : SkoarIteratoar {
     inline {
         ^proj;
     }
+
+	meditation {
+		//("meditating projection: " ++ name).postln; 
+		^proj;
+	}
 
     map_dst {
         | dst |

@@ -4,7 +4,7 @@ var eth = (\dur:1/2);
 
 SkoarTestRunner((
 	
-	ppp: [
+	/*	ppp: [
 		"ppp ) pp ) p ) mp )",
 		[(amp: 1/8), (amp: 2/8), (amp: 3/8), (amp: 4/8)]
 	],
@@ -23,7 +23,8 @@ SkoarTestRunner((
 		"ffforte ) fforte ) forte ) mforte ) mezzoforte )",
 		[(amp: 1), (amp: 7/8), (amp: 6/8), (amp: 5/8), (amp: 5/8)]
 	],
-
+	*/
+	
 	hashbars_short: [
 		"[] =>@x) [ ] =>@x) [#] =>@x) [  ] =>@x) [# ] =>@x) [##] =>@x) [#  ] =>@x) [## ] =>@x) [###] =>@x) ",
 		[(x: 0),  (x: 0),   (x: 1),   (x: 0),    (x: 1/2),  (x: 1),    (x: 1/3),   (x: 2/3),   (x: 1),   ]

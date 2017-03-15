@@ -17,22 +17,18 @@
 
 
 // --- Skoarpuscle ---------------------------------------------------------
-// --- Skoarpuscle ---------------------------------------------------------
 Skoarpuscle::Skoarpuscle() {
 }
 
 // --- SkoarpuscleUnknown ---------------------------------------------------------
-// --- SkoarpuscleUnknown ---------------------------------------------------------
 SkoarpuscleUnknown::SkoarpuscleUnknown() {
 }
 
-// --- SkoarpuscleCrap ---------------------------------------------------------
-// --- SkoarpuscleCrap ---------------------------------------------------------
-SkoarpuscleCrap::SkoarpuscleCrap() {
+// --- SkoarpuscleCat ---------------------------------------------------------
+SkoarpuscleCat::SkoarpuscleCat() {
 }
 
-/*asString{ "crap" }
-// these aren't doing nothing, they are returning this crap
+/*asString{ "=^.^=" }
 skoar_msg{}
 flatten{ return nil }
 */	
@@ -715,19 +711,6 @@ SkoarpuscleGoto::SkoarpuscleGoto(SkoarNoadPtr noad) {
 }
 
 
-// --- SkoarpuscleVolta ---------------------------------------------------------
-SkoarpuscleVolta::SkoarpuscleVolta(SkoarNoadPtr nod, SkoarToke *toke) {
-	//val = toke.lexeme.strip("[.]").asInteger;
-	noad = nod;
-}
-
-
-// --- SkoarpuscleMeter ---------------------------------------------------------
-SkoarpuscleMeter::SkoarpuscleMeter(SkoarToke *toke) {
-	//auto a = toke.lexeme.split;
-	//val = [a[0].asInteger, a[1].asInteger];
-}
-
 // --- SkoarpuscleCarrots ---------------------------------------------------------
 SkoarpuscleCarrots::SkoarpuscleCarrots(SkoarToke *toke) {
 	val = toke->lexeme.length();
@@ -802,11 +785,5 @@ SkoarpuscleVoice::SkoarpuscleVoice(SkoarToke *toke) {
 	auto s = &toke->lexeme;
 	auto n = s->length() - 1;
 	//val = s[1..n].asSymbol;
-}
-
-
-// --- SkoarpuscleRep ---------------------------------------------------------
-SkoarpuscleRep::SkoarpuscleRep(SkoarToke *toke) {
-	val = toke->lexeme.length();
 }
 

@@ -1,7 +1,7 @@
 import unittest
 import os
 
-from Skoarcery import terminals, emissions, underskoar
+from Skoarcery import terminals, emissions, underskoar, terminals_colours
 
 
 bs = "{"
@@ -12,6 +12,7 @@ class Code_Lexer_Sc(unittest.TestCase):
 
     def setUp(self):
         terminals.init()
+        #terminals_colours.init()
         emissions.init()
         underskoar.init(emissions.SC)
 
@@ -34,8 +35,8 @@ class Code_Lexer_Sc(unittest.TestCase):
     def base_token(self):
         underskoar.skoarToke()
 
-    def Eof_token(self):
-        underskoar.Eof_token()
+    def EOF_token(self):
+        underskoar.EOF_token()
 
     def whitespace_token(self):
         underskoar.whitespace_token()
@@ -44,6 +45,7 @@ class Code_Lexer_Sc(unittest.TestCase):
         underskoar.typical_token(token)
 
     def test_SC_lexer(self):
+
         print(os.getcwd())
         fd = open("SuperCollider/Skoar/lex.sc", mode="w")
 
@@ -53,7 +55,7 @@ class Code_Lexer_Sc(unittest.TestCase):
         self.exceptions()
         self.base_token()
         self.whitespace_token()
-        self.Eof_token()
+        self.EOF_token()
 
         emissions.SC.cmt_hdr("Everyday Tokes")
         for token in terminals.tokens.values():

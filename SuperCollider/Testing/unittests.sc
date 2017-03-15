@@ -1,5 +1,5 @@
 SkoarTest : UnitTest {
-	
+
 	var <>tests_table;
 
     *report {
@@ -12,13 +12,7 @@ SkoarTest : UnitTest {
 		};
     }
 
-}
-
-TestSkoarSanity : SkoarTest {
-
-    var <>skoarce;
-
-    setUp {
+	setUp {
         // this will wait until the server is booted
       	//this.bootServer;
         // if the server is already booted it will free all nodes
@@ -39,8 +33,8 @@ TestSkoarSanity : SkoarTest {
   	//this.wait( { p.isPlaying }, "waiting for synth to play", 10);
 
 	test_do {
-		 
-		 this.assert(tests_table.notNil == true, "You didn't set up the tests right.");
+
+		 this.assert(tests_table.notNil == true, "Did you set up the tests right?");
 		 if (tests_table.isNil) {
 			^nil;
 		 };
@@ -98,11 +92,11 @@ Expectoar {
         expected = exp;
         testoar = tstr;
         tag = msg ++ ": ";
-        end = (\dur: 0, \isRest: true, \delta: 0);
-		this.catch {
+        end = (\dur: \any, \isRest: true, \delta: \any);
+		this.catch({
 			skoar = skrs.skoar;
-        };
-		
+        });
+
 	}
 
     *test {
@@ -115,11 +109,11 @@ Expectoar {
 	catch {
 		| f |
 		try {
-			f.value();
+			f.value;
 		} {
 			| e |
 			testoar.assert(false == true, tag ++ "SkoarError");
-			e.postProtectedBacktrace;	
+			e.postProtectedBacktrace;
 		};
 	}
 
@@ -127,7 +121,7 @@ Expectoar {
         var pat;
         var result;
 
-		testoar.assert(skoar.notNil == true, "Parse Fail");
+		testoar.assert(skoar.notNil == true, "Parsed ok?");
 		if (skoar.isNil) {
 			^nil;
 		};
@@ -146,7 +140,15 @@ Expectoar {
                 for (0, n-1, {
                     | i |
 					this.catch {
-						results.put(i, pat.nextFunc.value);
+						var res = pat.nextFunc.value;
+
+						" -- ".post; res.postln;
+
+						while {res[\isTroll] == true} {
+							res = pat.nextFunc.value;
+						};
+						results.put(i, res);
+
 					};
                 });
                 "Expecting events:".postln;
@@ -160,14 +162,20 @@ Expectoar {
                 "Expecting event: ".post; ex.postln;
 				this.catch {
 					result = pat.nextFunc.value;
+					result.postln;
+
+					while {result[\isTroll] == true} {
+						result = pat.nextFunc.value;
+						result.postln;
+					};
 				};
-                
+
                 testoar.assert(result.notNil, tag ++ "expect a result");
 
-                // that assert doesn't abort.
-                if (result.notNil) {
-                    this.match(ex, result);
-                };
+				// that assert doesn't abort.
+				if (result.notNil) {
+					this.match(ex, result);
+				};
 
             } {ex.isKindOf(Function)} {
                 // note we don't consume anything here
@@ -193,30 +201,39 @@ Expectoar {
         exp_event.keysValuesDo {
             | ekey, eval |
 
-			if (eval == inf) {
-				testoar.assert(false, "Unimplemented test: " ++ tag);
-			} {
-				testoar.assert(seen_event.isKindOf(Event), tag ++ "should be an event.");
+			("expecting<" ++ ekey ++ "," ++ eval ++">").postln;
 
-				if (seen_event.notNil) {
-					var seen_val = this.flatten(seen_event[ekey]);
-					var x;
+			testoar.assert(seen_event.isKindOf(Event), tag ++ "should be an event.");
 
-					if (eval.isKindOf(Float)) {
-						x = eval - seen_val;
-						if (x < 0) {
-							x = -1 * x;
-						};
-						x = x < 0.0001;
-					} {
-						x = seen_val == eval;
-					};
+			if (seen_event.notNil) {
+				var seen_val = this.flatten(seen_event[ekey]);
+				var x;
 
-					testoar.assert(x, tag ++  "seen_event[" ++ ekey ++ "] = " ++ seen_val ++ " == " ++ eval ++ " expected :: <" 
-										  ++ seen_val.class.asString ++ ", " ++ eval.class.asString ++ ">";
-					);
+				// we send inf if we want to test that the value doesn't exist (because we can't send nil)
+				if (eval == inf) {
+					eval = nil;
 				};
+
+				// keyword \any means it just needs to exist
+				if (eval == \any) {
+					eval = seen_val;
+				};
+
+				if (eval.isKindOf(Float)) {
+					x = eval - seen_val;
+					if (x < 0) {
+						x = -1 * x;
+					};
+					x = x < 0.0001;
+				} {
+					x = seen_val == eval;
+				};
+
+				testoar.assert(x, tag ++  "seen_event[" ++ ekey ++ "] = " ++ seen_val ++ " == " ++ eval ++ " expected :: <"
+										++ seen_val.class.asString ++ ", " ++ eval.class.asString ++ ">";
+				);
 			};
+
         };
     }
 
@@ -259,7 +276,7 @@ Expectoar {
 			};
 			obj = a;
 		};
-		
+
 		^obj;
 	}
 }

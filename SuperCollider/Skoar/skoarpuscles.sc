@@ -5,13 +5,14 @@
 //
 Skoarpuscle {
 
-    var <>val;						
+    var <>val;
 	var <>impressionable;
 	var <>county;
 
     *new { | v | ^super.new.init(v); }
     init { 
-		| v | 
+		| v |
+		//"Skoarpuscle.init".postln;
 		val = v;
 		impressionable = true;
 	}
@@ -25,14 +26,28 @@ Skoarpuscle {
 	// override and implement .asCount;
     isCounty { ^false; }
     asCount {SkoarError("asCount called on " ++ this.class.asString ++ ", which is not county.").throw;}
-
+	isZero { ^(val == 0) }
+ 	
     flatten { | m | ^val; }
+	flatten_forgetfully {
+		| m |
+		var r;
+		
+		//m.fairy.push_impression;
+		r = this.flatten(m);
+
+		// reimpresses something that might not have been noatworthy 
+		//m.fairy.pop_impression;
+		
+		^r;
+	}
 
     asString {
         var s = super.asString ++ ": " ++ val.asString;
         ^s;
     }
 
+	
     skoar_msg {
         | msg, minstrel |
         var o = msg.get_msg_arr(minstrel);
@@ -44,8 +59,9 @@ Skoarpuscle {
     *wrap {
         | x |
         case {x.isNil} {
-            //"wrapping: crap".postln;
-            ^SkoarpuscleCrap();
+            //"wrapping: =^.^=".postln;
+			//Error.new.postProtectedBacktrace;
+            ^SkoarpuscleCat();
 
 		} {x == false} {
             //"wrapping: False".postln;
@@ -79,10 +95,25 @@ Skoarpuscle {
             //"wrapping: symbol".postln;
             ^SkoarpuscleSymbol(x);
 
+		} {x.isKindOf(UGen)} {
+			//"derp".postln;
+			^SkoarpuscleUGen.new_raw(x);
+
+		} {x.isKindOf(Env)} {
+			^SkoarpuscleEnvelope.wrap_env(x);
+			
+        } {x.isKindOf(SkoarNoad)} {
+			if (x.name == \expr) {
+				//"Wrapping expression".postln;
+				^SkoarpuscleExpr(x);
+			};
+
+			^SkoarpuscleUnknown(x);
+			
         } {x.isKindOf(Array)} {
             var a = Array.newClear(x.size);
             var i = -1;
-            "wrapping: array".postln;
+            //"wrapping: array".postln;
             x.do {
                 | el |
                 i = i + 1;
@@ -90,8 +121,12 @@ Skoarpuscle {
             };
 
             ^SkoarpuscleList(a);
+			
+        }  {x.isKindOf(Routine)} {
+			//"wrapping routine".postln;
+            ^SkoarpuscleRoutine(x);
         } {
-            "wrapping: unknown: ".post; x.dump;
+            ("wrapping: unknown: " ++ x).postln;
             ^SkoarpuscleUnknown(x);
         };
 
@@ -102,24 +137,25 @@ SkoarpuscleUnknown : Skoarpuscle {
 
 }
 
-// we don't have null, null is crap.
-// Is the value any good? no, it's crap.
-// What did we get back? oh, crap.
-SkoarpuscleCrap : Skoarpuscle {
+// Cats show up in unexpected places.
+SkoarpuscleCat : Skoarpuscle {
 
 	init {
-		val = "crap";
+		val = "=^.^=";
+		impressionable = true;
 	}
 
-    asString {^"crap"}
+    asString {^"=^.^="}
 
-    // these aren't doing nothing, they are returning this crap
     skoar_msg {}
     flatten {^nil}
 
+	amp {^nil}
+
 	on_enter {
         | m, nav |
-        m.fairy.impress(this);
+		//"=^.^=".postln;
+		m.fairy.impress(this);
     }
 }
 
@@ -129,7 +165,7 @@ SkoarpuscleFalse : Skoarpuscle {
 		val = false;
 	}
 
-	asString {^"no"}
+	asString {^"false"}
 
     skoar_msg {}
     flatten {^false}
@@ -146,7 +182,7 @@ SkoarpuscleTrue : Skoarpuscle {
 		val = true;
 	}
 
-	asString {^"yes"}
+	asString {^"true"}
 
     skoar_msg {}
     flatten {^true}
@@ -233,6 +269,22 @@ SkoarpuscleString : Skoarpuscle {
         | m, nav |
         m.fairy.impress(this);
     }
+
+	skoar_msg {
+        | msg, minstrel |
+        var ret = this;
+
+		var sel = msg.val;
+
+		case {sel == \sample} {
+			ret = SkoarpuscleFileSample.new(val);
+		} {
+			ret = SkoarpuscleCat.new;
+		};
+		("SKRP_String :: " ++ ret).postln;
+		^ret;
+    }
+	
 }
 
 SkoarpuscleSymbolName : Skoarpuscle {
@@ -240,6 +292,9 @@ SkoarpuscleSymbolName : Skoarpuscle {
 
 SkoarpuscleSymbol : Skoarpuscle {
 
+	var klass;
+	var pref;
+	
 	init {
 		| v |
 
@@ -247,6 +302,9 @@ SkoarpuscleSymbol : Skoarpuscle {
 			v = v.asSymbol;
 		};
 		val = v;
+		klass = val.asClass;
+
+		pref = "SKRP_Symbol :: " ++ v ++ " :: ";
 	}
 
     on_enter {
@@ -256,11 +314,47 @@ SkoarpuscleSymbol : Skoarpuscle {
 
     skoar_msg {
         | msg, minstrel |
-        var o = msg.get_msg_arr(minstrel);
-        var ret = val.performMsg(o);
+        var ret = this;
 
-        ^Skoarpuscle.wrap(ret);
+		var sel = msg.val;
+		var arg_spec, arg_prot;
+
+		
+		var meth = klass.class.findRespondingMethodFor(sel);
+		(pref ++ " klass :: " ++ klass ++ " ::  meth :: " ++ meth).postln;
+		if (meth.notNil) {
+			var arg_names = meth.argNames;
+			if (arg_names.notNil) {
+				arg_spec = meth.argNames.drop(1);
+				arg_prot = meth.prototypeFrame.drop(1);
+
+				arg_prot = msg.get_args_from_prototype(minstrel, arg_spec, arg_prot);
+
+				(pref ++ val ++ ".performList(" ++ sel ++", " ++ arg_prot ++ ");" ).postln;	
+				ret = klass.performList(sel, arg_prot);	
+			} {
+				(pref ++ val ++ ".performMsg([" ++ sel ++"]);" ).postln;	
+				ret = klass.performMsg([sel]);
+			};
+		};
+
+		^Skoarpuscle.wrap(ret);
     }
+}
+
+SkoarpuscleSymbolColon : Skoarpuscle {
+
+	init {
+		| lex |
+		// lexeme was matched by: [a-zA-Z0-9_][a-zA-Z0-9_]*[ \t]*:(?![:|}])
+        var regex = "[a-zA-Z0-9_][a-zA-Z0-9_]*";
+        val = lex.findRegexpAt(regex, 0)[0].asSymbol;
+
+		//("SSC :: init :: lex:" ++ lex ++ " val:" ++ val.asString).postln; 
+		
+		impressionable = true;	
+	}
+
 }
 
 
@@ -292,15 +386,16 @@ SkoarpuscleDeref : Skoarpuscle {
 
     on_enter {
         | m, nav |
-		if (args.isNil) {
-			this.do_deref(m, nav);
-		} {
+		if (args.notNil) {
 			args.on_enter(m, nav);
 		};
     }
 
 	on_exit {
 		| m, nav |
+		if (args.notNil) {
+			args.on_deref_exit(m, nav);
+		};
 		this.do_deref(m, nav);
 	}
 
@@ -308,13 +403,41 @@ SkoarpuscleDeref : Skoarpuscle {
 		| m, nav |
 		var x = this.lookup(m);
 
-		//"deref:on_enter: SYMBOL LOOKEDUP : ".post; val.post; " ".post; x.postln;
+		//"deref :: on_enter :: SYMBOL LOOKEDUP :: ".post; val.post; " ".post; x.postln;
 		x = Skoarpuscle.wrap(x);
 
-		if (x.isKindOf(SkoarpuscleSkoarpion)) {
-			var impression = m.fairy.impression;
-			"passing args: ".post; impression.class.asString.postln;													
-			m.koar.do_skoarpion(x.val, m, nav, msg_arr, impression);
+		case {x.isKindOf(SkoarpuscleSkoarpion)} {
+			x.run(m, nav);
+
+		} {x.isKindOf(SkoarpuscleExpr)} {
+			var result = x.result;
+
+			//("SKRP_Deref.do_deref :: pushing noating").postln;
+			m.fairy.push_noating;
+			if (result.notNil) {
+				m.fairy.impress(result);
+			} {
+				x.flatten(m, nav);
+			};
+			//("SKRP_Deref.do_deref :: popping noating").postln;
+			m.fairy.pop_noating;
+			
+		} {x.isKindOf(SkoarpuscleBook)} {
+			var args = m.fairy.impression;
+			
+			//("SKRP_Deref.do_deref :: book :: args :: " ++ args).postln;
+			if (args.isKindOf(SkoarpuscleList)) {
+				var entry = args.val[0];
+
+				if (entry.isKindOf(SkoarpusclePair)) {
+					entry = entry.flatten(m);
+				};
+				
+				if (entry.isKindOf(SkoarpuscleSymbol)) {
+					m.fairy.impress(x.lookup(entry.val));
+				};
+			};
+				
 		} {
 			m.fairy.impress(x);
 		};
@@ -325,13 +448,18 @@ SkoarpuscleDeref : Skoarpuscle {
         var ret = val;
         var x = this.lookup(minstrel);
 
-        //"deref:skoar_msg: SYMBOL LOOKEDUP : ".post; val.post; " ".post; x.postln;
+		// "deref :: skoar_msg :: SYMBOL LOOKEDUP :: ".post; val.post; " ".post; x.postln;
         msg_arr = msg.get_msg_arr(minstrel);
 
         if (x.isKindOf(SkoarpuscleSkoarpion)) {
-            ^this;
+			^SkoarpuscleSkoarpion.new_copy_with_args(x, msg_arr);
         };
 
+		if (x.isKindOf(Skoarpuscle)) {
+			//"SNURF".postln;
+			^x.skoar_msg(msg, minstrel);
+		};
+		
         // we don't recognise that name, did they mean a SuperCollider class?
         if (x.isNil) {
             x = val.asClass;
@@ -362,9 +490,14 @@ SkoarpuscleMathOp : Skoarpuscle {
                 Skoar.ops.add(minstrel, a, b);
             }}
 
-            {"x"}  {{
+            {"*"}  {{
                 | minstrel, a, b |
                 Skoar.ops.multiply(minstrel, a, b);
+            }}
+
+		    {"/"}  {{
+                | minstrel, a, b |
+                Skoar.ops.divide(minstrel, a, b);
             }}
 
             {"-"}  {{
@@ -442,20 +575,22 @@ SkoarpuscleBooleanOp : Skoarpuscle {
         | m, nav, a, b |
      
         if (a.isKindOf(Skoarpuscle)) {
-            debug(a);
+            //debug(a);
             a = a.flatten(m);
         };
 
         if (b.isKindOf(Skoarpuscle)) {
-            debug(b);
+            //debug(b);
             b = b.flatten(m);
         };
 
-        debug("{? " ++ a.asString ++ " " ++ val ++ " " ++ b.asString ++ " ?}");
+        //("===========   {? " ++ a.asString ++ " " ++ val ++ " " ++ b.asString ++ " ?}").postln;
 
-		a !? b !? {^f.(a, b)};
+		//a !? b !? {
+		^f.(a, b)
+		//};
 		
-        ^false
+        //^false
     }
 
 	on_enter {
@@ -473,6 +608,7 @@ SkoarpuscleBoolean : Skoarpuscle {
     init {
         | noad |
         op = noad.children[0].next_skoarpuscle;
+		//("Found Boolean OP: " ++ op.asString).postln;
     }
 
 	on_enter {
@@ -482,7 +618,7 @@ SkoarpuscleBoolean : Skoarpuscle {
 
     evaluate {
         | m, nav, a, b |
-		("slrp " ++ a.asString ++ " imp: " ++ b.asString).postln;
+		//("slrp " ++ a.asString ++ " imp: " ++ b.asString).postln;
         ^op.compare(m, nav, a, b);
     }
 
@@ -491,7 +627,7 @@ SkoarpuscleBoolean : Skoarpuscle {
 
 SkoarpuscleConditional : Skoarpuscle {
 
-    var ifs;
+    var <ifs;
 
     *new {
         | skoar, noad |
@@ -503,13 +639,19 @@ SkoarpuscleConditional : Skoarpuscle {
 		var i = 0;
         ifs = [];
 
+		//("CONDITIONAL::").postln;
         noad.collect(\cond_if).do {
             | x |
-            var condition = Skoarpion.new_from_subtree(skoar, x.children[0]);
+			var boolean_expr;
+            var condition;
             var if_body;
             var else_body;
 
-            if_body = Skoarpion.new_from_subtree(skoar, x.children[2]);
+			boolean_expr = SkoarNoad(\cond_cond);
+
+			boolean_expr.add_noad(x.children[0]);
+			condition = Skoarpion.new_from_subtree(skoar, boolean_expr);
+			if_body = Skoarpion.new_from_subtree(skoar, x.children[2]);
 
             else_body = x.children[4];
             if (else_body.notNil) {
@@ -532,19 +674,29 @@ SkoarpuscleConditional : Skoarpuscle {
             var else_body = x[2];
 			var impression;
 
+			//("SKRP_Conditional :: pushing noating").postln;
+			m.fairy.push_noating;
 			m.koar.do_skoarpion(condition,
                 m, nav, [\inline], nil
             );
+			//("SKRP_Conditional :: popping noating").postln;
+			m.fairy.pop_noating;
 
-			impression = m.fairy.impression;
+			impression = m.fairy.boolean_impression;
+
+			//("SKRP_Conditional :: pushing noating true").postln;
+			m.fairy.push_noating(true);
             m.koar.do_skoarpion(
-                if (impression.isKindOf(SkoarpuscleFalse) or: impression.isKindOf(SkoarpuscleCrap)) {
+                if (impression.isKindOf(SkoarpuscleFalse) or: impression.isKindOf(SkoarpuscleCat)) {
 						else_body
 					} {
 						if_body
 					},
                 m, nav, [\inline], nil
             );
+			//("SKRP_Conditional :: popping noating").postln;
+			m.fairy.pop_noating;
+			
         };
     }
 
@@ -553,6 +705,17 @@ SkoarpuscleConditional : Skoarpuscle {
 SkoarpuscleSkoarpion : Skoarpuscle {
 
     var msg_arr;
+
+	new_copy_with_args {
+		| x, args |
+		^super.new.init_copy_with_args(x, args);
+	}
+
+	init_copy_with_args {
+		| x, args |
+		val = x.val;
+		msg_arr = args;
+	}
 
     skoar_msg {
         | msg, minstrel |
@@ -566,17 +729,38 @@ SkoarpuscleSkoarpion : Skoarpuscle {
             m.koar[val.name] = this;
         };
 
-        if (msg_arr.notNil) {
-			m.fairy.impression.postln;
-			msg_arr.postln;
-
-            m.koar.do_skoarpion(val, m, nav, msg_arr, m.fairy.impression);
-        };
-
 		if (val.name.isNil) {
 			m.fairy.impress(this);
 		};
-    }
+	}
+
+	run {
+		| m, nav |
+		var impression = m.fairy.impression;
+		//("SKRP_Skoarpion :: msg_arr :: " ++ msg_arr ++ " :: impression :: " ++  impression).postln;													
+		m.koar.do_skoarpion(val, m, nav, msg_arr, impression);
+		//("SKRP_Skoarpion :: done :: " ++ m.fairy.impression).postln;
+	}
+	
+	flatten {
+		| m |
+		var impression = m.fairy.impression;
+		^{
+			| ... args |
+			var msg_args = \block ++ args;
+
+			args = Skoarpuscle.wrap(args);
+			//("Flat Skoarpion :: args :: " ++ args).postln;
+			block {
+				| nav |
+				//this.run(m, nav);
+				m.koar.do_skoarpion(val, m, nav, [\block], args);
+			};
+
+			m.fairy.impression.flatten(m);
+			
+		};
+	}
 
 }
 
@@ -584,14 +768,14 @@ SkoarpuscleTimes : Skoarpuscle {
 
 	on_enter {
         | m, nav |
-		var desired_times = m.fairy.impression;
+		var desired_times = m.fairy.cast_arcane_magic;
 		
 		if (desired_times.isCounty) {
 			var times_seen = m.fairy.how_many_times_have_you_seen(this);
 			desired_times = desired_times.asCount;
 
-			("desired_times: " ++ desired_times.asString ++ "\n times seen: " ++ times_seen.asString).postln;
-			m.fairy.impress( (desired_times > times_seen) );
+			//("desired_times: " ++ desired_times.asString ++ "\n times seen: " ++ times_seen.asString).postln;
+			m.fairy.impress( ( times_seen % desired_times != 0) );
 		};
 		 
     }
@@ -631,7 +815,9 @@ SkoarpuscleLoop : Skoarpuscle {
         | m, nav |
         
 		m.fairy.push_i;
-
+		//("SKRP_Loop :: pushing noating true").postln;
+		m.fairy.push_noating(true);
+		
         block {
             | break |
             while {true} {
@@ -649,9 +835,16 @@ SkoarpuscleLoop : Skoarpuscle {
 					if (condition.notNil) {
 						var x;
 
+						//("SKRP_Loop :: condition :: pushing noating").postln;
+			
+						m.fairy.push_noating;
 						m.koar.do_skoarpion(condition, m, nav, [\inline]);
-                        x = m.fairy.impression;
-						if (x.isKindOf(SkoarpuscleFalse) or: x.isKindOf(SkoarpuscleCrap)) {
+						m.fairy.pop_noating;
+						//("SKRP_Loop :: condition :: popping noating").postln;
+			
+						
+						x = m.fairy.boolean_impression;
+						if (x.isKindOf(SkoarpuscleFalse) or: x.isKindOf(SkoarpuscleCat)) {
 							break.();
 						};
                     };
@@ -660,21 +853,24 @@ SkoarpuscleLoop : Skoarpuscle {
                 if (each.isNil) {
                     f.(nil);
                 } {
-                    debug("each: " ++ each.asString);
+                    //debug("each: " ++ each.asString);
                     each.val.do {
                         | element |
-                        debug("each:el: " ++ element.asString);
+                        //debug("each:el: " ++ element.asString);
                         f.(element);
                     };
                 };
 				
-				"zorp: condition: ".post; condition.postln;
+				//"zorp: condition: ".post; condition.postln;
                 if (condition.isNil) {
                     break.();
                 };
             };
         };
 
+		//("SKRP_Loop :: popping noating").postln;
+			
+		m.fairy.pop_noating;
 		m.fairy.pop_i;
     }
 
@@ -690,6 +886,8 @@ SkoarpuscleLoop : Skoarpuscle {
 
 SkoarpuscleLoopMsg : Skoarpuscle {
 }
+
+
 
 SkoarpuscleExprEnd : Skoarpuscle {
 
@@ -711,20 +909,93 @@ SkoarpuscleListEnd : Skoarpuscle {
 
     on_enter {
         | m, nav |
+		//("SKRP_ListEnd :: popping").postln;
         m.fairy.next_listy;
         m.fairy.pop;
+		m.fairy.pop_noating;
+		//"snarps".postln;
     }
+
+	
 }
 
 SkoarpuscleList : Skoarpuscle {
 
+	var <>noaty;
+	
     init {
-        | x=#[] |
-        val = x;
+        | x |
+		val = if (x.isNil) {
+			[]
+		} {
+			x
+		};
+
+		noaty = true;
+		//"new list: ".post; val.postln;
     }
+
+	mul {
+		| minstrel, y |
+		var out = [];
+		
+		val.do {
+			| x |
+			out = out.add(Skoar.ops.multiply_unimpressively(minstrel, x, y));
+		};
+
+		^SkoarpuscleList.new(out);
+	}
+
+	div {
+		| minstrel, y |
+		var out = [];
+		
+		val.do {
+			| x |
+			out = out.add(Skoar.ops.divide_unimpressively(minstrel, y, x));
+		};
+
+		^SkoarpuscleList.new(out);
+	}
+
+	divBy {
+		| minstrel, y |
+		var out = [];
+		
+		val.do {
+			| x |
+			out = out.add(Skoar.ops.divide_unimpressively(minstrel, x, y));
+		};
+
+		^SkoarpuscleList.new(out);
+	}
+	
+	size {
+		^val.size;
+	}
+	
+	flatten { | m | 
+		var arr = [];
+		val.do {
+			| x |
+			var y = x.flatten(m);
+			//("x: " ++ x.asString ++ "    y: " ++ y.asString).postln;
+			
+			if (y.isKindOf(SkoarpusclePair)) {
+				y = y.flatten(m);
+			};
+			
+			//("Adding " ++ y).postln;
+			arr = arr.add(y);
+		};
+		^arr; 
+	}
 
     on_enter {
         | m, nav |
+		//("SKRP_List :: pushing noating :: " ++ noaty).postln;
+		m.fairy.push_noating(noaty);
         m.fairy.push;
     }
 
@@ -745,36 +1016,80 @@ SkoarpuscleList : Skoarpuscle {
         var n = val.size;
         var noats = Array.newClear(n);
         var i = -1;
-
+		var theseAreNoats = true;
+		var theseAreFreq = false;
+		
         val.do {
             | x |
             i = i + 1;
-            noats[i] = x.asNoat;
+
+			if (x.isKindOf(SkoarpuscleFreq)) {
+				theseAreNoats = false;
+				theseAreFreq = true;
+			};
+
+			if (x.isKindOf(SkoarpuscleInt)) {
+				theseAreNoats = false;
+			};
+
+			if (x.isKindOf(SkoarpuscleFloat)) {
+				theseAreNoats = false;
+			};
+			noats[i] = x.asNoat;
         };
 
-        ^SkoarNoat_DegreeList(noats);
-    }
+		if (theseAreNoats == true) {
+			^SkoarNoat_NoteList(noats);
+		};
 
-    skoar_msg {
+		if (theseAreFreq == true) {
+			^SkoarNoat_FreqList(noats);
+		};
+
+		^SkoarNoat_DegreeList(noats);
+	}
+
+
+	skoar_msg {
         | msg, minstrel |
         var o = msg.get_msg_arr(minstrel);
         var name = msg.val;
         var ret;
 
+		// todo teach the fairy to next and last
         case {name == \next} {
             ret = val.performMsg(o);
         } {name == \last} {
             ret = val.performMsg(o);
+        } {name == \choose} {
+            ret = val.choose();
         } {
             ret = val.performMsg(o);
-        }
+        };
 
         ^Skoarpuscle.wrap(ret);
     }
+    
 
 }
 
+
 SkoarpuscleArgs : SkoarpuscleList {
+
+	var <pairs;
+
+	on_enter {
+		| m |
+		//("SKRP_Args :: pushing noating").postln;
+		m.fairy.push_noating;
+		m.fairy.push;
+	}
+
+	on_deref_exit {
+		| m, nav |
+		m.fairy.pop;
+		m.fairy.pop_noating;
+	}
 
 }
 
@@ -800,7 +1115,9 @@ SkoarpuscleArgSpec : Skoarpuscle {
 SkoarpuscleMsg : Skoarpuscle {
 
     var <>args;
-
+	var <>dest;
+	var pref;
+	
     *new {
         | v, a |
         ^super.new.init(nil).init(v, a);
@@ -810,33 +1127,153 @@ SkoarpuscleMsg : Skoarpuscle {
         | v, a |
         val = v;
         args = a;
-    }
+		pref = "SKRP_Msg :: ";
+	}
+
+	asString {
+		^("(" ++ super.asString ++ " -> " ++ dest.asString ++ ")");
+	}
 
     on_enter {
         | m, nav |
-        //val.postln;
+		var result;
+
+		//(pref ++ "on_enter :: " ++ this).postln;
+		if (args.notNil) {
+			args = m.fairy.impression;
+			//(pref ++ "impression (args) ::  " ++ args).postln;
+		};
+
+		case {dest.isKindOf(SkoarpuscleList)} {
+			result = m.fairy.impression;
+			//(pref ++ "List :: messaging :: impression :: " ++ result).postln;
+			result = result.skoar_msg(this, m);
+			//(pref ++ "List :: impressing :: " ++ result).postln;
+
+		} {dest.isKindOf(SkoarpuscleSymbol)} {
+			//(pref ++ "Symbol :: messaging :: dest :: " ++ dest).postln;
+			result = dest.skoar_msg(this, m);
+			//(pref ++ "Symbol :: impressing :: " ++ result).postln;
+
+		} {
+			//(pref ++ "ELSE messaging").postln;
+			result = dest.skoar_msg(this, m);
+			//(pref ++ "ELSE ::: impressing :: " ++ result).postln;
+		};
+		m.fairy.impress(result);
     }
 
+	skoar_msg {
+		| msg, minstrel |
+		var result = minstrel.fairy.impression;
+
+		result = result.skoar_msg(msg, minstrel);
+		//(pref ++ "skoar_msg :: impressing :: " ++ result).postln;
+		minstrel.fairy.impress(result);
+		^result;
+	}
+	
     get_msg_arr {
         | m |
-        var x = Array.newClear(args.size + 1);
-        var i = 0;
+		var x, z;
+		var i;
 
-		"snerp".postln;
-        x[0] = val;
-        args.flatten(m).do {
-            | y |
-			"y: ".post; y.postln;
-            i = i + 1;
-            x[i] = y;
-        };
-        ^x;
+		if (args.isNil) {
+			^[val];
+		};
+
+		//("MSG::"++val++"::get_msg_arr::args:"++ args).postln;
+		//("Args exist, x will be " ++ (args.size + 1).asString).postln; 
+		x = Array.newClear(args.size + 1);
+		i = 0;
+
+		//"args: ".post; args.postln;
+		//("SKRP_Msg.get_msg_arr :: pushing noating").postln;
+		m.fairy.push_noating;
+		
+		x[0] = val;
+		args.val.do {
+			| y |
+			//"y: ".post; y.postln;
+			i = i + 1;
+			case {y.isKindOf(SkoarpusclePair)} {
+				x[i] = [y.key.val, y.val.flatten(m)];
+			} {y.isKindOf(Skoarpuscle)} {
+				x[i] = y.flatten(m);
+			} {
+				x[i] = y;
+			};
+		};
+		//("SKRP_Msg.get_msg_arr :: popping noating").postln;
+		m.fairy.pop_noating;
+		
+		//("MSG::get_msg_arr::  x :"++ x).postln;
+		^x;
+		
     }
+
+	get_args_from_prototype {
+		| m, arg_spec, arg_prot |
+		var e = ();
+		var j = 0;
+		var ret = [];
+		var w;
+		var p = pref ++ " g_a_f_proto :: ";
+		
+		//(p ++ "arg_prot :: " ++ arg_prot).postln;
+
+		if (args.notNil) {
+			args.val.do {
+				| x |
+				if (x.isKindOf(SkoarpusclePair)) {
+					e[x.key.val] = x.val.flatten(m);
+					//(p ++ "e[" ++ x.key.val ++ "] = e[x.key.val] =" ++ e[x.key.val] ++ ";").postln;
+				} {
+					e[j] = x.flatten(m);
+					//(p ++ "e[" ++ j ++ "] = e[j] =" ++ e[j] ++ ";").postln;
+					
+				};
+				j = j + 1;
+			};
+		};
+	
+		arg_spec.do {
+			| x, i |
+			var v = e[x];
+			var y;
+			
+			if (v.notNil) {
+				arg_prot[i] = v;
+				//(p ++ "arg_prot[" ++ i ++ "] = v = " ++ v ++ ";").postln;
+			} {
+				y = e[i]; 
+				//(p ++ "arg_prot[" ++ i ++ "] = e[i] =" ++ e[i] ++ ";").postln;
+
+				if (y.notNil) {
+					arg_prot[i] = y;
+				};
+			};
+		};
+
+		//(p ++ "arg_prot :: "++ arg_prot).postln;
+		
+		^arg_prot;
+	}
+		
 }
 
 SkoarpuscleMsgName : Skoarpuscle {
+	
 }
 
+SkoarpuscleMsgNameWithArgs : Skoarpuscle {
+	on_enter {
+		| m, nav |
+		//("SKRP_MsgNWA :: pushing noating ").postln; 
+		m.fairy.push_noating;
+		m.fairy.push;
+	}
+}
 
 // -----------------------------
 // musical keywords skoarpuscles
@@ -856,16 +1293,29 @@ SkoarpuscleBars : Skoarpuscle {
         post_repeat = val.endsWith(":");
     }
 
+	asString {
+		var s = ("SkoarpuscleBars: " ++ val ++ "noad:"++ noad.asString ++ 
+		    " pre_repeat:" ++ pre_repeat ++ " post_repeat:" ++ post_repeat);
+		^s;
+	}
+
     on_enter {
         | m, nav |
 
-        // :|
+		//"on_enter: ".post; this.asString.postln;
+        
+		// :|
         if (pre_repeat == true) {
-            var burned = m.koar.state_at(\colons_burned);
 
-            if (burned.falseAt(noad)) {
+			var burned = m.koar.state_at(\colons_burned);
+
+			// asking counts as observing
+			if (m.fairy.how_many_times_have_you_seen(this) < 2) {
+				nav.(\nav_colon);
+			};	
+
+			if (burned.falseAt(noad)) {
                 burned[noad] = true;
-                nav.(\nav_colon);
             };
 
         };
@@ -882,7 +1332,7 @@ SkoarpuscleFine : Skoarpuscle {
     on_enter {
         | m, nav |
         if (m.koar.state_at(\al_fine) == true) {
-            debug("fine");
+            //debug("fine");
             nav.(\nav_fine);
         };
     }
@@ -1028,12 +1478,12 @@ SkoarpuscleDynamic : Skoarpuscle {
     }
 
     amp {
-        ^val/8;
+        ^(val * val) / 64;
     }
 
     on_enter {
         | m, nav |
-        m.koar[\amp] = this.amp;
+        m.fairy.consider_amp(this, m);
     }
 
 }
@@ -1109,5 +1559,94 @@ SkoarpuscleHashLevel : SkoarpuscleFloat {
 		};
 	}
 
+}
+
+
+SkoarpusclePair : Skoarpuscle {
+
+	var <key;
+	
+	*new {
+        | k, v |
+        ^super.new.init_two(k, v);
+    }
+
+    init_two {
+		| k, v |
+		key = k;
+		val = v;
+	}
+
+	flatten {
+		| m, nav |
+		var x;
+		//("SKRP_Pair.flatten :: pushing noating").postln;
+		m.fairy.push_noating;
+	
+		x = val.flatten(m, nav);
+		
+		//("SKRP_Pair.flatten :: popping noating").postln;
+		m.fairy.pop_noating;
+
+		^x;
+	}
+
+	assign {
+		| m |
+		var x;
+
+		//("SKRP_Pair.assign :: pushing noating").postln;
+		m.fairy.push_noating;
+	
+		x = if (val.isKindOf(SkoarpuscleExpr)) {
+			val.flatten(m)
+		} {
+			val
+		};
+		
+		Skoar.ops.assign(m, x, key);
+
+		//("SKRP_Pair.assign :: popping noating").postln;
+		m.fairy.pop_noating;
+	}
+	
+}
+
+
+SkoarpuscleExpr : Skoarpuscle {
+
+	var <result;
+	
+	init {
+		| noad |
+		val = noad;
+		result = nil;
+	}
+	
+	flatten {
+		| m |
+		//("SkoarpuscleExpr :: flatten").postln;
+		m.fairy.push;
+	
+		if (val.notNil) {
+			val.evaluate(m);
+		} {
+			m.fairy.impress(SkoarpuscleCat.new);
+		};
+		
+		result = m.fairy.impression;
+		result = result.flatten(m);
+
+		m.fairy.pop;
+	
+		//("SkoarpuscleExpr :: result :: " ++ result).postln;
+
+		^result;
+	}
+
+	on_enter {
+		| m, nav |
+		//("SkoarpuscleExpr :: on_enter").postln;
+	}
 }
 

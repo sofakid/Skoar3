@@ -1,6 +1,6 @@
 from collections import UserDict
 from Skoarcery.SkoarPyon import toke_inspector, skoarmantics
-from Skoarcery.SkoarPyon.lex import Toke_Whitespace, Toke_EOF, SkoarToke
+from Skoarcery.SkoarPyon.lex import Toke_Whitespace, Toke_Eof, SkoarToke
 
 
 class Toker:
@@ -49,7 +49,7 @@ class Toker:
 
     def eof(I):
         try:
-            Toke_EOF.burn(I.skoarce, I.am_here)
+            Toke_Eof.burn(I.skoarce, I.am_here)
         except:
             I.dump()
             raise

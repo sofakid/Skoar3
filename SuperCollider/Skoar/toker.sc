@@ -4,8 +4,8 @@
 // =========
 
 Toker {
-    var skoarse;
-    var i_am_here;
+    var skoarce;
+    var <i_am_here;
     var i_saw;
 
     *new {
@@ -15,7 +15,7 @@ Toker {
 
     init {
         | code |
-        skoarse = code;
+        skoarce = code;
         i_am_here = 0;
         i_saw = nil;
     }
@@ -28,7 +28,7 @@ Toker {
                 ^i_saw
             }
         } {
-            i_saw = want.match(skoarse, i_am_here);
+            i_saw = want.match(skoarce, i_am_here);
             ^i_saw;
         }
 
@@ -38,7 +38,7 @@ Toker {
     sees {
         | wants |
 
-        i_am_here = i_am_here + Toke_Whitespace.burn(skoarse, i_am_here);
+        i_am_here = i_am_here + Toke_Whitespace.burn(skoarce, i_am_here);
 
         wants.do {
             | want |
@@ -65,29 +65,29 @@ Toker {
         toke.isKindOf(want) and: {
             i_saw = nil;
             i_am_here = i_am_here + toke.burn;
-            i_am_here = i_am_here + Toke_Whitespace.burn(skoarse, i_am_here);
+            i_am_here = i_am_here + Toke_Whitespace.burn(skoarce, i_am_here);
             ^toke;
         };
 
         msg = "Tried to burn " ++ want.asString ++ ", but saw " ++ toke.asString;
 
-        "Toker Fail.".postln;
-        msg.postln;
-        this.dump;
+        //"Toker Fail.".postln;
+        //msg.postln;
+        //this.dump;
 
         SkoarParseException(msg).throw;
     }
 
     eof {
-        Toke_Eof.burn(skoarse, i_am_here);
+        Toke_EOF.burn(skoarce, i_am_here);
     }
 
     dump {
         ("\nToker Dump" ++
         "\nhere   : " ++ i_am_here.asString ++
         "\nsaw    : " ++ i_saw.asString ++
-        "\nskoarse: " ++ skoarse.copyRange(0,i_am_here)
-                      ++ "_$_" ++ skoarse.copyRange(i_am_here, skoarse.size)).postln;
+        "\skoarce: " ++ skoarce.copyRange(0,i_am_here)
+                      ++ "_$_" ++ skoarce.copyRange(i_am_here, skoarce.size)).postln;
     }
 
 }

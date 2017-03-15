@@ -6,6 +6,7 @@ SkoarKoar {
     var  <state_stack;  // stack of vars invisible to the skoar code
 
     var  <name;         // name of voice as Symbol
+	
 
     *new {
         | skr, nom |
@@ -20,7 +21,7 @@ SkoarKoar {
 
         stack = List[];
         state_stack = List[];
-        skoarboard = ();
+        skoarboard = (\voice: name);
         stack.add(skoarboard);
 
     }
@@ -73,63 +74,106 @@ SkoarKoar {
         | minstrel |
         var e = Event.new;
 
+		//("KOAR.EVENT :: " ).postln;
         stack.do {
             | skrb |
+			var mus_key;
+
             // native function constructs the event quickly
             e = skrb.transformEvent(e);
 
+			//("KOAR.EVENT :: e :: " ++ e).postln;
             // but we need to change stuff
             e.keysValuesChange {
                 | key, value |
-
-                case {value.isKindOf(SkoarpuscleSkoarpion)} {
-                    // we don't need to pass skoarpions to SC
-                    nil
+	
+                case {value.isKindOf(SkoarpuscleKey)} {
+                    // we don't modify this one yet, we deal with key next.
+                    value
 
                 } {value.isKindOf(Skoarpuscle)} {
-                    // we want values, not skoarpuscles
-                    value.flatten(minstrel)
-
+					var x;
+					// we want values, not skoarpuscles
+					//("koar :: event :: flattening").postln;
+					x = value.flatten_forgetfully(minstrel);
+					//("koar :: event :: done flattening").postln;
+					x
                 } {
                     // perfect
                     value
                 }
             };
+
+			if (e[\choard].notNil) {
+				e[\note] = e[\choard];
+				e[\choard] = nil;
+			} {
+				mus_key = e[\key];
+
+				if (mus_key.isKindOf(SkoarpuscleKey)) {
+					mus_key.apply(e);
+					e[\key] = nil;
+				}; 
+			};
+
         }
 
         ^e
     }
 
-    set_args {
-        | minstrel, arg_spec, args |
+	set_args {
+        | minstrel, arg_spec, args_provided |
         var i = 0;
         var vars = stack[stack.size - 1];
 
-		"ARG_SPEC: ".post; arg_spec.dump;
-		"ARGS    : ".post; args.dump;
+		if (arg_spec.isNil) {
+			//"ARG_SPEC IS NIL".postln;
+			^nil;
+		};
 
-        if (arg_spec.isKindOf(SkoarpuscleArgSpec)) {
-            var passed_args, n;
+		//"koar:: ARG_SPEC: ".post; arg_spec.dump;
+		//("koar:: ARGS    : " ++ args_provided.flatten(minstrel) ).postln;
 
-            passed_args = if (args.isKindOf(SkoarpuscleList)) { args.val } { [] };
-            n = passed_args.size;
+		if (args_provided.isKindOf(SkoarpuscleList)) {
+			args_provided = args_provided.val;
+		} {
+			args_provided = Array.newClear(arg_spec.args_names.size).fill(nil);
+		};
 
-            // foreach arg name defined, set the value from args
-            arg_spec.val.do {
-                | k |
-				if (k.isKindOf(SkoarpuscleSymbolName)) {
-					k = k.val;
+		//("koar.set_args :: pushing noating").postln;
+		minstrel.fairy.push_noating;
+		arg_spec.args_names.do {
+			| arg_name, i |
+
+			var x = args_provided[i];
+
+			//("koar:: arg " ++ i ++ " name " ++ arg_name ++ " provided " ++ x).postln;
+			
+			case {x.isNil} {
+				// not found, use default
+				var y = arg_spec.args_dict[arg_name];
+				//("koar:: 1: y = " ++ y).postln;
+				if (y.isKindOf(SkoarpuscleExpr)) {
+					y = y.flatten(minstrel);
+					//("koar:: 1.3: y = " ++ y).postln;
 				};
-                ("k: " ++ k).postln;
-                vars[k] = if (i < n) {
-                    passed_args[i]
-                } {
-                    // this defaults to passing 0 when not enough args are sent.
-                    SkoarpuscleInt(0)
-                };
-                i = i + 1;
-            };
-        };
+
+				//("koar:: 1.7: vars["++arg_name++"] = " ++ y).postln;
+				vars[arg_name] = y;
+			} {x.isKindOf(SkoarpusclePair)} {
+				// pair sets arbitrary key
+				vars[x.key.val] = x.val;
+				//("koar:: 2: vars["++x.key.val++"] = " ++ vars[x.key.val]).postln;
+				
+			} {
+				// use positional arg
+				vars[arg_name] = x;
+			};
+		};
+
+		//("koar.set_args :: popping noating").postln;
+		minstrel.fairy.pop_noating;
+		//"koar:: args set".postln;
     }
 
     top_args {
@@ -188,23 +232,32 @@ SkoarKoar {
         };
 
         // load arg values into their names
-        this.set_args(minstrel, skoarpion.arg_spec, args);
-
+		this.set_args(minstrel, skoarpion.arg_list, args);
+		
         projections = this.state_at(\projections);
         if (skoarpion.name.notNil) {
             projection = projections[skoarpion.name];
 
-            // start a new one if we haven't seen it
+ 			//("KOAR<" ++ name ++ ">" ++ projection).postln;
+
+			// start a new one if we haven't seen it
             if (projection.isNil) {
                 projection = skoarpion.projection(name);
+				//("KOAR<" ++ name ++ ">" ++ projection.name).postln;
                 projections[skoarpion.name] = projection;
             };
         } {
-            projection = skoarpion.projection;
-        };
+			
+            projection = skoarpion.projection(name);
+			//("KOAR< ??? >" ++ projection).postln;
+            
+		};
 
         subtree = projection.performMsg(msg_arr);
 
+		//("KOAR<" ++ name ++ "> about to loop through projection:").postln;
+		//subtree.draw_tree.postln;
+		
         this.nav_loop(subtree, projection, minstrel, up_nav, inlined);
 
         if (inlined == false) {
@@ -273,8 +326,8 @@ SkoarKoar {
 
                 {\nav_colon} {
                     dst = this.state_at(\colon_seen);
-
-                    if ((dst !? (_.skoap)) != subtree.skoap) {
+                    
+					if ((dst !? (_.skoap)) != subtree.skoap) {
                         this.bubble_up_nav(minstrel, up_nav, \nav_colon, inlined);
                     };
                 };
