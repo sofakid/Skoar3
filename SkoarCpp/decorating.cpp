@@ -298,7 +298,7 @@ Skoarmantics::Skoarmantics() {
 			auto y = (*child)->skoarpuscle;
 
 			if (typeid(y) == typeid(SkoarpuscleMsgName*)) {
-				msg_name = any_cast<SkoarString>(y->val);
+                msg_name = SkoarString(L"derp"); //any_cast<SkoarString>(y->val);
 			}
 			else if (y == nullptr) {
 				skoar->log->e("WTF Skoarpuscle is nullptr.");
@@ -369,12 +369,12 @@ Skoarmantics::Skoarmantics() {
 
 			}
 			else if (typeid(msg) == typeid(SkoarpuscleLoop*)) {
-				noad->skoarpuscle = new SkoarpuscleLoopMsg(any_cast<SkoarString>(msg->val));
+                noad->skoarpuscle = new SkoarpuscleLoopMsg(SkoarString(L"derp"));// any_cast<SkoarString>(msg->val));
 
 			}
 			else if (typeid(msg) == typeid(SkoarpuscleMsgName*)) {
 				SkoarpuscleArgs *args = new SkoarpuscleArgs();
-				noad->skoarpuscle = new SkoarpuscleMsg(any_cast<SkoarString>(msg->val), args);
+                //noad->skoarpuscle = new SkoarpuscleMsg(SkoarString(L"derp"));// any_cast<SkoarString>(msg->val), args);
 			}
 		}
 

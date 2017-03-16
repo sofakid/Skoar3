@@ -25,6 +25,12 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Rel Prog' ">
+    <OutputPath>bin\Rel Prog\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Deb Prog' ">
+    <OutputPath>bin\Deb Prog\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="build_cpp.py" />
     <Compile Include="build_sc.py" />

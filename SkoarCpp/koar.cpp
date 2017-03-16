@@ -100,7 +100,7 @@ void SkoarKoar::set_args(
 		// foreach arg name defined, set the value from args
 		auto arg_it = args->begin();
 
-		for (auto k_skoarpuscle : *any_cast<ListOfSkoarpusclesPtr>(args_spec->val) ) {
+		/*for (auto k_skoarpuscle : *any_cast<ListOfSkoarpusclesPtr>(args_spec->val) ) {
 			auto k = any_cast<SkoarString>(k_skoarpuscle->val);
 
 			//("k: " ++ k).postln;
@@ -110,7 +110,7 @@ void SkoarKoar::set_args(
 				// this defaults to passing 0 when not enough args are sent.
 				vars[k] = new SkoarpuscleInt(0);
 			}
-		}
+		}*/
 }
 
 

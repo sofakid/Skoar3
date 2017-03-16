@@ -71,3 +71,18 @@ private:
         return msg.str();
     }
 };
+
+
+struct SkoarNullLogger : public ISkoarLog {
+    void log_d(const std::wstring &s) override;
+    void log_i(const std::wstring &s) override;
+    void log_w(const std::wstring &s) override;
+    void log_e(const std::wstring &s) override;
+};
+
+struct SkoarConsoleLogger : public ISkoarLog {
+    void log_d(const std::wstring &s) override;
+    void log_i(const std::wstring &s) override;
+    void log_w(const std::wstring &s) override;
+    void log_e(const std::wstring &s) override;
+};

@@ -15,6 +15,9 @@
 class Skoar {
 public:
 
+    // init everything.
+    static void init();
+
 	ISkoarLog *log;
 
 	// todo: make this static
@@ -41,12 +44,12 @@ public:
 
 class SkoarLite {
 public:
-    SkoarLite(std::wstring &skoarce, ISkoarLog *log);
+    SkoarLite(SkoarString skoarce, ISkoarLog *log);
     ~SkoarLite();
 
     ISkoarLog *log;
 
-    std::wstring skoarce;      // the skoarce code
+    SkoarString skoarce;      // the skoarce code
     SkoarNoadPtr tree;         // root of tree
     SkoarToker toker;          // toker
 

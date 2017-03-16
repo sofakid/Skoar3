@@ -20,11 +20,30 @@
 // Skoar
 // =====
 
-Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) :
+static SkoarString isInitialized(L"");
+
+void Skoar::init() {
+    // can i rely isInitialized being initialized to false, if i can't rely on the tables?
+    // we could end up with two sets of tables, or worse, no sets if it starts off as true.
+    // 
+    // we'll use a magic cookie, and invoke an elder god.
+    if (isInitialized != SkoarString(L"shadilay")) {
+        SkoarToker::init();
+        SkoarParser::init();
+        
+        // todo ops table
+
+        isInitialized = SkoarString(L"shadilay");
+    }
+}
+
+Skoar::Skoar(SkoarString &skoarce, ISkoarLog *log) :
     skoarce(skoarce + L"\n"), // i don't like this + L"\n" business.
     log(log),
     toker(this->skoarce)
 {
+    Skoar::init();
+
 	//this->skoarce = skoarce;
 	clock_t start_time;
     clock_t parse_time;
@@ -36,7 +55,7 @@ Skoar::Skoar(std::wstring &skoarce, ISkoarLog *log) :
 	tree = nullptr;
 	auto parser = SkoarParser(&toker);
 
-	all_voice = new SkoarKoar(wstring(L"all"));
+	all_voice = new SkoarKoar(SkoarString(L"all"));
 	voices[L"all"] = all_voice;
 
 	//skoarpions = List[];
@@ -113,26 +132,28 @@ void Skoar::decorate() {
 	auto inspector = new SkoarTokeInspector();
 	auto skoarmantics = new Skoarmantics();
 
-	SkoarNoad::depth_visit(tree, [&](SkoarNoadPtr noad) {
-		auto t = noad->toke.get();
+    auto f = [&](SkoarNoadPtr noad) {
+        auto t = noad->toke.get();
 
-		noad->size = 0;
-		for (auto y : noad->children) {
-			//noad->skoarce += y->skoarce;
-			noad->size += y->size;
-		}
+        noad->size = 0;
+        for (auto y : noad->children) {
+            //noad->skoarce += y->skoarce;
+            noad->size += y->size;
+        }
 
-		if (t != nullptr) {
-			inspector->decorate(t, noad);
-		}
-		else {
-			auto g = skoarmantics->table[noad->kind];
-			
-			if (g) {
-				g(this, noad);
-			}
-		}
-	});
+        if (t != nullptr) {
+            inspector->decorate(t, noad);
+        }
+        else {
+            auto g = skoarmantics->table[noad->kind];
+
+            if (g) {
+                g(this, noad);
+            }
+        }
+    };
+
+	SkoarNoad::depth_visit(tree, f);
 }
 
 // ----
@@ -192,13 +213,16 @@ void Skoar::draw_skoarpions() {
 // --------------------------------------------------------------------------------
 // for highlighting
 
-SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) :
+SkoarLite::SkoarLite(SkoarString skoarce, ISkoarLog *log) :
     skoarce(skoarce + L"\n"), // i don't like this + L"\n" business.
     log(log),
-    toker(this->skoarce)
+    toker(this->skoarce),
+    parsedOk(false)
 {
+    Skoar::init();
+
     auto parser = SkoarParser(&toker);
-    parsedOk = false;
+    
     try {
         tree = parser.skoar(nullptr);
         parser.sortDesirables();
@@ -218,7 +242,7 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) :
         e.noad = nullptr;
         return;
     }
-
+    
     try {
         toker.eof();
         parsedOk = true; 
@@ -237,9 +261,9 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) :
         //auto iter = noadites.elements.cbegin();
 
         size_t pos = 0;
-        
+
         tree->inorderBeforeAfter(
-            
+
             // Before
             [&](SkoarNoad* noad) {
                 auto toke = noad->toke.get();
@@ -247,12 +271,11 @@ SkoarLite::SkoarLite(std::wstring &skoarce, ISkoarLog *log) :
                 if (toke != nullptr) {
                     pos = toke->offs + toke->size;
                     noad->offs = toke->offs;
-                } else {
+                }
+                else {
                     noad->offs = pos;
                 }
-
-                
-            },  
+            },
 
             // After
             [&](SkoarNoad* noad) {
@@ -290,5 +313,3 @@ SkoarLite::~SkoarLite() {
     //log->i("----------------------------------\n\n");
 
 }
-
-

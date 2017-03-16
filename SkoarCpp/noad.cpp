@@ -14,7 +14,7 @@
 // The Parse Tree - SkoarNoad
 // ==========================
 
-SkoarNoad::SkoarNoad(wstring &nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg) :
+SkoarNoad::SkoarNoad(SkoarString &nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg) :
     parent(parentArg),
     name(nameArg),
     skoarce(nullptr),
@@ -228,14 +228,14 @@ void SkoarNoad::inorder(SkoarNoadPtr p, SpellOfNoadPtrs f) {
     f(p);
     if (!p->children.empty())
         for (auto y : p->children)
-            SkoarNoad::inorder(p, f);
+            SkoarNoad::inorder(y, f);
 }
 
 void SkoarNoad::inorderBeforeAfter(SkoarNoadPtr p, SpellOfNoadPtrs f, SpellOfNoadPtrs g) {
     f(p);
     if (!p->children.empty())
         for (auto y : p->children)
-            SkoarNoad::inorderBeforeAfter(p, f, g);
+            SkoarNoad::inorderBeforeAfter(y, f, g);
     g(p);
 }
 
@@ -246,27 +246,21 @@ void SkoarNoad::inorderBeforeAfter(SkoarNoadPtr p, SpellOfNoadPtrs f, SpellOfNoa
 // if it's crashing during the decorating stage, here's a good place to
 // start debugging
 void SkoarNoad::depth_visit(SpellOfNoads f) {
-	
     if (!children.empty())
 		for (auto y: children)
 			y->depth_visit(f);
-
-	f(this);
+    f(this);
 }
 
 void SkoarNoad::inorder(SpellOfNoads f) {
-
 	f(this);
-
 	if (!children.empty())
 		for (auto y : children)
 			y->inorder(f);
 }
 
 void SkoarNoad::inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g) {
-
     f(this);
-
     if (!children.empty())
         for (auto y : children)
             y->inorderBeforeAfter(f, g);

@@ -18,7 +18,6 @@ typedef wstring SkoarString;
 
 
 typedef function<void(SkoarMinstrel *)> SpellOfMinstrels;
-typedef function<void(SkoarNoad *)> SpellOfScrying;
 typedef function<void(SkoarNoad *)> SpellOfNoads;
 typedef function<void(SkoarNoadPtr)> SpellOfNoadPtrs;
 

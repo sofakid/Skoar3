@@ -19,14 +19,14 @@ public:
 
 	list<SkoarNoadPtr> children;  // a list of child noads
 
-	const wstring name;               // name of the nonterminal
+	const SkoarString name;               // name of the nonterminal
 	const ESkoarNoad::Kind kind;
     const SkoarStyles::EStyle style;
 
 	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
 
 	SkoarTokePtr toke;
-	wstring *skoarce; 
+	SkoarString *skoarce; 
 
 	size_t offs;
 	size_t size;
@@ -45,7 +45,7 @@ public:
     //    kind(ESkoarNoad::unknown),
     //    style(SkoarStyles::EStyle::nostyle);
 
-    SkoarNoad(wstring &nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg);
+    SkoarNoad(SkoarString &nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg);
     ~SkoarNoad();
 
     // can't figure out how to do this as a constructor..
@@ -71,14 +71,12 @@ public:
 	// growing the tree
 	// ----------------
 	void add_noad(SkoarNoadPtr noad);
-	void add_toke(wstring name, SkoarToke *t);
-
+	
 	// ----------------
 	// showing the tree
 	// ----------------
 	void log_tree(ISkoarLog *log, int tab = 1);
 	wstring draw_tree(int tab = 1);
-	void scry(SpellOfScrying f);
 	
 	// -----------------
 	// climbing the Tree

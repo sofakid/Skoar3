@@ -5,6 +5,8 @@
 
 class SkoarToker {
 public:
+    static void init();
+
 	wstring *skoarce;
 	size_t i_am_here;
 	SkoarToke* i_saw;

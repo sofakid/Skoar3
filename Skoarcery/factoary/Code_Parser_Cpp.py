@@ -104,21 +104,30 @@ class Code_Parser_Cpp(unittest.TestCase):
         CPP.end() # CPP.constructor
 
         CPP.raw("""
-static SkoarStats skoarStats;
+static SkoarStats* skoarStats = nullptr;
 
 bool localCmp(const ESkoarToke::Kind &a, const ESkoarToke::Kind &b) {
-    return skoarStats.tokeFreq[a] > skoarStats.tokeFreq[b]; 
+    return skoarStats->tokeFreq[a] > skoarStats->tokeFreq[b]; 
 }
     
 void localSortDesirables() {
     for (int i = 0; i < """ + str(num_productions) + """; ++i) {
-        skoarStats.desirables[i].sort(localCmp);    
+        skoarStats->desirables[i].sort(localCmp);    
     }
 }
 
 """)
 
         CPP.set_class("SkoarParser")
+
+        CPP.raw("""
+
+void SkoarParser::init() {
+    skoarStats = new SkoarStats();
+}
+
+""")
+        HPP.stmt("static void init()");
 
         # write each nonterminal as a function
         for A in N:
@@ -162,7 +171,7 @@ void localSortDesirables() {
                 alpha = P.production
 
                 CPP.cmt(str(P))
-                CPP.stmt("desires = &" + CPP.v_array_get("skoarStats.desirables", P.index))
+                CPP.stmt("desires = &" + CPP.v_array_get("skoarStats->desirables", P.index))
 
 
                 CPP.if_("toker->sees(desires) != nullptr")
@@ -173,7 +182,7 @@ void localSortDesirables() {
 
                 for x in alpha:
                     if isinstance(x, Terminal):
-                        CPP.stmt('skoarStats.tokeFreq[ESkoarToke::' + x.name + '] += 0.1f')
+                        CPP.stmt('skoarStats->tokeFreq[ESkoarToke::' + x.name + '] += 0.1f')
                         CPP.stmt('toke_noad = SkoarNoad::New(wstring(L"' + x.toker_name + '"), noad, toker->burn(ESkoarToke::' + x.name + '))')
                         CPP.stmt('noad->add_noad(toke_noad)')
 

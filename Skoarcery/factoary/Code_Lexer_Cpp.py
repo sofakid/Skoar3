@@ -30,16 +30,22 @@ class Code_Lexer_Cpp(unittest.TestCase):
     def dispensary(self):
         emissions.CPP.raw("""
    
-SkoarDispensary::SkoarDispensary() {
+SkoarDispensary::SkoarDispensary() :
+   table({
 """)
+        comma = ""
         for token in SortedTerminals:
             if token not in terminals.odd_balls:
-                emissions.CPP.raw("table[ESkoarToke::"+ token.name +"""] = 
-        [](wstring *buf, size_t offs) {
-            return """+ token.toker_name +"""::match_toke(buf, offs);
-        };
-""")
+                emissions.CPP.raw(comma)
+                comma = ",\n"
+                emissions.CPP.raw("        { ESkoarToke::"+ token.name +""", 
+            [](wstring *buf, size_t offs) {
+                return """+ token.toker_name +"""::match_toke(buf, offs);
+            }
+        }""")            
         emissions.CPP.raw("""
+   })
+{
 }
 
 SkoarToke* SkoarDispensary::match_toke(ESkoarToke::Kind want, wstring *buf, size_t offs) {

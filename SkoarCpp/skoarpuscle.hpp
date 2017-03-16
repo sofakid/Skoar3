@@ -11,14 +11,13 @@
 #include "skoar_fwd.hpp"
 
 #include "spells.hpp"
-#include <any>
 
 #define SKOARPUSCLE(x) Skoarpuscle::wrap<decltype(x)>(x)
 
 class Skoarpuscle {
 public:
 
-    std::any val;
+    //std::any val;
     
 
 	Skoarpuscle();
@@ -38,11 +37,12 @@ public:
 		return nullptr;
 	}
 	
-	virtual SkoarInt Skoarpuscle::flatten(SkoarMinstrel *m) {
+    virtual SkoarInt Skoarpuscle::flatten(SkoarMinstrel *m) { return 0; }
+    /*{
         std::any* v = &val;
         SkoarInt* vp = std::any_cast<SkoarInt>(v);
         return (vp == nullptr) ? static_cast<SkoarInt>(0) : *vp;
-	}
+	}*/
 	
 	virtual SkoarString Skoarpuscle::asString() {
 		return SkoarString(L"Skoarpuscle");
