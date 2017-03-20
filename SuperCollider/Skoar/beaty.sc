@@ -33,10 +33,8 @@ SkoarpuscleExactBeat : Skoarpuscle {
 
 	on_enter {
 		| m, nav |
-
 		m.fairy.push_noating;
 		m.fairy.push;
-		
 	}
 		
 	after {

@@ -103,54 +103,33 @@ Skoarmantics::Skoarmantics() : table({
     {ESkoarNoad::regular_beat, SpellOfSkoarmantics {
         auto xp = noad->next_skoarpuscle();
 
-        if (xp != nullptr) {
-            noad->skoarpuscle = xp;
-            auto x = *xp;
-
+        noad->skoarpuscle = xp;
+        
+        if (noad->parent->name == L"assignment") {
             noad->on_enter = [&](SkoarMinstrelPtr m) {
-                x.on_enter(m);
+                dynamic_cast<SkoarpuscleBeat&>(*xp).on_enter_sometimes(m);
             };
         }
-        noad->children.empty();
-        /*
-        var x = noad.next_skoarpuscle;
-        noad.skoarpuscle = x;
-
-        if (noad.parent.name != \assignment) {
-            noad.on_enter = {
-                | m, nav |
-                //("REGULAR BEAT :: " ++ x).postln;
-                x.on_enter_sometimes(m, nav);
-            };
-        };
-        */
     }},
 
     {ESkoarNoad::exact_beat, SpellOfSkoarmantics {
-        /*
-        var skoarpuscle = noad.next_skoarpuscle;
-        var end_noad = SkoarNoad(\exact_beat_end, noad);
-        end_noad.on_enter = {
-            | m, nav |
-            skoarpuscle.after(m, nav);
+        auto skoarpuscle = noad->next_skoarpuscle();
+        auto end_noad = SkoarNoad::NewArtificial(L"exact_beat_end", noad);
+        end_noad->on_enter = [=](SkoarMinstrelPtr m) {
+            dynamic_cast<SkoarpuscleExactBeat&>(*skoarpuscle).after(m);
         };
 
-        noad.add_noad(end_noad);
-        */
+        noad->add_noad(end_noad);
     }},
 
     {ESkoarNoad::exact_rest, SpellOfSkoarmantics {
-        /*
-        var skoarpuscle = noad.next_skoarpuscle;
-        var end_noad = SkoarNoad(\exact_rest_end, noad);
-        end_noad.on_enter = {
-            | m, nav |
-            skoarpuscle.after(m, nav);
+        auto skoarpuscle = noad->next_skoarpuscle();
+        auto end_noad = SkoarNoad::NewArtificial(L"exact_rest_end", noad);
+        end_noad->on_enter = [=](SkoarMinstrelPtr m) {
+            dynamic_cast<SkoarpuscleExactRest&>(*skoarpuscle).after(m);
         };
 
-        noad.add_noad(end_noad);
-
-        */
+        noad->add_noad(end_noad);
     }},
 
     {ESkoarNoad::loop, SpellOfSkoarmantics {

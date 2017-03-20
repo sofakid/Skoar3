@@ -77,10 +77,7 @@ SkoarpusclePtr SkoarFairy::pop() {
     return impression;
 }
 
-
-
-
-void SkoarFairy::push_noating(bool n = false) {
+void SkoarFairy::push_noating(bool n) {
     name = (n ? L"." : L"!") + name;
     noating_stack.push_back(noating);
     noating = n;
@@ -91,7 +88,6 @@ void SkoarFairy::pop_noating() {
     noating = noating_stack.back();
     noating_stack.pop_back();
 }
-
 
 void SkoarFairy::push_i() {
     i_stack.push_back(i);
@@ -106,7 +102,6 @@ void SkoarFairy::incr_i() {
     ++i;
 }
 
-
 void SkoarFairy::push_times_seen() {
 
 }
@@ -115,7 +110,6 @@ void SkoarFairy::pop_times_seen() {
 
 }
 
-
 void SkoarFairy::how_many_times_have_you_seen(SkoarpusclePtr) {
 
 }
@@ -123,7 +117,6 @@ void SkoarFairy::how_many_times_have_you_seen(SkoarpusclePtr) {
 void SkoarFairy::forget_that_you_have_seen(SkoarpusclePtr) {
 
 }
-
 
 void SkoarFairy::push_compare() {
     compare_stack.push_back(l_value);
@@ -135,13 +128,11 @@ void SkoarFairy::pop_compare() {
     compare_stack.pop_back();
 }
 
-
 void SkoarFairy::compare_impress(SkoarMinstrelPtr m) {
     if (typeid(*l_value) == typeid(SkoarpuscleFairy)) {
         l_value = m->fairy->impression;
     }
 }
-
 
 void SkoarFairy::push_boolean() {
     boolean_stack.push_back(impression);
@@ -184,7 +175,6 @@ void SkoarFairy::compile_ugen() {
 SkoarpusclePtr SkoarFairy::exact_duration() {
     return exact;
 }
-
 
 void SkoarFairy::charge_arcane_magic(ArcaneMagic spell) {
     ArcaneMagic f = magic;

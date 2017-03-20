@@ -20,6 +20,8 @@ class Skoarpuscle {
 public:
 
     Poco::DynamicAny val;
+
+    bool impressionable;
     
 	Skoarpuscle();
     ~Skoarpuscle() {

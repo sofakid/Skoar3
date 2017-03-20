@@ -24,7 +24,7 @@ public:
     void push_impression();
     void pop_impression();
 
-    void push_noating(bool);
+    void push_noating(bool = false);
     void pop_noating();
 
     void push_i();
