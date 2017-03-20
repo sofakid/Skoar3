@@ -31,5 +31,10 @@ public:
 
 class SkoarpuscleProjection : public Skoarpuscle {
 public:
-    SkoarpuscleProjection(SkoarProjection *);
+    SkoarpuscleProjection(SkoarProjectionPtr);
+};
+
+class SkoarpuscleProjections : public Skoarpuscle {
+public:
+    SkoarpuscleProjections(ListOfSkoarProjectionsPtr);
 };

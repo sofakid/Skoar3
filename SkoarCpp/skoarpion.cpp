@@ -20,7 +20,7 @@ Skoarpion::Skoarpion(Skoar *skoar, SkoarNoadPtr node) {
 
 
 // --- SkoarProjection ------------------------------------------------
-SkoarProjection *Skoarpion::projection(SkoarString name) {
+SkoarProjectionPtr Skoarpion::projection(SkoarString name) {
 	return nullptr;
 }
 

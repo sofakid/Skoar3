@@ -26,15 +26,15 @@ public:
 	SkoarString skoarce;                   // the skoarce code
 	SkoarNoadPtr tree;                     // root of tree
 	SkoarToker toker;                      // toker
-	map<SkoarString, SkoarKoar*>  voices;  // all the voices
-	SkoarKoar *all_voice;                  // the all voice
+	map<SkoarString, SkoarKoarPtr> voices; // all the voices
+	SkoarKoarPtr all_voice;                // the all voice
 	ListOfSkoarpions skoarpions;           // all the skoarpions
 
 	Skoar(SkoarString &skoarce, ISkoarLog *log);
     ~Skoar();
 
 	void decorate();
-	SkoarKoar *get_voice(SkoarString &k);
+	SkoarKoarPtr get_voice(SkoarString &k);
 	void cthulhu(SkoarNoadPtr noad);
 	void play();
 	void pskoar();

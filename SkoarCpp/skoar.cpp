@@ -23,20 +23,15 @@
 // Skoar
 // =====
 
-static SkoarString isInitialized(L"");
-
 void Skoar::init() {
-    // can i rely isInitialized being initialized to false, if i can't rely on the tables?
-    // we could end up with two sets of tables, or worse, no sets if it starts off as true.
-    // 
-    // we'll use a magic cookie, and invoke an elder god.
-    if (isInitialized != SkoarString(L"shadilay")) {
+    static bool isInitialized = false;
+    if (isInitialized == false) {
         SkoarToker::init();
         SkoarParser::init();
         
         // todo ops table
 
-        isInitialized = SkoarString(L"shadilay");
+        isInitialized = true;
     }
 }
 
@@ -58,7 +53,7 @@ Skoar::Skoar(SkoarString &skoarce, ISkoarLog *log) :
 	tree = nullptr;
 	auto parser = SkoarParser(&toker);
 
-	all_voice = new SkoarKoar(SkoarString(L"all"));
+	all_voice = make_shared<SkoarKoar>(SkoarString(L"all"));
 	voices[L"all"] = all_voice;
 
 	//skoarpions = List[];
@@ -113,16 +108,14 @@ Skoar::Skoar(SkoarString &skoarce, ISkoarLog *log) :
 
 	//draw_skoarpions();
 
-    log->d("derp", 1, 2.0);
-
 	log->i("+++ Skoar Parsed +++");// +tree->draw_tree());
 
     f_parse_time = static_cast<float>(parse_time) / CLOCKS_PER_SEC;
     f_decorate_time = static_cast<float>(decorate_time) / CLOCKS_PER_SEC;
 
-	log->i("seconds parsing", f_parse_time, 
-        "seconds decorating", f_decorate_time, 
-        "seconds total: ", f_parse_time + f_decorate_time);
+	log->i("seconds parsing",    f_parse_time, 
+           "seconds decorating", f_decorate_time, 
+           "seconds total: ",    f_parse_time + f_decorate_time);
 }
 
 Skoar::~Skoar() {
@@ -153,16 +146,14 @@ void Skoar::decorate() {
 // ----
 
 // creates a new one if needed
-SkoarKoar *Skoar::get_voice(SkoarString &k) {
-	SkoarKoar *voice = nullptr;
-
-	auto found = voices[k];
-	if (found != nullptr) {
-		voice = found;
-	} else {
-		voice = new SkoarKoar(k);
-		voices[k] = voice;
+SkoarKoarPtr Skoar::get_voice(SkoarString &k) {
+	SkoarKoarPtr voice = voices[k];
+	if (voice != nullptr) {
+        return voice;
 	}
+
+    voice = make_shared<SkoarKoar>(k);
+	voices[k] = voice;
 
 	return voice;
 }

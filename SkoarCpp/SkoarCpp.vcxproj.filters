@@ -126,9 +126,6 @@
     <ClInclude Include="skoarbuf.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="templates.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="skoarstyles_unreal.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -8,24 +8,78 @@ class SkoarFairy {
 public:
 	SkoarString name;
 	SkoarMinstrelPtr minstrel;
-	SkoarpusclePtr impression;
-	SkoarpusclePtr noat;
+    SkoarpusclePtr noat;
+    SkoarpusclePtr impression;
+    
+	SkoarFairy(SkoarString, SkoarMinstrelPtr);
 
-	ArcaneMagic magic;
-	list<ListOfSkoarpusclesPtr> listy_stack;
-	list<ArcaneMagic> magic_stack;
-
-	SkoarFairy(SkoarString nom, SkoarMinstrelPtr m);
-	SkoarpusclePtr impress(SkoarpusclePtr x);
-
-	void charge_arcane_magic(ArcaneMagic spell);
-	SkoarpusclePtr cast_arcane_magic();
-
-	ListOfSkoarpusclesPtr get_top_listy();
+    ListOfSkoarpusclesPtr get_top_listy();
+    void set_top_listy(ListOfSkoarpusclesPtr);
 	void next_listy();
 
-	void push();
-	SkoarpusclePtr pop();
+    void push();
+    SkoarpusclePtr pop();
+
+    void push_impression();
+    void pop_impression();
+
+    void push_noating();
+    void pop_noating();
+
+    void push_i();
+    void pop_i();
+    void incr_i();
+
+    void push_times_seen();
+    void pop_times_seen();
+
+    void how_many_times_have_you_seen(SkoarpusclePtr);
+    void forget_that_you_have_seen(SkoarpusclePtr);
+    
+    void push_compare();
+    void pop_compare();
+
+    void compare_impress(SkoarMinstrelPtr);
+
+    void push_boolean();
+    void pop_boolean();
+
+    SkoarpusclePtr impress_i();
+    SkoarpusclePtr impress(SkoarpusclePtr);
+
+    void compile_ugen();
+
+    SkoarpusclePtr exact_duration();
+
+    void charge_arcane_magic(ArcaneMagic spell);
+    SkoarpusclePtr cast_arcane_magic();
+
+    void consider(SkoarEvent&);
+    void consider_amp(SkoarEvent&);
+
+private:
+    ArcaneMagic magic;
+    
+    list<ListOfSkoarpusclesPtr> listy_stack;
+    list<ArcaneMagic> magic_stack;
+    list<SkoarInt> i_stack;
+    ListOfSkoarpuscles compare_stack;
+    
+    ListOfSkoarpuscles boolean_stack;
+    SkoarpusclePtr boolean_impression;
+
+    list<map<SkoarNoadPtr, SkoarInt>> times_seen_stack;
+    map<SkoarNoadPtr, SkoarInt> times_seen;
+
+    bool noating;
+    list<bool> noating_stack;
+
+    SkoarInt i;
+    SkoarInt j;
+
+    bool noatworthy;
+
+    //SkoarLute lute;
 
 };
 
@@ -34,54 +88,3 @@ public:
 	SkoarpuscleFairy();
 
 };
-/*
-SkoarpuscleFairy : Skoarpuscle {
-
-var msg_arr;
-
-*new { ^super.new.init; }
-
-init {
-msg_arr = #[];
-}
-
-flatten {
-| m |
-var x = m.fairy.impression;
-
-if (x.isKindOf(Skoarpuscle)) {
-x = x.flatten(m);
-};
-
-^x;
-}
-
-on_enter {
-| m, nav |
-var x = m.fairy.impression;
-
-L"performing fairy impression: ".post; x.dump;
-
-if (x.isKindOf(Skoarpuscle)) {
-x.perform(m, nav);
-};
-
-}
-
-
-skoar_msg {
-| msg, minstrel |
-msg_arr = msg.get_msg_arr(minstrel);
-
-L"Fairy got msg: ".post; msg_arr.dump;
-
-^this;
-}
-
-//isNoatworthy { ^true; }
-
-//asNoat {
-// need a reference to the fairy
-//}
-}
-*/

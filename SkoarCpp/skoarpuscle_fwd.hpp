@@ -75,6 +75,8 @@ class SkoarpuscleSkoarpion;
 class SkoarpuscleSkoarpionSig;
 class SkoarpuscleArgExpr;
 class SkoarpuscleArgList;
+class SkoarpuscleProjection;
+class SkoarpuscleProjections;
 
 // lute.cpp
 class SkoarpuscleLute;

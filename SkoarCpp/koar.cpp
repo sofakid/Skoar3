@@ -119,7 +119,7 @@ void SkoarKoar::set_args(
 void SkoarKoar::push_state() {
 	
 	auto state = make_shared<SkoarDic>();
-	auto projections = new list<SkoarProjection *>();
+	auto projections = make_shared<ListOfSkoarProjections>();
 
 	state_stack->push_back(state);
 
@@ -143,8 +143,8 @@ void SkoarKoar::do_skoarpion(
 	ListOfSkoarpusclesPtr args) {
 	
 	SkoarNoadPtr subtree;
-	SkoarProjection *projection = nullptr;
-	map<SkoarString, SkoarpuscleProjection*> projections;
+	SkoarProjectionPtr projection = nullptr;
+	map<SkoarString, shared_ptr<SkoarpuscleProjection>> projections;
 	SkoarString msg_name;
 	bool inlined;
 
@@ -155,7 +155,7 @@ void SkoarKoar::do_skoarpion(
 
 	msg_name = msg_arr.front();
 
-	inlined = (msg_name == wstring(L"inline"));
+	inlined = (msg_name == SkoarString(L"inline"));
 	if (inlined == false) {
 		this->push_state();
 	}
@@ -188,7 +188,7 @@ void SkoarKoar::do_skoarpion(
 
 void SkoarKoar::nav_loop(
 	SkoarNoadPtr dst,
-	SkoarProjection *projection,
+	SkoarProjectionPtr projection,
 	SkoarMinstrelPtr minstrel,
 	bool inlined) {
 

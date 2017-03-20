@@ -53,6 +53,11 @@ SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr) {
 
 
 // --- SkoarpuscleProjection ----------------------------------------------
-SkoarpuscleProjection::SkoarpuscleProjection(SkoarProjection *) {
+SkoarpuscleProjection::SkoarpuscleProjection(SkoarProjectionPtr) {
+
+}
+
+// --- SkoarpuscleProjections ----------------------------------------------
+SkoarpuscleProjections::SkoarpuscleProjections(ListOfSkoarProjectionsPtr) {
 
 }

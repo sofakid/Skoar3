@@ -7,6 +7,7 @@
 #include "skoar_fwd.hpp"
 #include "event_fwd.hpp"
 #include "skoarpion_fwd.hpp"
+#include "koar_fwd.hpp"
 
 typedef long long SkoarInt;
 typedef double SkoarFloat;
@@ -17,6 +18,9 @@ typedef shared_ptr<Skoarpuscle> SkoarpusclePtr;
 typedef shared_ptr<SkoarDic> SkoarDicPtr;
 typedef shared_ptr<SkoarMinstrel> SkoarMinstrelPtr;
 typedef shared_ptr<Skoarpion> SkoarpionPtr;
+typedef shared_ptr<SkoarProjection> SkoarProjectionPtr;
+typedef shared_ptr<SkoarKoar> SkoarKoarPtr;
+
 
 typedef list<SkoarDicPtr> ListOfSkoarDics;
 typedef unique_ptr<ListOfSkoarDics> ListOfSkoarDicsPtr;
@@ -26,6 +30,10 @@ typedef shared_ptr<ListOfSkoarpuscles> ListOfSkoarpusclesPtr;
 
 typedef list<SkoarpionPtr> ListOfSkoarpions;
 typedef shared_ptr<ListOfSkoarpions> ListOfSkoarpionsPtr;
+
+typedef list<SkoarProjectionPtr> ListOfSkoarProjections;
+typedef shared_ptr<ListOfSkoarProjections> ListOfSkoarProjectionsPtr;
+
 
 typedef wstring SkoarString;
 

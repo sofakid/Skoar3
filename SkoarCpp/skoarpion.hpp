@@ -19,7 +19,7 @@ public:
     SkoarString name;
 	shared_ptr<SkoarpuscleArgSpec> args_spec;
 
-	SkoarProjection *projection(SkoarString name);
+	SkoarProjectionPtr projection(SkoarString name);
 
 };
 

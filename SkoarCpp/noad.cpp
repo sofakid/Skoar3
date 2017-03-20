@@ -34,6 +34,17 @@ SkoarNoadPtr SkoarNoad::New(wstring &nameArg, SkoarNoadPtr parentArg, SkoarTokeP
     return x;
 }
 
+SkoarNoadPtr SkoarNoad::NewArtificial(SkoarString &nameArg, SkoarNoadPtr parentArg)
+{
+    return SkoarNoad::New<ESkoarNoad::artificial>(nameArg, parentArg);
+}
+
+
+SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg, SkoarNoadPtr parentArg)
+{
+    return SkoarNoad::New<ESkoarNoad::artificial>(SkoarString(nameArg), parentArg);
+}
+
 
 SkoarNoad::~SkoarNoad() {
     --SkoarMemories.Noads;

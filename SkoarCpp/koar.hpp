@@ -56,7 +56,7 @@ public:
 
 	void nav_loop(
 		SkoarNoadPtr dst, 
-		SkoarProjection *projection, 
+		SkoarProjectionPtr projection, 
 		SkoarMinstrelPtr minstrel,
 		bool inlined);
 

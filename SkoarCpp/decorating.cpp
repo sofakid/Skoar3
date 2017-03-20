@@ -54,25 +54,23 @@ Skoarmantics::Skoarmantics() : table({
     }},
 
     {ESkoarNoad::boolean_expr, SpellOfSkoarmantics {
-        /*
+        
         // we insert a node at the end of the boolean expression
         // so we can restore the impression
-        var end_noad = SkoarNoad(\boolean_expr_end, noad);
+        auto end_noad = SkoarNoad::NewArtificial(L"boolean_expr_end", noad);
 
-        noad.on_enter = {
-            | m, nav |
+        noad->on_enter = [](SkoarMinstrelPtr m) {
             //("boolean_expr :: push_boolean").postln;
-            m.fairy.push_boolean;
+            m->fairy->push_boolean();
         };
 
-        end_noad.on_enter = {
-            | m, nav |
+        end_noad->on_enter = [](SkoarMinstrelPtr m) {
             //("boolean_expr :: pop_boolean").postln;
-            m.fairy.pop_boolean;
+            m->fairy->pop_boolean();
         };
 
-        noad.add_noad(end_noad);
-        */
+        noad->add_noad(end_noad);
+        
     }},
 
     {ESkoarNoad::boolean, SpellOfSkoarmantics {
@@ -202,7 +200,7 @@ Skoarmantics::Skoarmantics() : table({
     // deref*         : Deref MsgNameWithArgs listy_suffix
     //                | Deref MsgName
     {ESkoarNoad::deref, SpellOfSkoarmantics {
-    // this still needs to be compared
+        // this still needs to be compared
         shared_ptr<SkoarpuscleDeref> x;
         shared_ptr<SkoarpuscleArgs> args = nullptr;
         SkoarString msg_name(L"");
@@ -239,7 +237,7 @@ Skoarmantics::Skoarmantics() : table({
         // !f<x,y>
         if (args != nullptr) {
 
-            auto end_noad = SkoarNoad::New<ESkoarNoad::artificial>(wstring(L"deref_end"), noad);
+            auto end_noad = SkoarNoad::NewArtificial(L"deref_end", noad);
             end_noad->on_enter = [&](SkoarMinstrelPtr m) {
                 m->fairy->cast_arcane_magic();
                 x->on_enter(m);
@@ -346,26 +344,26 @@ Skoarmantics::Skoarmantics() : table({
 
     {ESkoarNoad::expr, SpellOfSkoarmantics {
         // todo: compare
-            // we insert a node at the end of the expression
-            // so we can impress the result
+        // we insert a node at the end of the expression
+        // so we can impress the result
 
-            auto end_noad = SkoarNoad::New<ESkoarNoad::artificial>(wstring(L"expr_end"), noad);
-            end_noad->on_enter = [&](SkoarMinstrelPtr m) {
-                m->fairy->cast_arcane_magic();
-            };
+        auto end_noad = SkoarNoad::NewArtificial(L"expr_end", noad);
+        end_noad->on_enter = [&](SkoarMinstrelPtr m) {
+            m->fairy->cast_arcane_magic();
+        };
 
-            noad->add_noad(end_noad);
+        noad->add_noad(end_noad);
 
-        }},
+    }},
 
-        {ESkoarNoad::msgable, SpellOfSkoarmantics {
-            // todo: compare
-                auto noads = new list<SkoarNoadPtr>;
+    {ESkoarNoad::msgable, SpellOfSkoarmantics {
+        // todo: compare
+        auto noads = new list<SkoarNoadPtr>;
 
         // strip out the msg operators
         for (auto x : noad->children) {
             if (typeid(x->toke) != typeid(Toke_MsgOp*)) {
-                noads->emplace_back(x);
+                noads->push_back(x);
             }
         }
 

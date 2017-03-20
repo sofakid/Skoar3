@@ -324,7 +324,6 @@
     <ClInclude Include="skoar_fwd.hpp" />
     <ClInclude Include="skoar_public.hpp" />
     <ClInclude Include="spells.hpp" />
-    <ClInclude Include="templates.hpp" />
     <ClInclude Include="toker.hpp" />
     <ClInclude Include="toker_fwd.hpp" />
     <ClInclude Include="toke_inspector.hpp" />

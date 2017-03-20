@@ -796,3 +796,5 @@ Skoarmantics {
     }
 
 }
+
+[](Skoar *skoar, SkoarNoadPtr noad)
