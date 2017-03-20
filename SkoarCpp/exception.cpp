@@ -17,7 +17,13 @@ SkoarParseException::SkoarParseException() {
 }
 
 SkoarParseException::SkoarParseException(wstring s, SkoarNoadPtr noad) :
-    SkoarError(s), noad(noad)
-{
+    SkoarError(s), noad(noad) {
+}
+
+SkoarAnyException::SkoarAnyException() : SkoarError() {
+}
+
+SkoarAnyException::SkoarAnyException(wstring s) :
+    SkoarError(s) {
 }
 

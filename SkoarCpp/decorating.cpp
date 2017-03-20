@@ -8,6 +8,8 @@
 #include "event.hpp"
 #include "skoar.hpp"
 #include "minstrel.hpp"
+#include "beaty.hpp"
+#include "skoarpion_skoarpuscle.hpp"
 
 // ==============
 // toke_inspector
@@ -298,7 +300,8 @@ Skoarmantics::Skoarmantics() {
 			auto y = (*child)->skoarpuscle;
 
 			if (typeid(y) == typeid(SkoarpuscleMsgName*)) {
-                msg_name = SkoarString(L"derp"); //any_cast<SkoarString>(y->val);
+                SkoarString val = y->val;
+                msg_name = val;
 			}
 			else if (y == nullptr) {
 				skoar->log->e("WTF Skoarpuscle is nullptr.");
@@ -355,7 +358,7 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table[ESkoarNoad::args] = [](Skoar *skoar, SkoarNoadPtr noad) {
-		auto x = new SkoarpuscleArgsSpec(noad);
+		auto x = new SkoarpuscleArgSpec(noad);
 		noad->skoarpuscle = x;
 		noad->children.clear();
 	};
@@ -369,12 +372,13 @@ Skoarmantics::Skoarmantics() {
 
 			}
 			else if (typeid(msg) == typeid(SkoarpuscleLoop*)) {
-                noad->skoarpuscle = new SkoarpuscleLoopMsg(SkoarString(L"derp"));// any_cast<SkoarString>(msg->val));
-
+                SkoarString val = msg->val;
+                noad->skoarpuscle = new SkoarpuscleLoopMsg(val);
 			}
 			else if (typeid(msg) == typeid(SkoarpuscleMsgName*)) {
 				SkoarpuscleArgs *args = new SkoarpuscleArgs();
-                //noad->skoarpuscle = new SkoarpuscleMsg(SkoarString(L"derp"));// any_cast<SkoarString>(msg->val), args);
+                SkoarString val = msg->val;
+                noad->skoarpuscle = new SkoarpuscleMsg(val, args);
 			}
 		}
 

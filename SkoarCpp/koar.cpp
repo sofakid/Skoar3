@@ -6,8 +6,9 @@
 #include "minstrel.hpp"
 #include "skoarpion.hpp"
 #include "skoarpuscle.hpp"
-#include "noad.hpp"
+#include "skoarpion_skoarpuscle.hpp"
 
+#include "noad.hpp"
 
 SkoarKoar::SkoarKoar(SkoarString &nom) {
 	name = nom;
@@ -86,7 +87,7 @@ SkoarEvent *SkoarKoar::event(SkoarMinstrel *minstrel) {
 
 void SkoarKoar::set_args(
 	SkoarMinstrel *minstrel, 
-	SkoarpuscleArgsSpec *args_spec, 
+	SkoarpuscleArgSpec *args_spec, 
 	ListOfSkoarpusclesPtr args) 
 {
 	size_t i = 0, n = 0;
@@ -100,8 +101,9 @@ void SkoarKoar::set_args(
 		// foreach arg name defined, set the value from args
 		auto arg_it = args->begin();
 
-		/*for (auto k_skoarpuscle : *any_cast<ListOfSkoarpusclesPtr>(args_spec->val) ) {
-			auto k = any_cast<SkoarString>(k_skoarpuscle->val);
+        auto args_spec_val = args_spec->val.extract<ListOfSkoarpusclesPtr>();
+		for (auto k_skoarpuscle : *args_spec_val) {
+             SkoarString k = k_skoarpuscle->val;
 
 			//("k: " ++ k).postln;
 			if (i++ < n) {
@@ -110,7 +112,7 @@ void SkoarKoar::set_args(
 				// this defaults to passing 0 when not enough args are sent.
 				vars[k] = new SkoarpuscleInt(0);
 			}
-		}*/
+		}
 }
 
 

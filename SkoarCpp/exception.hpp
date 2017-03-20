@@ -20,3 +20,11 @@ public:
 	SkoarParseException();
 	SkoarParseException(wstring s, SkoarNoadPtr noad);
 };
+
+class SkoarAnyException : public SkoarError {
+public:
+    SkoarNoadPtr noad;
+
+    SkoarAnyException();
+    SkoarAnyException(wstring s);
+};

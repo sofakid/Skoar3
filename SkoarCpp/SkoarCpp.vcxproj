@@ -124,11 +124,13 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <TargetName>$(ProjectName).$(Platform)</TargetName>
     <TargetExt>.lib</TargetExt>
+    <LibraryPath>C:\p\poco-1.7.8\lib64;C:\p\poco-1.7.8\bin64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Deb Prog|x64'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <TargetName>$(ProjectName).$(Platform)</TargetName>
     <TargetExt>.lib</TargetExt>
+    <LibraryPath>C:\p\poco-1.7.8\lib64;C:\p\poco-1.7.8\bin64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.dll</TargetExt>
@@ -139,10 +141,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <TargetName>$(ProjectName).$(Platform)</TargetName>
+    <LibraryPath>C:\p\poco-1.7.8\lib64;C:\p\poco-1.7.8\bin64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Rel Prog|x64'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <TargetName>$(ProjectName).$(Platform)</TargetName>
+    <LibraryPath>C:\p\poco-1.7.8\lib64;C:\p\poco-1.7.8\bin64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -171,6 +175,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\p\poco-1.7.8\Foundation\include;C:\p\poco-1.7.8\JSON\include;C:\p\poco-1.7.8\Net\include;C:\p\poco-1.7.8\Util\include;C:\p\poco-1.7.8\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -187,6 +192,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\p\poco-1.7.8\Foundation\include;C:\p\poco-1.7.8\JSON\include;C:\p\poco-1.7.8\Net\include;C:\p\poco-1.7.8\Util\include;C:\p\poco-1.7.8\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -243,6 +249,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\p\poco-1.7.8\Foundation\include;C:\p\poco-1.7.8\JSON\include;C:\p\poco-1.7.8\Net\include;C:\p\poco-1.7.8\Util\include;C:\p\poco-1.7.8\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -264,6 +271,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\p\poco-1.7.8\Foundation\include;C:\p\poco-1.7.8\JSON\include;C:\p\poco-1.7.8\Net\include;C:\p\poco-1.7.8\Util\include;C:\p\poco-1.7.8\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -275,7 +283,11 @@
   <ItemGroup>
     <ClInclude Include="beaty.hpp" />
     <ClInclude Include="beaty_fwd.hpp" />
+    <ClInclude Include="dsp.hpp" />
+    <ClInclude Include="envelope.hpp" />
+    <ClInclude Include="meditation.hpp" />
     <ClInclude Include="memories.hpp" />
+    <ClInclude Include="skoarpion_skoarpuscle.hpp" />
     <ClInclude Include="styles.hpp" />
     <ClInclude Include="decorating.hpp" />
     <ClInclude Include="decorating_fwd.hpp" />
@@ -318,13 +330,16 @@
   <ItemGroup>
     <ClCompile Include="beaty.cpp" />
     <ClCompile Include="decorating.cpp" />
+    <ClCompile Include="dsp.cpp" />
     <ClCompile Include="entry.cpp" />
+    <ClCompile Include="envelope.cpp" />
     <ClCompile Include="event.cpp" />
     <ClCompile Include="exception.cpp" />
     <ClCompile Include="fairy.cpp" />
     <ClCompile Include="koar.cpp" />
     <ClCompile Include="lex.cpp" />
     <ClCompile Include="logging.cpp" />
+    <ClCompile Include="meditation.cpp" />
     <ClCompile Include="memories.cpp" />
     <ClCompile Include="minstrel.cpp" />
     <ClCompile Include="operators.cpp" />
@@ -333,6 +348,7 @@
     <ClCompile Include="skoar.cpp" />
     <ClCompile Include="noad.cpp" />
     <ClCompile Include="skoarpion.cpp" />
+    <ClCompile Include="skoarpion_skoarpuscle.cpp" />
     <ClCompile Include="skoarpuscle.cpp" />
     <ClCompile Include="styles.cpp" />
     <ClCompile Include="toker.cpp" />

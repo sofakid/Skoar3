@@ -16,7 +16,7 @@ public:
 	Skoarpion(Skoar *skoar, SkoarNoadPtr node);
 
     SkoarString name;
-	SkoarpuscleArgsSpec *args_spec;
+	SkoarpuscleArgSpec *args_spec;
 
 	SkoarProjection *projection(SkoarString name);
 

@@ -1,19 +1,23 @@
 class Skoarpuscle;
 
 class SkoarpuscleUnknown;
+
 class SkoarpuscleCat;
 class SkoarpuscleTrue;
 class SkoarpuscleFalse;
+
 class SkoarpuscleFreq;
 class SkoarpuscleInt;
 class SkoarpuscleFloat;
+
 class SkoarpuscleNoat;
 class SkoarpuscleChoard;
+
 class SkoarpuscleString;
 class SkoarpuscleSymbol;
 class SkoarpuscleSymbolName;
-class SkoarpuscleRest;
-class SkoarpuscleBeat;
+class SkoarpuscleSymbolColon;
+
 class SkoarpuscleBars;
 class SkoarpuscleCarrots;
 class SkoarpuscleTuplet;
@@ -23,20 +27,53 @@ class SkoarpuscleBooleanOp;
 class SkoarpuscleVoice;
 class SkoarpuscleSegno;
 class SkoarpuscleFine;
-class SkoarpuscleMsgName;
+
 class SkoarpuscleMathOp;
-class SkoarpuscleListSep;
-class SkoarpuscleListEnd;
-class SkoarpuscleSkoarpion;
 
 class SkoarpuscleDeref;
 class SkoarpuscleArgs;
 class SkoarpuscleLoop;
 class SkoarpuscleLoopMsg;
-class SkoarpuscleMsg;
-class SkoarpuscleList;
 
-class SkoarpuscleArgsSpec;
+class SkoarpuscleMsg;
+class SkoarpuscleMsgName;
+
+class SkoarpuscleList;
+class SkoarpuscleListSep;
+class SkoarpuscleListEnd;
+
+class SkoarpuscleArgSpec;
 class SkoarpuscleArgs;
 class SkoarpuscleArg;
+
+class SkoarpuscleExpr;
+class SkoarpusclePair;
+class SkoarpuscleHashLevel;
+class SkoarpuscleTimes;
+
+// dsp.cpp
+class SkoarpuscleUgen;
+class SkoarpuscleUGenWithArgs;
+class SkoarpuscleUGenArgs;
+
+// envelope.cpp
+class SkoarpuscleEnvelope;
+
+// meditation.cpp
+class SkoarpuscleMeditation;
+class SkoarpuscleMeditationMsg;
+
+// beaty.cpp
+class SkoarpuscleRest;
+class SkoarpuscleBeat;
+class SkoarpuscleDuration;
+class SkoarpuscleExactBeat;
+class SkoarpuscleExactRest;
+
+// skoarpion.cpp
+class SkoarpuscleSkoarpion;
+class SkoarpuscleSkoarpionSig;
+class SkoarpuscleArgExpr;
+class SkoarpuscleArgList;
+
 

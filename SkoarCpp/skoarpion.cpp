@@ -5,7 +5,7 @@
 #include "skoarpuscle.hpp"
 #include "skoar.hpp"
 
-
+// --- Skoarpion ------------------------------------------------
 Skoarpion* Skoarpion::new_from_skoar(Skoar *skoar) {
 	return nullptr;
 }
@@ -13,6 +13,8 @@ Skoarpion* Skoarpion::new_from_skoar(Skoar *skoar) {
 Skoarpion::Skoarpion(Skoar *skoar, SkoarNoadPtr node) {
 }
 
+
+// --- SkoarProjection ------------------------------------------------
 SkoarProjection *Skoarpion::projection(SkoarString name) {
 	return nullptr;
 }

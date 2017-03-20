@@ -44,7 +44,7 @@ public:
 	
 	SkoarEvent *event(SkoarMinstrel *minstrel);
 	void set_args(SkoarMinstrel *minstrel, 
-		SkoarpuscleArgsSpec *args_spec, ListOfSkoarpusclesPtr args);
+		SkoarpuscleArgSpec *args_spec, ListOfSkoarpusclesPtr args);
 
 	void push_state();
 	void pop_state();

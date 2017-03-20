@@ -12,14 +12,15 @@
 
 #include "spells.hpp"
 
+#include "Poco/DynamicAny.h"
+
 #define SKOARPUSCLE(x) Skoarpuscle::wrap<decltype(x)>(x)
 
 class Skoarpuscle {
 public:
 
-    //std::any val;
+    Poco::DynamicAny val;
     
-
 	Skoarpuscle();
     ~Skoarpuscle() {
     }
@@ -56,7 +57,7 @@ public:
 	SkoarpuscleUnknown();
 };
 
-class SkoarpuscleCat : public Skoarpuscle{
+class SkoarpuscleCat : public Skoarpuscle {
 public:
 	SkoarpuscleCat();
 };
@@ -64,11 +65,14 @@ public:
 class SkoarpuscleTrue : public Skoarpuscle {
 public:
 	SkoarpuscleTrue();
+
 };
 
 class SkoarpuscleFalse : public Skoarpuscle {
 public:
 	SkoarpuscleFalse();
+
+
 };
 
 class SkoarpuscleFreq : public Skoarpuscle {
@@ -83,6 +87,8 @@ public:
 	SkoarpuscleInt(SkoarInt v);
 	bool isNoatworthy() override; 
 	void *asNoat() override;
+
+
 };
 
 class SkoarpuscleFloat : public Skoarpuscle {
@@ -90,6 +96,7 @@ public:
     SkoarpuscleFloat(double);
 	bool isNoatworthy() override;
 	void *asNoat() override;
+
 };
 
 class SkoarpuscleNoat : public Skoarpuscle {
@@ -109,6 +116,7 @@ public:
 class SkoarpuscleString : public Skoarpuscle {
 public:
     SkoarpuscleString(SkoarString);
+
 };
 
 class SkoarpuscleSymbol : public Skoarpuscle {
@@ -121,16 +129,19 @@ public:
 class SkoarpuscleSymbolName : public Skoarpuscle {
 public:
     SkoarpuscleSymbolName(SkoarString);
+
 };
 
-class SkoarpuscleRest : public Skoarpuscle {
+class SkoarpuscleSymbolColon : public Skoarpuscle {
 public:
-	SkoarpuscleRest(SkoarToke *);
+    SkoarpuscleSymbolColon(SkoarString);
+
 };
 
-class SkoarpuscleBeat : public Skoarpuscle {
+class SkoarpuscleTimes : public Skoarpuscle {
 public:
-	SkoarpuscleBeat(SkoarToke *);
+    SkoarpuscleTimes();
+
 };
 
 class SkoarpuscleBars : public Skoarpuscle {
@@ -191,6 +202,7 @@ public:
 class SkoarpuscleMsgName : public Skoarpuscle {
 public:
     SkoarpuscleMsgName(SkoarString);
+
 };
 
 class SkoarpuscleMathOp : public Skoarpuscle {
@@ -223,28 +235,12 @@ public:
 	SkoarpuscleListEnd();
 };
 
-class SkoarpuscleArgsSpec : public SkoarpuscleList {
+class SkoarpuscleArgSpec : public SkoarpuscleList {
 public:
-	SkoarpuscleArgsSpec();
-	SkoarpuscleArgsSpec(SkoarNoadPtr);
+	SkoarpuscleArgSpec();
+	SkoarpuscleArgSpec(SkoarNoadPtr);
 };
 
-class SkoarpuscleSkoarpion : public Skoarpuscle {
-public:
-	list<SkoarString> msg_arr;
-
-	SkoarpuscleSkoarpion(Skoarpion *);
-	SkoarpuscleSkoarpion(Skoarpion *, SkoarNoadPtr);
-
-	Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) override;
-
-	void on_enter_method(SkoarMinstrel *m);
-};
-
-class SkoarpuscleProjection : public Skoarpuscle {
-public:
-	SkoarpuscleProjection(SkoarProjection *);
-};
 
 class SkoarpuscleDeref : public Skoarpuscle {
 public:
@@ -324,3 +320,19 @@ class SkoarpuscleExprEnd : public Skoarpuscle {
 public:
 	SkoarpuscleExprEnd();
 };
+
+class SkoarpuscleHashLevel : public Skoarpuscle {
+public:
+    SkoarpuscleHashLevel(SkoarString);
+};
+
+class SkoarpusclePair : public Skoarpuscle {
+public:
+    SkoarpusclePair(SkoarString, Skoarpuscle*);
+};
+
+class SkoarpuscleExpr : public Skoarpuscle {
+public:
+    SkoarpuscleExpr(SkoarNoadPtr);
+};
+
