@@ -2,6 +2,7 @@
 
 #include "exception.hpp"
 #include "skoarpuscle.hpp"
+#include "minstrel.hpp"
 
 SkoarFairy::SkoarFairy(SkoarString nom, SkoarMinstrelPtr m) :
     name(nom),
@@ -31,12 +32,31 @@ void SkoarFairy::next_listy() {
     }
 }
 
+
+void SkoarFairy::push_impression() {
+    impression_stack.push_back(impression);
+    noatworthy_stack.push_back(noatworthy);
+}
+
+void SkoarFairy::pop_impression() {
+    noatworthy = noatworthy_stack.back();
+    noatworthy_stack.pop_back();
+    if (noatworthy == true) {
+        auto x = impression_stack.back();
+        impression_stack.pop_back();
+        impress(x);
+    }
+}
+
+
 void SkoarFairy::push() {
     magic_stack.push_back(magic);
     magic = HarmlessMagic;
 
     listy_stack.push_back(make_shared<ListOfSkoarpuscles>());
     //"$.push;".postln;
+
+    //minstrel->koar->push_state();
 }
 
 SkoarpusclePtr SkoarFairy::pop() {
@@ -60,34 +80,30 @@ SkoarpusclePtr SkoarFairy::pop() {
 
 
 
-void SkoarFairy::push_impression() {
-
-}
-
-void SkoarFairy::pop_impression() {
-
-}
-
-
-void SkoarFairy::push_noating() {
-
+void SkoarFairy::push_noating(bool n = false) {
+    name = (n ? L"." : L"!") + name;
+    noating_stack.push_back(noating);
+    noating = n;
 }
 
 void SkoarFairy::pop_noating() {
-
+    name = name.substr(1);
+    noating = noating_stack.back();
+    noating_stack.pop_back();
 }
 
 
 void SkoarFairy::push_i() {
-
+    i_stack.push_back(i);
 }
 
 void SkoarFairy::pop_i() {
-
+    i = i_stack.back();
+    i_stack.pop_back();
 }
 
 void SkoarFairy::incr_i() {
-
+    ++i;
 }
 
 
@@ -110,29 +126,39 @@ void SkoarFairy::forget_that_you_have_seen(SkoarpusclePtr) {
 
 
 void SkoarFairy::push_compare() {
-
+    compare_stack.push_back(l_value);
+    l_value = nullptr;
 }
 
 void SkoarFairy::pop_compare() {
-
+    l_value = compare_stack.back();
+    compare_stack.pop_back();
 }
 
 
-void SkoarFairy::compare_impress(SkoarMinstrelPtr) {
-
+void SkoarFairy::compare_impress(SkoarMinstrelPtr m) {
+    if (typeid(*l_value) == typeid(SkoarpuscleFairy)) {
+        l_value = m->fairy->impression;
+    }
 }
 
 
 void SkoarFairy::push_boolean() {
-
+    boolean_stack.push_back(impression);
+    push_noating();
 }
 
 void SkoarFairy::pop_boolean() {
-
+    boolean_impression = impression;
+    auto x = boolean_stack.back();
+    boolean_stack.pop_back();
+    impress(x);
+    pop_noating();
 }
 
 SkoarpusclePtr SkoarFairy::impress_i() {
-    return nullptr;
+    auto x = make_shared<SkoarpuscleInt>(i);
+    return impress(x);
 }
 
 SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
@@ -151,12 +177,12 @@ SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
 }
 
 void SkoarFairy::compile_ugen() {
-
+    //lute.compile_ugen();
 }
 
 
 SkoarpusclePtr SkoarFairy::exact_duration() {
-    return nullptr;
+    return exact;
 }
 
 
@@ -183,11 +209,33 @@ SkoarpusclePtr SkoarFairy::cast_arcane_magic() {
 }
 
 void SkoarFairy::consider(SkoarEvent&) {
-
+    /*
+    var x;
+		
+	x = e[\tempo];
+	if (x <= 0) {
+		x = 1;
+	};
+	e[\dur_by_tempo] = e[\dur] / x;
+		
+	//(name++".consider :: " ++ e).postln;
+	e.yield;
+    */
 }
 
-void SkoarFairy::consider_amp(SkoarEvent&) {
-
+void SkoarFairy::consider_amp(SkoarEvent&, SkoarMinstrelPtr) {
+    /*
+    if (worries.isNil) {
+		if (noating == true) {
+			var a = skrpe.amp;
+			var offs = a - m.koar[\amp];
+			m.controls.amp_bus.set(a);
+			m.koar[\amp] = a;
+		};
+	} {
+		dyn_impression = skrpe;
+	};
+    */
 }
 
 

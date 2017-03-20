@@ -23,7 +23,7 @@ public:
     void push_impression();
     void pop_impression();
 
-    void push_noating();
+    void push_noating(bool);
     void pop_noating();
 
     void push_i();
@@ -55,7 +55,7 @@ public:
     SkoarpusclePtr cast_arcane_magic();
 
     void consider(SkoarEvent&);
-    void consider_amp(SkoarEvent&);
+    void consider_amp(SkoarEvent&, SkoarMinstrelPtr);
 
 private:
     ArcaneMagic magic;
@@ -63,7 +63,11 @@ private:
     list<ListOfSkoarpusclesPtr> listy_stack;
     list<ArcaneMagic> magic_stack;
     list<SkoarInt> i_stack;
+    
     ListOfSkoarpuscles compare_stack;
+    SkoarpusclePtr l_value;
+
+    ListOfSkoarpuscles impression_stack;
     
     ListOfSkoarpuscles boolean_stack;
     SkoarpusclePtr boolean_impression;
@@ -71,13 +75,16 @@ private:
     list<map<SkoarNoadPtr, SkoarInt>> times_seen_stack;
     map<SkoarNoadPtr, SkoarInt> times_seen;
 
+    SkoarpusclePtr exact;
+
     bool noating;
     list<bool> noating_stack;
 
+    bool noatworthy;
+    list<bool> noatworthy_stack;
+
     SkoarInt i;
     SkoarInt j;
-
-    bool noatworthy;
 
     //SkoarLute lute;
 
