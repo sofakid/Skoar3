@@ -4,22 +4,20 @@
 // --- SkoarpuscleSkoarpion ------------------------------------------------
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s) {
     val = s;
-    on_enter = [this](SkoarMinstrelPtr m) {
-        this->on_enter_method(m);
-    };
 }
 
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s, SkoarNoadPtr) {
     val = s;
-    on_enter = [this](SkoarMinstrelPtr m) {
-        this->on_enter_method(m);
-    };
+}
+
+void SkoarpuscleSkoarpion::on_enter(SkoarMinstrelPtr m) {
+    on_enter_method(m);
 }
 
 
-Skoarpuscle *SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
+SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
     //msg_arr = msg->get_msg_arr(minstrel);
-    return this;
+    return nullptr;
 }
 
 void SkoarpuscleSkoarpion::on_enter_method(SkoarMinstrelPtr m) {

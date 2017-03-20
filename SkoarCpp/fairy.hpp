@@ -10,6 +10,7 @@ public:
 	SkoarMinstrelPtr minstrel;
     SkoarpusclePtr noat;
     SkoarpusclePtr impression;
+    SkoarpusclePtr l_value;
     
 	SkoarFairy(SkoarString, SkoarMinstrelPtr);
 
@@ -65,7 +66,6 @@ private:
     list<SkoarInt> i_stack;
     
     ListOfSkoarpuscles compare_stack;
-    SkoarpusclePtr l_value;
 
     ListOfSkoarpuscles impression_stack;
     

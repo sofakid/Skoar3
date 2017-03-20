@@ -74,29 +74,30 @@ Skoarmantics::Skoarmantics() : table({
     }},
 
     {ESkoarNoad::boolean, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleBoolean>(noad);
-        /*
+        
         // we insert a node at the end of the expression
         // so we can evaluate the result
-        var end_noad = SkoarNoad(\boolean_end, noad);
-        var x = SkoarpuscleBoolean(noad);
-        noad.skoarpuscle = x;
+        auto end_noad = SkoarNoad::NewArtificial(L"boolean_end", noad);
+        auto x = make_shared<SkoarpuscleBoolean>(noad);
 
-        end_noad.on_enter = {
-            | m, nav |
-            var l_value = m.fairy.l_value;
-            var y;
-            var imp = m.fairy.impression;
+        noad->skoarpuscle = x;
+
+        end_noad->on_enter = [&](SkoarMinstrelPtr m) {
+            auto l_value = m->fairy->l_value;
+            auto imp = m->fairy->impression;
 
             //("derp " ++ l_value.asString ++ " imp: " ++ imp.asString).postln;
-            y = x.evaluate(m, nav, l_value, imp);
 
-            m.fairy.impress(y);
-            m.fairy.pop_compare;
+            if (x->evaluate(m, l_value, imp) == true)
+                m->fairy->impress(make_shared<SkoarpuscleTrue>());
+            else 
+                m->fairy->impress(make_shared<SkoarpuscleFalse>());
+
+            m->fairy->pop_compare();
         };
 
-        noad.add_noad(end_noad);
-        */
+        noad->add_noad(end_noad);
+        
     }},
 
     {ESkoarNoad::regular_beat, SpellOfSkoarmantics {

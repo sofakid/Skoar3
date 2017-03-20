@@ -9,9 +9,10 @@ public:
     SkoarpuscleSkoarpion(SkoarpionPtr);
     SkoarpuscleSkoarpion(SkoarpionPtr, SkoarNoadPtr);
 
-    Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
+    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 
     void on_enter_method(SkoarMinstrelPtr m);
+    void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleSkoarpionSig : public Skoarpuscle {
