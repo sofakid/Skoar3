@@ -3,7 +3,7 @@
 #include "exception.hpp"
 #include "skoarpuscle.hpp"
 
-SkoarFairy::SkoarFairy(SkoarString nom, SkoarMinstrel *m) :
+SkoarFairy::SkoarFairy(SkoarString nom, SkoarMinstrelPtr m) :
     name(nom),
     minstrel(m),
     magic(HarmlessMagic)

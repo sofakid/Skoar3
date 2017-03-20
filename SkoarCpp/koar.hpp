@@ -24,10 +24,10 @@ public:
 
 class SkoarKoar {
 public:
-	SkoarDicPtr		      skoarboard;   //
-	ListOfSkoarDicPtrsPtr stack;        // stack of vars visible to the skoar code
-    ListOfSkoarDicPtrsPtr state_stack;  // stack of vars invisible to the skoar code
-	SkoarString           name;         // name of voice
+	SkoarDicPtr		   skoarboard;   //
+	ListOfSkoarDicsPtr stack;        // stack of vars visible to the skoar code
+    ListOfSkoarDicsPtr state_stack;  // stack of vars invisible to the skoar code
+	SkoarString        name;         // name of voice
 
     SkoarString garbage;
 
@@ -42,22 +42,22 @@ public:
 	
 	SkoarpusclePtr state_at(SkoarString &k);
 	
-	SkoarEvent *event(SkoarMinstrel *minstrel);
-	void set_args(SkoarMinstrel *minstrel, 
+	SkoarEvent *event(SkoarMinstrelPtr minstrel);
+	void set_args(SkoarMinstrelPtr minstrel, 
 		shared_ptr<SkoarpuscleArgSpec> args_spec, ListOfSkoarpusclesPtr args);
 
 	void push_state();
 	void pop_state();
 	void do_skoarpion(
-		Skoarpion *skoarpion, 
-		SkoarMinstrel *minstrel, 
+		SkoarpionPtr skoarpion, 
+		SkoarMinstrelPtr minstrel, 
 		list<SkoarString> &msg_arr, 
 		ListOfSkoarpusclesPtr args);
 
 	void nav_loop(
 		SkoarNoadPtr dst, 
 		SkoarProjection *projection, 
-		SkoarMinstrel *minstrel,
+		SkoarMinstrelPtr minstrel,
 		bool inlined);
 
 	void bubble_up_nav(SkoarNav *nav, bool inlined);

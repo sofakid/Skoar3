@@ -329,7 +329,7 @@ SkoarToke* SkoarNoad::next_toke() {
 // -------------------
 // performing the tree
 // -------------------
-void SkoarNoad::enter_noad(SkoarMinstrel* minstrel) {
+void SkoarNoad::enter_noad(SkoarMinstrelPtr minstrel) {
 	if (on_enter) {
 		on_enter(minstrel);
 	}

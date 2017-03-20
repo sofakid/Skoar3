@@ -34,11 +34,11 @@ public:
 		return nullptr;
 	}
 
-	virtual Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) {
+	virtual Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
 		return nullptr;
 	}
 	
-    virtual SkoarInt Skoarpuscle::flatten(SkoarMinstrel *m) { return 0; }
+    virtual SkoarInt Skoarpuscle::flatten(SkoarMinstrelPtr m) { return 0; }
     /*{
         std::any* v = &val;
         SkoarInt* vp = std::any_cast<SkoarInt>(v);
@@ -122,7 +122,7 @@ public:
 class SkoarpuscleSymbol : public Skoarpuscle {
 public:
     SkoarpuscleSymbol(SkoarString);
-	Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) override;
+	Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 
 };
 
@@ -179,7 +179,7 @@ public:
 	function<bool(Skoarpuscle *, Skoarpuscle *)> f;
 
 	SkoarpuscleBooleanOp(SkoarNoadPtr, SkoarToke *);
-	bool compare(Skoarpuscle *a, Skoarpuscle *b, SkoarMinstrel *m);
+	bool compare(Skoarpuscle *a, Skoarpuscle *b, SkoarMinstrelPtr m);
 };
 
 class SkoarpuscleVoice : public Skoarpuscle {
@@ -207,10 +207,10 @@ public:
 
 class SkoarpuscleMathOp : public Skoarpuscle {
 public:
-	function<void(SkoarMinstrel *m, Skoarpuscle *, Skoarpuscle *)> f;
+	function<void(SkoarMinstrelPtr m, Skoarpuscle *, Skoarpuscle *)> f;
 
     SkoarpuscleMathOp(SkoarToke *);
-	void calculate(SkoarMinstrel *m, Skoarpuscle *a, Skoarpuscle *b);
+	void calculate(SkoarMinstrelPtr m, Skoarpuscle *a, Skoarpuscle *b);
 };
 
 class SkoarpuscleList : public Skoarpuscle {
@@ -221,7 +221,7 @@ public:
 	
 	bool isNoatworthy() override;
 	void *asNoat() override;
-	Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) override;
+	Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 
 };
 
@@ -250,7 +250,7 @@ public:
 	SkoarpuscleDeref();
 	SkoarpuscleDeref(SkoarString msg_name, shared_ptr<SkoarpuscleArgs>);
 
-	SkoarpusclePtr lookup(SkoarMinstrel* minstrel);
+	SkoarpusclePtr lookup(SkoarMinstrelPtr minstrel);
 };
 
 class SkoarpuscleConditional : public Skoarpuscle {
@@ -268,7 +268,7 @@ public:
 	SkoarpuscleBoolean();
 	SkoarpuscleBoolean(SkoarNoadPtr);
 
-	bool evaluate(SkoarMinstrel *m);
+	bool evaluate(SkoarMinstrelPtr m);
 	
 
 };
@@ -313,7 +313,7 @@ public:
 
 	SkoarpuscleMsg();
 	SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a);
-	//void *get_msg_arr(SkoarMinstrel *m);
+	//void *get_msg_arr(SkoarMinstrelPtr m);
 };
 
 

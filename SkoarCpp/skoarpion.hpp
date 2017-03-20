@@ -11,7 +11,8 @@
 class Skoarpion {
 public:
 
-	static Skoarpion *new_from_skoar(Skoar *skoar);
+	static SkoarpionPtr new_from_skoar(Skoar *skoar);
+    static SkoarpionPtr new_from_skoar_noad(Skoar *skoar, SkoarNoadPtr noad);
 
 	Skoarpion(Skoar *skoar, SkoarNoadPtr node);
 

@@ -12,7 +12,7 @@
 
 SkoarKoar::SkoarKoar(SkoarString &nom) {
 	name = nom;
-	stack = make_unique<ListOfSkoarDicPtrs>();
+	stack = make_unique<ListOfSkoarDics>();
 	skoarboard = make_shared<SkoarDic>();
 	stack->push_back(skoarboard);
 }
@@ -55,7 +55,7 @@ SkoarpusclePtr SkoarKoar::state_at(SkoarString &k) {
 }
 
 // constructs the event that will be played by SC
-SkoarEvent *SkoarKoar::event(SkoarMinstrel *minstrel) {
+SkoarEvent *SkoarKoar::event(SkoarMinstrelPtr minstrel) {
 	auto e = new SkoarEvent();
 	
 	// going from global to local, overwriting existing entries with the more local one. 
@@ -86,7 +86,7 @@ SkoarEvent *SkoarKoar::event(SkoarMinstrel *minstrel) {
 }
 
 void SkoarKoar::set_args(
-	SkoarMinstrel *minstrel, 
+	SkoarMinstrelPtr minstrel, 
     shared_ptr<SkoarpuscleArgSpec> args_spec,
 	ListOfSkoarpusclesPtr args) 
 {
@@ -137,8 +137,8 @@ void SkoarKoar::pop_state() {
 }
 
 void SkoarKoar::do_skoarpion(
-	Skoarpion *skoarpion,
-	SkoarMinstrel *minstrel,
+	SkoarpionPtr skoarpion,
+	SkoarMinstrelPtr minstrel,
 	list<SkoarString> &msg_arr,
 	ListOfSkoarpusclesPtr args) {
 	
@@ -189,7 +189,7 @@ void SkoarKoar::do_skoarpion(
 void SkoarKoar::nav_loop(
 	SkoarNoadPtr dst,
 	SkoarProjection *projection,
-	SkoarMinstrel *minstrel,
+	SkoarMinstrelPtr minstrel,
 	bool inlined) {
 
 	auto running = true;

@@ -7,7 +7,7 @@
 class SkoarFairy {
 public:
 	SkoarString name;
-	SkoarMinstrel *minstrel;
+	SkoarMinstrelPtr minstrel;
 	SkoarpusclePtr impression;
 	SkoarpusclePtr noat;
 
@@ -15,7 +15,7 @@ public:
 	list<ListOfSkoarpusclesPtr> listy_stack;
 	list<ArcaneMagic> magic_stack;
 
-	SkoarFairy(SkoarString nom, SkoarMinstrel *m);
+	SkoarFairy(SkoarString nom, SkoarMinstrelPtr m);
 	SkoarpusclePtr impress(SkoarpusclePtr x);
 
 	void charge_arcane_magic(ArcaneMagic spell);

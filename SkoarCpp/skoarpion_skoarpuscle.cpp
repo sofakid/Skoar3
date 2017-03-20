@@ -1,29 +1,30 @@
+#include "skoarpion.hpp"
 #include "skoarpion_skoarpuscle.hpp"
 
 // --- SkoarpuscleSkoarpion ------------------------------------------------
-SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(Skoarpion *s) {
+SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s) {
     val = s;
-    on_enter = [this](SkoarMinstrel *m) {
+    on_enter = [this](SkoarMinstrelPtr m) {
         this->on_enter_method(m);
     };
 }
 
-SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(Skoarpion *s, SkoarNoadPtr) {
+SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s, SkoarNoadPtr) {
     val = s;
-    on_enter = [this](SkoarMinstrel *m) {
+    on_enter = [this](SkoarMinstrelPtr m) {
         this->on_enter_method(m);
     };
 }
 
 
-Skoarpuscle *SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) {
+Skoarpuscle *SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
     //msg_arr = msg->get_msg_arr(minstrel);
     return this;
 }
 
-void SkoarpuscleSkoarpion::on_enter_method(SkoarMinstrel *m) {
-    Skoarpion* skrp = val.extract<Skoarpion*>();
-    auto name = SkoarString(L"derp");// skrp->name;
+void SkoarpuscleSkoarpion::on_enter_method(SkoarMinstrelPtr m) {
+    SkoarpionPtr skrp = val.extract<SkoarpionPtr>();
+    auto name = skrp->name;
     if (name.size() > 0) {
         //m->koar[name] = this;
     }

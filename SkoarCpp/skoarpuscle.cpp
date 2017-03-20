@@ -48,7 +48,7 @@ flatten{ return nil }
 SkoarpuscleInt::SkoarpuscleInt(SkoarInt v) {
 	val = v;
 
-	on_enter = [v](SkoarMinstrel *m) {
+	on_enter = [v](SkoarMinstrelPtr m) {
 		m->fairy->impress(make_shared<SkoarpuscleInt>(v));
 	};
 }
@@ -63,7 +63,7 @@ void *SkoarpuscleInt::asNoat() {
 // --- SkoarpuscleFloat ---------------------------------------------------------
 SkoarpuscleFloat::SkoarpuscleFloat(SkoarFloat v) {
 	val = v;
-	on_enter = [v](SkoarMinstrel *m) {
+	on_enter = [v](SkoarMinstrelPtr m) {
 		m->fairy->impress(make_shared<SkoarpuscleFloat>(v));
 	};
 }
@@ -76,7 +76,7 @@ void *SkoarpuscleFloat::asNoat() {
 	return nullptr;//return new SkoarNoat_Degree(val.asInteger);
 }
 
-//double SkoarpuscleFloat::flatten(SkoarMinstrel *m) {
+//double SkoarpuscleFloat::flatten(SkoarMinstrelPtr m) {
 //	return val.Float;
 //}
 
@@ -88,7 +88,7 @@ void *SkoarpuscleFloat::asNoat() {
 SkoarpuscleFreq::SkoarpuscleFreq(SkoarString lexeme) {
 	val = lexeme; // todo chop off Hz
 	
-	on_enter = [lexeme](SkoarMinstrel *m) {
+	on_enter = [lexeme](SkoarMinstrelPtr m) {
 		m->fairy->impress(make_shared<SkoarpuscleFreq>(lexeme));
 	};
 }
@@ -134,7 +134,7 @@ void *SkoarpuscleChoard::asNoat() {
 // --- SkoarpuscleString ---------------------------------------------------------
 SkoarpuscleString::SkoarpuscleString(SkoarString s) {
 	val = s;
-	on_enter = [s](SkoarMinstrel *m) {
+	on_enter = [s](SkoarMinstrelPtr m) {
 		m->fairy->impress(make_shared<SkoarpuscleString>(s));
 	};
 }
@@ -143,7 +143,7 @@ SkoarpuscleString::SkoarpuscleString(SkoarString s) {
 // --- SkoarpuscleSymbolName ---------------------------------------------------------
 SkoarpuscleSymbolName::SkoarpuscleSymbolName(SkoarString s) {
 	val = s;
-	on_enter = [s](SkoarMinstrel *m) {
+	on_enter = [s](SkoarMinstrelPtr m) {
 		m->fairy->impress(make_shared<SkoarpuscleSymbolName>(s));
 	};
 }
@@ -151,13 +151,13 @@ SkoarpuscleSymbolName::SkoarpuscleSymbolName(SkoarString s) {
 // --- SkoarpuscleSymbol ---------------------------------------------------------
 SkoarpuscleSymbol::SkoarpuscleSymbol(SkoarString s) {
 	val = s;
-	on_enter = [s](SkoarMinstrel *m) {
+	on_enter = [s](SkoarMinstrelPtr m) {
 		m->fairy->impress(make_shared<SkoarpuscleSymbol>(s));
 	};
 }
 
 
-Skoarpuscle *SkoarpuscleSymbol::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) {
+Skoarpuscle *SkoarpuscleSymbol::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
 	//auto o = msg.get_msg_arr(minstrel);
 	//auto ret = val.performMsg(o);
 
@@ -184,7 +184,7 @@ SkoarpuscleDeref::SkoarpuscleDeref(SkoarString v, shared_ptr<SkoarpuscleArgs> a)
 	val = v;
 	args = a;
 	
-	on_enter = [this](SkoarMinstrel *m) {
+	on_enter = [this](SkoarMinstrelPtr m) {
 		auto x = this->lookup(m);
 
 		//"deref:on_enter: SYMBOL LOOKEDUP : ".post; val.post; " ".post; x.postln;
@@ -198,7 +198,7 @@ SkoarpuscleDeref::SkoarpuscleDeref(SkoarString v, shared_ptr<SkoarpuscleArgs> a)
 	};
 }
 
-SkoarpusclePtr SkoarpuscleDeref::lookup(SkoarMinstrel* minstrel) {
+SkoarpusclePtr SkoarpuscleDeref::lookup(SkoarMinstrelPtr minstrel) {
 	//return m->koar[val];
 	return nullptr;
 }
@@ -207,7 +207,7 @@ SkoarpuscleDeref::flatten(m) {
 	return this.lookup(m);
 }
 
-SkoarpusclePtr SkoarpuscleDeref::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) {
+SkoarpusclePtr SkoarpuscleDeref::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
 
 	auto ret = val;
 	auto x = this->lookup(minstrel);
@@ -259,7 +259,7 @@ SkoarpuscleMathOp::SkoarpuscleMathOp(SkoarToke *toke) {
 			}};	 */
 }
 
-void SkoarpuscleMathOp::calculate(SkoarMinstrel *m, Skoarpuscle* left, Skoarpuscle *right) {
+void SkoarpuscleMathOp::calculate(SkoarMinstrelPtr m, Skoarpuscle* left, Skoarpuscle *right) {
 
 	// the result is impressed by the operation
 	f(m, left, right);
@@ -313,7 +313,7 @@ SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarNoadPtr noad, SkoarToke *toke) {
 
 }
 
-bool SkoarpuscleBooleanOp::compare(Skoarpuscle *a, Skoarpuscle *b, SkoarMinstrel *m) {
+bool SkoarpuscleBooleanOp::compare(Skoarpuscle *a, Skoarpuscle *b, SkoarMinstrelPtr m) {
 	/*auto x;
 	auto y;
 
@@ -351,7 +351,7 @@ SkoarpuscleBoolean::SkoarpuscleBoolean(SkoarNoadPtr noad) {
 	noad.children = [];	  */
 }
 
-bool SkoarpuscleBoolean::evaluate(SkoarMinstrel *m) {
+bool SkoarpuscleBoolean::evaluate(SkoarMinstrelPtr m) {
 	return false;
 	//return op->compare(a, b, m);
 }
@@ -369,8 +369,8 @@ SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) 
 	/*
 	for (auto x : noad->collect("cond_if")) {
 		auto condition = x->children.front()->next_skoarpuscle();
-		Skoarpion *if_body;
-		Skoarpion *else_body;
+		SkoarpionPtr if_body;
+		SkoarpionPtr else_body;
 
 		if_body = Skoarpion::new_from_subtree(skoar, x.children[2]);
 
@@ -382,7 +382,7 @@ SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) 
 		ifs.emplace_back([condition, if_body, else_body]);
 	};
 	*/
-	on_enter = [this](SkoarMinstrel *m) {
+	on_enter = [this](SkoarMinstrelPtr m) {
 
 		/*for (auto x : *this->ifs) {
 			auto c = x[0];
@@ -420,7 +420,7 @@ SkoarpuscleLoop::SkoarpuscleLoop(Skoar *skoar, SkoarNoadPtr noad) {
 
 	each = nullptr;
 
-	on_enter = [this](SkoarMinstrel *m) {
+	on_enter = [this](SkoarMinstrelPtr m) {
 		/*
 		auto i = 0;
 
@@ -488,21 +488,21 @@ SkoarpuscleLoopMsg::SkoarpuscleLoopMsg(SkoarString s) {
 
 // --- SkoarpuscleExprEnd ---------------------------------------------------------
 SkoarpuscleExprEnd::SkoarpuscleExprEnd() {
-	on_enter = [](SkoarMinstrel *m) {
+	on_enter = [](SkoarMinstrelPtr m) {
 		m->fairy->cast_arcane_magic();
 	};
 }
 
 // --- SkoarpuscleListSep ---------------------------------------------------------
 SkoarpuscleListSep::SkoarpuscleListSep() {
-	on_enter = [](SkoarMinstrel *m) {
+	on_enter = [](SkoarMinstrelPtr m) {
 		m->fairy->next_listy();
 	};
 }
 
 // --- SkoarpuscleListEnd ---------------------------------------------------------
 SkoarpuscleListEnd::SkoarpuscleListEnd() {
-	on_enter = [](SkoarMinstrel *m) {
+	on_enter = [](SkoarMinstrelPtr m) {
 		m->fairy->next_listy();
 		m->fairy->pop();
 	};
@@ -514,7 +514,7 @@ SkoarpuscleList::SkoarpuscleList() {
 
 SkoarpuscleList::SkoarpuscleList(ListOfSkoarpusclesPtr x) {
 	val = x;
-	on_enter = [](SkoarMinstrel *m) {
+	on_enter = [](SkoarMinstrelPtr m) {
 		m->fairy->push();
 	};
 }
@@ -543,7 +543,7 @@ void *SkoarpuscleList::asNoat() {
 	//return new SkoarNoat_DegreeList(noats);
 }
 
-Skoarpuscle *SkoarpuscleList::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) {
+Skoarpuscle *SkoarpuscleList::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
 	//auto o = msg->get_msg_arr(minstrel);
     SkoarString name = msg->val;
 	Skoarpuscle *ret = nullptr;
@@ -595,7 +595,7 @@ SkoarpuscleMsg::SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a) {
 	args = a;
 }
 
-/*SkoarpuscleMsg::get_msg_arr(SkoarMinstrel *m) {
+/*SkoarpuscleMsg::get_msg_arr(SkoarMinstrelPtr m) {
 	auto x = Array.newClear(args.size + 1);
 	auto i = 0;
 
@@ -626,7 +626,7 @@ SkoarpuscleBars::SkoarpuscleBars(SkoarToke *toke) {
 	bool pre_repeat = lex->at(0) == L':';
 	bool post_repeat = lex->at(n) == L':';
 
-	on_enter = [pre_repeat, post_repeat](SkoarMinstrel *m) {
+	on_enter = [pre_repeat, post_repeat](SkoarMinstrelPtr m) {
 
 		// :|
 		if (pre_repeat == true) {
@@ -648,7 +648,7 @@ SkoarpuscleBars::SkoarpuscleBars(SkoarToke *toke) {
 
 // --- SkoarpuscleFine ---------------------------------------------------------
 SkoarpuscleFine::SkoarpuscleFine() {
-	on_enter = [](SkoarMinstrel *m) {
+	on_enter = [](SkoarMinstrelPtr m) {
 		/*if (m->koar->state_at("al_fine")->val.Bool == true) {
 			//debug("fine");
 			throw new SkoarNav(SkoarNav::FINE);
@@ -672,7 +672,7 @@ SkoarpuscleSegno::SkoarpuscleSegno(SkoarNoadPtr nod, SkoarToke *toke) {
 		};
 		val = s[1..n].asSymbol;	 */
 
-	on_enter = [](SkoarMinstrel *m) {
+	on_enter = [](SkoarMinstrelPtr m) {
 		//m->koar->state_put("segno_seen", noad);
 	};
 }
@@ -694,7 +694,7 @@ SkoarpuscleGoto::SkoarpuscleGoto(SkoarNoadPtr noad) {
 				};
 			};
 
-	on_enter = [this](SkoarMinstrel *m) {
+	on_enter = [this](SkoarMinstrelPtr m) {
 		if (this->al_fine == true) {
 			m->koar->state_put("al_fine", true);
 		};
@@ -743,7 +743,7 @@ SkoarpuscleDynamic::SkoarpuscleDynamic(SkoarToke *toke) {
 	{"fff"}     {8}
 	{"ffforte"} {8};
 		*/
-	on_enter = [this](SkoarMinstrel *m) {
+	on_enter = [this](SkoarMinstrelPtr m) {
 		//m->koar["amp"] = this->amp();
 	};
 }
@@ -771,7 +771,7 @@ SkoarpuscleOctaveShift::SkoarpuscleOctaveShift(SkoarToke *toke) {
 		{toke.isKindOf(Toke_QuindicesimaA)} { 2}
 		{toke.isKindOf(Toke_QuindicesimaB)} {-2};  */
 
-	on_enter = [](SkoarMinstrel *m) {
+	on_enter = [](SkoarMinstrelPtr m) {
 		//auto octave = m->koar[\octave] ? ? 5;
 		//m->koar[\octave] = octave + val;
 	};

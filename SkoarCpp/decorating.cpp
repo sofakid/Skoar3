@@ -40,7 +40,7 @@ Skoarmantics::Skoarmantics() : table({
     }},
 
     {ESkoarNoad::skoarpion, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(new Skoarpion(skoar, noad));
+        noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(Skoarpion::new_from_skoar_noad(skoar, noad));
         noad->children.clear();
     }},
 
@@ -108,7 +108,7 @@ Skoarmantics::Skoarmantics() : table({
             noad->skoarpuscle = xp;
             auto x = *xp;
 
-            noad->on_enter = [&](SkoarMinstrel *m) {
+            noad->on_enter = [&](SkoarMinstrelPtr m) {
                 x.on_enter(m);
             };
         }
@@ -165,7 +165,7 @@ Skoarmantics::Skoarmantics() : table({
     }},
 
     {ESkoarNoad::cthulhu, SpellOfSkoarmantics {
-        noad->on_enter = [&](SkoarMinstrel *m) {
+        noad->on_enter = [&](SkoarMinstrelPtr m) {
             skoar->cthulhu(noad);
         };
     }},
@@ -188,7 +188,7 @@ Skoarmantics::Skoarmantics() : table({
 
         if (x != nullptr) {
             auto y = *x;
-            noad->on_enter = [&](SkoarMinstrel *m) {
+            noad->on_enter = [&](SkoarMinstrelPtr m) {
                 y.on_enter(m);
             };
 
@@ -240,19 +240,19 @@ Skoarmantics::Skoarmantics() : table({
         if (args != nullptr) {
 
             auto end_noad = SkoarNoad::New<ESkoarNoad::artificial>(wstring(L"deref_end"), noad);
-            end_noad->on_enter = [&](SkoarMinstrel *m) {
+            end_noad->on_enter = [&](SkoarMinstrelPtr m) {
                 m->fairy->cast_arcane_magic();
                 x->on_enter(m);
             };
 
             noad->add_noad(end_noad);
-            noad->on_enter = [&](SkoarMinstrel *m) {
+            noad->on_enter = [&](SkoarMinstrelPtr m) {
                 args->on_enter(m);
             };
 
             // !f
         } {
-            noad->on_enter = [&](SkoarMinstrel *m) {
+            noad->on_enter = [&](SkoarMinstrelPtr m) {
                 x->on_enter(m);
             };
         };
@@ -350,7 +350,7 @@ Skoarmantics::Skoarmantics() : table({
             // so we can impress the result
 
             auto end_noad = SkoarNoad::New<ESkoarNoad::artificial>(wstring(L"expr_end"), noad);
-            end_noad->on_enter = [&](SkoarMinstrel *m) {
+            end_noad->on_enter = [&](SkoarMinstrelPtr m) {
                 m->fairy->cast_arcane_magic();
             };
 
@@ -373,7 +373,7 @@ Skoarmantics::Skoarmantics() : table({
         noads = &noad->children;
 
         // evaluate a chain of messages, returning the result
-        noad->on_enter = [&](SkoarMinstrel *m) {
+        noad->on_enter = [&](SkoarMinstrelPtr m) {
             auto result = noads->front()->next_skoarpuscle();
 
             if (result != nullptr) {
@@ -406,19 +406,19 @@ Skoarmantics::Skoarmantics() : table({
             auto settable = (*child)->next_skoarpuscle();
 
             if (*op == L"=>") {
-                noad->on_enter = [=](SkoarMinstrel *m) {
+                noad->on_enter = [=](SkoarMinstrelPtr m) {
                     auto x = m->fairy->cast_arcane_magic();
                     //skoar->ops->assign(m, x, settable);
                 };
             }
             else if (*op == L"+>") {
-                noad->on_enter = [=](SkoarMinstrel *m) {
+                noad->on_enter = [=](SkoarMinstrelPtr m) {
                     auto x = m->fairy->impression;
                     // todo Skoar.ops.increment(m, x, settable);
                 };
             }
             else if (*op == L"->") {
-                noad->on_enter = [=](SkoarMinstrel *m) {
+                noad->on_enter = [=](SkoarMinstrelPtr m) {
                     auto x = m->fairy->impression;
                     // todo Skoar.ops.decrement(m, x, settable);
                 };
@@ -428,7 +428,7 @@ Skoarmantics::Skoarmantics() : table({
         {ESkoarNoad::math, SpellOfSkoarmantics {
             auto op = noad->children.front()->skoarpuscle;
 
-            noad->on_enter = [=](SkoarMinstrel *m) {
+            noad->on_enter = [=](SkoarMinstrelPtr m) {
                 auto left = m->fairy->cast_arcane_magic();
 
                 m->fairy->charge_arcane_magic(

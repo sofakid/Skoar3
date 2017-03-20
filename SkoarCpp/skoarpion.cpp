@@ -6,9 +6,14 @@
 #include "skoar.hpp"
 
 // --- Skoarpion ------------------------------------------------
-Skoarpion* Skoarpion::new_from_skoar(Skoar *skoar) {
+SkoarpionPtr Skoarpion::new_from_skoar(Skoar *skoar) {
 	return nullptr;
 }
+
+SkoarpionPtr Skoarpion::new_from_skoar_noad(Skoar *skoar, SkoarNoadPtr noad) {
+    return make_shared<Skoarpion>(skoar, noad);
+}
+
 
 Skoarpion::Skoarpion(Skoar *skoar, SkoarNoadPtr node) {
 }

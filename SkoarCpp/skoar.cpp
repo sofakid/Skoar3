@@ -12,6 +12,7 @@
 #include "logging.hpp"
 #include "styles.hpp"
 #include "toke_inspector.hpp"
+#include "minstrel_fwd.hpp"
 
 #include <ctime>
 
@@ -183,8 +184,8 @@ void Skoar::pskoar() {
 	//return new Skoarchestra(this)->pfunk();
 }
 
-void Skoar::pvoice(wstring *voice_name) {
-//	return new SkoarMinstrel(this->tree, voices[voice_name], this)->pfunk();
+SkoarMinstrelPtr Skoar::pvoice(SkoarString *voice_name) {
+    return nullptr; //make_shared<SkoarMinstrel>();// this->tree, voices[voice_name], this->pfunk());
 }
 
 void Skoar::draw_skoarpions() {

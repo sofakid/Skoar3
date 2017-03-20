@@ -6,12 +6,12 @@ class SkoarpuscleSkoarpion : public Skoarpuscle {
 public:
     list<SkoarString> msg_arr;
 
-    SkoarpuscleSkoarpion(Skoarpion *);
-    SkoarpuscleSkoarpion(Skoarpion *, SkoarNoadPtr);
+    SkoarpuscleSkoarpion(SkoarpionPtr);
+    SkoarpuscleSkoarpion(SkoarpionPtr, SkoarNoadPtr);
 
-    Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) override;
+    Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 
-    void on_enter_method(SkoarMinstrel *m);
+    void on_enter_method(SkoarMinstrelPtr m);
 };
 
 class SkoarpuscleSkoarpionSig : public Skoarpuscle {

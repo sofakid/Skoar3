@@ -21,14 +21,14 @@ public:
 	ISkoarLog *log;
 
 	// todo: make this static
-	SkoarOps *ops;                               // operations tables object
+	SkoarOps *ops;                         // operations tables object
 
-	SkoarString skoarce;                        // the skoarce code
-	SkoarNoadPtr tree;                           // root of tree
-	SkoarToker toker;                            // toker
-	map<std::wstring, SkoarKoar*>  voices;  // all the voices
-	SkoarKoar *all_voice;                        // the all voice
-	list<Skoarpion *> skoarpions;           // all the skoarpions
+	SkoarString skoarce;                   // the skoarce code
+	SkoarNoadPtr tree;                     // root of tree
+	SkoarToker toker;                      // toker
+	map<SkoarString, SkoarKoar*>  voices;  // all the voices
+	SkoarKoar *all_voice;                  // the all voice
+	ListOfSkoarpions skoarpions;           // all the skoarpions
 
 	Skoar(SkoarString &skoarce, ISkoarLog *log);
     ~Skoar();
@@ -38,7 +38,7 @@ public:
 	void cthulhu(SkoarNoadPtr noad);
 	void play();
 	void pskoar();
-	void pvoice(std::wstring *voice_name);
+	SkoarMinstrelPtr pvoice(SkoarString *voice_name);
 	void draw_skoarpions();
 };
 
