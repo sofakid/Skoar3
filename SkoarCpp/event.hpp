@@ -5,19 +5,19 @@
 
 class SkoarDic {
 public:
-	map<wstring, SkoarpusclePtr> table;
+	map<SkoarString, SkoarpusclePtr> table;
 
 	//Skoarpuscle *not_found;
 
 	SkoarDic();
 
-	SkoarpusclePtr &SkoarDic::operator[](wstring *key);
-	SkoarpusclePtr &SkoarDic::operator[](wstring key);
+	SkoarpusclePtr &SkoarDic::operator[](SkoarString *key);
+	SkoarpusclePtr &SkoarDic::operator[](SkoarString &key);
 };
 
 class SkoarEvent : SkoarDic {
 public:
 
-	void from(SkoarDic *);
+	void from(SkoarDicPtr);
 
 };

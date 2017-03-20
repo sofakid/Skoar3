@@ -24,10 +24,10 @@ public:
 
 class SkoarKoar {
 public:
-	SkoarDic		*skoarboard;   //
-	list<SkoarDic*> *stack;        // stack of vars visible to the skoar code
-	list<SkoarDic*> *state_stack;  // stack of vars invisible to the skoar code
-	SkoarString      name;         // name of voice as Symbol
+	SkoarDicPtr		      skoarboard;   //
+	ListOfSkoarDicPtrsPtr stack;        // stack of vars visible to the skoar code
+    ListOfSkoarDicPtrsPtr state_stack;  // stack of vars invisible to the skoar code
+	SkoarString           name;         // name of voice
 
     SkoarString garbage;
 

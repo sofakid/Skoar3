@@ -5,6 +5,7 @@
 #include "noad_fwd.hpp"
 #include "lex_fwd.hpp"
 #include "skoar_fwd.hpp"
+#include "event_fwd.hpp"
 
 typedef long long SkoarInt;
 typedef double SkoarFloat;
@@ -12,6 +13,10 @@ typedef double SkoarFloat;
 typedef unique_ptr<SkoarToke> SkoarTokePtr;
 typedef shared_ptr<SkoarNoad> SkoarNoadPtr;
 typedef shared_ptr<Skoarpuscle> SkoarpusclePtr;
+typedef shared_ptr<SkoarDic> SkoarDicPtr;
+
+typedef list<SkoarDicPtr> ListOfSkoarDicPtrs;
+typedef unique_ptr<ListOfSkoarDicPtrs> ListOfSkoarDicPtrsPtr;
 
 typedef list<SkoarpusclePtr> ListOfSkoarpuscles;
 typedef shared_ptr<ListOfSkoarpuscles> ListOfSkoarpusclesPtr;

@@ -12,8 +12,8 @@
 
 SkoarKoar::SkoarKoar(SkoarString &nom) {
 	name = nom;
-	stack = new list<SkoarDic*>;
-	skoarboard = new SkoarDic();
+	stack = make_unique<ListOfSkoarDicPtrs>();
+	skoarboard = make_shared<SkoarDic>();
 	stack->push_back(skoarboard);
 }
 
@@ -118,16 +118,16 @@ void SkoarKoar::set_args(
 
 void SkoarKoar::push_state() {
 	
-	auto state = new SkoarDic();
+	auto state = make_shared<SkoarDic>();
 	auto projections = new list<SkoarProjection *>();
 
-	state_stack->emplace_back(state);
+	state_stack->push_back(state);
 
 	//(*state)[&wstring(L"colons_burned")] = new SkoarpuscleList(new list<SkoarNoad *>());
 	//(*state)[&wstring(L"al_fine")] = new SkoarpuscleFalse();
 	//(*state)[&wstring(L"projections")] = new SkoarpuscleProjections(projections);
 
-	stack->emplace_back(new SkoarDic());
+	stack->push_back(make_shared<SkoarDic>());
 	
 }
 
