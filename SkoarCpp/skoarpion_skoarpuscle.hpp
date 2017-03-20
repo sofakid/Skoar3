@@ -1,11 +1,6 @@
 #pragma once
 #include "skoarpuscle.hpp"
 
-class SkoarpuscleSkoarpion;
-class SkoarpuscleSkoarpionSig;
-class SkoarpuscleArgExpr;
-class SkoarpuscleArgList;
-
 
 class SkoarpuscleSkoarpion : public Skoarpuscle {
 public:
@@ -17,6 +12,21 @@ public:
     Skoarpuscle *skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrel *minstrel) override;
 
     void on_enter_method(SkoarMinstrel *m);
+};
+
+class SkoarpuscleSkoarpionSig : public Skoarpuscle {
+public:
+    SkoarpuscleSkoarpionSig();
+};
+
+class SkoarpuscleArgExpr : public Skoarpuscle {
+public:
+    SkoarpuscleArgExpr();
+};
+
+class SkoarpuscleArgList : public Skoarpuscle {
+public:
+    SkoarpuscleArgList(SkoarNoadPtr);
 };
 
 class SkoarpuscleProjection : public Skoarpuscle {

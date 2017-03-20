@@ -285,6 +285,7 @@
     <ClInclude Include="beaty_fwd.hpp" />
     <ClInclude Include="dsp.hpp" />
     <ClInclude Include="envelope.hpp" />
+    <ClInclude Include="lute.hpp" />
     <ClInclude Include="meditation.hpp" />
     <ClInclude Include="memories.hpp" />
     <ClInclude Include="skoarpion_skoarpuscle.hpp" />
@@ -339,6 +340,7 @@
     <ClCompile Include="koar.cpp" />
     <ClCompile Include="lex.cpp" />
     <ClCompile Include="logging.cpp" />
+    <ClCompile Include="lute.cpp" />
     <ClCompile Include="meditation.cpp" />
     <ClCompile Include="memories.cpp" />
     <ClCompile Include="minstrel.cpp" />

@@ -3,10 +3,10 @@
 
 class SkoarpuscleMeditation : public Skoarpuscle {
 public:
-    SkoarpuscleMeditation(SkoarToke *);
+    SkoarpuscleMeditation(Skoar *skoar, SkoarNoadPtr noad);
 };
 
 class SkoarpuscleMeditationMsg : public Skoarpuscle {
 public:
-    SkoarpuscleMeditationMsg(SkoarToke *);
+    SkoarpuscleMeditationMsg(Skoar *skoar, SkoarNoadPtr noad);
 };

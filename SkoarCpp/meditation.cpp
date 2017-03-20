@@ -1,13 +1,13 @@
 #include "meditation.hpp"
 
 // --- SkoarpuscleMeditation ---------------------------------------------
-SkoarpuscleMeditation::SkoarpuscleMeditation(SkoarToke *) {
+SkoarpuscleMeditation::SkoarpuscleMeditation(Skoar *skoar, SkoarNoadPtr noad) {
 
 }
 
 
 // --- SkoarpuscleMeditationMsg ------------------------------------------
-SkoarpuscleMeditationMsg::SkoarpuscleMeditationMsg(SkoarToke *) {
+SkoarpuscleMeditationMsg::SkoarpuscleMeditationMsg(Skoar *skoar, SkoarNoadPtr noad) {
 
 }
 

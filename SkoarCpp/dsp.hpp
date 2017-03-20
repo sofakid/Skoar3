@@ -2,9 +2,9 @@
 
 #include "skoarpuscle.hpp"
 
-class SkoarpuscleUgen : public Skoarpuscle {
+class SkoarpuscleUGen : public Skoarpuscle {
 public:
-    SkoarpuscleUgen(SkoarToke *);
+    SkoarpuscleUGen(SkoarToke *);
 };
 
 class SkoarpuscleUGenWithArgs : public Skoarpuscle {

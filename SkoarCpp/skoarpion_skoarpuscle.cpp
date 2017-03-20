@@ -33,6 +33,24 @@ void SkoarpuscleSkoarpion::on_enter_method(SkoarMinstrel *m) {
     }
 }
 
+// --- SkoarpuscleSkoarpionSig ----------------------------------------------
+SkoarpuscleSkoarpionSig::SkoarpuscleSkoarpionSig() {
+
+}
+
+
+// --- SkoarpuscleArgExpr ----------------------------------------------
+SkoarpuscleArgExpr::SkoarpuscleArgExpr() {
+
+}
+
+
+// --- SkoarpuscleArgList ----------------------------------------------
+SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr) {
+
+}
+
+
 // --- SkoarpuscleProjection ----------------------------------------------
 SkoarpuscleProjection::SkoarpuscleProjection(SkoarProjection *) {
 

@@ -10,6 +10,9 @@
 #include "minstrel.hpp"
 #include "beaty.hpp"
 #include "skoarpion_skoarpuscle.hpp"
+#include "dsp.hpp"
+#include "lute.hpp"
+#include "meditation.hpp"
 
 // ==============
 // toke_inspector
@@ -29,6 +32,20 @@ void SkoarTokeInspector::decorate(Toke_Fairy *toke, SkoarNoadPtr noad)	{
 	noad->skoarpuscle = new SkoarpuscleFairy();
 };
 
+void SkoarTokeInspector::decorate(Toke_Cat *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleCat();
+};
+
+void SkoarTokeInspector::decorate(Toke_True *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleTrue();
+}
+
+void SkoarTokeInspector::decorate(Toke_False *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleFalse();
+}
+
+
+// -----------------------------------------------------------------
 void SkoarTokeInspector::decorate(Toke_Freq *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleFreq(toke->lexeme);
 }
@@ -41,6 +58,8 @@ void SkoarTokeInspector::decorate(Toke_Float *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleFloat(stod(toke->lexeme));
 }
 
+
+// -----------------------------------------------------------------
 void SkoarTokeInspector::decorate(Toke_NamedNoat *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleNoat(toke->lexeme);
 }
@@ -49,6 +68,8 @@ void SkoarTokeInspector::decorate(Toke_Choard *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleChoard(toke->lexeme);
 }
 
+
+// -----------------------------------------------------------------
 void SkoarTokeInspector::decorate(Toke_String *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleString(toke->lexeme);
 }
@@ -61,6 +82,12 @@ void SkoarTokeInspector::decorate(Toke_SymbolName *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleSymbolName(toke->lexeme);
 }
 
+void SkoarTokeInspector::decorate(Toke_SymbolColon *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleSymbolColon(toke->lexeme);
+}
+
+
+// -----------------------------------------------------------------
 // rests
 // } }} }}}
 void SkoarTokeInspector::decorate(Toke_Crotchets *toke, SkoarNoadPtr noad) {
@@ -81,6 +108,20 @@ void SkoarTokeInspector::decorate(Toke_Eighths *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleBeat(toke);
 }
 
+void SkoarTokeInspector::decorate(Toke_ExactBeat *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleExactBeat(toke);
+}
+
+void SkoarTokeInspector::decorate(Toke_ExactRest *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleExactRest(toke);
+}
+
+void SkoarTokeInspector::decorate(Toke_Duration *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleDuration(toke);
+}
+
+
+// -----------------------------------------------------------------
 void SkoarTokeInspector::decorate(Toke_Bars *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleBars(toke);
 }
@@ -121,20 +162,22 @@ void SkoarTokeInspector::decorate(Toke_QuindicesimaB *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleOctaveShift(toke);
 }
 
+void SkoarTokeInspector::decorate(Toke_Segno *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleSegno(noad, toke);
+}
+
+void SkoarTokeInspector::decorate(Toke_Fine *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleFine();
+}
+
+
+// -----------------------------------------------------------------
 void SkoarTokeInspector::decorate(Toke_BooleanOp *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleBooleanOp(toke);
 }
 
 void SkoarTokeInspector::decorate(Toke_Voice *toke, SkoarNoadPtr noad) {
 	noad->skoarpuscle = new SkoarpuscleVoice(toke);
-}
-
-void SkoarTokeInspector::decorate(Toke_Segno *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleSegno(noad, toke);
-}
-
-void SkoarTokeInspector::decorate(Toke_Fine *toke, SkoarNoadPtr noad) {
-	noad->skoarpuscle = new SkoarpuscleFine();
 }
 
 void SkoarTokeInspector::decorate(Toke_MsgName *toke, SkoarNoadPtr noad) {
@@ -167,6 +210,53 @@ void SkoarTokeInspector::decorate(Toke_ListE *toke, SkoarNoadPtr noad) {
 	};
 }
 
+
+// -----------------------------------------------------------------
+void SkoarTokeInspector::decorate(Toke_Times *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleTimes();
+}
+
+void SkoarTokeInspector::decorate(Toke_HashLevel *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleHashLevel(toke->lexeme);
+}
+
+
+
+// -----------------------------------------------------------------
+void SkoarTokeInspector::decorate(Toke_AUGen *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleUGen(toke);
+}
+
+void SkoarTokeInspector::decorate(Toke_KUGen *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleUGen(toke);
+}
+
+void SkoarTokeInspector::decorate(Toke_DUGen *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleUGen(toke);
+}
+
+void SkoarTokeInspector::decorate(Toke_AUGenWithArgs *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleUGenWithArgs(toke);
+}
+
+void SkoarTokeInspector::decorate(Toke_KUGenWithArgs *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleUGenWithArgs(toke);
+}
+
+void SkoarTokeInspector::decorate(Toke_DUGenWithArgs *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleUGenWithArgs(toke);
+}
+
+
+// -----------------------------------------------------------------
+void SkoarTokeInspector::decorate(Toke_Lute *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleLute(toke);
+}
+
+void SkoarTokeInspector::decorate(Toke_LuteWithArgs *toke, SkoarNoadPtr noad) {
+    noad->skoarpuscle = new SkoarpuscleLute(toke);
+}
+
 // ============
 // Skoarmantics
 // ============
@@ -189,29 +279,75 @@ Skoarmantics::Skoarmantics() {
 
 	table[ESkoarNoad::skoar] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		noad->skoarpuscle = new SkoarpuscleSkoarpion(Skoarpion::new_from_skoar(skoar));
-		noad->children.empty();
+		noad->children.clear();
 	};
 
 	table[ESkoarNoad::skoarpion] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		auto x = new SkoarpuscleSkoarpion(new Skoarpion(skoar, noad));
 		noad->skoarpuscle = x;
-		noad->children.empty();
-		noad->on_enter = [&](SkoarMinstrel *m) {
-			x->on_enter(m);
-		};
+		noad->children.clear();
 	};
+
+    table[ESkoarNoad::meditation] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        auto x = new SkoarpuscleMeditation(skoar, noad);
+        noad->skoarpuscle = x;
+        noad->children.clear();
+    };
 
 	table[ESkoarNoad::conditional] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		noad->skoarpuscle = new SkoarpuscleConditional(skoar, noad);
 		noad->children.empty();
 	};
 
+    table[ESkoarNoad::boolean_expr] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        /*
+        // we insert a node at the end of the boolean expression
+        // so we can restore the impression
+        var end_noad = SkoarNoad(\boolean_expr_end, noad);
+				
+		noad.on_enter = {
+			| m, nav |
+			//("boolean_expr :: push_boolean").postln;
+			m.fairy.push_boolean;
+		};
+
+		end_noad.on_enter = {
+            | m, nav |
+			//("boolean_expr :: pop_boolean").postln;
+			m.fairy.pop_boolean;
+        };
+
+        noad.add_noad(end_noad);
+        */
+    };
+
     table[ESkoarNoad::boolean] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		noad->skoarpuscle = new SkoarpuscleBoolean(noad);
-		noad->children.empty();
+		/*
+        // we insert a node at the end of the expression
+        // so we can evaluate the result
+        var end_noad = SkoarNoad(\boolean_end, noad);
+		var x = SkoarpuscleBoolean(noad);
+		noad.skoarpuscle = x;
+				
+		end_noad.on_enter = {
+            | m, nav |
+			var l_value = m.fairy.l_value;
+            var y;
+			var imp = m.fairy.impression;
+					
+			//("derp " ++ l_value.asString ++ " imp: " ++ imp.asString).postln;
+			y = x.evaluate(m, nav, l_value, imp);
+
+			m.fairy.impress(y);
+			m.fairy.pop_compare;
+        };
+
+        noad.add_noad(end_noad);
+        */
 	};
 
-    table[ESkoarNoad::beat] = [](Skoar *skoar, SkoarNoadPtr noad) {
+    table[ESkoarNoad::regular_beat] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		auto xp = noad->next_skoarpuscle();
 
 		if (xp != nullptr) {
@@ -223,26 +359,55 @@ Skoarmantics::Skoarmantics() {
 			};
 		}
 		noad->children.empty();
+        /*
+        var x = noad.next_skoarpuscle;
+        noad.skoarpuscle = x;
+
+        if (noad.parent.name != \assignment) {
+            noad.on_enter = {
+                | m, nav |
+				//("REGULAR BEAT :: " ++ x).postln;
+                x.on_enter_sometimes(m, nav);
+            };
+        };
+        */
 	};
+
+    table[ESkoarNoad::exact_beat] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        /*
+        var skoarpuscle = noad.next_skoarpuscle;
+		var end_noad = SkoarNoad(\exact_beat_end, noad);
+		end_noad.on_enter = {
+			| m, nav |
+			skoarpuscle.after(m, nav);
+		};
+
+		noad.add_noad(end_noad);
+        */
+    };
+
+    table[ESkoarNoad::exact_rest] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        /*
+        var skoarpuscle = noad.next_skoarpuscle;
+		var end_noad = SkoarNoad(\exact_rest_end, noad);
+		end_noad.on_enter = {
+			| m, nav |
+			skoarpuscle.after(m, nav);
+		};
+
+		noad.add_noad(end_noad);
+				
+        */
+    };
 
     table[ESkoarNoad::loop] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		noad->skoarpuscle = new SkoarpuscleLoop(skoar, noad);
-		noad->children.empty();
+		noad->children.clear();
 	};
 
     table[ESkoarNoad::musical_keyword_misc] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		auto skoarpuscle = noad->next_skoarpuscle();
-	};
-
-    table[ESkoarNoad::ottavas] = [](Skoar *skoar, SkoarNoadPtr noad) {
-		auto xp = noad->next_skoarpuscle();
-
-		if (xp != nullptr) {
-			auto x = *xp;
-			noad->on_enter = [&](SkoarMinstrel *m) {
-				x.on_enter(m);
-			};
-		}
+        noad->children.clear();
 	};
 
     table[ESkoarNoad::cthulhu] = [](Skoar *skoar, SkoarNoadPtr noad) {
@@ -251,28 +416,21 @@ Skoarmantics::Skoarmantics() {
 		};
 	};
 
-    table[ESkoarNoad::dynamic] = [](Skoar *skoar, SkoarNoadPtr noad) {
-		auto xp = noad->next_skoarpuscle();
-
-		if (xp != nullptr) {
-			auto x = *xp;
-			noad->on_enter = [&](SkoarMinstrel *m) {
-				x.on_enter(m);
-			};
-		}
-		
-	};
-
     table[ESkoarNoad::dal_goto] = [](Skoar *skoar, SkoarNoadPtr noad) {
-		auto x = new SkoarpuscleGoto(noad);
-
-		noad->on_enter = [&](SkoarMinstrel *m) {
-			x->on_enter(m);
-		};
+		noad->skoarpuscle = new SkoarpuscleGoto(noad);
 	};
 
     table[ESkoarNoad::marker] = [](Skoar *skoar, SkoarNoadPtr noad) {
-		auto x = noad->next_skoarpuscle();
+		/*
+        var x = noad.next_skoarpuscle;
+		noad.skoarpuscle = x;
+
+        if (x.isKindOf(SkoarpuscleBars)) {
+            x.noad = noad;
+            noad.children = [];
+        };
+        */
+        auto x = noad->next_skoarpuscle();
 
 		if (x != nullptr) {
 			auto y = *x;
@@ -347,21 +505,21 @@ Skoarmantics::Skoarmantics() {
 	};
 
     table[ESkoarNoad::listy] = [](Skoar *skoar, SkoarNoadPtr noad) {
-
-		auto x = new SkoarpuscleList();
-
-		noad->skoarpuscle = x;
-		noad->on_enter = [&](SkoarMinstrel *m) {
-			x->on_enter(m);
-		};
-
+        noad->skoarpuscle = new SkoarpuscleList();
 	};
 
-    table[ESkoarNoad::args] = [](Skoar *skoar, SkoarNoadPtr noad) {
-		auto x = new SkoarpuscleArgSpec(noad);
-		noad->skoarpuscle = x;
-		noad->children.clear();
-	};
+    table[ESkoarNoad::arg_listy] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        noad->skoarpuscle = new SkoarpuscleArgList(noad);
+    };
+
+    table[ESkoarNoad::arg_expr] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        noad->skoarpuscle = new SkoarpuscleArgExpr();
+        noad->children.clear();
+    };
+
+    table[ESkoarNoad::skrp_sig] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        noad->skoarpuscle = new SkoarpuscleSkoarpionSig();
+    };
 
     table[ESkoarNoad::msg] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		Skoarpuscle *msg = noad->next_skoarpuscle();
@@ -384,6 +542,51 @@ Skoarmantics::Skoarmantics() {
 
 		noad->children.clear();
 	};
+
+    table[ESkoarNoad::ugen_simple] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        /*
+        var ugen = noad.next_skoarpuscle;
+        var args = nil;
+		var end_noad = SkoarNoad(\ugen_s_end, noad);
+		var msg = SkoarpuscleMsg(ugen.defaultMsg, nil);
+				
+		msg.dest = ugen;
+				
+		end_noad.skoarpuscle = msg;
+		noad.add_noad(end_noad);
+		*/
+    };
+
+    table[ESkoarNoad::ugen_with_args] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        /*
+        var ugen = noad.next_skoarpuscle;
+        var args = SkoarpuscleArgs.new;
+        var end_noad = SkoarNoad(\ugen_wa_end, noad);
+        var msg = SkoarpuscleMsg(ugen.defaultMsg, args);
+
+        msg.dest = ugen;
+
+        end_noad.skoarpuscle = msg;
+        noad.add_noad(end_noad);
+        */
+    };
+
+    table[ESkoarNoad::lute] = [](Skoar *skoar, SkoarNoadPtr noad) {
+        /*
+        var lute = noad.next_skoarpuscle;
+
+		if (lute.has_messages == true) {
+			var args = SkoarpuscleArgs.new;
+			var end_noad = SkoarNoad(\lute_string_end, noad);
+			var msg = SkoarpuscleMsg(\string, args);
+
+			msg.dest = lute;
+					
+			end_noad.skoarpuscle = msg;
+			noad.add_noad(end_noad);
+		};
+        */
+    };
 
     table[ESkoarNoad::expr] = [](Skoar *skoar, SkoarNoadPtr noad) {
 		// we insert a node at the end of the expression

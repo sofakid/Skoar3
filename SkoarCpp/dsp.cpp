@@ -1,7 +1,7 @@
 #include "dsp.hpp"
 
-// --- SkoarpuscleUgen ---------------------------------------------
-SkoarpuscleUgen::SkoarpuscleUgen(SkoarToke *) {
+// --- SkoarpuscleUGen ---------------------------------------------
+SkoarpuscleUGen::SkoarpuscleUGen(SkoarToke *) {
 
 }
 

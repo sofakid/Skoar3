@@ -52,7 +52,7 @@ class SkoarpuscleHashLevel;
 class SkoarpuscleTimes;
 
 // dsp.cpp
-class SkoarpuscleUgen;
+class SkoarpuscleUGen;
 class SkoarpuscleUGenWithArgs;
 class SkoarpuscleUGenArgs;
 
@@ -75,5 +75,9 @@ class SkoarpuscleSkoarpion;
 class SkoarpuscleSkoarpionSig;
 class SkoarpuscleArgExpr;
 class SkoarpuscleArgList;
+
+// lute.cpp
+class SkoarpuscleLute;
+class SkoarpuscleLuteWithArgs;
 
 
