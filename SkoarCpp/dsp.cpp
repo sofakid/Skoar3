@@ -1,13 +1,13 @@
 #include "dsp.hpp"
 
 // --- SkoarpuscleUGen ---------------------------------------------
-SkoarpuscleUGen::SkoarpuscleUGen(SkoarToke *) {
+SkoarpuscleUGen::SkoarpuscleUGen(SkoarString, Type) {
 
 }
 
 
 // --- SkoarpuscleMeditationMsg ------------------------------------------
-SkoarpuscleUGenWithArgs::SkoarpuscleUGenWithArgs(SkoarToke *) {
+SkoarpuscleUGenWithArgs::SkoarpuscleUGenWithArgs(SkoarString, SkoarpuscleUGen::Type) {
 
 }
 

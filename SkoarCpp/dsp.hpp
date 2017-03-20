@@ -4,12 +4,18 @@
 
 class SkoarpuscleUGen : public Skoarpuscle {
 public:
-    SkoarpuscleUGen(SkoarToke *);
+    enum class Type {
+        audio,
+        control,
+        demand
+    };
+
+    SkoarpuscleUGen(SkoarString, Type);
 };
 
 class SkoarpuscleUGenWithArgs : public Skoarpuscle {
 public:
-    SkoarpuscleUGenWithArgs(SkoarToke *);
+    SkoarpuscleUGenWithArgs(SkoarString, SkoarpuscleUGen::Type);
 };
 
 class SkoarpuscleUGenArgs : public Skoarpuscle {

@@ -266,7 +266,7 @@ void SkoarpuscleMathOp::calculate(SkoarMinstrel *m, Skoarpuscle* left, Skoarpusc
 }
 
 // --- SkoarpuscleBooleanOp ---------------------------------------------------------
-SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarToke *toke) {
+SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarNoadPtr noad, SkoarToke *toke) {
 	val = &toke->lexeme;
 
 	// ==|!=|<=|>=|in|nin|and|or|xor

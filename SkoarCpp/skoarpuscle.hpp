@@ -178,7 +178,7 @@ class SkoarpuscleBooleanOp : public Skoarpuscle {
 public:
 	function<bool(Skoarpuscle *, Skoarpuscle *)> f;
 
-	SkoarpuscleBooleanOp(SkoarToke *);
+	SkoarpuscleBooleanOp(SkoarNoadPtr, SkoarToke *);
 	bool compare(Skoarpuscle *a, Skoarpuscle *b, SkoarMinstrel *m);
 };
 
