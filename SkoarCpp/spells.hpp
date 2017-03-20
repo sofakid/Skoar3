@@ -11,8 +11,9 @@ typedef double SkoarFloat;
 
 typedef unique_ptr<SkoarToke> SkoarTokePtr;
 typedef shared_ptr<SkoarNoad> SkoarNoadPtr;
+typedef shared_ptr<Skoarpuscle> SkoarpusclePtr;
 
-typedef list<Skoarpuscle*> ListOfSkoarpuscles;
+typedef list<SkoarpusclePtr> ListOfSkoarpuscles;
 typedef shared_ptr<ListOfSkoarpuscles> ListOfSkoarpusclesPtr;
 typedef wstring SkoarString;
 
@@ -21,11 +22,11 @@ typedef function<void(SkoarMinstrel *)> SpellOfMinstrels;
 typedef function<void(SkoarNoad *)> SpellOfNoads;
 typedef function<void(SkoarNoadPtr)> SpellOfNoadPtrs;
 
-typedef function<void(Skoarpuscle *)> SpellOfSkoarpucles;
+typedef function<void(SkoarpusclePtr)> SpellOfSkoarpucles;
 
 typedef function<void(SkoarToke *, SkoarNoadPtr)> SpellOfTokeyDecoration;
 typedef function<void(Skoar *, SkoarNoadPtr)> SpellOfNoadyDecoration;
 
 
-typedef function<Skoarpuscle*()> ArcaneMagic;
+typedef function<SkoarpusclePtr()> ArcaneMagic;
 #define HarmlessMagic [](){return nullptr;}

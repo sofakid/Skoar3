@@ -327,6 +327,7 @@
     <ClInclude Include="templates.hpp" />
     <ClInclude Include="toker.hpp" />
     <ClInclude Include="toker_fwd.hpp" />
+    <ClInclude Include="toke_inspector.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="beaty.cpp" />
@@ -354,6 +355,7 @@
     <ClCompile Include="skoarpuscle.cpp" />
     <ClCompile Include="styles.cpp" />
     <ClCompile Include="toker.cpp" />
+    <ClCompile Include="toke_inspector.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

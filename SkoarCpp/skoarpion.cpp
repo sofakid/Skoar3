@@ -19,10 +19,10 @@ SkoarProjection *Skoarpion::projection(SkoarString name) {
 	return nullptr;
 }
 
-SkoarNoad *SkoarProjection::performMsg(list<SkoarString> &msg_arr) {
+SkoarNoadPtr SkoarProjection::performMsg(list<SkoarString> &msg_arr) {
 	return nullptr;
 }
 
-list<int> *SkoarProjection::map_dst(SkoarNoad *dst) {
+list<int> *SkoarProjection::map_dst(SkoarNoadPtr dst) {
 	return nullptr;
 }

@@ -23,7 +23,7 @@ public:
 	const ESkoarNoad::Kind kind;
     const SkoarStyles::EStyle style;
 
-	Skoarpuscle *skoarpuscle;   // skoarpuscle types go here, just one.
+	SkoarpusclePtr skoarpuscle;   // skoarpuscle types go here, just one.
 
 	SkoarTokePtr toke;
 	SkoarString *skoarce; 
@@ -98,8 +98,8 @@ public:
 	void inorder_from_here(list<int> &here, SpellOfNoads f);
 	
 	// expect skoarpuscle
-	Skoarpuscle *next_skoarpuscle();
-	SkoarToke *next_toke();
+    SkoarpusclePtr next_skoarpuscle();
+	SkoarToke* next_toke();
 
 	// -------------------
 	// performing the tree

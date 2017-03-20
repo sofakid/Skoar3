@@ -35,16 +35,16 @@ public:
 	// ---------------------
 	// State and scope stuff
 	// ---------------------
-	void put(SkoarString k, Skoarpuscle *v);
-	Skoarpuscle *at(SkoarString &k);
+	void put(SkoarString k, SkoarpusclePtr v);
+	SkoarpusclePtr at(SkoarString &k);
 
-	void state_put(SkoarString &k, Skoarpuscle *v);
+	void state_put(SkoarString &k, SkoarpusclePtr v);
 	
-	Skoarpuscle *state_at(SkoarString &k);
+	SkoarpusclePtr state_at(SkoarString &k);
 	
 	SkoarEvent *event(SkoarMinstrel *minstrel);
 	void set_args(SkoarMinstrel *minstrel, 
-		SkoarpuscleArgSpec *args_spec, ListOfSkoarpusclesPtr args);
+		shared_ptr<SkoarpuscleArgSpec> args_spec, ListOfSkoarpusclesPtr args);
 
 	void push_state();
 	void pop_state();
@@ -55,7 +55,7 @@ public:
 		ListOfSkoarpusclesPtr args);
 
 	void nav_loop(
-		SkoarNoad *dst, 
+		SkoarNoadPtr dst, 
 		SkoarProjection *projection, 
 		SkoarMinstrel *minstrel,
 		bool inlined);

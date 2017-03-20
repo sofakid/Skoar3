@@ -16,7 +16,7 @@ public:
 
 class SkoarpuscleSkoarpionSig : public Skoarpuscle {
 public:
-    SkoarpuscleSkoarpionSig();
+    SkoarpuscleSkoarpionSig(SkoarNoadPtr);
 };
 
 class SkoarpuscleArgExpr : public Skoarpuscle {

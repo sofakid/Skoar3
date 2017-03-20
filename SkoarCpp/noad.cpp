@@ -297,7 +297,7 @@ void SkoarNoad::inorder_from_here(list<int> &here, SpellOfNoads f) {
 	}
 }
 
-Skoarpuscle *SkoarNoad::next_skoarpuscle() {
+SkoarpusclePtr SkoarNoad::next_skoarpuscle() {
 	
 	if (skoarpuscle != nullptr) 
 		return skoarpuscle;
@@ -316,7 +316,7 @@ Skoarpuscle *SkoarNoad::next_skoarpuscle() {
 
 }
 
-SkoarToke *SkoarNoad::next_toke() {
+SkoarToke* SkoarNoad::next_toke() {
 	if (toke != nullptr)
 		return toke.get();
 

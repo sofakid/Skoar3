@@ -7,14 +7,14 @@ SkoarDic::SkoarDic() {
 	//not_found = nullptr;
 }
 
-Skoarpuscle* &SkoarDic::operator[](wstring *key) {
+SkoarpusclePtr &SkoarDic::operator[](wstring *key) {
 	if (key == nullptr)
 		throw SkoarError(L"Tried to use a null key on a SkoarDic.");
 
 	return table[*key];
 }
 
-Skoarpuscle* &SkoarDic::operator[](wstring key) {
+SkoarpusclePtr &SkoarDic::operator[](wstring key) {
 	return table[key];
 }
 

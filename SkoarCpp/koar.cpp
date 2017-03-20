@@ -20,12 +20,12 @@ SkoarKoar::SkoarKoar(SkoarString &nom) {
 // ---------------------
 // State and scope stuff
 // ---------------------
-void SkoarKoar::put(SkoarString k, Skoarpuscle *v) {
+void SkoarKoar::put(SkoarString k, SkoarpusclePtr v) {
 	(*stack->back())[k] = v;
 }
 
-Skoarpuscle *SkoarKoar::at(SkoarString &k) {
-	Skoarpuscle *out = nullptr;
+SkoarpusclePtr SkoarKoar::at(SkoarString &k) {
+	SkoarpusclePtr out = nullptr;
 
 	for (auto skrb = stack->rbegin(); skrb != stack->rend(); skrb++) {
 		out = (**skrb)[k];
@@ -37,12 +37,12 @@ Skoarpuscle *SkoarKoar::at(SkoarString &k) {
 	return out;
 }
 
-void SkoarKoar::state_put(SkoarString &k, Skoarpuscle *v) {
+void SkoarKoar::state_put(SkoarString &k, SkoarpusclePtr v) {
 	(*state_stack->back())[k] = v;
 }
 
-Skoarpuscle *SkoarKoar::state_at(SkoarString &k) {
-	Skoarpuscle *out = nullptr;
+SkoarpusclePtr SkoarKoar::state_at(SkoarString &k) {
+	SkoarpusclePtr out = nullptr;
 
 	for (auto skrb = stack->rbegin(); skrb != stack->rend(); skrb++) {
 		out = (**skrb)[k];
@@ -87,7 +87,7 @@ SkoarEvent *SkoarKoar::event(SkoarMinstrel *minstrel) {
 
 void SkoarKoar::set_args(
 	SkoarMinstrel *minstrel, 
-	SkoarpuscleArgSpec *args_spec, 
+    shared_ptr<SkoarpuscleArgSpec> args_spec,
 	ListOfSkoarpusclesPtr args) 
 {
 	size_t i = 0, n = 0;
@@ -110,7 +110,7 @@ void SkoarKoar::set_args(
 				vars[k] = *(arg_it++);
 			} else {
 				// this defaults to passing 0 when not enough args are sent.
-				vars[k] = new SkoarpuscleInt(0);
+				vars[k] = make_shared<SkoarpuscleInt>(0);
 			}
 		}
 }
@@ -142,7 +142,7 @@ void SkoarKoar::do_skoarpion(
 	list<SkoarString> &msg_arr,
 	ListOfSkoarpusclesPtr args) {
 	
-	SkoarNoad *subtree;
+	SkoarNoadPtr subtree;
 	SkoarProjection *projection = nullptr;
 	map<SkoarString, SkoarpuscleProjection*> projections;
 	SkoarString msg_name;
@@ -187,7 +187,7 @@ void SkoarKoar::do_skoarpion(
 }
 
 void SkoarKoar::nav_loop(
-	SkoarNoad *dst,
+	SkoarNoadPtr dst,
 	SkoarProjection *projection,
 	SkoarMinstrel *minstrel,
 	bool inlined) {

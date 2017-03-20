@@ -16,7 +16,7 @@ public:
 	Skoarpion(Skoar *skoar, SkoarNoadPtr node);
 
     SkoarString name;
-	SkoarpuscleArgSpec *args_spec;
+	shared_ptr<SkoarpuscleArgSpec> args_spec;
 
 	SkoarProjection *projection(SkoarString name);
 
@@ -25,7 +25,7 @@ public:
 class SkoarProjection {
 public:
 
-	SkoarNoad *performMsg(list<SkoarString> &msg_arr);
+	SkoarNoadPtr performMsg(list<SkoarString> &msg_arr);
 
-	list<int> *map_dst(SkoarNoad *dst);
+	list<int> *map_dst(SkoarNoadPtr dst);
 };

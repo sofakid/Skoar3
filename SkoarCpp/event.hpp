@@ -1,17 +1,18 @@
 #pragma once
 #include "skoarcery.hpp"
 #include "skoarpuscle_fwd.hpp"
+#include "spells.hpp"
 
 class SkoarDic {
 public:
-	map<wstring, Skoarpuscle*> table;
+	map<wstring, SkoarpusclePtr> table;
 
 	//Skoarpuscle *not_found;
 
 	SkoarDic();
 
-	Skoarpuscle* &SkoarDic::operator[](wstring *key);
-	Skoarpuscle* &SkoarDic::operator[](wstring key);
+	SkoarpusclePtr &SkoarDic::operator[](wstring *key);
+	SkoarpusclePtr &SkoarDic::operator[](wstring key);
 };
 
 class SkoarEvent : SkoarDic {

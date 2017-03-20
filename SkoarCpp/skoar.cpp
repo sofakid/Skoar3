@@ -11,10 +11,12 @@
 #include "spells.hpp"
 #include "logging.hpp"
 #include "styles.hpp"
+#include "toke_inspector.hpp"
 
 #include <ctime>
 
 #include "memories.hpp"
+
 
 // =====
 // Skoar
@@ -134,22 +136,11 @@ void Skoar::decorate() {
 
     auto f = [&](SkoarNoadPtr noad) {
         auto t = noad->toke.get();
-
-        noad->size = 0;
-        for (auto y : noad->children) {
-            //noad->skoarce += y->skoarce;
-            noad->size += y->size;
-        }
-
         if (t != nullptr) {
             inspector->decorate(t, noad);
         }
         else {
-            auto g = skoarmantics->table[noad->kind];
-
-            if (g) {
-                g(this, noad);
-            }
+            skoarmantics->decorate(this, noad);
         }
     };
 

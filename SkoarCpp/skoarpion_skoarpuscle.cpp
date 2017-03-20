@@ -34,7 +34,7 @@ void SkoarpuscleSkoarpion::on_enter_method(SkoarMinstrel *m) {
 }
 
 // --- SkoarpuscleSkoarpionSig ----------------------------------------------
-SkoarpuscleSkoarpionSig::SkoarpuscleSkoarpionSig() {
+SkoarpuscleSkoarpionSig::SkoarpuscleSkoarpionSig(SkoarNoadPtr noad) {
 
 }
 

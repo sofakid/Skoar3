@@ -8,24 +8,24 @@ class SkoarFairy {
 public:
 	SkoarString name;
 	SkoarMinstrel *minstrel;
-	Skoarpuscle *impression;
-	Skoarpuscle *noat;
+	SkoarpusclePtr impression;
+	SkoarpusclePtr noat;
 
 	ArcaneMagic magic;
 	list<ListOfSkoarpusclesPtr> listy_stack;
 	list<ArcaneMagic> magic_stack;
 
 	SkoarFairy(SkoarString nom, SkoarMinstrel *m);
-	Skoarpuscle *impress(Skoarpuscle *x);
+	SkoarpusclePtr impress(SkoarpusclePtr x);
 
 	void charge_arcane_magic(ArcaneMagic spell);
-	Skoarpuscle *cast_arcane_magic();
+	SkoarpusclePtr cast_arcane_magic();
 
 	ListOfSkoarpusclesPtr get_top_listy();
 	void next_listy();
 
 	void push();
-	Skoarpuscle *pop();
+	SkoarpusclePtr pop();
 
 };
 

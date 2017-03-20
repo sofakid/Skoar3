@@ -77,7 +77,7 @@ public:
 
 class SkoarpuscleFreq : public Skoarpuscle {
 public:
-    SkoarpuscleFreq(SkoarString &);
+    SkoarpuscleFreq(SkoarString);
 	bool isNoatworthy() override;
 	void *asNoat() override;
 };
@@ -245,12 +245,12 @@ public:
 class SkoarpuscleDeref : public Skoarpuscle {
 public:
 	list<SkoarString> msg_arr;
-	SkoarpuscleArgs * args;
+	shared_ptr<SkoarpuscleArgs> args;
 
 	SkoarpuscleDeref();
-	SkoarpuscleDeref(SkoarString msg_name, SkoarpuscleArgs *);
+	SkoarpuscleDeref(SkoarString msg_name, shared_ptr<SkoarpuscleArgs>);
 
-	Skoarpuscle *lookup(SkoarMinstrel* minstrel);
+	SkoarpusclePtr lookup(SkoarMinstrel* minstrel);
 };
 
 class SkoarpuscleConditional : public Skoarpuscle {
@@ -309,9 +309,10 @@ public:
 
 class SkoarpuscleMsg : public Skoarpuscle {
 public:
-	SkoarpuscleArgs *args;
+    shared_ptr<SkoarpuscleArgs> args;
+
 	SkoarpuscleMsg();
-	SkoarpuscleMsg(SkoarString v, SkoarpuscleArgs *a);
+	SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a);
 	//void *get_msg_arr(SkoarMinstrel *m);
 };
 

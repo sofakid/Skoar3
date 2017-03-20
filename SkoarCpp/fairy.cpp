@@ -10,11 +10,12 @@ SkoarFairy::SkoarFairy(SkoarString nom, SkoarMinstrel *m) :
 {
 }
 
-Skoarpuscle *SkoarFairy::impress(Skoarpuscle *x) {
+SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
 	//("$:" ++name++ ".impression: " ++x.asString).postln;
+    auto p = x.get();
 
-	if (typeid(x) == typeid(SkoarpuscleDeref*)) {
-		impression = static_cast<SkoarpuscleDeref*>(x)->lookup(minstrel);
+	if (typeid(p) == typeid(SkoarpuscleDeref*)) {
+		impression = static_cast<SkoarpuscleDeref*>(p)->lookup(minstrel);
 	};
 
 	if (impression->isNoatworthy() == true) {
@@ -31,7 +32,7 @@ void SkoarFairy::charge_arcane_magic(ArcaneMagic spell) {
 		//                "ARCANE-alpha".postln;
 		f();
 		//            "ARCANE-omega".postln;
-		Skoarpuscle *x = spell();
+		SkoarpusclePtr x = spell();
 		if (x != nullptr) {
 			impress(x);
 		}
@@ -39,7 +40,7 @@ void SkoarFairy::charge_arcane_magic(ArcaneMagic spell) {
 	};
 }
 
-Skoarpuscle *SkoarFairy::cast_arcane_magic() {
+SkoarpusclePtr SkoarFairy::cast_arcane_magic() {
 	magic();
 	magic = HarmlessMagic;
 	
@@ -70,7 +71,7 @@ void SkoarFairy::push() {
 	//"$.push;".postln;
 }
 
-Skoarpuscle *SkoarFairy::pop() {
+SkoarpusclePtr SkoarFairy::pop() {
 	if (magic_stack.empty()) {
 		throw SkoarError(L"Magic Stack Underflow");
 	}
@@ -81,7 +82,7 @@ Skoarpuscle *SkoarFairy::pop() {
 	auto listy = listy_stack.back();
 	listy_stack.pop_back();
 
-	impress(new SkoarpuscleList(listy));
+	impress(make_shared<SkoarpuscleList>(listy));
 
 	//"popped listy: ".post; impression.postln;
 
