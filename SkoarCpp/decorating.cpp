@@ -34,26 +34,31 @@ so children are processed first.
 
 Skoarmantics::Skoarmantics() : table({
 
+    // ported yes
     {ESkoarNoad::skoar, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(Skoarpion::new_from_skoar(skoar));
         noad->children.clear();
     }},
 
+    // ported yes
     {ESkoarNoad::skoarpion, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(Skoarpion::new_from_skoar_noad(skoar, noad));
         noad->children.clear();
     }},
 
+    // ported yes
     {ESkoarNoad::meditation, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleMeditation>(skoar, noad);
         noad->children.clear();
     }},
 
+    // ported yes
     {ESkoarNoad::conditional, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleConditional>(skoar, noad);
     }},
 
-    {ESkoarNoad::boolean_expr, SpellOfSkoarmantics {
+    // ported yes
+    {ESkoarNoad::boolean_expr, SpellOfSkoarmantics { 
         
         // we insert a node at the end of the boolean expression
         // so we can restore the impression
@@ -73,6 +78,7 @@ Skoarmantics::Skoarmantics() : table({
         
     }},
 
+    // ported yes
     {ESkoarNoad::boolean, SpellOfSkoarmantics {
         
         // we insert a node at the end of the expression
@@ -86,9 +92,7 @@ Skoarmantics::Skoarmantics() : table({
             auto l_value = m->fairy->l_value;
             auto imp = m->fairy->impression;
 
-            //("derp " ++ l_value.asString ++ " imp: " ++ imp.asString).postln;
-
-            if (x->evaluate(m, l_value, imp) == true)
+            if (x->evaluate(m, l_value, imp))
                 m->fairy->impress(make_shared<SkoarpuscleTrue>());
             else 
                 m->fairy->impress(make_shared<SkoarpuscleFalse>());
@@ -100,6 +104,7 @@ Skoarmantics::Skoarmantics() : table({
         
     }},
 
+    // ported yes
     {ESkoarNoad::regular_beat, SpellOfSkoarmantics {
         auto xp = noad->next_skoarpuscle();
 
@@ -112,6 +117,7 @@ Skoarmantics::Skoarmantics() : table({
         }
     }},
 
+    // ported yes
     {ESkoarNoad::exact_beat, SpellOfSkoarmantics {
         auto skoarpuscle = noad->next_skoarpuscle();
         auto end_noad = SkoarNoad::NewArtificial(L"exact_beat_end", noad);
@@ -122,6 +128,7 @@ Skoarmantics::Skoarmantics() : table({
         noad->add_noad(end_noad);
     }},
 
+    // ported yes
     {ESkoarNoad::exact_rest, SpellOfSkoarmantics {
         auto skoarpuscle = noad->next_skoarpuscle();
         auto end_noad = SkoarNoad::NewArtificial(L"exact_rest_end", noad);
@@ -132,49 +139,42 @@ Skoarmantics::Skoarmantics() : table({
         noad->add_noad(end_noad);
     }},
 
+    // ported yes
     {ESkoarNoad::loop, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleLoop>(skoar, noad);
         noad->children.clear();
     }},
 
+    // ported yes
     {ESkoarNoad::musical_keyword_misc, SpellOfSkoarmantics {
         noad->skoarpuscle = noad->next_skoarpuscle();
         noad->children.clear();
     }},
 
+    // ported yes
     {ESkoarNoad::cthulhu, SpellOfSkoarmantics {
         noad->on_enter = [&](SkoarMinstrelPtr m) {
             skoar->cthulhu(noad);
         };
     }},
 
+    // ported yes
     {ESkoarNoad::dal_goto, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleGoto>(noad);
     }},
 
+    // ported yes
     {ESkoarNoad::marker, SpellOfSkoarmantics {
-        /*
-        var x = noad.next_skoarpuscle;
-        noad.skoarpuscle = x;
-
-        if (x.isKindOf(SkoarpuscleBars)) {
-            x.noad = noad;
-            noad.children = [];
-        };
-        */
         auto x = noad->next_skoarpuscle();
+        noad->skoarpuscle = x;
 
-        if (x != nullptr) {
-            auto y = *x;
-            noad->on_enter = [&](SkoarMinstrelPtr m) {
-                y.on_enter(m);
-            };
-
-            if (typeid(y) == typeid(SkoarpuscleBars)) {
-                //y.noad = noad;
-                noad->children.clear();
-            }
+        if (typeid(*x) == typeid(SkoarpuscleBars)) {
+            //y.noad = noad;
+            auto y = dynamic_cast<SkoarpuscleBars&>(*x);
+            y.noad = noad;
+            noad->children.clear();
         }
+
     }},
 
     // deref*         : Deref MsgNameWithArgs listy_suffix
@@ -237,19 +237,23 @@ Skoarmantics::Skoarmantics() : table({
 
     }},
 
+    // ported yes
     {ESkoarNoad::listy, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleList>();
     }},
 
+    // ported yes
     {ESkoarNoad::arg_listy, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleArgList>(noad);
     }},
 
+    // ported yes
     {ESkoarNoad::arg_expr, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleArgExpr>();
         noad->children.clear();
     }},
 
+    // ported yes
     {ESkoarNoad::skrp_sig, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleSkoarpionSig>(noad);
     }},
@@ -323,16 +327,59 @@ Skoarmantics::Skoarmantics() : table({
     }},
 
     {ESkoarNoad::expr, SpellOfSkoarmantics {
-        // todo: compare
+        /*
         // we insert a node at the end of the expression
         // so we can impress the result
+        var end_noad = SkoarNoad(\expr_end, noad);
+		var child = noad.children[0].skoarpuscle;
+		var needs_compile = false;
 
-        auto end_noad = SkoarNoad::NewArtificial(L"expr_end", noad);
-        end_noad->on_enter = [&](SkoarMinstrelPtr m) {
-            m->fairy->cast_arcane_magic();
-        };
+		noad.collect_skoarpuscles.do {
+			| x |
+			if (x.isKindOf(SkoarpuscleUGen)) {
+				needs_compile = true;
+			};
+		};
+				
+		if (child.isKindOf(SkoarpuscleSymbolColon)) {
+			var settable = child;
+			noad.on_enter = {
+				| m, nav |
+				//("SYM_COL :: pushing noating").postln;
+				m.fairy.push_noating;
+			};
+			end_noad.on_enter = {
+				| m, nav |
+				var x;
+				var p;
 
-        noad->add_noad(end_noad);
+				//Skoar.ops.assign(m, x, settable);
+				x = m.fairy.cast_arcane_magic;
+						
+				p = SkoarpusclePair(settable, x);
+				//"SSC".postln;
+                m.fairy.impress(p);
+				if (needs_compile == true) {
+					m.fairy.compile_ugen;
+				};
+				//("SYM_COL :: popping noating").postln;
+				m.fairy.pop_noating;
+
+			};
+		} {
+			end_noad.on_enter = {
+				| m, nav |
+				//"EXPR ARCANE".postln;
+				m.fairy.cast_arcane_magic;
+				if (needs_compile == true) {
+					m.fairy.compile_ugen;
+				};
+			};
+		};
+                
+        noad.add_noad(end_noad);
+    },
+        */
 
     }},
 
@@ -403,6 +450,7 @@ Skoarmantics::Skoarmantics() : table({
             }
         }},
 
+        // ported yes
         {ESkoarNoad::math, SpellOfSkoarmantics {
             auto op = noad->children.front()->skoarpuscle;
 

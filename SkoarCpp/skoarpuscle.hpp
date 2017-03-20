@@ -151,10 +151,10 @@ public:
 };
 
 class SkoarpuscleBars : public Skoarpuscle {
-	SkoarNoadPtr noad;
 	bool pre_repeat;
 	bool post_repeat;
 public:
+    SkoarNoadPtr noad;
 	SkoarpuscleBars(SkoarToke *);
 };
 
