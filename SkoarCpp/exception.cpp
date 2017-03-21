@@ -1,10 +1,10 @@
 #include "exception.hpp"
 
 SkoarError::SkoarError() {
-	sWhat = wstring(L"Unknown");
+	sWhat = SkoarString(L"Unknown");
 }
 
-SkoarError::SkoarError(wstring s) :
+SkoarError::SkoarError(SkoarString s) :
     sWhat(s) {
 }
 
@@ -13,17 +13,17 @@ const wchar_t* SkoarError::wwhat() const throw() {
 }
 
 SkoarParseException::SkoarParseException() {
-	sWhat = wstring(L"Parse fail.");
+	sWhat = SkoarString(L"Parse fail.");
 }
 
 SkoarParseException::SkoarParseException(wstring s, SkoarNoadPtr noad) :
     SkoarError(s), noad(noad) {
 }
 
-SkoarAnyException::SkoarAnyException() : SkoarError() {
+SkoarpuscleException::SkoarpuscleException() : SkoarError() {
 }
 
-SkoarAnyException::SkoarAnyException(wstring s) :
+SkoarpuscleException::SkoarpuscleException(SkoarString s) :
     SkoarError(s) {
 }
 

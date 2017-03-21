@@ -14,45 +14,57 @@
 
 #include "Poco/DynamicAny.h"
 
+#include "exception.hpp"
+
 #define SKOARPUSCLE(x) Skoarpuscle::wrap<decltype(x)>(x)
 
 class Skoarpuscle {
 public:
-
     Poco::DynamicAny val;
-
-    bool impressionable;
     
-	Skoarpuscle();
+    Skoarpuscle() :
+        val(nullptr),
+        impressionable(true),
+        noatworthy(false),
+        county(false) {
+    }
+ 
     ~Skoarpuscle() {
     }
 
-    virtual void on_enter(SkoarMinstrelPtr) {
-    };
+    virtual void on_enter(SkoarMinstrelPtr) {};
 
-	virtual bool isNoatworthy() {
-		return false;
-	}
+	virtual bool isNoatworthy() { return noatworthy; }
+    bool isCounty() { return county; }
+
+    virtual bool asCount() {
+        throw SkoarpuscleException(L"asCount() called on noncounty skoarpuscle.");
+    }
+
 	virtual void *Skoarpuscle::asNoat() {
-		return nullptr;
+        throw SkoarpuscleException(L"asNoat() called on incompatible skoarpuscle.");
 	}
 
-	virtual SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
-		return nullptr;
+	virtual SkoarpusclePtr skoar_msg(SkoarpuscleMsg* msg, SkoarMinstrelPtr minstrel) {
+        throw SkoarpuscleException(L"skoar_msg() called on incompatible skoarpuscle.");
 	}
 	
-    virtual SkoarInt Skoarpuscle::flatten(SkoarMinstrelPtr m) { return 0; }
-    /*{
-        std::any* v = &val;
-        SkoarInt* vp = std::any_cast<SkoarInt>(v);
-        return (vp == nullptr) ? static_cast<SkoarInt>(0) : *vp;
-	}*/
-	
+    virtual Poco::DynamicAny Skoarpuscle::flatten(SkoarMinstrelPtr m) {
+        return val;
+    }
+   
 	virtual SkoarString Skoarpuscle::asString() {
 		return SkoarString(L"Skoarpuscle");
 	}
 
+    virtual bool canBeDivisor() {
+        return false;
+    }
 
+protected:
+    bool noatworthy;
+    bool county;
+    bool impressionable;
 };
 
 class SkoarpuscleUnknown : public Skoarpuscle {
@@ -60,6 +72,7 @@ public:
 	SkoarpuscleUnknown();
 };
 
+// Cats show up in unexpected places.
 class SkoarpuscleCat : public Skoarpuscle {
 public:
 	SkoarpuscleCat();
@@ -70,7 +83,6 @@ class SkoarpuscleTrue : public Skoarpuscle {
 public:
 	SkoarpuscleTrue();
     void on_enter(SkoarMinstrelPtr) override;
-
 };
 
 class SkoarpuscleFalse : public Skoarpuscle {
@@ -82,7 +94,6 @@ public:
 class SkoarpuscleFreq : public Skoarpuscle {
 public:
     SkoarpuscleFreq(SkoarString);
-	bool isNoatworthy() override;
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
 };
@@ -90,7 +101,6 @@ public:
 class SkoarpuscleInt : public Skoarpuscle {
 public:
 	SkoarpuscleInt(SkoarInt v);
-	bool isNoatworthy() override; 
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
 };
@@ -98,7 +108,6 @@ public:
 class SkoarpuscleFloat : public Skoarpuscle {
 public:
     SkoarpuscleFloat(SkoarFloat);
-	bool isNoatworthy() override;
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
 };
@@ -106,7 +115,6 @@ public:
 class SkoarpuscleNoat : public Skoarpuscle {
 public:
     SkoarpuscleNoat(SkoarString&);
-	bool isNoatworthy() override;
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
 };
@@ -114,7 +122,6 @@ public:
 class SkoarpuscleChoard : public Skoarpuscle {
 public:
     SkoarpuscleChoard(SkoarString&);
-	bool isNoatworthy() override;
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
 };
@@ -123,25 +130,24 @@ class SkoarpuscleString : public Skoarpuscle {
 public:
     SkoarpuscleString(SkoarString);
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 };
 
 class SkoarpuscleSymbol : public Skoarpuscle {
 public:
     SkoarpuscleSymbol(SkoarString);
-	SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 };
 
 class SkoarpuscleSymbolName : public Skoarpuscle {
 public:
     SkoarpuscleSymbolName(SkoarString);
-    void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleSymbolColon : public Skoarpuscle {
 public:
     SkoarpuscleSymbolColon(SkoarString);
-    void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleTimes : public Skoarpuscle {
@@ -231,7 +237,7 @@ public:
 
 	SkoarpuscleList(ListOfSkoarpusclesPtr listy);
 	
-	bool isNoatworthy() override;
+    bool isNoatworthy() override;
 	void *asNoat() override;
 	SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
     void on_enter(SkoarMinstrelPtr) override;
@@ -266,7 +272,15 @@ public:
 	SkoarpuscleDeref(SkoarString, SkoarpusclePtr);
 
 	SkoarpusclePtr lookup(SkoarMinstrelPtr);
+    
+    Poco::DynamicAny flatten(SkoarMinstrelPtr m) override;
+
+    void on_enter(SkoarMinstrelPtr) override;
     void on_exit(SkoarMinstrelPtr);
+    void do_deref(SkoarMinstrelPtr);
+    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
+
+
 };
 
 class SkoarpuscleConditional : public Skoarpuscle {
@@ -318,6 +332,7 @@ public:
 class SkoarpuscleArgs : public Skoarpuscle {
 public:
 	SkoarpuscleArgs();
+    void on_deref_exit(SkoarMinstrelPtr);
 };
 
 class SkoarpuscleLoopMsg : public Skoarpuscle {
@@ -335,7 +350,6 @@ public:
 	SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a);
 	//void *get_msg_arr(SkoarMinstrelPtr m);
 };
-
 
 class SkoarpuscleExprEnd : public Skoarpuscle {
 public:
@@ -356,6 +370,7 @@ public:
 
 class SkoarpuscleExpr : public Skoarpuscle {
 public:
+    SkoarpusclePtr result;
     SkoarpuscleExpr(SkoarNoadPtr);
 };
 

@@ -4,13 +4,17 @@
 
 class SkoarpuscleSkoarpion : public Skoarpuscle {
 public:
-    list<SkoarString> msg_arr;
+    SkoarpusclePtr msg_arr;
 
     SkoarpuscleSkoarpion(SkoarpionPtr);
     SkoarpuscleSkoarpion(SkoarpionPtr, SkoarNoadPtr);
 
+    SkoarpuscleSkoarpion(SkoarpusclePtr, SkoarpusclePtr);
+
+
     SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 
+    void run(SkoarMinstrelPtr m);
     void on_enter_method(SkoarMinstrelPtr m);
     void on_enter(SkoarMinstrelPtr) override;
 };

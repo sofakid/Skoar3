@@ -7,6 +7,8 @@
 #include "koar.hpp"
 #include "noad.hpp"
 #include "skoarpion.hpp"
+#include "skoarpion_skoarpuscle.hpp"
+
 
 
 // Skoarpuscles are the closest thing we have to "types".
@@ -14,10 +16,6 @@
 // They represent value types, as well as most things that
 // can be spoken of as things, like a statement, boolean expression, etc.
 //
-
-
-// --- Skoarpuscle ---------------------------------------------------------
-Skoarpuscle::Skoarpuscle() : val(nullptr) {}
 
 // --- SkoarpuscleUnknown ---------------------------------------------------------
 SkoarpuscleUnknown::SkoarpuscleUnknown() {}
@@ -28,98 +26,117 @@ SkoarpuscleCat::SkoarpuscleCat() {}
 void SkoarpuscleCat::on_enter(SkoarMinstrelPtr m) { m->fairy->impress(make_shared<SkoarpuscleCat>()); }
 
 // --- SkoarpuscleTrue ---------------------------------------------------------
-SkoarpuscleTrue::SkoarpuscleTrue() { val = true; }
+SkoarpuscleTrue::SkoarpuscleTrue() {
+    val = true;
+    impressionable = true;
+}
 
 void SkoarpuscleTrue::on_enter(SkoarMinstrelPtr m) { m->fairy->impress(make_shared<SkoarpuscleTrue>()); }
 
 // --- SkoarpuscleFalse ---------------------------------------------------------
-SkoarpuscleFalse::SkoarpuscleFalse() { val = false; }
+SkoarpuscleFalse::SkoarpuscleFalse() {
+    val = false;
+    impressionable = true;
+}
+
 
 void SkoarpuscleFalse::on_enter(SkoarMinstrelPtr m) { m->fairy->impress(make_shared<SkoarpuscleFalse>()); }
 
 // --- SkoarpuscleInt ---------------------------------------------------------
-SkoarpuscleInt::SkoarpuscleInt(SkoarInt v) { val = v; }
+SkoarpuscleInt::SkoarpuscleInt(SkoarInt v) {
+    val = v;
+    noatworthy = true;
+    impressionable = true;
+}
 
 void SkoarpuscleInt::on_enter(SkoarMinstrelPtr m) { m->fairy->impress(make_shared<SkoarpuscleInt>(val.extract<SkoarInt>())); }
 
-bool SkoarpuscleInt::isNoatworthy() { return true; }
 void *SkoarpuscleInt::asNoat() { return nullptr; }
 
 
 // --- SkoarpuscleFloat ---------------------------------------------------------
-SkoarpuscleFloat::SkoarpuscleFloat(SkoarFloat v) { val = v; }
+SkoarpuscleFloat::SkoarpuscleFloat(SkoarFloat v) { 
+    val = v; 
+    noatworthy = true;
+    impressionable = true;
+}
 
 void SkoarpuscleFloat::on_enter(SkoarMinstrelPtr m) { m->fairy->impress(make_shared<SkoarpuscleFloat>(val.extract<SkoarFloat>())); }
-
-bool SkoarpuscleFloat::isNoatworthy() { return true; }
 void *SkoarpuscleFloat::asNoat() { return nullptr; }
 
-//double SkoarpuscleFloat::flatten(SkoarMinstrelPtr m) {
-//	return val.Float;
-//}
-
-//void SkoarpuscleFloat::
-
-
-
 // --- SkoarpuscleFreq ---------------------------------------------------------
-SkoarpuscleFreq::SkoarpuscleFreq(SkoarString lexeme) { val = lexeme; } // todo chop off Hz
+SkoarpuscleFreq::SkoarpuscleFreq(SkoarString lexeme) { 
+    val = stod(lexeme.substr(0,lexeme.length() - 3));
+    noatworthy = true;
+    impressionable = true;
+} 
 
 void SkoarpuscleFreq::on_enter(SkoarMinstrelPtr m) { m->fairy->impress(make_shared<SkoarpuscleFreq>(val.extract<SkoarString>())); }
 
-bool SkoarpuscleFreq::isNoatworthy() { return false; } // todo
 void *SkoarpuscleFreq::asNoat() { return nullptr;
 	//return new SkoarNoat_Freq(val.asFloat);
 }
 
 // --- SkoarpuscleNoat ---------------------------------------------------------
-SkoarpuscleNoat::SkoarpuscleNoat(SkoarString&) {}
+SkoarpuscleNoat::SkoarpuscleNoat(SkoarString&) {
+    noatworthy = true;
+    impressionable = true;
+}
 	
-bool SkoarpuscleNoat::isNoatworthy() { return true; }
 void *SkoarpuscleNoat::asNoat() { return nullptr; }
 
 // --- SkoarpuscleChoard ---------------------------------------------------------
 SkoarpuscleChoard::SkoarpuscleChoard(SkoarString&) {
+    noatworthy = true;
+    impressionable = true;
 }
 
-bool SkoarpuscleChoard::isNoatworthy() { return true; }
 void *SkoarpuscleChoard::asNoat() { return nullptr; }
 		
 // --- SkoarpuscleString ---------------------------------------------------------
-SkoarpuscleString::SkoarpuscleString(SkoarString s) { val = s; }
+SkoarpuscleString::SkoarpuscleString(SkoarString s) {
+    val = s;
+    impressionable = true;
+}
 
 void SkoarpuscleString::on_enter(SkoarMinstrelPtr m) { m->fairy->impress(make_shared<SkoarpuscleString>(val.extract<SkoarString>())); }
+SkoarpusclePtr SkoarpuscleString::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
+    auto sel = msg->val.extract<SkoarString>();
+
+    //if (sel == L"sample") {
+    //    return make_shared<SkoarpuscleSample>(val.extract<SkoarString>());
+    //}
+    return make_shared<SkoarpuscleCat>();
+}
 
 // --- SkoarpuscleSymbolName ---------------------------------------------------------
-SkoarpuscleSymbolName::SkoarpuscleSymbolName(SkoarString s) { val = s; }
-
-void SkoarpuscleSymbolName::on_enter(SkoarMinstrelPtr m) { m->fairy->impress(make_shared<SkoarpuscleSymbolName>(val.extract<SkoarString>())); }
+SkoarpuscleSymbolName::SkoarpuscleSymbolName(SkoarString s) {
+    val = s;
+}
 
 // --- SkoarpuscleSymbol ---------------------------------------------------------
-SkoarpuscleSymbol::SkoarpuscleSymbol(SkoarString s) { val = s; }
+SkoarpuscleSymbol::SkoarpuscleSymbol(SkoarString s) { 
+    val = s; 
+    impressionable = true;
+}
 
 void SkoarpuscleSymbol::on_enter(SkoarMinstrelPtr m) { m->fairy->impress(make_shared<SkoarpuscleSymbol>(val.extract<SkoarString>())); }
 
 SkoarpusclePtr SkoarpuscleSymbol::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
-	//auto o = msg.get_msg_arr(minstrel);
-	//auto ret = val.performMsg(o);
+    
+    /* this was how we called underlying SC class methods.. 
+       don't know what I want to do with this anymore. */
 
-	//return new Skoarpuscle.wrap(ret);
-	return nullptr;
+    return make_shared<SkoarpuscleCat>();
 }
 
 // --- SkoarpuscleSymbolColon ---------------------------------------------------------
 SkoarpuscleSymbolColon::SkoarpuscleSymbolColon(SkoarString lex) {
-
+    impressionable = true;
     // lexeme was matched by: [a-zA-Z0-9_][a-zA-Z0-9_]*[ \t]*:(?![:|}])
-    
-    //var regex = "[a-zA-Z0-9_][a-zA-Z0-9_]*";
-    //val = lex.findRegexpAt(regex, 0)[0].asSymbol;
-
-    //("SSC :: init :: lex:" ++ lex ++ " val:" ++ val.asString).postln; 
-
-    //impressionable = true;
-
+    // ... so we'll remove anything that's not [a-zA-Z0-9_]
+    std::wregex expr(L"([^a-zA-Z0-9_]+)"); 
+    val = std::regex_replace(lex, expr, L"");
 }
 
 // --- SkoarpuscleDeref ---------------------------------------------------------
@@ -130,55 +147,123 @@ SkoarpuscleDeref::SkoarpuscleDeref(SkoarString v, SkoarpusclePtr a) {
 
 SkoarpusclePtr SkoarpuscleDeref::lookup(SkoarMinstrelPtr minstrel) {
 	//return minstrel->koar[val.extract<SkoarString>];
-    return nullptr;
+    return make_shared<SkoarpuscleCat>();
+}
+
+Poco::DynamicAny SkoarpuscleDeref::flatten(SkoarMinstrelPtr m) {
+    return lookup(m)->flatten(m);
 }
 
 void SkoarpuscleDeref::on_exit(SkoarMinstrelPtr m) {
-
+    if (args != nullptr) {
+        auto o = dynamic_cast<SkoarpuscleArgs&>(*args);
+        o.on_deref_exit(m);
+    }
+    do_deref(m);
 }
 
-/*
-SkoarpuscleDeref::flatten(m) {
-	return this.lookup(m);
+void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
+    auto x = lookup(m);
+
+    if (x == nullptr) {
+        m->fairy->impress(make_shared<SkoarpuscleCat>());
+        return;
+    }
+
+    if (typeid(*x) == typeid(SkoarpuscleSkoarpion&)) {
+        auto skrpn = dynamic_cast<SkoarpuscleSkoarpion&>(*x);
+        skrpn.run(m);
+    } 
+    
+    else if (typeid(*x) == typeid(SkoarpuscleExpr&)) {
+        auto expr = dynamic_cast<SkoarpuscleExpr&>(*x);
+        auto result = expr.result;
+
+        m->fairy->push_noating();
+        if (result != nullptr) {
+            m->fairy->impress(result);
+        }
+        // not sure about this.. it seems to go nowhere..
+        //else {
+        //    expr.flatten(m);
+        //}
+        m->fairy->pop_noating();
+
+    }
+    // todo: uncomment when books exist
+    /*
+    else if (typeid(*x) == typeid(SkoarpuscleBook&)) {
+        auto book = dynamic_cast<SkoarpuscleBook&>(*x);
+        auto args = m->fairy->impression;
+
+        if (typeid(*args) == typeid(SkoarpuscleList&)) {
+            auto listy = dynamic_cast<SkoarpuscleList&>(*args);
+            auto entry = listy.val.extract<ListOfSkoarpuscles>.front();
+
+            if (typeid(*entry) == typeid(SkoarpusclePair)) {
+                entry = entry->flatten(m).extract<SkoarpusclePtr>();
+            }
+
+            if (typeid(*entry) == typeid(SkoarpuscleSymbol)) {
+                auto v = book.lookup(entry->val.extract<SkoarString>());
+                m->fairy->impress(v);
+            }
+        }
+    }*/
+    else {
+        m->fairy->impress(x);
+    }
 }
+
 
 SkoarpusclePtr SkoarpuscleDeref::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
 
 	auto ret = val;
-	auto x = this->lookup(minstrel);
+	auto x = lookup(minstrel);
 
-	//"deref:skoar_msg: SYMBOL LOOKEDUP : ".post; val.post; " ".post; x.postln;
-	//msg_arr = msg->get_msg_arr(minstrel);
+    // we don't recognise that name.
+    if (x == nullptr) {
+        return make_shared<SkoarpuscleCat>();
+    }
 
-	if (typeid(x) == typeid(SkoarpuscleSkoarpion*)) {
-		return this;
+	if (typeid(*x) == typeid(SkoarpuscleSkoarpion)) {
+		return make_shared<SkoarpuscleSkoarpion>(x, args);
 	};
 
-	// we don't recognise that name, did they mean a SuperCollider class?
-	if (x == nullptr) {
-		//x = val.asClass;
-	};
-
-	if (x != nullptr) {
-		if (typeid(x) == typeid(SkoarpuscleString*)) {
-			//x = x.val;
-		};
-		//ret = x.performMsg(msg_arr);
-	};
-
-	return nullptr;
-	//return Skoarpuscle.wrap(ret);
+	return x;    
 }
-*/
+
 
 // --- SkoarpuscleMathOp ---------------------------------------------------------
 SkoarpuscleMathOp::SkoarpuscleMathOp(SkoarToke *toke) {
-	val = &toke->lexeme;
+	auto s = toke->lexeme;
+    val = s;
+    
+    if (s == L"+") {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            // Skoar::ops.add(m, a, b);
+        };
+    } 
+    else if (s == L"*") {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            // Skoar::ops.multiply(m, a, b);
+        };
+    }
+    else if(s == L"/") {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            // Skoar::ops.divide(m, a, b);
+        };
+    }
+    else if (s == L"-") {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            // Skoar::ops.sub(m, a, b);
+        };
+    }
 }
 
 void SkoarpuscleMathOp::calculate(SkoarMinstrelPtr m, SkoarpusclePtr left, SkoarpusclePtr right) {
 	// the result is impressed by the operation
-	//f(m, left, right);
+	f(m, left, right);
 }
 
 
@@ -186,7 +271,7 @@ void SkoarpuscleMathOp::calculate(SkoarMinstrelPtr m, SkoarpusclePtr left, Skoar
 SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarNoadPtr noad, SkoarToke *toke) {
 	val = &toke->lexeme;
 
-    
+// todo: use the ops table.
 //#define InsaneMagic [=](Poco::DynamicAny a, Poco::DynamicAny b)
 #define InsaneMagic [=](int a, int b)
 
@@ -226,8 +311,9 @@ SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarNoadPtr noad, SkoarToke *toke) {
 
 bool SkoarpuscleBooleanOp::compare(SkoarpusclePtr a, SkoarpusclePtr b, SkoarMinstrelPtr m) {
 	
-    auto x = a->flatten(m);
-    auto y = b->flatten(m);
+    // todo: when using ops table, don't do these two lines
+    auto x = a->flatten(m).extract<SkoarInt>();
+    auto y = b->flatten(m).extract<SkoarInt>();
 
     return f(x, y);
 }
@@ -248,10 +334,17 @@ void SkoarpuscleBoolean::on_enter(SkoarMinstrelPtr m) {
 }
 
 bool SkoarpuscleBoolean::evaluate(SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-	return false;
-	//return op->compare(a, b, m);
+    auto o = dynamic_cast<SkoarpuscleBooleanOp&>(*op);
+    return o.compare(a, b, m);
 }
 
+// ----------------------------------------------
+// ----------------------------------------------
+// ----------------------------------------------
+// porting here
+// ----------------------------------------------
+// ----------------------------------------------
+// ----------------------------------------------
 
 
 // --- SkoarpuscleConditional ---------------------------------------------------------
@@ -357,6 +450,7 @@ void SkoarpuscleListEnd::on_enter(SkoarMinstrelPtr m) {
 SkoarpuscleList::SkoarpuscleList() { 
     val = make_shared<ListOfSkoarpuscles>();
     noaty = true;
+    impressionable = true;
 }
 SkoarpuscleList::SkoarpuscleList(ListOfSkoarpusclesPtr x) { 
     val = x; 
@@ -633,5 +727,7 @@ SkoarpusclePair::SkoarpusclePair(SkoarpusclePtr k, SkoarpusclePtr v) {}
 
 
 // --- SkoarpuscleExpr ---------------------------------------------------------
-SkoarpuscleExpr::SkoarpuscleExpr(SkoarNoadPtr noad) {}
+SkoarpuscleExpr::SkoarpuscleExpr(SkoarNoadPtr noad) {
+    result = nullptr;
+}
 

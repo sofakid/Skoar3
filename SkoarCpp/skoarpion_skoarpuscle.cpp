@@ -10,8 +10,16 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s, SkoarNoadPtr) {
     val = s;
 }
 
+SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpusclePtr s, SkoarpusclePtr args) {
+    val = s->val;
+    msg_arr = args;
+}
 void SkoarpuscleSkoarpion::on_enter(SkoarMinstrelPtr m) {
     on_enter_method(m);
+}
+
+void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
+    
 }
 
 
@@ -27,9 +35,9 @@ void SkoarpuscleSkoarpion::on_enter_method(SkoarMinstrelPtr m) {
         //m->koar[name] = this;
     }
 
-    if (msg_arr.empty() == false) {
+    //if (msg_arr.empty() == false) {
         //m->koar.do_skoarpion(skrp, m, msg_arr, nullptr);
-    }
+    //}
 }
 
 // --- SkoarpuscleSkoarpionSig ----------------------------------------------

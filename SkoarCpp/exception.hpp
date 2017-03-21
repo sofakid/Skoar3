@@ -6,10 +6,10 @@
 class SkoarError : public exception
 {
 public:
-	std::wstring sWhat;
+    SkoarString sWhat;
 
 	SkoarError();
-	SkoarError(std::wstring s);
+	SkoarError(SkoarString s);
 	virtual const wchar_t* wwhat() const throw();
 };
 
@@ -18,13 +18,12 @@ public:
     SkoarNoadPtr noad;
 
 	SkoarParseException();
-	SkoarParseException(wstring s, SkoarNoadPtr noad);
+	SkoarParseException(SkoarString s, SkoarNoadPtr noad);
 };
 
-class SkoarAnyException : public SkoarError {
+class SkoarpuscleException : public SkoarError {
 public:
-    SkoarNoadPtr noad;
-
-    SkoarAnyException();
-    SkoarAnyException(wstring s);
+    
+    SkoarpuscleException();
+    SkoarpuscleException(SkoarString s);
 };
