@@ -37,6 +37,7 @@ class SkoarpuscleLoopMsg;
 
 class SkoarpuscleMsg;
 class SkoarpuscleMsgName;
+class SkoarpuscleMsgNameWithArgs;
 
 class SkoarpuscleList;
 class SkoarpuscleListSep;

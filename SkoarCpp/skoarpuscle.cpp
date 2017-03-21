@@ -123,15 +123,20 @@ SkoarpuscleSymbolColon::SkoarpuscleSymbolColon(SkoarString lex) {
 }
 
 // --- SkoarpuscleDeref ---------------------------------------------------------
-SkoarpuscleDeref::SkoarpuscleDeref(SkoarString v, shared_ptr<SkoarpuscleArgs> a) {
+SkoarpuscleDeref::SkoarpuscleDeref(SkoarString v, SkoarpusclePtr a) {
 	val = v;
-	args = a;
+	args = a; // is actually shared_ptr<SkoarpuscleArgs>
 }
 
 SkoarpusclePtr SkoarpuscleDeref::lookup(SkoarMinstrelPtr minstrel) {
 	//return minstrel->koar[val.extract<SkoarString>];
     return nullptr;
 }
+
+void SkoarpuscleDeref::on_exit(SkoarMinstrelPtr m) {
+
+}
+
 /*
 SkoarpuscleDeref::flatten(m) {
 	return this.lookup(m);
@@ -312,7 +317,7 @@ SkoarpuscleLoop::SkoarpuscleLoop(Skoar *skoar, SkoarNoadPtr noad) {
 
 // when we send a loop as a message, the receiver
 // goes into _each_ and _this_ becomes the new receiver.
-SkoarpusclePtr SkoarpuscleLoop::foreach(ListOfSkoarpusclesPtr listy) {
+SkoarpusclePtr SkoarpuscleLoop::foreach(SkoarpusclePtr listy) {
 	//each = val.List;
 	//return this;
     return nullptr;
@@ -321,8 +326,8 @@ SkoarpusclePtr SkoarpuscleLoop::foreach(ListOfSkoarpusclesPtr listy) {
 
 // --- SkoarpuscleLoopMsg ---------------------------------------------------------
 SkoarpuscleLoopMsg::SkoarpuscleLoopMsg() {}
-SkoarpuscleLoopMsg::SkoarpuscleLoopMsg(SkoarString s) {
-	val = s;
+SkoarpuscleLoopMsg::SkoarpuscleLoopMsg(SkoarpusclePtr msg) {
+	val = msg;
 }
 
 
@@ -444,6 +449,8 @@ SkoarpuscleMsg::SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a) {
 // --- SkoarpuscleMsgName ---------------------------------------------------------
 SkoarpuscleMsgName::SkoarpuscleMsgName(SkoarString s) { val = s; }
 
+// --- SkoarpuscleMsgNameWithArgs ---------------------------------------------------------
+SkoarpuscleMsgNameWithArgs::SkoarpuscleMsgNameWithArgs(SkoarString s) { val = s; }
 
 // -----------------------------
 // musical keywords skoarpuscles

@@ -209,7 +209,11 @@ public:
 class SkoarpuscleMsgName : public Skoarpuscle {
 public:
     SkoarpuscleMsgName(SkoarString);
+};
 
+class SkoarpuscleMsgNameWithArgs : public Skoarpuscle {
+public:
+    SkoarpuscleMsgNameWithArgs(SkoarString);
 };
 
 class SkoarpuscleMathOp : public Skoarpuscle {
@@ -255,12 +259,13 @@ public:
 class SkoarpuscleDeref : public Skoarpuscle {
 public:
 	list<SkoarString> msg_arr;
-	shared_ptr<SkoarpuscleArgs> args;
+    SkoarpusclePtr args; // is actually shared_ptr<SkoarpuscleArgs> args;
 
 	SkoarpuscleDeref();
-	SkoarpuscleDeref(SkoarString, shared_ptr<SkoarpuscleArgs>);
+	SkoarpuscleDeref(SkoarString, SkoarpusclePtr);
 
 	SkoarpusclePtr lookup(SkoarMinstrelPtr);
+    void on_exit(SkoarMinstrelPtr);
 };
 
 class SkoarpuscleConditional : public Skoarpuscle {
@@ -298,7 +303,7 @@ public:
 
 	SkoarpusclePtr lookup(SkoarMinstrel* minstrel);
 
-	SkoarpusclePtr foreach(ListOfSkoarpusclesPtr listy);
+	SkoarpusclePtr foreach(SkoarpusclePtr listy);
 };
 
 class SkoarpuscleGoto : public Skoarpuscle {
@@ -317,7 +322,7 @@ public:
 class SkoarpuscleLoopMsg : public Skoarpuscle {
 public:
 	SkoarpuscleLoopMsg();
-	SkoarpuscleLoopMsg(SkoarString);
+	SkoarpuscleLoopMsg(SkoarpusclePtr);
 };
 
 class SkoarpuscleMsg : public Skoarpuscle {
