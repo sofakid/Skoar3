@@ -268,7 +268,6 @@ public:
 	list<SkoarString> msg_arr;
     SkoarpusclePtr args; // is actually shared_ptr<SkoarpuscleArgs> args;
 
-	SkoarpuscleDeref();
 	SkoarpuscleDeref(SkoarString, SkoarpusclePtr);
 
 	SkoarpusclePtr lookup(SkoarMinstrelPtr);
@@ -285,12 +284,11 @@ public:
 
 class SkoarpuscleConditional : public Skoarpuscle {
 public:
-	ListOfSkoarpusclesPtr ifs;
+    list<tuple<SkoarpionPtr, SkoarpionPtr, SkoarpionPtr>> ifs;
 
-	SkoarpuscleConditional();
 	SkoarpuscleConditional(Skoar*, SkoarNoadPtr);
+    void on_enter(SkoarMinstrelPtr) override;
 
-	
 };
 
 class SkoarpuscleBoolean : public Skoarpuscle {
@@ -332,6 +330,7 @@ public:
 class SkoarpuscleArgs : public Skoarpuscle {
 public:
 	SkoarpuscleArgs();
+    void on_enter(SkoarMinstrelPtr) override;
     void on_deref_exit(SkoarMinstrelPtr);
 };
 

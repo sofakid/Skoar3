@@ -6,17 +6,22 @@
 #include "skoar.hpp"
 
 // --- Skoarpion ------------------------------------------------
-SkoarpionPtr Skoarpion::new_from_skoar(Skoar *skoar) {
+SkoarpionPtr Skoarpion::new_from_skoar(Skoar* skoar) {
 	return nullptr;
 }
 
-SkoarpionPtr Skoarpion::new_from_skoar_noad(Skoar *skoar, SkoarNoadPtr noad) {
+SkoarpionPtr Skoarpion::new_from_skoar_noad(Skoar* skoar, SkoarNoadPtr noad) {
+    return make_shared<Skoarpion>(skoar, noad);
+}
+
+SkoarpionPtr Skoarpion::NewFromSubtree(Skoar* skoar, SkoarNoadPtr noad) {
     return make_shared<Skoarpion>(skoar, noad);
 }
 
 
 Skoarpion::Skoarpion(Skoar *skoar, SkoarNoadPtr node) {
 }
+
 
 
 // --- SkoarProjection ------------------------------------------------

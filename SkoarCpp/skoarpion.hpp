@@ -14,6 +14,8 @@ public:
 	static SkoarpionPtr new_from_skoar(Skoar *skoar);
     static SkoarpionPtr new_from_skoar_noad(Skoar *skoar, SkoarNoadPtr noad);
 
+    static SkoarpionPtr NewFromSubtree(Skoar*, SkoarNoadPtr);
+
 	Skoarpion(Skoar *skoar, SkoarNoadPtr node);
 
     SkoarString name;

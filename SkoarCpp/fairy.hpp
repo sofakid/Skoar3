@@ -10,6 +10,7 @@ public:
 	SkoarMinstrelPtr minstrel;
     SkoarpusclePtr noat;
     SkoarpusclePtr impression;
+    SkoarpusclePtr boolean_impression;
     SkoarpusclePtr l_value;
     
 	SkoarFairy(SkoarString, SkoarMinstrelPtr);
@@ -70,7 +71,7 @@ private:
     ListOfSkoarpuscles impression_stack;
     
     ListOfSkoarpuscles boolean_stack;
-    SkoarpusclePtr boolean_impression;
+    
 
     list<map<SkoarNoadPtr, SkoarInt>> times_seen_stack;
     map<SkoarNoadPtr, SkoarInt> times_seen;

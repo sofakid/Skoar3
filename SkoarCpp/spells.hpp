@@ -34,7 +34,6 @@ typedef shared_ptr<ListOfSkoarpions> ListOfSkoarpionsPtr;
 typedef list<SkoarProjectionPtr> ListOfSkoarProjections;
 typedef shared_ptr<ListOfSkoarProjections> ListOfSkoarProjectionsPtr;
 
-
 typedef wstring SkoarString;
 
 typedef function<void(SkoarMinstrelPtr)> SpellOfMinstrels;

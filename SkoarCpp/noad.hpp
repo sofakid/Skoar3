@@ -112,16 +112,11 @@ public:
 	// searching the tree
 	// ------------------
 
-	// desires - array of names of noads as symbol, or SkoarToke implementation classes
-	// writer - a function that will do something with the matches
-	/*match{
-	| desires, writer |
+    static list<SkoarNoadPtr> collect(SkoarNoadPtr, list<ESkoarNoad::Kind>&);
+    static list<SkoarNoadPtr> collect(SkoarNoadPtr, list<ESkoarToke::Kind>&);
+    static void match(SkoarNoadPtr, list<ESkoarNoad::Kind>&, SpellOfNoadPtrs);
+    static void match(SkoarNoadPtr, list<ESkoarToke::Kind>&, SpellOfNoadPtrs);
 
-
-	collect{
-	| desires |
-
-	*/
     ListOfSkoarpusclesPtr collect_skoarpuscles(int = 0);
 
     friend std::wostream & operator<<(wostream &out, SkoarNoad &noad) {

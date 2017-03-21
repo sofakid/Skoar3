@@ -346,42 +346,46 @@ void SkoarNoad::enter_noad(SkoarMinstrelPtr minstrel) {
 	}
 }
 
-/*
+
 // ------------------
 // searching the tree
 // ------------------
 
-// desires - array of names of noads as symbol, or SkoarToke implementation classes
-// writer - a function that will do something with the matches
-match{
-| desires, writer |
+list<SkoarNoadPtr> SkoarNoad::collect(SkoarNoadPtr p, list<ESkoarNoad::Kind>& desires) {
+    list<SkoarNoadPtr> results;
 
-desires.do {
-| item |
+    SkoarNoad::depth_visit(p, [&](SkoarNoadPtr x) {
+        SkoarNoad::match(x, desires, [&](SkoarNoadPtr y) {
+            results.push_back(y);
+        });
+    });
 
-if (item == name) {
-writer.(this);
-};
-};
+    return results;
 }
 
-collect{
-| desires |
+list<SkoarNoadPtr> SkoarNoad::collect(SkoarNoadPtr p, list<ESkoarToke::Kind>& desires) {
+    list<SkoarNoadPtr> results;
+    
+    SkoarNoad::depth_visit(p, [&](SkoarNoadPtr x) {
+        SkoarNoad::match(x, desires, [&](SkoarNoadPtr y) {
+            results.push_back(y);
+        });
+    });
 
-var results = List.new;
-
-this.depth_visit({
-| x |
-x.match(desires, {
-| y |
-results.add(y);
-});
-});
-
-^results.asArray;
+    return results;
 }
 
-*/
+void SkoarNoad::match(SkoarNoadPtr p, list<ESkoarNoad::Kind>& desires, SpellOfNoadPtrs writer) {
+    for (auto x : desires)
+        if (p->kind == x)
+            writer(p);
+}
+
+void SkoarNoad::match(SkoarNoadPtr p, list<ESkoarToke::Kind>& desires, SpellOfNoadPtrs writer) {
+    for (auto x : desires)
+        if (p->kind == x)
+            writer(p);
+}
 
 ListOfSkoarpusclesPtr SkoarNoad::collect_skoarpuscles(int j) {
     ListOfSkoarpusclesPtr results = make_shared<ListOfSkoarpuscles>();

@@ -154,6 +154,13 @@ Poco::DynamicAny SkoarpuscleDeref::flatten(SkoarMinstrelPtr m) {
     return lookup(m)->flatten(m);
 }
 
+void SkoarpuscleDeref::on_enter(SkoarMinstrelPtr m) {
+    if (args != nullptr) {
+        auto o = dynamic_cast<SkoarpuscleArgs&>(*args);
+        o.on_enter(m);
+    }
+}
+
 void SkoarpuscleDeref::on_exit(SkoarMinstrelPtr m) {
     if (args != nullptr) {
         auto o = dynamic_cast<SkoarpuscleArgs&>(*args);
@@ -338,6 +345,68 @@ bool SkoarpuscleBoolean::evaluate(SkoarMinstrelPtr m, SkoarpusclePtr a, Skoarpus
     return o.compare(a, b, m);
 }
 
+// --- SkoarpuscleConditional ---------------------------------------------------------
+SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) {
+
+    list<ESkoarNoad::Kind> desires = { ESkoarNoad::cond_if };
+
+    for (auto x : SkoarNoad::collect(noad, desires)) {
+        SkoarpionPtr condition;
+        SkoarpionPtr if_body;
+        SkoarpionPtr else_body;
+
+        auto boolean_expr = SkoarNoad::NewArtificial(L"cond_cond", nullptr);
+
+        auto child = x->children.cbegin();
+        auto condition_skoarpuscle = (*child)->next_skoarpuscle();
+
+        boolean_expr->add_noad(*child);
+
+        condition = Skoarpion::NewFromSubtree(skoar, boolean_expr);
+
+        ++child;                   // children[1]
+        auto if_noad = *(++child); // children[2]
+
+        if_body = Skoarpion::NewFromSubtree(skoar, if_noad);
+
+        if (x->children.size() >= 4) {
+            ++child;                     // children[3]
+            auto else_noad = *(++child); // children[4]
+            else_body = Skoarpion::NewFromSubtree(skoar, else_noad);
+        }
+        else {
+            else_body = nullptr;
+        }
+
+        ifs.push_back(make_tuple(condition, if_body, else_body));
+
+    }
+}
+	
+void SkoarpuscleConditional::on_enter(SkoarMinstrelPtr m) {
+	for (auto x : ifs) {
+		auto condition = get<0>(x);
+		auto if_body   = get<1>(x);
+		auto else_body = get<2>(x);
+
+        m->fairy->push_noating();
+        //m->koar->do_skoarpion(condition, m, nav, L"inline", nullptr);
+        m->fairy->pop_noating();
+
+        auto impression = m->fairy->boolean_impression;
+
+        bool imp = impression->val;
+
+        if (imp) {
+            //m->koar->do_skoarpion(if_body, m, ["inline"], nullptr);
+        }
+        else if (else_body != nullptr) {
+            //m->koar->do_skoarpion(else_body, m, ["inline"], nullptr);
+        }
+	}
+}
+
+
 // ----------------------------------------------
 // ----------------------------------------------
 // ----------------------------------------------
@@ -346,42 +415,6 @@ bool SkoarpuscleBoolean::evaluate(SkoarMinstrelPtr m, SkoarpusclePtr a, Skoarpus
 // ----------------------------------------------
 // ----------------------------------------------
 
-
-// --- SkoarpuscleConditional ---------------------------------------------------------
-SkoarpuscleConditional::SkoarpuscleConditional() {}
-SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) {
-
-    ifs = make_shared<ListOfSkoarpuscles>();
-	/*
-	for (auto x : noad->collect("cond_if")) {
-		auto condition = x->children.front()->next_skoarpuscle();
-		SkoarpionPtr if_body;
-		SkoarpionPtr else_body;
-
-		if_body = Skoarpion::new_from_subtree(skoar, x.children[2]);
-
-		else_body = x.children[4];
-		if (else_body != nullptr) {
-			else_body = Skoarpion::new_from_subtree(skoar, else_body);
-		};
-
-		ifs.emplace_back([condition, if_body, else_body]);
-	};
-	*/
-	//on_enter = [this](SkoarMinstrelPtr m) {
-
-		/*for (auto x : *this->ifs) {
-			auto c = x[0];
-			auto i = x[1];
-			auto e = x[2];
-
-			m->koar->do_skoarpion(
-				(c->evaluate(m) ? i : e),
-				m, ["inline"], nullptr
-				);
-		}*/
-	//};
-}
 
 
 // --- SkoarpuscleTimes ---------------------------------------------------------
