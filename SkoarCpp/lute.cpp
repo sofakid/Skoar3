@@ -1,13 +1,15 @@
 #include "lute.hpp"
 
 // --- SkoarpuscleLute ---------------------------------------------
-SkoarpuscleLute::SkoarpuscleLute(SkoarToke *) {
-
+SkoarpuscleLute::SkoarpuscleLute(SkoarToke *) :
+    has_messages(false)
+{
 }
 
 
 // --- SkoarpuscleMeditationMsg ------------------------------------------
-SkoarpuscleLuteWithArgs::SkoarpuscleLuteWithArgs(SkoarToke *) {
-
+SkoarpuscleLuteWithArgs::SkoarpuscleLuteWithArgs(SkoarToke *) :
+    has_messages(false)
+{
 }
 

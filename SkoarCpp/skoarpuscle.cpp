@@ -354,10 +354,17 @@ void SkoarpuscleListEnd::on_enter(SkoarMinstrelPtr m) {
 }
 
 // --- SkoarpuscleList ---------------------------------------------------------
-SkoarpuscleList::SkoarpuscleList() { val = make_shared<ListOfSkoarpuscles>();}
-SkoarpuscleList::SkoarpuscleList(ListOfSkoarpusclesPtr x) { val = x; }
+SkoarpuscleList::SkoarpuscleList() { 
+    val = make_shared<ListOfSkoarpuscles>();
+    noaty = true;
+}
+SkoarpuscleList::SkoarpuscleList(ListOfSkoarpusclesPtr x) { 
+    val = x; 
+    noaty = true;
+}
 
 void SkoarpuscleList::on_enter(SkoarMinstrelPtr m) {
+    m->fairy->push_noating(noaty);
     m->fairy->push();
 }
 
@@ -621,7 +628,7 @@ SkoarpuscleHashLevel::SkoarpuscleHashLevel(SkoarString lex) {}
 
 
 // --- SkoarpusclePair ---------------------------------------------------------
-SkoarpusclePair::SkoarpusclePair(SkoarString k, Skoarpuscle* v) {}
+SkoarpusclePair::SkoarpusclePair(SkoarpusclePtr k, SkoarpusclePtr v) {}
 
 
 

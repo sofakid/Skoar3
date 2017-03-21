@@ -226,6 +226,7 @@ public:
 
 class SkoarpuscleList : public Skoarpuscle {
 public:
+    bool noaty;
 	SkoarpuscleList();
 
 	SkoarpuscleList(ListOfSkoarpusclesPtr listy);
@@ -328,6 +329,7 @@ public:
 class SkoarpuscleMsg : public Skoarpuscle {
 public:
     shared_ptr<SkoarpuscleArgs> args;
+    SkoarpusclePtr dest;
 
 	SkoarpuscleMsg();
 	SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a);
@@ -349,7 +351,7 @@ public:
 
 class SkoarpusclePair : public Skoarpuscle {
 public:
-    SkoarpusclePair(SkoarString, Skoarpuscle*);
+    SkoarpusclePair(SkoarpusclePtr, SkoarpusclePtr);
 };
 
 class SkoarpuscleExpr : public Skoarpuscle {

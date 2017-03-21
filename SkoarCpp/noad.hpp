@@ -121,12 +121,8 @@ public:
 	collect{
 	| desires |
 
-		
-
-	collect_skoarpuscles{
-	| j = 0 |
-
 	*/
+    ListOfSkoarpusclesPtr collect_skoarpuscles(int = 0);
 
     friend std::wostream & operator<<(wostream &out, SkoarNoad &noad) {
         out << L"SkoarNoad: offs: " << noad.offs 

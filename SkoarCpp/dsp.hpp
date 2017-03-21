@@ -10,10 +10,13 @@ public:
         demand
     };
 
+    SkoarpuscleUGen();
     SkoarpuscleUGen(SkoarString, Type);
+
+    SkoarString defaultMsg();
 };
 
-class SkoarpuscleUGenWithArgs : public Skoarpuscle {
+class SkoarpuscleUGenWithArgs : public SkoarpuscleUGen {
 public:
     SkoarpuscleUGenWithArgs(SkoarString, SkoarpuscleUGen::Type);
 };

@@ -381,26 +381,23 @@ results.add(y);
 ^results.asArray;
 }
 
-collect_skoarpuscles{
-| j = 0 |
-
-var results = List.new;
-while {j < children.size} {
-
-children[j].inorder({
-| x |
-if (x.skoarpuscle.notNil) {
-//debug("found skoarpuscle: " ++ x.skoarpuscle.asString);
-results.add(x.skoarpuscle);
-};
-});
-
-j = j + 1;
-};
-^results.asArray;
-
-}
 */
+
+ListOfSkoarpusclesPtr SkoarNoad::collect_skoarpuscles(int j) {
+    ListOfSkoarpusclesPtr results = make_shared<ListOfSkoarpuscles>();
+
+    auto child = children.cbegin();
+    for (int i = 0; i < j; ++i)
+        ++child;
+
+    while (j < children.size()) {
+        (*child)->inorder([=](SkoarNoad *noad) {
+            if (noad->skoarpuscle != nullptr)
+                results->push_back(noad->skoarpuscle);
+        });
+    }
+    return results;
+}
 
 
 
