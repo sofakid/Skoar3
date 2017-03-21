@@ -281,11 +281,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="all_skoarpuscles.hpp" />
     <ClInclude Include="beaty.hpp" />
     <ClInclude Include="beaty_fwd.hpp" />
     <ClInclude Include="dsp.hpp" />
     <ClInclude Include="envelope.hpp" />
     <ClInclude Include="lute.hpp" />
+    <ClInclude Include="make_skoarpuscle.hpp" />
     <ClInclude Include="meditation.hpp" />
     <ClInclude Include="memories.hpp" />
     <ClInclude Include="skoarpion_skoarpuscle.hpp" />

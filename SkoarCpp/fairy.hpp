@@ -1,6 +1,6 @@
 #pragma once
 #include "skoarcery.hpp"
-#include "skoarpuscle.hpp"
+#include "all_skoarpuscles.hpp"
 #include "spells.hpp"
 
 
@@ -35,8 +35,8 @@ public:
     void push_times_seen();
     void pop_times_seen();
 
-    void how_many_times_have_you_seen(SkoarpusclePtr);
-    void forget_that_you_have_seen(SkoarpusclePtr);
+    SkoarInt how_many_times_have_you_seen(Skoarpuscle*);
+    void forget_that_you_have_seen(Skoarpuscle*);
     
     void push_compare();
     void pop_compare();
@@ -47,6 +47,13 @@ public:
     void pop_boolean();
 
     SkoarpusclePtr impress_i();
+
+    template <typename T>
+    SkoarpusclePtr impress(T x) {
+        return impress(make_skoarpuscle(x));
+    }
+
+    template<>
     SkoarpusclePtr impress(SkoarpusclePtr);
 
     void compile_ugen();
@@ -73,8 +80,8 @@ private:
     ListOfSkoarpuscles boolean_stack;
     
 
-    list<map<SkoarNoadPtr, SkoarInt>> times_seen_stack;
-    map<SkoarNoadPtr, SkoarInt> times_seen;
+    list<shared_ptr<map<Skoarpuscle*, SkoarInt>>> times_seen_stack;
+    shared_ptr<map<Skoarpuscle*, SkoarInt>> times_seen;
 
     SkoarpusclePtr exact;
 

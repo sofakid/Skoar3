@@ -6,17 +6,13 @@
 #include "skoarpion_fwd.hpp"
 #include "minstrel_fwd.hpp"
 #include "event_fwd.hpp"
-
 #include "skoarpuscle_fwd.hpp"
 #include "skoar_fwd.hpp"
 
 #include "spells.hpp"
-
-#include "Poco/DynamicAny.h"
-
 #include "exception.hpp"
 
-#define SKOARPUSCLE(x) Skoarpuscle::wrap<decltype(x)>(x)
+#include "Poco/DynamicAny.h"
 
 class Skoarpuscle {
 public:
@@ -60,7 +56,7 @@ public:
     virtual bool canBeDivisor() {
         return false;
     }
-
+    
 protected:
     bool noatworthy;
     bool county;
@@ -372,4 +368,3 @@ public:
     SkoarpusclePtr result;
     SkoarpuscleExpr(SkoarNoadPtr);
 };
-

@@ -3,12 +3,15 @@
 #include "exception.hpp"
 #include "skoarpuscle.hpp"
 #include "minstrel.hpp"
+#include "make_skoarpuscle.hpp"
 
 SkoarFairy::SkoarFairy(SkoarString nom, SkoarMinstrelPtr m) :
     name(nom),
     minstrel(m),
-    magic(HarmlessMagic)
+    magic(HarmlessMagic),
+    times_seen(nullptr)
 {
+    push_times_seen();
 }
 
 
@@ -103,18 +106,24 @@ void SkoarFairy::incr_i() {
 }
 
 void SkoarFairy::push_times_seen() {
-
+    times_seen_stack.push_back(times_seen);
+    times_seen = make_shared<map<Skoarpuscle*, SkoarInt>>();
 }
 
 void SkoarFairy::pop_times_seen() {
-
+    times_seen = times_seen_stack.back();
+    times_seen_stack.pop_back();
 }
 
-void SkoarFairy::how_many_times_have_you_seen(SkoarpusclePtr) {
+SkoarInt SkoarFairy::how_many_times_have_you_seen(Skoarpuscle* x) {
+    auto times = (*times_seen)[x];
 
+    ++times;
+    (*times_seen)[x] = times;
+    return times;
 }
 
-void SkoarFairy::forget_that_you_have_seen(SkoarpusclePtr) {
+void SkoarFairy::forget_that_you_have_seen(Skoarpuscle*) {
 
 }
 
@@ -152,6 +161,7 @@ SkoarpusclePtr SkoarFairy::impress_i() {
     return impress(x);
 }
 
+template<>
 SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
     //("$:" ++name++ ".impression: " ++x.asString).postln;
     auto p = x.get();

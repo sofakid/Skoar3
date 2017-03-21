@@ -153,6 +153,12 @@
     <ClInclude Include="toke_inspector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="make_skoarpuscle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="all_skoarpuscles.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="toker.cpp">

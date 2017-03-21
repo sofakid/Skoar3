@@ -86,11 +86,8 @@ Skoarmantics::Skoarmantics() : table({
             auto l_value = m->fairy->l_value;
             auto imp = m->fairy->impression;
 
-            if (x->evaluate(m, l_value, imp))
-                m->fairy->impress(make_shared<SkoarpuscleTrue>());
-            else 
-                m->fairy->impress(make_shared<SkoarpuscleFalse>());
-
+            m->fairy->impress((x->evaluate(m, l_value, imp)));
+            
             m->fairy->pop_compare();
         };
 
