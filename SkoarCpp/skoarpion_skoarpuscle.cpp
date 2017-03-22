@@ -1,5 +1,6 @@
 #include "skoarpion.hpp"
 #include "skoarpion_skoarpuscle.hpp"
+#include "all_skoarpuscles.hpp"
 
 // --- SkoarpuscleSkoarpion ------------------------------------------------
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s) :
@@ -13,7 +14,7 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s, SkoarNoadPtr) :
 }
 
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpusclePtr s, SkoarpusclePtr args) :
-    val(dynamic_cast<SkoarpuscleSkoarpion&>(*s).val)
+    val(skoarpuscle_ptr<SkoarpuscleSkoarpion>(s)->val)
 {
     msg_arr = args;
 }

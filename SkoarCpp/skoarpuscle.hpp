@@ -68,18 +68,23 @@ public:
 class SkoarpuscleCat : public Skoarpuscle {
 public:
 	SkoarpuscleCat();
+    SkoarpuscleCat(nullptr_t);
+
     void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleTrue : public Skoarpuscle {
 public:
 	SkoarpuscleTrue();
+    SkoarpuscleTrue(bool);
+
     void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleFalse : public Skoarpuscle {
 public:
 	SkoarpuscleFalse();
+    SkoarpuscleFalse(bool);
     void on_enter(SkoarMinstrelPtr) override;
 };
 

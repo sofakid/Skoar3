@@ -157,8 +157,7 @@ void SkoarFairy::pop_boolean() {
 }
 
 SkoarpusclePtr SkoarFairy::impress_i() {
-    auto x = make_shared<SkoarpuscleInt>(i);
-    return impress(x);
+    return impress(i);
 }
 
 template<>

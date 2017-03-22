@@ -22,7 +22,11 @@
 SkoarpuscleUnknown::SkoarpuscleUnknown() {}
 
 // --- SkoarpuscleCat ---------------------------------------------------------
-SkoarpuscleCat::SkoarpuscleCat() {}
+SkoarpuscleCat::SkoarpuscleCat() {
+    impressionable = true;
+}
+SkoarpuscleCat::SkoarpuscleCat(nullptr_t) : SkoarpuscleCat() {
+}
 
 void SkoarpuscleCat::on_enter(SkoarMinstrelPtr m) { 
     m->fairy->impress(nullptr); 
@@ -31,6 +35,10 @@ void SkoarpuscleCat::on_enter(SkoarMinstrelPtr m) {
 // --- SkoarpuscleTrue ---------------------------------------------------------
 SkoarpuscleTrue::SkoarpuscleTrue() {
     impressionable = true;
+}
+
+SkoarpuscleTrue::SkoarpuscleTrue(bool x) : SkoarpuscleTrue() {
+    // assert x == true
 }
 
 void SkoarpuscleTrue::on_enter(SkoarMinstrelPtr m) {
@@ -42,6 +50,9 @@ SkoarpuscleFalse::SkoarpuscleFalse() {
     impressionable = true;
 }
 
+SkoarpuscleFalse::SkoarpuscleFalse(bool x) : SkoarpuscleFalse() {
+    // assert x == false
+}
 
 void SkoarpuscleFalse::on_enter(SkoarMinstrelPtr m) { 
     m->fairy->impress(false);
@@ -151,7 +162,7 @@ SkoarpuscleSymbol::SkoarpuscleSymbol(SkoarString s) : val(s) {
 }
 
 void SkoarpuscleSymbol::on_enter(SkoarMinstrelPtr m) { 
-    m->fairy->impress(make_shared<SkoarpuscleSymbol>(val)); 
+    m->fairy->impress(make_shared<SkoarpuscleSymbol>(val));
 }
 
 SkoarpusclePtr SkoarpuscleSymbol::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
@@ -190,15 +201,13 @@ SkoarpusclePtr SkoarpuscleDeref::lookup(SkoarMinstrelPtr minstrel) {
 
 void SkoarpuscleDeref::on_enter(SkoarMinstrelPtr m) {
     if (args != nullptr) {
-        auto o = dynamic_cast<SkoarpuscleArgs&>(*args);
-        o.on_enter(m);
+        skoarpuscle_ptr<SkoarpuscleArgs>(args)->on_enter(m);
     }
 }
 
 void SkoarpuscleDeref::on_exit(SkoarMinstrelPtr m) {
     if (args != nullptr) {
-        auto o = dynamic_cast<SkoarpuscleArgs&>(*args);
-        o.on_deref_exit(m);
+        skoarpuscle_ptr<SkoarpuscleArgs>(args)->on_deref_exit(m);
     }
     do_deref(m);
 }
@@ -212,13 +221,11 @@ void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
     }
 
     if (typeid(*x) == typeid(SkoarpuscleSkoarpion&)) {
-        auto skrpn = dynamic_cast<SkoarpuscleSkoarpion&>(*x);
-        skrpn.run(m);
+        skoarpuscle_ptr<SkoarpuscleSkoarpion>(x)->run(m);
     } 
     
     else if (typeid(*x) == typeid(SkoarpuscleExpr&)) {
-        auto expr = dynamic_cast<SkoarpuscleExpr&>(*x);
-        auto result = expr.result;
+        auto result = skoarpuscle_ptr<SkoarpuscleExpr>(x)->result;
 
         m->fairy->push_noating();
         if (result != nullptr) {
@@ -234,7 +241,7 @@ void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
     // todo: uncomment when books exist
     /*
     else if (typeid(*x) == typeid(SkoarpuscleBook&)) {
-        auto book = dynamic_cast<SkoarpuscleBook&>(*x);
+        auto book = skoarpuscle_ptr<SkoarpuscleBook>(x);
         auto args = m->fairy->impression;
 
         if (typeid(*args) == typeid(SkoarpuscleList&)) {
@@ -246,7 +253,7 @@ void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
             }
 
             if (typeid(*entry) == typeid(SkoarpuscleSymbol)) {
-                auto v = book.lookup(entry->val.extract<SkoarString>());
+                auto v = book->lookup(entry->val.extract<SkoarString>());
                 m->fairy->impress(v);
             }
         }
@@ -374,8 +381,7 @@ void SkoarpuscleBoolean::on_enter(SkoarMinstrelPtr m) {
 }
 
 bool SkoarpuscleBoolean::evaluate(SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-    auto o = dynamic_cast<SkoarpuscleBooleanOp&>(*op);
-    return o.compare(a, b, m);
+    return skoarpuscle_ptr<SkoarpuscleBooleanOp>(op)->compare(a, b, m);
 }
 
 // --- SkoarpuscleConditional ---------------------------------------------------------
@@ -448,7 +454,8 @@ void SkoarpuscleTimes::on_enter(SkoarMinstrelPtr m) {
         auto times_seen = m->fairy->how_many_times_have_you_seen(this);
         auto times = desired_times->asCount();
         auto x = times_seen % times;
-        m->fairy->impress(x != 0);
+        const bool b = x != 0;
+        m->fairy->impress(make_skoarpuscle(b));
     }
 }
 
@@ -511,9 +518,9 @@ void SkoarpuscleLoop::on_enter(SkoarMinstrelPtr m) {
             f(nullptr);
         else
             if (typeid(*each) == typeid(SkoarpuscleList)) {
-                auto oEach = dynamic_cast<SkoarpuscleList&>(*each);
+                auto each_p = skoarpuscle_ptr<SkoarpuscleList>(each);
                 // each->val is a ListOfSkoarpusclesPtr
-                for (auto x : *(oEach.val))
+                for (auto x : *(each_p->val))
                     f(x);
             }
             
@@ -726,7 +733,7 @@ void SkoarpuscleMsg::on_enter(SkoarMinstrelPtr m) {
     /* if (args != nullptr) {
         auto x = m->fairy->impression;
         if (typeid(*x) == typeid(SkoarpuscleList)) {
-            auto new_args = dynamic_cast<SkoarpuscleList&>(*x);
+            auto new_args = skoarpuscle_ptr<SkoarpuscleList>(x);
             // original code:
             // args = m.fairy.impression;
         }

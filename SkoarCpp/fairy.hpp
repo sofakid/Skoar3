@@ -50,7 +50,7 @@ public:
 
     template <typename T>
     SkoarpusclePtr impress(T x) {
-        return impress(make_skoarpuscle(x));
+        return impress<SkoarpusclePtr>(make_skoarpuscle(x));
     }
 
     template<>

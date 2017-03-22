@@ -5,8 +5,7 @@
 #include "event.hpp"
 #include "minstrel.hpp"
 #include "skoarpion.hpp"
-#include "skoarpuscle.hpp"
-#include "skoarpion_skoarpuscle.hpp"
+#include "all_skoarpuscles.hpp"
 
 #include "noad.hpp"
 
@@ -103,9 +102,8 @@ void SkoarKoar::set_args(
 
         auto args_spec_val = args_spec->val;
 		for (auto k_skoarpuscle : *args_spec_val) {
-            auto k_o = dynamic_cast<SkoarpuscleSymbolName&>(*k_skoarpuscle);
-            SkoarString k = k_o.val;
-
+            auto k = skoarpuscle_ptr<SkoarpuscleSymbolName>(k_skoarpuscle)->val;
+            
 			//("k: " ++ k).postln;
 			if (i++ < n) {
 				vars[k] = *(arg_it++);
