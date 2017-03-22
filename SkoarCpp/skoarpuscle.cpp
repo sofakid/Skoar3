@@ -101,14 +101,22 @@ SkoarpuscleNoat::SkoarpuscleNoat(SkoarString&) {
 	
 void *SkoarpuscleNoat::asNoat() { return nullptr; }
 
+void SkoarpuscleNoat::on_enter(SkoarMinstrelPtr) {
+
+}
+
 // --- SkoarpuscleChoard ---------------------------------------------------------
 SkoarpuscleChoard::SkoarpuscleChoard(SkoarString&) {
     noatworthy = true;
     impressionable = true;
 }
 
-void *SkoarpuscleChoard::asNoat() { return nullptr; }
-		
+void* SkoarpuscleChoard::asNoat() { return nullptr; }
+
+void SkoarpuscleChoard::on_enter(SkoarMinstrelPtr) {
+
+}
+
 // --- SkoarpuscleString ---------------------------------------------------------
 SkoarpuscleString::SkoarpuscleString(SkoarString s) {
     val = s;
@@ -438,67 +446,93 @@ void SkoarpuscleTimes::on_enter(SkoarMinstrelPtr m) {
     if (desired_times->isCounty()) {
         auto times_seen = m->fairy->how_many_times_have_you_seen(this);
         auto times = desired_times->asCount();
-        bool x = (times_seen % times) != 0;
-        m->fairy->impress(x);
+        auto x = times_seen % times;
+        m->fairy->impress(x != 0);
     }
 
 }
 
-// ----------------------------------------------
-// ----------------------------------------------
-// ----------------------------------------------
-// porting here
-// ----------------------------------------------
-// ----------------------------------------------
-// ----------------------------------------------
 
 // --- SkoarpuscleLoop ---------------------------------------------------------
 SkoarpuscleLoop::SkoarpuscleLoop(Skoar *skoar, SkoarNoadPtr noad) {
 
-    val = make_shared<ListOfSkoarpuscles>();
-	/*for (auto x : noad->collect("loop_condition")) {
-		if (x->children.size != 0) {
-			condition = x.children[1].next_skoarpuscle();
-		}
-	}
-
-	for (auto x : noad.collect("loop_body")) {
-		body = Skoarpion::new_from_subtree(skoar, x);
-	}	*/
-
+    val = nullptr;
+    {
+        list<ESkoarNoad::Kind> desires = { ESkoarNoad::loop_condition };
+        for (auto x : SkoarNoad::collect(noad, desires)) {
+            if (x->children.size() > 0) {
+                condition = Skoarpion::NewFromSubtree(skoar, x);
+            }
+        }
+    }
+    {
+        list<ESkoarNoad::Kind> desires = { ESkoarNoad::loop_body };
+        for (auto x : SkoarNoad::collect(noad, desires)) {
+            body = Skoarpion::NewFromSubtree(skoar, x);
+        }
+    }
 
 	each = nullptr;
-
-    // todo
-
 }
 
 // when we send a loop as a message, the receiver
-// goes into _each_ and _this_ becomes the new receiver.
-SkoarpusclePtr SkoarpuscleLoop::foreach(SkoarpusclePtr listy) {
-	//each = val.List;
-	//return this;
-    return nullptr;
+// goes into _each_, then we go into on_enter (see decorating.cpp)
+void SkoarpuscleLoop::foreach(SkoarpusclePtr listy) {
+	each = listy;
+}
+
+void SkoarpuscleLoop::on_enter(SkoarMinstrelPtr m) {
+
+    m->fairy->push_i();
+    m->fairy->push_noating(true);
+
+    bool looping = true;
+    
+    auto f = [&](SkoarpusclePtr element) {
+        if (element != nullptr)
+            m->fairy->impress(element);
+
+        //m->koar->do_skoarpion(body, m, L"inline", m->fairy->impression);
+        m->fairy->incr_i();
+        
+        if (condition != nullptr) {
+            m->fairy->push_noating();
+            //m->koar->do_skoarpion(condition, m, L"inline", m->fairy->impression);
+            m->fairy->pop_noating();
+
+            auto x = m->fairy->boolean_impression;
+            if (typeid(*x) == typeid(SkoarpuscleFalse*) ||
+                typeid(*x) == typeid(SkoarpuscleCat*))
+                looping = false;
+        }
+
+    };
+
+    for (;looping;) {
+        if (each == nullptr)
+            f(nullptr);
+        else
+            for (auto x : *(each->val.extract<ListOfSkoarpusclesPtr>()))
+                f(x);
+
+        if (condition == nullptr)
+            looping = false;
+    }
+ 
 }
 
 
 // --- SkoarpuscleLoopMsg ---------------------------------------------------------
-SkoarpuscleLoopMsg::SkoarpuscleLoopMsg() {}
 SkoarpuscleLoopMsg::SkoarpuscleLoopMsg(SkoarpusclePtr msg) {
 	val = msg;
 }
 
-
 // --- SkoarpuscleExprEnd ---------------------------------------------------------
-SkoarpuscleExprEnd::SkoarpuscleExprEnd() {}
-
 void SkoarpuscleExprEnd::on_enter(SkoarMinstrelPtr m) {
     m->fairy->cast_arcane_magic();
 }
 
 // --- SkoarpuscleListSep ---------------------------------------------------------
-SkoarpuscleListSep::SkoarpuscleListSep() {}
-
 void SkoarpuscleListSep::on_enter(SkoarMinstrelPtr m) {
     m->fairy->next_listy();
 }
@@ -509,7 +543,10 @@ SkoarpuscleListEnd::SkoarpuscleListEnd() {}
 void SkoarpuscleListEnd::on_enter(SkoarMinstrelPtr m) {
     m->fairy->next_listy();
     m->fairy->pop();
+    m->fairy->pop_noating();
+
 }
+
 
 // --- SkoarpuscleList ---------------------------------------------------------
 SkoarpuscleList::SkoarpuscleList() { 
@@ -520,6 +557,7 @@ SkoarpuscleList::SkoarpuscleList() {
 SkoarpuscleList::SkoarpuscleList(ListOfSkoarpusclesPtr x) { 
     val = x; 
     noaty = true;
+    impressionable = true;
 }
 
 void SkoarpuscleList::on_enter(SkoarMinstrelPtr m) {
@@ -536,45 +574,153 @@ bool SkoarpuscleList::isNoatworthy() {
 	return true;
 }
 
+shared_ptr<SkoarpuscleList> SkoarpuscleList::mul(SkoarMinstrelPtr m, SkoarpusclePtr y) {
+    auto out = make_shared<ListOfSkoarpuscles>();
+
+    for (auto x : val.extract<ListOfSkoarpuscles>()) {
+        //out->push_back(Skoar.ops.multiply_unimpressively(m, x, y));
+    }
+
+    return make_shared<SkoarpuscleList>(out);
+}
+
+shared_ptr<SkoarpuscleList> SkoarpuscleList::div(SkoarMinstrelPtr, SkoarpusclePtr) {
+    auto out = make_shared<ListOfSkoarpuscles>();
+
+    for (auto x : val.extract<ListOfSkoarpuscles>()) {
+        //out->push_back(Skoar.ops.divide_unimpressively(m, y, x));
+    }
+
+    return make_shared<SkoarpuscleList>(out);
+}
+
+shared_ptr<SkoarpuscleList> SkoarpuscleList::divBy(SkoarMinstrelPtr, SkoarpusclePtr) {
+    auto out = make_shared<ListOfSkoarpuscles>();
+
+    for (auto x : val.extract<ListOfSkoarpuscles>()) {
+        //out->push_back(Skoar.ops.divide_unimpressively(m, x, y));
+    }
+
+    return make_shared<SkoarpuscleList>(out);
+}
+
+SkoarInt SkoarpuscleList::size() {
+    return val.extract<ListOfSkoarpuscles>().size();
+}
+
+Poco::DynamicAny SkoarpuscleList::flatten(SkoarMinstrelPtr m) {
+    auto listy = val.extract<ListOfSkoarpuscles>();
+    
+    list<Poco::DynamicAny> arr;
+
+    for (auto x: listy) {
+        auto y = x->flatten(m);
+
+        /*
+        ??? i don't know what to do here
+
+        if (y.type == typeid(shared_ptr<SkoarpusclePair>)) {
+            auto z = y.extract<shared_ptr<SkoarpusclePair>>()->flatten(m);
+            arr.push_back(z);
+        }
+        else
+
+        */
+            arr.push_back(y);
+    }
+
+    Poco::DynamicAny out = arr;
+    return out;
+}
+
+
 void *SkoarpuscleList::asNoat() {
+    // ready to port as commented
+    /*
+    var n = val.size;
+    var noats = Array.newClear(n);
+    var i = -1;
+	var theseAreNoats = true;
+	var theseAreFreq = false;
+		
+    val.do {
+        | x |
+        i = i + 1;
 
-    auto listy = val.extract<ListOfSkoarpusclesPtr>();
-    auto n = listy->size();
-	auto noats = new void*[n];
-	auto i = -1;
+		if (x.isKindOf(SkoarpuscleFreq)) {
+			theseAreNoats = false;
+			theseAreFreq = true;
+		};
 
-	for (auto x : *listy) {
-		noats[++i] = x->asNoat();
-	}
+		if (x.isKindOf(SkoarpuscleInt)) {
+			theseAreNoats = false;
+		};
 
-	return nullptr;
-	//return new SkoarNoat_DegreeList(noats);
+		if (x.isKindOf(SkoarpuscleFloat)) {
+			theseAreNoats = false;
+		};
+		noats[i] = x.asNoat;
+    };
+
+	if (theseAreNoats == true) {
+		^SkoarNoat_NoteList(noats);
+	};
+
+	if (theseAreFreq == true) {
+		^SkoarNoat_FreqList(noats);
+	};
+
+	^SkoarNoat_DegreeList(noats);
+    */
+    return nullptr;
 }
 
 SkoarpusclePtr SkoarpuscleList::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
-	//auto o = msg->get_msg_arr(minstrel);
-    SkoarString name = msg->val;
-	Skoarpuscle *ret = nullptr;
+	// ready to port as commented
+    /*
+    var o = msg.get_msg_arr(minstrel);
+    var name = msg.val;
+    var ret;
 
-	if (name == L"next") {
-		//ret = val.performMsg(o);
-	}
-	else if (name == L"last") {
-		//ret = val.performMsg(o);
-	} 
-	else {
-		//ret = val.performMsg(o);
-	}
+	// todo teach the fairy to next and last
+    case {name == \next} {
+        ret = val.performMsg(o);
+    } {name == \last} {
+        ret = val.performMsg(o);
+    } {name == \choose} {
+        ret = val.choose();
+    } {
+        ret = val.performMsg(o);
+    };
 
-	return nullptr;
-	//return new Skoarpuscle.wrap(ret);
+    ^Skoarpuscle.wrap(ret);
+    */
+    return nullptr;
 }
-
 
 
 
 // --- SkoarpuscleArgs ---------------------------------------------------------
-SkoarpuscleArgs::SkoarpuscleArgs() {}
+void SkoarpuscleArgs::on_enter(SkoarMinstrelPtr m) {
+    m->fairy->push_noating();
+    m->fairy->push();
+}
+
+void SkoarpuscleArgs::on_deref_exit(SkoarMinstrelPtr m) {
+    m->fairy->pop();
+    m->fairy->pop_noating();
+}
+
+
+
+// ----------------------------------------------
+// ----------------------------------------------
+// ----------------------------------------------
+// porting here
+// ----------------------------------------------
+// ----------------------------------------------
+// ----------------------------------------------
+
 
 // --- SkoarpuscleArgSpec ---------------------------------------------------------
 // {! f<a,b,c> !! '[\a,\b,\c] is the ArgsSpec' !}
@@ -784,6 +930,10 @@ SkoarpuscleVoice::SkoarpuscleVoice(SkoarToke *toke) {
 
 // --- SkoarpuscleHashLevel ---------------------------------------------------------
 SkoarpuscleHashLevel::SkoarpuscleHashLevel(SkoarString lex) {}
+
+void SkoarpuscleHashLevel::on_enter(SkoarMinstrelPtr) {
+
+}
 
 
 // --- SkoarpusclePair ---------------------------------------------------------
