@@ -30,7 +30,7 @@ public:
 	SkoarKoarPtr all_voice;                // the all voice
 	ListOfSkoarpions skoarpions;           // all the skoarpions
 
-	Skoar(SkoarString &skoarce, ISkoarLog *log);
+	Skoar(SkoarString skoarce, ISkoarLog *log);
     ~Skoar();
 
 	void decorate();

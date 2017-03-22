@@ -35,7 +35,7 @@ void Skoar::init() {
     }
 }
 
-Skoar::Skoar(SkoarString &skoarce, ISkoarLog *log) :
+Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
     skoarce(skoarce + L"\n"), // i don't like this + L"\n" business.
     log(log),
     toker(this->skoarce)

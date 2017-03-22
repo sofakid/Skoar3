@@ -220,11 +220,11 @@ void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
         return;
     }
 
-    if (typeid(*x) == typeid(SkoarpuscleSkoarpion&)) {
+    if (is_skoarpuscle<SkoarpuscleSkoarpion>(x)) {
         skoarpuscle_ptr<SkoarpuscleSkoarpion>(x)->run(m);
     } 
     
-    else if (typeid(*x) == typeid(SkoarpuscleExpr&)) {
+    else if (is_skoarpuscle<SkoarpuscleExpr>(x)) {
         auto result = skoarpuscle_ptr<SkoarpuscleExpr>(x)->result;
 
         m->fairy->push_noating();
@@ -240,19 +240,19 @@ void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
     }
     // todo: uncomment when books exist
     /*
-    else if (typeid(*x) == typeid(SkoarpuscleBook&)) {
+    else if (is_skoarpuscle<SkoarpuscleBook>(x)) {
         auto book = skoarpuscle_ptr<SkoarpuscleBook>(x);
         auto args = m->fairy->impression;
 
-        if (typeid(*args) == typeid(SkoarpuscleList&)) {
-            auto listy = dynamic_cast<SkoarpuscleList&>(*args);
+        if (is_skoarpuscle<SkoarpuscleList>(args)) {
+            auto listy = dynamic_cast<SkoarpuscleList>(*args);
             auto entry = listy.val.extract<ListOfSkoarpuscles>.front();
 
-            if (typeid(*entry) == typeid(SkoarpusclePair)) {
+            if (is_skoarpuscle<SkoarpusclePair>(entry)) {
                 entry = entry->flatten(m).extract<SkoarpusclePtr>();
             }
 
-            if (typeid(*entry) == typeid(SkoarpuscleSymbol)) {
+            if (is_skoarpuscle<SkoarpuscleSymbol>(entry)) {
                 auto v = book->lookup(entry->val.extract<SkoarString>());
                 m->fairy->impress(v);
             }
@@ -274,7 +274,7 @@ SkoarpusclePtr SkoarpuscleDeref::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr
         return make_shared<SkoarpuscleCat>();
     }
 
-	if (typeid(*x) == typeid(SkoarpuscleSkoarpion)) {
+	if (is_skoarpuscle<SkoarpuscleSkoarpion>(x)) {
 		return make_shared<SkoarpuscleSkoarpion>(x, args);
 	};
 
@@ -434,8 +434,8 @@ void SkoarpuscleConditional::on_enter(SkoarMinstrelPtr m) {
 
         auto impression = m->fairy->boolean_impression;
 
-        bool bad_impression = (typeid(*impression) == typeid(SkoarpuscleFalse)) ||
-                              (typeid(*impression) == typeid(SkoarpuscleCat));
+        bool bad_impression = (is_skoarpuscle<SkoarpuscleFalse>(impression)) ||
+                              (is_skoarpuscle<SkoarpuscleCat>(impression));
 
         if (!bad_impression) {
             //m->koar->do_skoarpion(if_body, m, ["inline"], nullptr);
@@ -506,8 +506,8 @@ void SkoarpuscleLoop::on_enter(SkoarMinstrelPtr m) {
             m->fairy->pop_noating();
 
             auto x = m->fairy->boolean_impression;
-            if (typeid(*x) == typeid(SkoarpuscleFalse*) ||
-                typeid(*x) == typeid(SkoarpuscleCat*))
+            if (is_skoarpuscle<SkoarpuscleFalse>(x) ||
+                is_skoarpuscle<SkoarpuscleCat>(x))
                 looping = false;
         }
 
@@ -517,7 +517,7 @@ void SkoarpuscleLoop::on_enter(SkoarMinstrelPtr m) {
         if (each == nullptr)
             f(nullptr);
         else
-            if (typeid(*each) == typeid(SkoarpuscleList)) {
+            if (is_skoarpuscle<SkoarpuscleList>(each)) {
                 auto each_p = skoarpuscle_ptr<SkoarpuscleList>(each);
                 // each->val is a ListOfSkoarpusclesPtr
                 for (auto x : *(each_p->val))
@@ -732,7 +732,7 @@ void SkoarpuscleMsg::on_enter(SkoarMinstrelPtr m) {
     // i don't want to go down this road.
     /* if (args != nullptr) {
         auto x = m->fairy->impression;
-        if (typeid(*x) == typeid(SkoarpuscleList)) {
+        if (is_skoarpuscle<SkoarpuscleList>(x)) {
             auto new_args = skoarpuscle_ptr<SkoarpuscleList>(x);
             // original code:
             // args = m.fairy.impression;
@@ -744,30 +744,30 @@ void SkoarpuscleMsg::on_enter(SkoarMinstrelPtr m) {
     }
 
     SkoarpusclePtr result = nullptr;
-    if (typeid(*dest) == typeid(SkoarpuscleList)) {
+    if (is_skoarpuscle<SkoarpuscleList>(dest)) {
         // why not this? : result = skoarpuscle_ptr<SkoarpuscleList>(dest)->skoar_msg(this, m);
         result = m->fairy->impression;
         result = skoarpuscle_ptr<SkoarpuscleList>(result)->skoar_msg(this, m);
     } 
-    else if (typeid(*dest) == typeid(SkoarpuscleSkoarpion)) {
+    else if (is_skoarpuscle<SkoarpuscleSkoarpion>(dest)) {
         result = skoarpuscle_ptr<SkoarpuscleSkoarpion>(dest)->skoar_msg(this, m);
     }
-    else if (typeid(*dest) == typeid(SkoarpuscleString)) {
+    else if (is_skoarpuscle<SkoarpuscleString>(dest)) {
         result = skoarpuscle_ptr<SkoarpuscleString>(dest)->skoar_msg(this, m);
     }
-    else if (typeid(*dest) == typeid(SkoarpuscleSymbol)) {
+    else if (is_skoarpuscle<SkoarpuscleSymbol>(dest)) {
         result = skoarpuscle_ptr<SkoarpuscleSymbol>(dest)->skoar_msg(this, m);
     }
-    else if (typeid(*dest) == typeid(SkoarpuscleDeref)) {
+    else if (is_skoarpuscle<SkoarpuscleDeref>(dest)) {
         result = skoarpuscle_ptr<SkoarpuscleDeref>(dest)->skoar_msg(this, m);
     }
-    else if (typeid(*dest) == typeid(SkoarpuscleMsg)) {
+    else if (is_skoarpuscle<SkoarpuscleMsg>(dest)) {
         result = skoarpuscle_ptr<SkoarpuscleMsg>(dest)->skoar_msg(this, m);
     }
-    else if (typeid(*dest) == typeid(SkoarpuscleList)) {
+    else if (is_skoarpuscle<SkoarpuscleList>(dest)) {
         result = skoarpuscle_ptr<SkoarpuscleList>(dest)->skoar_msg(this, m);
     }
-    else if (typeid(*dest) == typeid(SkoarpuscleList)) {
+    else if (is_skoarpuscle<SkoarpuscleList>(dest)) {
         result = skoarpuscle_ptr<SkoarpuscleList>(dest)->skoar_msg(this, m);
     }
 
@@ -777,28 +777,28 @@ void SkoarpuscleMsg::on_enter(SkoarMinstrelPtr m) {
 
 SkoarpusclePtr SkoarpuscleMsg::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr m) {
     SkoarpusclePtr result = m->fairy->impression;
-    if (typeid(*result) == typeid(SkoarpuscleList)) {
+    if (is_skoarpuscle<SkoarpuscleList>(result)) {
         result = skoarpuscle_ptr<SkoarpuscleList>(result)->skoar_msg(this, m);
     }
-    else if (typeid(*result) == typeid(SkoarpuscleSkoarpion)) {
+    else if (is_skoarpuscle<SkoarpuscleSkoarpion>(result)) {
         result = skoarpuscle_ptr<SkoarpuscleSkoarpion>(result)->skoar_msg(this, m);
     }
-    else if (typeid(*result) == typeid(SkoarpuscleString)) {
+    else if (is_skoarpuscle<SkoarpuscleString>(result)) {
         result = skoarpuscle_ptr<SkoarpuscleString>(result)->skoar_msg(this, m);
     }
-    else if (typeid(*result) == typeid(SkoarpuscleSymbol)) {
+    else if (is_skoarpuscle<SkoarpuscleSymbol>(result)) {
         result = skoarpuscle_ptr<SkoarpuscleSymbol>(result)->skoar_msg(this, m);
     }
-    else if (typeid(*result) == typeid(SkoarpuscleDeref)) {
+    else if (is_skoarpuscle<SkoarpuscleDeref>(result)) {
         result = skoarpuscle_ptr<SkoarpuscleDeref>(result)->skoar_msg(this, m);
     }
-    else if (typeid(*result) == typeid(SkoarpuscleMsg)) {
+    else if (is_skoarpuscle<SkoarpuscleMsg>(result)) {
         result = skoarpuscle_ptr<SkoarpuscleMsg>(result)->skoar_msg(this, m);
     }
-    else if (typeid(*result) == typeid(SkoarpuscleList)) {
+    else if (is_skoarpuscle<SkoarpuscleList>(result)) {
         result = skoarpuscle_ptr<SkoarpuscleList>(result)->skoar_msg(this, m);
     }
-    else if (typeid(*result) == typeid(SkoarpuscleList)) {
+    else if (is_skoarpuscle<SkoarpuscleList>(result)) {
         result = skoarpuscle_ptr<SkoarpuscleList>(result)->skoar_msg(this, m);
     }
 

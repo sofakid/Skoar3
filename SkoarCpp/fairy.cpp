@@ -138,7 +138,7 @@ void SkoarFairy::pop_compare() {
 }
 
 void SkoarFairy::compare_impress(SkoarMinstrelPtr m) {
-    if (typeid(*l_value) == typeid(SkoarpuscleFairy)) {
+    if (is_skoarpuscle<SkoarpuscleFairy>(l_value)) {
         l_value = m->fairy->impression;
     }
 }
@@ -163,10 +163,9 @@ SkoarpusclePtr SkoarFairy::impress_i() {
 template<>
 SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
     //("$:" ++name++ ".impression: " ++x.asString).postln;
-    auto p = x.get();
-
-    if (typeid(p) == typeid(SkoarpuscleDeref*)) {
-        impression = static_cast<SkoarpuscleDeref*>(p)->lookup(minstrel);
+    
+    if (is_skoarpuscle<SkoarpuscleDeref>(x)) {
+        impression = skoarpuscle_ptr<SkoarpuscleDeref>(x)->lookup(minstrel);
     };
 
     if (impression->isNoatworthy() == true) {

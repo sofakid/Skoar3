@@ -16,6 +16,17 @@ SkoarpusclePtr make_skoarpuscle(SkoarString x);
 
 // cast and get raw pointer 
 template <class T> 
-T* skoarpuscle_ptr(SkoarpusclePtr p) {
+inline T* skoarpuscle_ptr(SkoarpusclePtr p) {
     return dynamic_cast<T*>(&*p);
+}
+
+// --- is_skoarpuscle -----------------------------------------------------
+
+// nullptr check and type check 
+template <class T>
+inline bool is_skoarpuscle(SkoarpusclePtr p) {
+    if (p == nullptr)
+        return false;
+
+    return (typeid(*p) == typeid(T));
 }

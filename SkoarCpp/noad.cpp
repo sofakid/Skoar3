@@ -19,7 +19,9 @@ SkoarNoad::SkoarNoad(SkoarString &nameArg, SkoarNoadPtr parentArg, const ESkoarN
     name(nameArg),
     skoarce(nullptr),
     kind(kindArg),
-    style(styleArg)
+    style(styleArg),
+    voice(nullptr),
+    skoarpuscle(nullptr)
 {
     ++SkoarMemories.Noads;
 }
@@ -52,6 +54,8 @@ SkoarNoad::~SkoarNoad() {
     parent = nullptr;
     skoarce = nullptr;
     toke = nullptr;
+    voice = nullptr;
+    skoarpuscle = nullptr;
     size = 0;
     offs = 0;
     children.clear();
@@ -394,7 +398,7 @@ ListOfSkoarpusclesPtr SkoarNoad::collect_skoarpuscles(int j) {
     for (int i = 0; i < j; ++i)
         ++child;
 
-    while (j < children.size()) {
+    while (j++ < children.size()) {
         (*child)->inorder([=](SkoarNoad *noad) {
             if (noad->skoarpuscle != nullptr)
                 results->push_back(noad->skoarpuscle);

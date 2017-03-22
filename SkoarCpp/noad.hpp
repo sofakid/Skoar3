@@ -14,12 +14,12 @@
 class SkoarNoad {
 public:
 
-	list<int>  address;         // a list code to find the noad quickly
+	list<int>  address;           // a list code to find the noad quickly
     SkoarNoadPtr parent;          // the parent noad
 
 	list<SkoarNoadPtr> children;  // a list of child noads
 
-	const SkoarString name;               // name of the nonterminal
+	const SkoarString name;       // name of the nonterminal
 	const ESkoarNoad::Kind kind;
     const SkoarStyles::EStyle style;
 
@@ -33,7 +33,7 @@ public:
 
 	SpellOfMinstrels on_enter;
 	
-	wstring *voice;           // what voice to use
+	SkoarString *voice;       // what voice to use
 	void *skoap;              // what skoap are we in
 
 	//SkoarNoad(wstring &nameArg, const ESkoarNoad::Kind kindArg, SkoarNoadPtr parentArg);

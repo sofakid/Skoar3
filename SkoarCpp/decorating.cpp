@@ -12,6 +12,7 @@
 #include "dsp.hpp"
 #include "lute.hpp"
 #include "meditation.hpp"
+#include "all_skoarpuscles.hpp"
 
 // ============
 // Skoarmantics
@@ -150,7 +151,7 @@ Skoarmantics::Skoarmantics() : table({
         auto x = noad->next_skoarpuscle();
         noad->skoarpuscle = x;
 
-        if (typeid(*x) == typeid(SkoarpuscleBars)) {
+        if (is_skoarpuscle<SkoarpuscleBars>(x)) {
             skoarpuscle_ptr<SkoarpuscleBars>(x)->noad = noad;
             noad->children.clear();
         }
@@ -167,10 +168,10 @@ Skoarmantics::Skoarmantics() : table({
 
         SkoarString msg_name;
         
-        if (typeid(*msg_name_sk) == typeid(SkoarpuscleMsgName)) {
+        if (is_skoarpuscle<SkoarpuscleMsgName>(msg_name_sk)) {
             msg_name = skoarpuscle_ptr<SkoarpuscleMsgName>(msg_name_sk)->val;
 
-        } else if (typeid(*msg_name_sk) == typeid(SkoarpuscleMsgNameWithArgs)) {
+        } else if (is_skoarpuscle<SkoarpuscleMsgNameWithArgs>(msg_name_sk)) {
             msg_name = skoarpuscle_ptr<SkoarpuscleMsgNameWithArgs>(msg_name_sk)->val;
         }
         else {
@@ -212,11 +213,11 @@ Skoarmantics::Skoarmantics() : table({
         SkoarpusclePtr msg = noad->next_skoarpuscle();
 
         if (msg != nullptr) {
-            if (typeid(*msg) == typeid(SkoarpuscleList)) {
+            if (is_skoarpuscle<SkoarpuscleList>(msg)) {
                 // i'm not sure what i want this to mean
                 noad->children.clear();
             }
-            else if (typeid(*msg) == typeid(SkoarpuscleLoop)) {
+            else if (is_skoarpuscle<SkoarpuscleLoop>(msg)) {
                 noad->skoarpuscle = make_shared<SkoarpuscleLoopMsg>(msg);
                 noad->on_enter = [=](SkoarMinstrelPtr m) {
                     auto listy = m->fairy->impression;
@@ -226,7 +227,7 @@ Skoarmantics::Skoarmantics() : table({
                 };
                 noad->children.clear();
             }
-            else if (typeid(*msg) == typeid(SkoarpuscleMsgNameWithArgs)) {
+            else if (is_skoarpuscle<SkoarpuscleMsgNameWithArgs>(msg)) {
                 // we need the tree to have the same
                 // structure as below. I don't want to
                 // treat these too differently (with args or without)
@@ -238,7 +239,7 @@ Skoarmantics::Skoarmantics() : table({
                 end_noad->skoarpuscle = x;
                 noad->add_noad(end_noad);
             }
-            else if (typeid(*msg) == typeid(SkoarpuscleMsgName)) {
+            else if (is_skoarpuscle<SkoarpuscleMsgName>(msg)) {
                 // we need the tree to have the same
                 // structure as above. I don't want to
                 // treat these too differently (with args or without)
@@ -295,13 +296,14 @@ Skoarmantics::Skoarmantics() : table({
         auto child = noad->children.front()->skoarpuscle;
         auto needs_compile = false;
 
-        for (auto x : *noad->collect_skoarpuscles()) {
-            if (typeid(*x) == typeid(SkoarpuscleUGen)) {
+        auto listy = noad->collect_skoarpuscles();
+        for (auto x : *listy) {
+            if (is_skoarpuscle<SkoarpuscleUGen>(x)) {
                 needs_compile = true;
             }
         }
 
-        if (typeid(*child) == typeid(SkoarpuscleSymbolColon)) {
+        if (is_skoarpuscle<SkoarpuscleSymbolColon>(child)) {
             
             noad->on_enter = [](SkoarMinstrelPtr m) {
                 m->fairy->push_noating();
@@ -336,7 +338,7 @@ Skoarmantics::Skoarmantics() : table({
     {ESkoarNoad::msgable, SpellOfSkoarmantics {
         auto skoarpuscle = noad->next_skoarpuscle();
         
-        if (typeid(*skoarpuscle) == typeid(SkoarpuscleUGen)) {
+        if (is_skoarpuscle<SkoarpuscleUGen>(skoarpuscle)) {
 
             auto end_noad = SkoarNoad::NewArtificial(L"msgable_end", noad);
             end_noad->on_enter = [](SkoarMinstrelPtr m) {
@@ -363,9 +365,7 @@ Skoarmantics::Skoarmantics() : table({
         for (auto x : noad->children) {
             for (auto y : x->children) {
                 auto ys = y->skoarpuscle;
-                if (ys == nullptr)
-                    continue;
-                if (typeid(*ys) == typeid(SkoarpuscleMsg)) {
+                if (is_skoarpuscle<SkoarpuscleMsg>(ys)) {
                     skoarpuscle_ptr<SkoarpuscleMsg>(ys)->dest = last;
                     last = ys;
                 }
@@ -373,7 +373,7 @@ Skoarmantics::Skoarmantics() : table({
         }
 
         if (has_messages) {
-            if (typeid(*skoarpuscle) == typeid(SkoarpuscleList)) {
+            if (is_skoarpuscle<SkoarpuscleList>(skoarpuscle)) {
                 skoarpuscle_ptr<SkoarpuscleList>(skoarpuscle)->noaty = false;
             }
         }

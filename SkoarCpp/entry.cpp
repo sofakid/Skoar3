@@ -21,6 +21,10 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
     
     //SkoarLog.i("2 + 3", skoarpuscle_ptr<SkoarpuscleInt>(z)->val);
 
+    Skoar(L"a ) ]]", &SkoarLog);
+
+    SkoarLog.i("Done", SkoarMemories);
+
     wstring instr;
     std::wcin >> instr;
 }
