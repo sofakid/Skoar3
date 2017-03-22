@@ -27,3 +27,14 @@ public:
     SkoarpuscleException();
     SkoarpuscleException(SkoarString s);
 };
+
+
+class SkoarDecoratingException : public SkoarError {
+public:
+    SkoarpusclePtr skoarpuscle;
+
+    SkoarDecoratingException();
+    SkoarDecoratingException(SkoarString s);
+    SkoarDecoratingException(SkoarString s, SkoarpusclePtr p);
+
+};

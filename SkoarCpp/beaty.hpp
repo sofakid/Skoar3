@@ -34,6 +34,8 @@ public:
     static SkoarFloat beat_short(SkoarString, SkoarInt);
     static SkoarFloat beat_long(SkoarString, SkoarInt);
 
+    SkoarFloat val;
+
     SkoarString s;
     bool is_staccato;
     bool has_tie;
@@ -46,6 +48,8 @@ public:
 
 class SkoarpuscleRest : public Skoarpuscle {
 public:
+
+    SkoarFloat val;
 
     SkoarString s;
     bool is_staccato;

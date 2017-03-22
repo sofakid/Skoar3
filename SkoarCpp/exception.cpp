@@ -27,3 +27,16 @@ SkoarpuscleException::SkoarpuscleException(SkoarString s) :
     SkoarError(s) {
 }
 
+SkoarDecoratingException::SkoarDecoratingException() : 
+    SkoarError(), skoarpuscle(nullptr) {
+    sWhat = SkoarString(L"Decorate fail.");
+}
+
+SkoarDecoratingException::SkoarDecoratingException(SkoarString s) :
+    SkoarError(s), skoarpuscle(nullptr) {
+}
+
+
+SkoarDecoratingException::SkoarDecoratingException(SkoarString s, SkoarpusclePtr p) :
+    SkoarError(s), skoarpuscle(p) {
+}

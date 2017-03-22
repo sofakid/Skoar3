@@ -3,9 +3,7 @@
 
 template <typename T>
 static SkoarpusclePtr make_skoarpuscle(T x) {
-    auto u = make_shared<SkoarpuscleUnknown>();
-    u->val = x;
-    return u;
+    return make_shared<SkoarpuscleUnknown>();
 }
 template<>
 static SkoarpusclePtr make_skoarpuscle(nullptr_t x) {

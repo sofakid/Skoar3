@@ -12,14 +12,10 @@
 #include "spells.hpp"
 #include "exception.hpp"
 
-#include "Poco/DynamicAny.h"
-
 class Skoarpuscle {
 public:
-    Poco::DynamicAny val;
     
     Skoarpuscle() :
-        val(nullptr),
         impressionable(true),
         noatworthy(false),
         county(false) {
@@ -45,9 +41,9 @@ public:
         throw SkoarpuscleException(L"skoar_msg() called on incompatible skoarpuscle.");
 	}
 	
-    virtual Poco::DynamicAny flatten(SkoarMinstrelPtr m) {
-        return val;
-    }
+    //virtual Poco::DynamicAny flatten(SkoarMinstrelPtr m) {
+    //    return val;
+    //}
    
 	virtual SkoarString asString() {
 		return SkoarString(L"Skoarpuscle");
@@ -89,13 +85,18 @@ public:
 
 class SkoarpuscleFreq : public Skoarpuscle {
 public:
+    const SkoarFloat val;
     SkoarpuscleFreq(SkoarString);
+    SkoarpuscleFreq(SkoarFloat);
+    SkoarpuscleFreq(SkoarInt);
+
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleInt : public Skoarpuscle {
 public:
+    const SkoarInt val;
 	SkoarpuscleInt(SkoarInt v);
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
@@ -103,6 +104,7 @@ public:
 
 class SkoarpuscleFloat : public Skoarpuscle {
 public:
+    const SkoarFloat val;
     SkoarpuscleFloat(SkoarFloat);
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
@@ -110,6 +112,8 @@ public:
 
 class SkoarpuscleNoat : public Skoarpuscle {
 public:
+    const SkoarInt val;
+
     SkoarpuscleNoat(SkoarString&);
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
@@ -117,6 +121,8 @@ public:
 
 class SkoarpuscleChoard : public Skoarpuscle {
 public:
+    const SkoarInt val;
+
     SkoarpuscleChoard(SkoarString&);
 	void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
@@ -124,6 +130,8 @@ public:
 
 class SkoarpuscleString : public Skoarpuscle {
 public:
+    const SkoarString val;
+
     SkoarpuscleString(SkoarString);
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
@@ -131,6 +139,8 @@ public:
 
 class SkoarpuscleSymbol : public Skoarpuscle {
 public:
+    const SkoarString val;
+
     SkoarpuscleSymbol(SkoarString);
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
@@ -138,17 +148,20 @@ public:
 
 class SkoarpuscleSymbolName : public Skoarpuscle {
 public:
+    const SkoarString val;
+
     SkoarpuscleSymbolName(SkoarString);
 };
 
 class SkoarpuscleSymbolColon : public Skoarpuscle {
 public:
+    const SkoarString val;
+
     SkoarpuscleSymbolColon(SkoarString);
 };
 
 class SkoarpuscleTimes : public Skoarpuscle {
 public:
-    SkoarpuscleTimes();
     void on_enter(SkoarMinstrelPtr) override;
 };
 
@@ -156,22 +169,28 @@ class SkoarpuscleBars : public Skoarpuscle {
 	bool pre_repeat;
 	bool post_repeat;
 public:
+    const SkoarString val;
     SkoarNoadPtr noad;
 	SkoarpuscleBars(SkoarToke *);
 };
 
 class SkoarpuscleCarrots : public Skoarpuscle {
 public:
+    const SkoarInt val;
+
 	SkoarpuscleCarrots(SkoarToke *);
 };
 
 class SkoarpuscleTuplet : public Skoarpuscle {
 public:
+    const SkoarInt val;
 	SkoarpuscleTuplet(SkoarToke *);
 };
 
 class SkoarpuscleDynamic : public Skoarpuscle {
 public:
+    const SkoarInt val;
+
 	SkoarpuscleDynamic(SkoarToke *);
 
 	SkoarFloat amp();
@@ -184,7 +203,7 @@ public:
 
 class SkoarpuscleBooleanOp : public Skoarpuscle {
 public:
-	function<bool(Poco::DynamicAny, Poco::DynamicAny)> f;
+	//function<bool(Poco::DynamicAny, Poco::DynamicAny)> f;
 
 	SkoarpuscleBooleanOp(SkoarNoadPtr, SkoarToke *);
 	bool compare(SkoarpusclePtr a, SkoarpusclePtr b, SkoarMinstrelPtr m);
@@ -193,6 +212,8 @@ public:
 
 class SkoarpuscleVoice : public Skoarpuscle {
 public:
+    const SkoarString val;
+
 	SkoarpuscleVoice(SkoarToke *);
 };
 
@@ -210,16 +231,20 @@ public:
 
 class SkoarpuscleMsgName : public Skoarpuscle {
 public:
+    const SkoarString val;
     SkoarpuscleMsgName(SkoarString);
 };
 
 class SkoarpuscleMsgNameWithArgs : public Skoarpuscle {
 public:
+    const SkoarString val;
     SkoarpuscleMsgNameWithArgs(SkoarString);
 };
 
 class SkoarpuscleMathOp : public Skoarpuscle {
 public:
+    const SkoarString val;
+
 	function<void(SkoarMinstrelPtr m, SkoarpusclePtr , SkoarpusclePtr )> f;
 
     SkoarpuscleMathOp(SkoarToke *);
@@ -228,6 +253,8 @@ public:
 
 class SkoarpuscleList : public Skoarpuscle {
 public:
+    const ListOfSkoarpusclesPtr val;
+
     bool noaty;
 	SkoarpuscleList();
 
@@ -242,7 +269,7 @@ public:
     shared_ptr<SkoarpuscleList> div(SkoarMinstrelPtr, SkoarpusclePtr);
     shared_ptr<SkoarpuscleList> divBy(SkoarMinstrelPtr, SkoarpusclePtr);
     SkoarInt size();
-    Poco::DynamicAny flatten(SkoarMinstrelPtr m) override;
+    //Poco::DynamicAny flatten(SkoarMinstrelPtr m) override;
 
 
 };
@@ -260,6 +287,8 @@ public:
 
 class SkoarpuscleArgSpec : public SkoarpuscleList {
 public:
+    const ListOfSkoarpusclesPtr val;
+
 	SkoarpuscleArgSpec();
 	SkoarpuscleArgSpec(SkoarNoadPtr);
 };
@@ -267,6 +296,8 @@ public:
 
 class SkoarpuscleDeref : public Skoarpuscle {
 public:
+    const SkoarString val;
+
 	list<SkoarString> msg_arr;
     SkoarpusclePtr args; // is actually shared_ptr<SkoarpuscleArgs> args;
 
@@ -274,7 +305,7 @@ public:
 
 	SkoarpusclePtr lookup(SkoarMinstrelPtr);
     
-    Poco::DynamicAny flatten(SkoarMinstrelPtr m) override;
+    //Poco::DynamicAny flatten(SkoarMinstrelPtr m) override;
 
     void on_enter(SkoarMinstrelPtr) override;
     void on_exit(SkoarMinstrelPtr);
@@ -320,6 +351,8 @@ public:
 
 class SkoarpuscleLoopMsg : public Skoarpuscle {
 public:
+    const SkoarpusclePtr val;
+
     SkoarpuscleLoopMsg(SkoarpusclePtr);
 };
 
@@ -342,6 +375,8 @@ public:
 
 class SkoarpuscleMsg : public Skoarpuscle {
 public:
+    const SkoarString val;
+
     shared_ptr<SkoarpuscleArgs> args;
     SkoarpusclePtr dest;
 
@@ -357,12 +392,16 @@ public:
 
 class SkoarpuscleHashLevel : public Skoarpuscle {
 public:
+    const SkoarFloat val;
+
     SkoarpuscleHashLevel(SkoarString);
     void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpusclePair : public Skoarpuscle {
 public:
+    const pair<SkoarpusclePtr, SkoarpusclePtr> val;
+
     SkoarpusclePair(SkoarpusclePtr, SkoarpusclePtr);
 };
 

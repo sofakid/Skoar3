@@ -164,7 +164,19 @@ Skoarmantics::Skoarmantics() : table({
         auto end_noad = SkoarNoad::NewArtificial(L"deref_end", noad);
 
         auto it = noad->children.begin();
-        auto msg_name = (*(++it))->skoarpuscle->val.extract<SkoarString>();
+        auto msg_name_sk = (*(++it))->skoarpuscle;
+
+        SkoarString msg_name;
+        
+        if (typeid(*msg_name_sk) == typeid(SkoarpuscleMsgName)) {
+            msg_name = dynamic_cast<SkoarpuscleMsgName&>(*msg_name_sk).val;
+
+        } else if (typeid(*msg_name_sk) == typeid(SkoarpuscleMsgNameWithArgs)) {
+            msg_name = dynamic_cast<SkoarpuscleMsgNameWithArgs&>(*msg_name_sk).val;
+        }
+        else {
+            throw SkoarDecoratingException(L"Decorating msg_name fail", msg_name_sk);
+        }
 
         SkoarpusclePtr args = nullptr;
         if (noad->children.size() > 2) {
@@ -219,11 +231,9 @@ Skoarmantics::Skoarmantics() : table({
                 // we need the tree to have the same
                 // structure as below. I don't want to
                 // treat these too differently (with args or without)
-                //
-                // this code constructs and passes args, otherwise the same.
                 shared_ptr<SkoarpuscleArgs> args = make_shared<SkoarpuscleArgs>();
-                SkoarString val = msg->val;
-                auto x = make_shared<SkoarpuscleMsg>(val, args);
+                auto o = dynamic_cast<SkoarpuscleMsgNameWithArgs&>(*msg);
+                auto x = make_shared<SkoarpuscleMsg>(o.val, args);
 
                 auto end_noad = SkoarNoad::NewArtificial(L"msg_end", noad);
                 end_noad->skoarpuscle = x;
@@ -233,10 +243,8 @@ Skoarmantics::Skoarmantics() : table({
                 // we need the tree to have the same
                 // structure as above. I don't want to
                 // treat these too differently (with args or without)
-                //
-                // this code passes nullptr as args, otherwise same.
-                SkoarString val = msg->val;
-                auto x = make_shared<SkoarpuscleMsg>(val, nullptr);
+                auto o = dynamic_cast<SkoarpuscleMsgName&>(*msg);
+                auto x = make_shared<SkoarpuscleMsg>(o.val, nullptr);
 
                 auto end_noad = SkoarNoad::NewArtificial(L"msg_end", noad);
                 end_noad->skoarpuscle = x;

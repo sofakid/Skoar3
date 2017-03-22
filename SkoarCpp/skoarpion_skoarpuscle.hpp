@@ -4,6 +4,7 @@
 
 class SkoarpuscleSkoarpion : public Skoarpuscle {
 public:
+    const SkoarpionPtr val;
     SkoarpusclePtr msg_arr;
 
     SkoarpuscleSkoarpion(SkoarpionPtr);

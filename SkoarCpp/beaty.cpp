@@ -37,7 +37,7 @@ void SkoarpuscleExactBeat::on_enter(SkoarMinstrelPtr m) {
 }
 
 void SkoarpuscleExactBeat::after(SkoarMinstrelPtr m) {
-    auto dur = m->fairy->impression->flatten(m);
+    //auto dur = m->fairy->impression->flatten(m);
 
     m->fairy->pop();
     m->fairy->pop_noating();
@@ -65,7 +65,7 @@ void SkoarpuscleExactRest::on_enter(SkoarMinstrelPtr m) {
 }
 
 void SkoarpuscleExactRest::after(SkoarMinstrelPtr m) {
-    auto dur = m->fairy->impression->flatten(m);
+    //auto dur = m->fairy->impression->flatten(m);
 
     m->fairy->pop();
     m->fairy->pop_noating();

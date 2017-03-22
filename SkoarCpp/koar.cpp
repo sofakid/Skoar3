@@ -101,9 +101,10 @@ void SkoarKoar::set_args(
 		// foreach arg name defined, set the value from args
 		auto arg_it = args->begin();
 
-        auto args_spec_val = args_spec->val.extract<ListOfSkoarpusclesPtr>();
+        auto args_spec_val = args_spec->val;
 		for (auto k_skoarpuscle : *args_spec_val) {
-             SkoarString k = k_skoarpuscle->val;
+            auto k_o = dynamic_cast<SkoarpuscleSymbolName&>(*k_skoarpuscle);
+            SkoarString k = k_o.val;
 
 			//("k: " ++ k).postln;
 			if (i++ < n) {
