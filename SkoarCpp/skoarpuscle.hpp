@@ -172,6 +172,7 @@ public:
     const SkoarString val;
     SkoarNoadPtr noad;
 	SkoarpuscleBars(SkoarToke *);
+    void on_enter(SkoarMinstrelPtr m) override;
 };
 
 class SkoarpuscleCarrots : public Skoarpuscle {
@@ -198,7 +199,9 @@ public:
 
 class SkoarpuscleOctaveShift : public Skoarpuscle {
 public:
+    const SkoarInt val;
 	SkoarpuscleOctaveShift(SkoarToke *);
+    void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleBooleanOp : public Skoarpuscle {
@@ -239,6 +242,7 @@ class SkoarpuscleMsgNameWithArgs : public Skoarpuscle {
 public:
     const SkoarString val;
     SkoarpuscleMsgNameWithArgs(SkoarString);
+    void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleMathOp : public Skoarpuscle {
@@ -284,15 +288,6 @@ public:
 	SkoarpuscleListEnd();
     void on_enter(SkoarMinstrelPtr) override;
 };
-
-class SkoarpuscleArgSpec : public SkoarpuscleList {
-public:
-    const ListOfSkoarpusclesPtr val;
-
-	SkoarpuscleArgSpec();
-	SkoarpuscleArgSpec(SkoarNoadPtr);
-};
-
 
 class SkoarpuscleDeref : public Skoarpuscle {
 public:
@@ -380,9 +375,13 @@ public:
     shared_ptr<SkoarpuscleArgs> args;
     SkoarpusclePtr dest;
 
-	SkoarpuscleMsg();
 	SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a);
-	//void *get_msg_arr(SkoarMinstrelPtr m);
+    void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
+
+	list<SkoarString> get_msg_arr(SkoarMinstrelPtr);
+    list<SkoarString> get_args_from_prototype(SkoarMinstrelPtr);
+    
 };
 
 class SkoarpuscleExprEnd : public Skoarpuscle {
@@ -395,7 +394,6 @@ public:
     const SkoarFloat val;
 
     SkoarpuscleHashLevel(SkoarString);
-    void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpusclePair : public Skoarpuscle {
@@ -403,6 +401,7 @@ public:
     const pair<SkoarpusclePtr, SkoarpusclePtr> val;
 
     SkoarpusclePair(SkoarpusclePtr, SkoarpusclePtr);
+    void assign(SkoarMinstrelPtr);
 };
 
 class SkoarpuscleExpr : public Skoarpuscle {

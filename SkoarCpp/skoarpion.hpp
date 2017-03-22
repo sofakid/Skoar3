@@ -19,7 +19,7 @@ public:
 	Skoarpion(Skoar *skoar, SkoarNoadPtr node);
 
     SkoarString name;
-	shared_ptr<SkoarpuscleArgSpec> args_spec;
+	shared_ptr<SkoarpuscleList> args_spec;
 
 	SkoarProjectionPtr projection(SkoarString name);
 

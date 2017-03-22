@@ -87,7 +87,7 @@ SkoarEvent *SkoarKoar::event(SkoarMinstrelPtr minstrel) {
 
 void SkoarKoar::set_args(
 	SkoarMinstrelPtr minstrel, 
-    shared_ptr<SkoarpuscleArgSpec> args_spec,
+    shared_ptr<SkoarpuscleList> args_spec,
 	ListOfSkoarpusclesPtr args) 
 {
 	size_t i = 0, n = 0;

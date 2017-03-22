@@ -1,37 +1,34 @@
 #pragma once
 // include this after skoarpuscles
 
+
+// --- make_skoarpuscle -----------------------------------------------------
 template <typename T>
-static SkoarpusclePtr make_skoarpuscle(T x) {
-    return make_shared<SkoarpuscleUnknown>();
-}
+SkoarpusclePtr make_skoarpuscle(T x);
+
 template<>
-static SkoarpusclePtr make_skoarpuscle(nullptr_t x) {
-    return make_shared<SkoarpuscleCat>();
-}
+SkoarpusclePtr make_skoarpuscle(nullptr_t x);
+
 template<>
-static SkoarpusclePtr make_skoarpuscle(bool x) {
-    if (x)
-        return make_shared<SkoarpuscleTrue>();
-    return make_shared<SkoarpuscleFalse>();
-}
+SkoarpusclePtr make_skoarpuscle(bool x);
+
 template<>
-static SkoarpusclePtr make_skoarpuscle(SkoarpusclePtr x) {
-    return x;
-}
+SkoarpusclePtr make_skoarpuscle(SkoarpusclePtr x);
+
 template<>
-static SkoarpusclePtr make_skoarpuscle(SkoarpionPtr x) {
-    return make_shared<SkoarpuscleSkoarpion>(x);
-}
+SkoarpusclePtr make_skoarpuscle(SkoarpionPtr x);
+
 template<>
-static SkoarpusclePtr make_skoarpuscle(SkoarInt x) {
-    return make_shared<SkoarpuscleInt>(x);
-}
+SkoarpusclePtr make_skoarpuscle(SkoarInt x);
+
 template<>
-static SkoarpusclePtr make_skoarpuscle(SkoarFloat x) {
-    return make_shared<SkoarpuscleFloat>(x);
-}
+SkoarpusclePtr make_skoarpuscle(SkoarFloat x);
+
 template<>
-static SkoarpusclePtr make_skoarpuscle(SkoarString x) {
-    return make_shared<SkoarpuscleString>(x);
-}
+SkoarpusclePtr make_skoarpuscle(SkoarString x);
+
+// --- skoarpuscle_ptr -----------------------------------------------------
+
+// cast and get raw pointer 
+template <class T> 
+T* skoarpuscle_ptr(SkoarpusclePtr p);

@@ -43,7 +43,6 @@ class SkoarpuscleList;
 class SkoarpuscleListSep;
 class SkoarpuscleListEnd;
 
-class SkoarpuscleArgSpec;
 class SkoarpuscleArgs;
 class SkoarpuscleArg;
 
