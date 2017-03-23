@@ -1,16 +1,42 @@
 #pragma once
 // include this after skoarpuscles
-
+#include "skoarpion.hpp"
 
 // --- make_skoarpuscle -----------------------------------------------------
 
-SkoarpusclePtr make_skoarpuscle(nullptr_t x);
-SkoarpusclePtr make_skoarpuscle(bool x);
-SkoarpusclePtr make_skoarpuscle(SkoarpusclePtr x);
-SkoarpusclePtr make_skoarpuscle(SkoarpionPtr x);
-SkoarpusclePtr make_skoarpuscle(SkoarInt x);
-SkoarpusclePtr make_skoarpuscle(SkoarFloat x);
-SkoarpusclePtr make_skoarpuscle(SkoarString x);
+inline SkoarpusclePtr make_skoarpuscle(nullptr_t x) {
+    return make_shared<SkoarpuscleCat>();
+}
+
+inline SkoarpusclePtr make_skoarpuscle(SkoarpusclePtr x) {
+    return x;
+}
+
+inline SkoarpusclePtr make_skoarpuscle(SkoarpionPtr x) {
+    return make_shared<SkoarpuscleSkoarpion>(x);
+}
+
+inline SkoarpusclePtr make_skoarpuscle(SkoarInt x) {
+    return make_shared<SkoarpuscleInt>(x);
+}
+
+inline SkoarpusclePtr make_skoarpuscle(int x) {
+    return make_skoarpuscle(static_cast<SkoarInt>(x));
+}
+
+inline SkoarpusclePtr make_skoarpuscle(SkoarFloat x) {
+    return make_shared<SkoarpuscleFloat>(x);
+}
+
+inline SkoarpusclePtr make_skoarpuscle(SkoarString x) {
+    return make_shared<SkoarpuscleString>(x);
+}
+
+inline SkoarpusclePtr make_skoarpuscle(bool x) {
+    if (x)
+        return make_shared<SkoarpuscleTrue>();
+    return make_shared<SkoarpuscleFalse>();
+}
 
 // --- skoarpuscle_ptr -----------------------------------------------------
 

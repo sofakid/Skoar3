@@ -9,6 +9,10 @@
 
 class Skoarmantics {
 public:
+    
+    static void init();
+    static Skoarmantics* instance();
+
 	const map<ESkoarNoad::Kind, SpellOfNoadyDecoration> table;
 
 	Skoarmantics();

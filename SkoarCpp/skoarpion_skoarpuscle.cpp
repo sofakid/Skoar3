@@ -7,20 +7,28 @@
 
 
 // --- SkoarpuscleSkoarpion ------------------------------------------------
+SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(const SkoarpuscleSkoarpion *that) :
+    val(that->val),
+    args(that->args)
+{
+}
+
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s) :
-    val(s)
+    val(s),
+    args(nullptr)
 {
 }
 
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s, SkoarNoadPtr) :
-    val(s) 
+    val(s),
+    args(nullptr)
 {
 }
 
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpusclePtr s, SkoarpusclePtr args) :
-    val(skoarpuscle_ptr<SkoarpuscleSkoarpion>(s)->val)
+    val(skoarpuscle_ptr<SkoarpuscleSkoarpion>(s)->val),
+    args(args)
 {
-    msg_arr = args;
 }
 void SkoarpuscleSkoarpion::on_enter(SkoarMinstrelPtr m) {
     on_enter_method(m);
@@ -32,7 +40,7 @@ void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
 
 
 SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
-    //msg_arr = msg->get_msg_arr(minstrel);
+    //args = msg->get_msg_arr(minstrel);
     return nullptr;
 }
 
@@ -40,12 +48,10 @@ void SkoarpuscleSkoarpion::on_enter_method(SkoarMinstrelPtr m) {
     
     auto name = val->name;
     if (name.size() > 0) {
-        //m->koar[name] = this;
+        m->koar->put(name, make_shared<SkoarpuscleSkoarpion>(this));
     }
 
-    //if (msg_arr.empty() == false) {
-        //m->koar.do_skoarpion(val, m, msg_arr, nullptr);
-    //}
+    m->koar->do_skoarpion(val, m, SkoarKoar::EExecStyle::NORMAL, args);
 }
 
 // --- SkoarpuscleSkoarpionSig ----------------------------------------------
@@ -84,8 +90,8 @@ SkoarpuscleArgExpr::SkoarpuscleArgExpr(SkoarNoadPtr noad) {
         name = skoarpuscle_ptr<SkoarpuscleSymbolColon>(x)->val;
     }
     
-    if (noad->children.size() > 0) {
-        auto kidderator = noad->children.cbegin();
+    if (noad->children.size() > 1) {
+        auto kidderator = noad->children.begin();
         expr = make_shared<SkoarpuscleExpr>(*(++kidderator));
     }
     else

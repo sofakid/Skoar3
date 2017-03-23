@@ -14,6 +14,8 @@ public:
     SkoarpusclePtr l_value;
     
 	SkoarFairy(SkoarString, SkoarMinstrelPtr);
+    ~SkoarFairy();
+    void fly_away();
 
     ListOfSkoarpusclesPtr get_top_listy();
     void set_top_listy(ListOfSkoarpusclesPtr);
@@ -65,6 +67,7 @@ public:
 
     void consider(SkoarEvent&);
     void consider_amp(SkoarEvent&, SkoarMinstrelPtr);
+
 
 private:
     ArcaneMagic magic;

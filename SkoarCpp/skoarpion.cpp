@@ -38,6 +38,15 @@ Skoarpion::Skoarpion() :
 {
 }
 
+Skoarpion::Skoarpion(const Skoarpion *other) :
+    skoar(other->skoar),
+    body(other->body),
+    n(other->n),
+    name(other->name),
+    arg_list(other->arg_list)
+{
+}
+
 void Skoarpion::init_from_skoar(Skoar* skoar) {
     name = L"skoar";
     this->skoar = skoar;
@@ -64,7 +73,7 @@ void Skoarpion::init_from_skoar(Skoar* skoar) {
 
 
 void Skoarpion::init_from_subtree(Skoar* skoar, SkoarNoadPtr subtree) {
-    name = nullptr;
+    name = L"=^.^=";
     this->skoar = skoar;
 
     body = subtree;
@@ -166,9 +175,14 @@ SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koa
 {
     auto kids = skoarpion->body->children;
 
-    skip_to.reserve(kids.size());
+    size_t n = kids.size();
+    skip_to.reserve(n);
+    
     size_t i = 0;
-
+    for (; i < n; ++i)
+        skip_to.push_back(0);
+    i = 0;
+    
     for (auto x : kids) {
         auto s = x->voice->name;
         if ((s == koar_name) || (s == L"all")) {

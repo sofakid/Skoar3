@@ -14,6 +14,24 @@ SkoarFairy::SkoarFairy(SkoarString nom, SkoarMinstrelPtr m) :
     push_times_seen();
 }
 
+SkoarFairy::~SkoarFairy() {
+    fly_away();
+}
+
+void SkoarFairy::fly_away() {
+    i = 0;
+    impression = nullptr;
+    listy_stack.empty();
+    impression_stack.clear();
+    noatworthy_stack.clear();
+    magic_stack.clear();
+    noating_stack.clear();
+    i_stack.clear();
+    times_seen_stack.clear();
+    times_seen = nullptr;
+    boolean_stack.clear();
+    minstrel = nullptr;
+}
 
 // magic stacks and list collecting
 ListOfSkoarpusclesPtr SkoarFairy::get_top_listy() {

@@ -34,17 +34,18 @@ void SkoarKoar::put(SkoarString k, SkoarpusclePtr v) {
 	(*(stack.back()))[k] = v;
 }
 
-SkoarpusclePtr SkoarKoar::at(SkoarString &k) {
-	SkoarpusclePtr out = nullptr;
+SkoarpusclePtr SkoarKoar::at(const SkoarString &k) {
+	
+    SkoarpusclePtr out = nullptr;
 
 	for (auto rev_it = stack.rbegin(); rev_it != stack.rend(); rev_it++) {
-		out = (**rev_it)[k];
+        out = (**rev_it)[k];
 		if (out != nullptr) {
 			return out;
 		}
 	}
 
-	return out;
+    return out;
 }
 
 void SkoarKoar::state_put(SkoarString &k, SkoarpusclePtr v) {
@@ -171,24 +172,15 @@ void SkoarKoar::pop_state() {
 void SkoarKoar::do_skoarpion(
 	SkoarpionPtr skoarpion,
 	SkoarMinstrelPtr minstrel,
-	list<SkoarString> &msg_arr,
+    const EExecStyle exec_style,
 	SkoarpusclePtr args_provided) {
 	
 	SkoarNoadPtr subtree;
 	SkoarpionProjectionPtr projection = nullptr;
 	map<SkoarString, SkoarpionProjectionPtr> projections;
 	SkoarString msg_name;
-	bool inlined;
 
-	// default behaviour (when unmessaged)
-	if (msg_arr.empty()) {
-		msg_arr.push_back(L"block");
-	}
-
-	msg_name = msg_arr.front();
-
-	inlined = (msg_name == L"inline");
-	if (inlined == false) {
+	if (exec_style != EExecStyle::INLINE) {
 		push_state();
         minstrel->fairy->push_times_seen();
 	}
@@ -212,9 +204,9 @@ void SkoarKoar::do_skoarpion(
 
 	subtree = projection->proj;
 
-	this->nav_loop(subtree, projection, minstrel, inlined);
+	this->nav_loop(subtree, projection, minstrel, exec_style == EExecStyle::INLINE);
 
-	if (inlined == false) {
+	if (exec_style != EExecStyle::INLINE) {
 		pop_state();
         minstrel->fairy->pop_times_seen();
 	}

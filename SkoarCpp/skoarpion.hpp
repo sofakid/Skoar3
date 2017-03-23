@@ -24,6 +24,8 @@ public:
     SkoarInt n;
 
 	Skoarpion();
+    Skoarpion(const Skoarpion *);
+
 
     void init_from_skoar(Skoar*);                 // the entire skoar gets put in a skoarpion
     void init_from_noad(Skoar*, SkoarNoadPtr);    // a literal skoarpion, like {! derp !! ... !}

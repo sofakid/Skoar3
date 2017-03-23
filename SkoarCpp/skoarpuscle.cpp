@@ -429,7 +429,7 @@ void SkoarpuscleConditional::on_enter(SkoarMinstrelPtr m) {
 		auto else_body = get<2>(x);
 
         m->fairy->push_noating();
-        //m->koar->do_skoarpion(condition, m, nav, L"inline", nullptr);
+        m->koar->do_skoarpion(condition, m, SkoarKoar::EExecStyle::INLINE, nullptr);
         m->fairy->pop_noating();
 
         auto impression = m->fairy->boolean_impression;
@@ -438,10 +438,10 @@ void SkoarpuscleConditional::on_enter(SkoarMinstrelPtr m) {
                               (is_skoarpuscle<SkoarpuscleCat>(impression));
 
         if (!bad_impression) {
-            //m->koar->do_skoarpion(if_body, m, ["inline"], nullptr);
+            m->koar->do_skoarpion(if_body, m, SkoarKoar::EExecStyle::INLINE, nullptr);
         }
         else if (else_body != nullptr) {
-            //m->koar->do_skoarpion(else_body, m, ["inline"], nullptr);
+            m->koar->do_skoarpion(else_body, m, SkoarKoar::EExecStyle::INLINE, nullptr);
         }
 	}
 }
@@ -497,12 +497,12 @@ void SkoarpuscleLoop::on_enter(SkoarMinstrelPtr m) {
         if (element != nullptr)
             m->fairy->impress(element);
 
-        //m->koar->do_skoarpion(body, m, L"inline", m->fairy->impression);
+        m->koar->do_skoarpion(body, m, SkoarKoar::EExecStyle::INLINE, m->fairy->impression);
         m->fairy->incr_i();
         
         if (condition != nullptr) {
             m->fairy->push_noating();
-            //m->koar->do_skoarpion(condition, m, L"inline", m->fairy->impression);
+            m->koar->do_skoarpion(condition, m, SkoarKoar::EExecStyle::INLINE, m->fairy->impression);
             m->fairy->pop_noating();
 
             auto x = m->fairy->boolean_impression;
@@ -1090,14 +1090,12 @@ SkoarpuscleOctaveShift::SkoarpuscleOctaveShift(SkoarToke *toke) :
 }
 
 void SkoarpuscleOctaveShift::on_enter(SkoarMinstrelPtr m) {
-    /* todo: porting done, uncomment when koar exists
-    auto octave = m->koar[L"octave"];
+    auto octave = m->koar->at(L"octave");
     SkoarInt x = 5;
     if (octave != nullptr)
         x = skoarpuscle_ptr<SkoarpuscleInt>(octave)->val;
 
-    m->koar[L"octave"] = make_skoarpuscle(x + val);
-    */
+    m->koar->put(L"octave", make_skoarpuscle(x + val));
 }
 // --- SkoarpuscleVoice ---------------------------------------------------------
 SkoarpuscleVoice::SkoarpuscleVoice(SkoarToke *toke) :

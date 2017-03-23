@@ -177,8 +177,6 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 	}
 	s += name;// +L" __{ " + skoarce + L" }__";
 
-	s += L"\n";
-	
 	log->i(s);
 
 	for (auto x : children) {

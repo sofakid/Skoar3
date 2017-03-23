@@ -30,6 +30,8 @@ public:
 	SkoarKoarPtr all_voice;                // the all voice
 	ListOfSkoarpions skoarpions;           // all the skoarpions
 
+    SkoarInt running;
+
 	Skoar(SkoarString skoarce, ISkoarLog *log);
     ~Skoar();
 
@@ -40,6 +42,8 @@ public:
 	void pskoar();
 	SkoarMinstrelPtr pvoice(SkoarString *voice_name);
 	void draw_skoarpions();
+
+    void one_less_running();
 };
 
 class SkoarLite {

@@ -10,6 +10,15 @@
 #include "meditation.hpp"
 #include "fairy.hpp"
 
+static SkoarTokeInspector* inspector;
+void SkoarTokeInspector::init() {
+    inspector = new SkoarTokeInspector();
+}
+
+SkoarTokeInspector* SkoarTokeInspector::instance() {
+    return inspector;
+}
+
 #define SpellOfToking [](SkoarToke* toke, SkoarNoadPtr noad)
 
 // ==============

@@ -22,8 +22,16 @@ public:
 	SkoarNav(ECode code);
 };
 
+
+
 class SkoarKoar {
 public:
+
+    enum EExecStyle {
+        INLINE,
+        NORMAL
+    };
+
     Skoar              *skoar;
 	SkoarDicPtr		   skoarboard;   //
 	ListOfSkoarDics    stack;        // stack of vars visible to the skoar code
@@ -37,7 +45,7 @@ public:
 	// State and scope stuff
 	// ---------------------
 	void put(SkoarString k, SkoarpusclePtr v);
-	SkoarpusclePtr at(SkoarString &k);
+	SkoarpusclePtr at(const SkoarString &k);
 
 	void state_put(SkoarString &k, SkoarpusclePtr v);
 	
@@ -52,7 +60,7 @@ public:
 	void do_skoarpion(
 		SkoarpionPtr skoarpion, 
 		SkoarMinstrelPtr minstrel, 
-		list<SkoarString> &msg_arr, 
+        const EExecStyle,
 		SkoarpusclePtr args_provided);
 
 	void nav_loop(

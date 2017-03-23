@@ -31,6 +31,15 @@ so children are processed first.
 
 */
 
+static Skoarmantics* decorator;
+void Skoarmantics::init() {
+    decorator = new Skoarmantics();
+}
+
+Skoarmantics* Skoarmantics::instance() {
+    return decorator;
+}
+
 #define SpellOfSkoarmantics [](Skoar *skoar, SkoarNoadPtr noad)
 
 Skoarmantics::Skoarmantics() : table({

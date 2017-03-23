@@ -11,14 +11,14 @@ void SkoarNullLogger::log_e(const std::wstring &) {}
 
 // ---------------------------------------------------
 void SkoarConsoleLogger::log_d(const std::wstring &s) {
-    std::wcout << L"D .. " << s << std::endl;
+    std::wcout << L"D .. " << s;// << std::endl;
 }
 void SkoarConsoleLogger::log_i(const std::wstring &s) {
-    std::wcout << L"I -- " << s << std::endl;
+    std::wcout << L"I -- " << s;// << std::endl;
 }
 void SkoarConsoleLogger::log_w(const std::wstring &s) {
-    std::wcout << L"W == " << s << std::endl;
+    std::wcout << L"W == " << s;// << std::endl;
 }
 void SkoarConsoleLogger::log_e(const std::wstring &s) {
-    std::wcout << L"E !! " << s << std::endl;
+    std::wcout << L"E !! " << s;// << std::endl;
 }

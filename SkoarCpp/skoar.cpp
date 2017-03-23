@@ -28,6 +28,8 @@ void Skoar::init() {
     if (isInitialized == false) {
         SkoarToker::init();
         SkoarParser::init();
+        SkoarTokeInspector::init();
+        Skoarmantics::init();
         
         // todo ops table
 
@@ -58,9 +60,8 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 
 	//skoarpions = List[];
 
+    log->i(">>> parsing skoar...");
 	start_time = clock();
-
-	log->i(">>> parsing skoar...");
     try {
         tree = parser.skoar(nullptr);
     }
@@ -96,12 +97,15 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 	parse_time = clock() - start_time;
 	
 	//"---< Undecorated Skoar Tree >---".postln; tree.draw_tree.postln;
-	log->i("---< Undecorated Skoar Tree >---");
+	//log->i("---< Undecorated Skoar Tree >---");
 	//tree->log_tree(log);
 
-	log->i("<<< tree created, now decorating...");
+	//log->i("<<< tree created, now decorating...");
 	decorate();
 	decorate_time = clock()- start_time - parse_time;
+
+    f_parse_time = static_cast<float>(parse_time) / CLOCKS_PER_SEC;
+    f_decorate_time = static_cast<float>(decorate_time) / CLOCKS_PER_SEC;
 
 	log->i("---< Decorated Skoar Tree >---");
 	tree->log_tree(log);
@@ -110,8 +114,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 
 	log->i("+++ Skoar Parsed +++");// +tree->draw_tree());
 
-    f_parse_time = static_cast<float>(parse_time) / CLOCKS_PER_SEC;
-    f_decorate_time = static_cast<float>(decorate_time) / CLOCKS_PER_SEC;
+    
 
 	log->i("seconds parsing",    f_parse_time, 
            "seconds decorating", f_decorate_time, 
@@ -124,17 +127,13 @@ Skoar::~Skoar() {
 
 
 void Skoar::decorate() {
-
-	auto inspector = new SkoarTokeInspector();
-	auto skoarmantics = new Skoarmantics();
-
     auto f = [&](SkoarNoadPtr noad) {
         auto t = noad->toke.get();
         if (t != nullptr) {
-            inspector->decorate(t, noad);
+            SkoarTokeInspector::instance()->decorate(t, noad);
         }
         else {
-            skoarmantics->decorate(this, noad);
+            Skoarmantics::instance()->decorate(this, noad);
         }
     };
 
@@ -191,6 +190,12 @@ void Skoar::draw_skoarpions() {
 			//projection->block->draw_tree();
 		}
 	}
+}
+
+void Skoar::one_less_running() {
+    // todo: lock a mutex
+    --running;
+    // todo: unlock the mutex
 }
 
 // --------------------------------------------------------------------------------

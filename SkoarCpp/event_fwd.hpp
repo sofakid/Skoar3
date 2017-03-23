@@ -2,3 +2,4 @@
 
 class SkoarDic;
 class SkoarEvent;
+class SkoarEventStream;
