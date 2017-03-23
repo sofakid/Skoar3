@@ -34,7 +34,7 @@ public:
     ~Skoar();
 
 	void decorate();
-	SkoarKoarPtr get_voice(SkoarString &k);
+	SkoarKoarPtr get_voice(const SkoarString &k);
 	void cthulhu(SkoarNoadPtr noad);
 	void play();
 	void pskoar();

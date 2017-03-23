@@ -14,7 +14,7 @@
 class SkoarNoad {
 public:
 
-	list<int>  address;           // a list code to find the noad quickly
+	list<SkoarInt>  address;      // a list code to find the noad quickly
     SkoarNoadPtr parent;          // the parent noad
 
 	list<SkoarNoadPtr> children;  // a list of child noads
@@ -33,10 +33,10 @@ public:
 
 	SpellOfMinstrels on_enter;
 	
-	SkoarString *voice;       // what voice to use
-	void *skoap;              // what skoap are we in
+	SkoarKoarPtr voice;       // what voice to use
+	SkoarNoadPtr skoap;       // what skoap are we in
 
-	//SkoarNoad(wstring &nameArg, const ESkoarNoad::Kind kindArg, SkoarNoadPtr parentArg);
+	//SkoarNoad(SkoarString &nameArg, const ESkoarNoad::Kind kindArg, SkoarNoadPtr parentArg);
     
     //SkoarNoad() :
     //    parent(nullptr),
@@ -58,16 +58,17 @@ public:
     static SkoarNoadPtr New(SkoarString &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke);
     static SkoarNoadPtr NewArtificial(SkoarString &nameArg, SkoarNoadPtr parentArg);
     static SkoarNoadPtr NewArtificial(const wchar_t *nameArg, SkoarNoadPtr parentArg);
+    static SkoarNoadPtr NewArtificial(const wchar_t *nameArg);
 
     void clear();
 
-	wstring *asString();
+	SkoarString *asString();
 
 	// -------------------
 	// decorating the tree
 	// -------------------
-	void decorate_zero(wstring *v, void *s, list<int> &parent_address, int i);
-	void decorate(wstring *v, void *s, list<int> &parent_address, int i);
+	void decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &parent_address, SkoarInt i);
+	void decorate(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &parent_address, SkoarInt i);
 
 	// ----------------
 	// growing the tree
@@ -78,7 +79,7 @@ public:
 	// showing the tree
 	// ----------------
 	void log_tree(ISkoarLog *log, int tab = 1);
-	wstring draw_tree(int tab = 1);
+	SkoarString draw_tree(int tab = 1);
 	
 	// -----------------
 	// climbing the Tree
@@ -97,7 +98,7 @@ public:
 
 
 	// debug here if it's crashing while performing the skoar
-	void inorder_from_here(list<int> &here, SpellOfNoads f);
+	void inorder_from_here(list<SkoarInt> &here, SpellOfNoads f);
 	
 	// expect skoarpuscle
     SkoarpusclePtr next_skoarpuscle();

@@ -10,14 +10,16 @@ public:
 	//Skoarpuscle *not_found;
 
 	SkoarDic();
+    ~SkoarDic();
 
-	SkoarpusclePtr &SkoarDic::operator[](SkoarString *key);
-	SkoarpusclePtr &SkoarDic::operator[](SkoarString &key);
+	SkoarpusclePtr SkoarDic::operator[](SkoarString *key);
+    SkoarpusclePtr SkoarDic::operator[](SkoarString &key);
+    SkoarpusclePtr SkoarDic::operator[](const SkoarString &key);
+    SkoarpusclePtr SkoarDic::operator[](const wchar_t *key);
 };
 
 class SkoarEvent : SkoarDic {
 public:
 
 	void from(SkoarDicPtr);
-
 };

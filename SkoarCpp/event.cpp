@@ -7,15 +7,29 @@ SkoarDic::SkoarDic() {
 	//not_found = nullptr;
 }
 
-SkoarpusclePtr &SkoarDic::operator[](SkoarString *key) {
+SkoarDic::~SkoarDic() {
+    //not_found = nullptr;
+    table.clear();
+}
+
+
+SkoarpusclePtr SkoarDic::operator[](SkoarString *key) {
 	if (key == nullptr)
 		throw SkoarError(L"Tried to use a null key on a SkoarDic.");
 
 	return table[*key];
 }
 
-SkoarpusclePtr &SkoarDic::operator[](SkoarString &key) {
+SkoarpusclePtr SkoarDic::operator[](SkoarString &key) {
 	return table[key];
+}
+
+SkoarpusclePtr SkoarDic::operator[](const wchar_t* key) {
+    return table[SkoarString(key)];
+}
+
+SkoarpusclePtr SkoarDic::operator[](const SkoarString &key) {
+    return table[key];
 }
 
 void SkoarEvent::from(SkoarDicPtr dic) {

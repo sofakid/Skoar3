@@ -24,15 +24,16 @@ public:
 
 class SkoarKoar {
 public:
+    Skoar              *skoar;
 	SkoarDicPtr		   skoarboard;   //
-	ListOfSkoarDicsPtr stack;        // stack of vars visible to the skoar code
-    ListOfSkoarDicsPtr state_stack;  // stack of vars invisible to the skoar code
+	ListOfSkoarDics    stack;        // stack of vars visible to the skoar code
+    ListOfSkoarDics    state_stack;  // stack of vars invisible to the skoar code
 	SkoarString        name;         // name of voice
 
-    SkoarString garbage;
-
-	SkoarKoar(SkoarString &nom);
-	// ---------------------
+	SkoarKoar(Skoar *skoar, const SkoarString &nom);
+    ~SkoarKoar();
+	
+    // ---------------------
 	// State and scope stuff
 	// ---------------------
 	void put(SkoarString k, SkoarpusclePtr v);
@@ -42,9 +43,9 @@ public:
 	
 	SkoarpusclePtr state_at(SkoarString &k);
 	
-	SkoarEvent *event(SkoarMinstrelPtr minstrel);
+	SkoarEventPtr event(SkoarMinstrelPtr minstrel);
 	void set_args(SkoarMinstrelPtr minstrel, 
-		shared_ptr<SkoarpuscleList> args_spec, ListOfSkoarpusclesPtr args);
+		SkoarpusclePtr args_spec, SkoarpusclePtr args);
 
 	void push_state();
 	void pop_state();
@@ -52,14 +53,14 @@ public:
 		SkoarpionPtr skoarpion, 
 		SkoarMinstrelPtr minstrel, 
 		list<SkoarString> &msg_arr, 
-		ListOfSkoarpusclesPtr args);
+		SkoarpusclePtr args_provided);
 
 	void nav_loop(
 		SkoarNoadPtr dst, 
-		SkoarProjectionPtr projection, 
+		SkoarpionProjectionPtr projection, 
 		SkoarMinstrelPtr minstrel,
 		bool inlined);
 
-	void bubble_up_nav(SkoarNav *nav, bool inlined);
+	void bubble_up_nav(SkoarNav &nav, bool inlined);
 };
 

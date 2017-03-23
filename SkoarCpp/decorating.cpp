@@ -36,12 +36,12 @@ so children are processed first.
 Skoarmantics::Skoarmantics() : table({
 
     {ESkoarNoad::skoar, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(Skoarpion::new_from_skoar(skoar));
+        noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(Skoarpion::NewFromSkoar(skoar));
         noad->children.clear();
     }},
 
     {ESkoarNoad::skoarpion, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(Skoarpion::new_from_skoar_noad(skoar, noad));
+        noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(Skoarpion::NewFromSkoarNoad(skoar, noad));
         noad->children.clear();
     }},
 
@@ -201,7 +201,7 @@ Skoarmantics::Skoarmantics() : table({
     }},
 
     {ESkoarNoad::arg_expr, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleArgExpr>();
+        noad->skoarpuscle = make_shared<SkoarpuscleArgExpr>(noad);
         noad->children.clear();
     }},
 
@@ -311,7 +311,7 @@ Skoarmantics::Skoarmantics() : table({
 
             end_noad->on_enter = [=](SkoarMinstrelPtr m) {
                 auto x = m->fairy->cast_arcane_magic();
-                SkoarpusclePtr p = make_shared<SkoarpusclePair>(child, x);
+                SkoarpusclePtr p = make_shared<SkoarpusclePair>(skoarpuscle_ptr<SkoarpuscleSymbolColon>(child)->val, x);
 
                 m->fairy->impress(p);
 

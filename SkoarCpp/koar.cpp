@@ -6,28 +6,39 @@
 #include "minstrel.hpp"
 #include "skoarpion.hpp"
 #include "all_skoarpuscles.hpp"
+#include "fairy.hpp" 
 
 #include "noad.hpp"
 
-SkoarKoar::SkoarKoar(SkoarString &nom) {
-	name = nom;
-	stack = make_unique<ListOfSkoarDics>();
-	skoarboard = make_shared<SkoarDic>();
-	stack->push_back(skoarboard);
+SkoarKoar::SkoarKoar(Skoar *skoar, const SkoarString &name) :
+    skoar(skoar),
+    name(name),
+    skoarboard(make_shared<SkoarDic>())
+{
+    (*skoarboard)[L"voice"] = make_skoarpuscle(name);
+	stack.push_back(skoarboard);
+}
+
+SkoarKoar::~SkoarKoar() {
+    
+    skoarboard = nullptr;
+    stack.clear();
+    state_stack.clear();
+    skoar = nullptr;
 }
 
 // ---------------------
 // State and scope stuff
 // ---------------------
 void SkoarKoar::put(SkoarString k, SkoarpusclePtr v) {
-	(*stack->back())[k] = v;
+	(*(stack.back()))[k] = v;
 }
 
 SkoarpusclePtr SkoarKoar::at(SkoarString &k) {
 	SkoarpusclePtr out = nullptr;
 
-	for (auto skrb = stack->rbegin(); skrb != stack->rend(); skrb++) {
-		out = (**skrb)[k];
+	for (auto rev_it = stack.rbegin(); rev_it != stack.rend(); rev_it++) {
+		out = (**rev_it)[k];
 		if (out != nullptr) {
 			return out;
 		}
@@ -37,14 +48,14 @@ SkoarpusclePtr SkoarKoar::at(SkoarString &k) {
 }
 
 void SkoarKoar::state_put(SkoarString &k, SkoarpusclePtr v) {
-	(*state_stack->back())[k] = v;
+	(*(state_stack.back()))[k] = v;
 }
 
 SkoarpusclePtr SkoarKoar::state_at(SkoarString &k) {
 	SkoarpusclePtr out = nullptr;
 
-	for (auto skrb = stack->rbegin(); skrb != stack->rend(); skrb++) {
-		out = (**skrb)[k];
+	for (auto rev_it = stack.rbegin(); rev_it != stack.rend(); rev_it++) {
+		out = (**rev_it)[k];
 		if (out != nullptr) {
 			return out;
 		}
@@ -53,12 +64,11 @@ SkoarpusclePtr SkoarKoar::state_at(SkoarString &k) {
 	return out;
 }
 
-// constructs the event that will be played by SC
-SkoarEvent *SkoarKoar::event(SkoarMinstrelPtr minstrel) {
-	auto e = new SkoarEvent();
+SkoarEventPtr SkoarKoar::event(SkoarMinstrelPtr minstrel) {
+	auto e = make_shared<SkoarEvent>();
 	
 	// going from global to local, overwriting existing entries with the more local one. 
-	for (auto skrb : *stack) {
+	for (auto skrb : stack) {
 		// native function constructs the event quickly
 		e->from(skrb);
 
@@ -86,94 +96,118 @@ SkoarEvent *SkoarKoar::event(SkoarMinstrelPtr minstrel) {
 
 void SkoarKoar::set_args(
 	SkoarMinstrelPtr minstrel, 
-    shared_ptr<SkoarpuscleList> args_spec,
-	ListOfSkoarpusclesPtr args) 
+    SkoarpusclePtr args_spec,
+    SkoarpusclePtr args_prov)
 {
 	size_t i = 0, n = 0;
-	auto vars = *stack->back();
+	auto vars = *(stack.back());
 
-	if (args == nullptr)
-		n = 0;
-	else
-		n = args->size();
+    SkoarpuscleArgList *args_list;
+    if (is_skoarpuscle<SkoarpuscleArgList>(args_spec)) {
+        args_list = skoarpuscle_ptr<SkoarpuscleArgList>(args_spec);
+    }
+    else
+        return;
 
-		// foreach arg name defined, set the value from args
-		auto arg_it = args->begin();
+    ListOfSkoarpusclesPtr args_provided;
+    if (is_skoarpuscle<SkoarpuscleList>(args_prov)) {
+        args_provided = skoarpuscle_ptr<SkoarpuscleList>(args_prov)->val;
+    }
+    else {
+        args_provided = make_shared<ListOfSkoarpuscles>();
+        auto n = args_list->args_names.size();
+        for (int i = 0; i < n; ++i) {
+            args_provided->push_back(make_skoarpuscle(nullptr));
+        }
+    }
 
-        auto args_spec_val = args_spec->val;
-		for (auto k_skoarpuscle : *args_spec_val) {
-            auto k = skoarpuscle_ptr<SkoarpuscleSymbolName>(k_skoarpuscle)->val;
-            
-			//("k: " ++ k).postln;
-			if (i++ < n) {
-				vars[k] = *(arg_it++);
-			} else {
-				// this defaults to passing 0 when not enough args are sent.
-				vars[k] = make_shared<SkoarpuscleInt>(0);
-			}
-		}
+    minstrel->fairy->push_noating();
+    auto provided_iter = args_provided->cbegin();
+    for (auto arg_name : args_list->args_names) {
+        auto x = (*(provided_iter++));
+
+        if (is_skoarpuscle<SkoarpuscleCat>(x)) {
+            // not found, use default
+            auto y = args_list->args_dict[arg_name];
+
+            // if (is_skoarpuscle<SkoarpuscleExpr>(y)) {
+            //    flatten(y)
+            // }
+
+            vars[arg_name] = y;
+        }
+        else if (is_skoarpuscle<SkoarpusclePair>(x)) {
+            auto pair = skoarpuscle_ptr<SkoarpusclePair>(x);
+            vars[pair->val.first] = pair->val.second;
+        }
+        else {
+            vars[arg_name] = x;
+        }
+    }
+
+    minstrel->fairy->pop_noating();
 }
-
 
 void SkoarKoar::push_state() {
 	
 	auto state = make_shared<SkoarDic>();
-	auto projections = make_shared<ListOfSkoarProjections>();
+	auto projections = make_shared<ListOfSkoarpionProjections>();
 
-	state_stack->push_back(state);
+	state_stack.push_back(state);
 
-	//(*state)[&wstring(L"colons_burned")] = new SkoarpuscleList(new list<SkoarNoad *>());
-	//(*state)[&wstring(L"al_fine")] = new SkoarpuscleFalse();
-	//(*state)[&wstring(L"projections")] = new SkoarpuscleProjections(projections);
+	(*state)[L"colons_burned"] = make_shared<SkoarpuscleList>();
+	(*state)[L"al_fine"]       = make_skoarpuscle(false);
+	(*state)[L"projections"]   = make_shared<SkoarpuscleProjections>(projections);
 
-	stack->push_back(make_shared<SkoarDic>());
+	stack.push_back(make_shared<SkoarDic>());
 	
 }
 
 void SkoarKoar::pop_state() {
-	stack->pop_back();
-	state_stack->pop_back();
+	stack.pop_back();
+	state_stack.pop_back();
 }
 
 void SkoarKoar::do_skoarpion(
 	SkoarpionPtr skoarpion,
 	SkoarMinstrelPtr minstrel,
 	list<SkoarString> &msg_arr,
-	ListOfSkoarpusclesPtr args) {
+	SkoarpusclePtr args_provided) {
 	
 	SkoarNoadPtr subtree;
-	SkoarProjectionPtr projection = nullptr;
-	map<SkoarString, shared_ptr<SkoarpuscleProjection>> projections;
+	SkoarpionProjectionPtr projection = nullptr;
+	map<SkoarString, SkoarpionProjectionPtr> projections;
 	SkoarString msg_name;
 	bool inlined;
 
 	// default behaviour (when unmessaged)
 	if (msg_arr.empty()) {
-		//msg_arr.emplace_back(wstring(L"block"));
+		msg_arr.push_back(L"block");
 	}
 
 	msg_name = msg_arr.front();
 
-	inlined = (msg_name == SkoarString(L"inline"));
+	inlined = (msg_name == L"inline");
 	if (inlined == false) {
-		this->push_state();
+		push_state();
+        minstrel->fairy->push_times_seen();
 	}
 
 	// load arg values into their names
-	set_args(minstrel, skoarpion->args_spec, args);
+	set_args(minstrel, skoarpion->arg_list, args_provided);
 
 	//projections = state_at(wstring(L"projections"));
 	if (skoarpion->name.size() > 0) {
-		//projection = projections[*skoarpion->name];
+		projection = projections[skoarpion->name];
 
 		// start a new one if we haven't seen it
 		if (projection == nullptr) {
-			projection = skoarpion->projection(name);
-			//projections[*skoarpion->name] = projection;
+			projection = Skoarpion::projection(skoarpion, name);
+			projections[skoarpion->name] = projection;
 		}
 	} 
 	else {
-		//projection = skoarpion->projection;
+		projection = Skoarpion::projection(skoarpion, name);
 	}
 
 	subtree = projection->performMsg(msg_arr);
@@ -181,13 +215,14 @@ void SkoarKoar::do_skoarpion(
 	this->nav_loop(subtree, projection, minstrel, inlined);
 
 	if (inlined == false) {
-		this->pop_state();
+		pop_state();
+        minstrel->fairy->pop_times_seen();
 	}
 }
 
 void SkoarKoar::nav_loop(
 	SkoarNoadPtr dst,
-	SkoarProjectionPtr projection,
+	SkoarpionProjectionPtr projection,
 	SkoarMinstrelPtr minstrel,
 	bool inlined) {
 
@@ -200,15 +235,16 @@ void SkoarKoar::nav_loop(
 			auto here = projection->map_dst(dst);
 
 			subtree->inorder_from_here(
-				*here,
+				here,
 				[&](SkoarNoad* x) {
-				x->enter_noad(minstrel);
-			});
+				    x->enter_noad(minstrel);
+			    }
+            );
 
-			throw new SkoarNav(SkoarNav::DONE);
+			throw SkoarNav(SkoarNav::DONE);
 		}
-		catch (SkoarNav *nav_result) {
-			switch (nav_result->code) {
+		catch (SkoarNav &nav_result) {
+			switch (nav_result.code) {
 
 			case SkoarNav::DONE:
 				running = false;
@@ -218,41 +254,40 @@ void SkoarKoar::nav_loop(
 				break;
 
 			case SkoarNav::DA_CAPO:
-				this->bubble_up_nav(nav_result, inlined);
+				bubble_up_nav(nav_result, inlined);
 				break;
 
 			case SkoarNav::SEGNO:
-				/*dst = this->state_at(L"segno_seen");
+				/*dst = state_at(L"segno_seen");
 
 				if ((dst !? (_->skoap)) != subtree->skoap) {
-					this->bubble_up_nav(nav_result, inlined);
+					bubble_up_nav(nav_result, inlined);
 				};*/
 				break;
 
 			case SkoarNav::COLON:
-				//dst = this->state_at(L"colon_seen");
+				//dst = state_at(L"colon_seen");
 
 				//if ((dst !? (_->skoap)) != subtree->skoap) {
-				this->bubble_up_nav(nav_result, inlined);
+				//   bubble_up_nav(nav_result, inlined);
 				//};
 				break;
 
 			case SkoarNav::FINE:
-				this->bubble_up_nav(nav_result, inlined);
+				bubble_up_nav(nav_result, inlined);
 				break;
 			};
 
-			delete nav_result;
 		}
 	}
 }
 
-void SkoarKoar::bubble_up_nav(SkoarNav *nav, bool inlined) {
+void SkoarKoar::bubble_up_nav(SkoarNav &nav, bool inlined) {
 	
 	// the nav throw will abort do_skoarpion,
 	// we have to clean up here.
 	if (inlined == false) {
-		this->pop_state();
+		pop_state();
 	}
 
 	throw nav;

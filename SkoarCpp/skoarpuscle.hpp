@@ -403,9 +403,9 @@ public:
 
 class SkoarpusclePair : public Skoarpuscle {
 public:
-    const pair<SkoarpusclePtr, SkoarpusclePtr> val;
+    const pair<SkoarString, SkoarpusclePtr> val;
 
-    SkoarpusclePair(SkoarpusclePtr, SkoarpusclePtr);
+    SkoarpusclePair(SkoarString, SkoarpusclePtr);
     void assign(SkoarMinstrelPtr);
 };
 

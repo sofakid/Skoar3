@@ -1128,7 +1128,7 @@ SkoarpuscleHashLevel::SkoarpuscleHashLevel(SkoarString lex) :
 }
 
 // --- SkoarpusclePair ---------------------------------------------------------
-SkoarpusclePair::SkoarpusclePair(SkoarpusclePtr k, SkoarpusclePtr v) :
+SkoarpusclePair::SkoarpusclePair(SkoarString k, SkoarpusclePtr v) :
     val(make_pair(k,v))
 {}
 

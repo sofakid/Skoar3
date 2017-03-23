@@ -30,3 +30,23 @@ inline bool is_skoarpuscle(SkoarpusclePtr p) {
 
     return (typeid(*p) == typeid(T));
 }
+
+// move this to lex.hpp after it works
+
+template <ESkoarToke::Kind T>
+inline bool is_toke(SkoarToke *p) {
+    if (p == nullptr)
+        return false;
+
+    return (p->kind == T);
+}
+
+/*
+template <typename S, typename R>
+R* flatten_skoarpuscle(SkoarpusclePtr p) {
+    if (is_skoarpuscle<S>(p)) {
+        return &(skoarpuscle_ptr<S>(p)->val);
+    }
+    return nullptr;
+}
+*/

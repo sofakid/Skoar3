@@ -18,7 +18,7 @@ SkoarParseException::SkoarParseException() {
 	sWhat = SkoarString(L"Parse fail.");
 }
 
-SkoarParseException::SkoarParseException(wstring s, SkoarNoadPtr noad) :
+SkoarParseException::SkoarParseException(SkoarString s, SkoarNoadPtr noad) :
     SkoarError(s), noad(noad) {
 }
 

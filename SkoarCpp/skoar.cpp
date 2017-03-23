@@ -53,7 +53,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 	tree = nullptr;
 	auto parser = SkoarParser(&toker);
 
-	all_voice = make_shared<SkoarKoar>(SkoarString(L"all"));
+	all_voice = make_shared<SkoarKoar>(this, SkoarString(L"all"));
 	voices[L"all"] = all_voice;
 
 	//skoarpions = List[];
@@ -106,7 +106,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 	log->i("---< Decorated Skoar Tree >---");
 	tree->log_tree(log);
 
-	//draw_skoarpions();
+	draw_skoarpions();
 
 	log->i("+++ Skoar Parsed +++");// +tree->draw_tree());
 
@@ -146,13 +146,13 @@ void Skoar::decorate() {
 // ----
 
 // creates a new one if needed
-SkoarKoarPtr Skoar::get_voice(SkoarString &k) {
+SkoarKoarPtr Skoar::get_voice(const SkoarString &k) {
 	SkoarKoarPtr voice = voices[k];
 	if (voice != nullptr) {
         return voice;
 	}
 
-    voice = make_shared<SkoarKoar>(k);
+    voice = make_shared<SkoarKoar>(this, k);
 	voices[k] = voice;
 
 	return voice;
@@ -186,7 +186,7 @@ void Skoar::draw_skoarpions() {
 		//"Projections: ".postln;
 		for (auto pairs : voices) {
 			auto koar_name = pairs.first;
-			//auto projection = x->projection(koar_name);
+			auto projection = Skoarpion::projection(x, koar_name);
 
 			//projection->block->draw_tree();
 		}

@@ -7,6 +7,7 @@
 #include "toker.hpp"
 #include "noad.hpp"
 #include "styles.hpp"
+#include "koar.hpp"
 
 #include "memories.hpp"
 
@@ -26,12 +27,12 @@ SkoarNoad::SkoarNoad(SkoarString &nameArg, SkoarNoadPtr parentArg, const ESkoarN
     ++SkoarMemories.Noads;
 }
 
-SkoarNoadPtr SkoarNoad::New(wstring &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
+SkoarNoadPtr SkoarNoad::New(SkoarString &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
 {
-    SkoarNoadPtr x = std::make_shared<SkoarNoad>(nameArg, parentArg, ESkoarNoad::toke, toke->style);
+    SkoarNoadPtr x = make_shared<SkoarNoad>(nameArg, parentArg, ESkoarNoad::toke, toke->style);
     x->skoarce = &toke->lexeme;
     x->size = toke->size;
-    x->toke = std::move(toke);
+    x->toke = move(toke);
 
     return x;
 }
@@ -41,12 +42,15 @@ SkoarNoadPtr SkoarNoad::NewArtificial(SkoarString &nameArg, SkoarNoadPtr parentA
     return SkoarNoad::New<ESkoarNoad::artificial>(nameArg, parentArg);
 }
 
-
 SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg, SkoarNoadPtr parentArg)
 {
     return SkoarNoad::New<ESkoarNoad::artificial>(SkoarString(nameArg), parentArg);
 }
 
+SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg)
+{
+    return SkoarNoad::New<ESkoarNoad::artificial>(SkoarString(nameArg), nullptr);
+}
 
 SkoarNoad::~SkoarNoad() {
     --SkoarMemories.Noads;
@@ -70,17 +74,17 @@ void SkoarNoad::clear() {
     });
 }
 
-wstring *SkoarNoad::asString() {
+SkoarString *SkoarNoad::asString() {
     if (skoarce == nullptr)
-        return new wstring(name + L": nullptr");
+        return new SkoarString(name + L": nullptr");
 
-	return new wstring(name + L": " + *skoarce);
+	return new SkoarString(name + L": " + *skoarce);
 }
 
 // -------------------
 // decorating the tree
 // -------------------
-void SkoarNoad::decorate_zero(wstring *v, void *s, list<int> &parent_address, int i) {
+void SkoarNoad::decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &parent_address, SkoarInt i) {
 
 	if (voice == nullptr) {
 		voice = v;
@@ -91,6 +95,7 @@ void SkoarNoad::decorate_zero(wstring *v, void *s, list<int> &parent_address, in
 		v = voice;
 	}
 
+    // decorate_zero starts with an empty address
 	address.clear();
 	skoap = s;
 
@@ -102,7 +107,7 @@ void SkoarNoad::decorate_zero(wstring *v, void *s, list<int> &parent_address, in
 
 }
 
-void SkoarNoad::decorate(wstring *v, void *s, list<int> &parent_address, int i) {
+void SkoarNoad::decorate(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &parent_address, SkoarInt i) {
 
 	if (voice == nullptr) {
 		voice = v;
@@ -112,6 +117,7 @@ void SkoarNoad::decorate(wstring *v, void *s, list<int> &parent_address, int i) 
 		v = voice;
 	}
 
+    // decorate starts with an existing address
 	address.push_back(i);
 	address.splice(address.end(), parent_address);
 	skoap = s;
@@ -140,12 +146,12 @@ void SkoarNoad::add_noad(SkoarNoadPtr noad) {
 void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 	int n = 16;
 
-	wstring s = wstring(tab * 2, L' ');
+	SkoarString s = SkoarString(tab * 2, L' ');
 
 	//delete tabs;
 
 	if (voice != nullptr) {
-		s += *voice + L":";
+		s += voice->name + L":";
 	}
 	else {
 		s += L" novoice :";
@@ -156,9 +162,9 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 	}
 	s += name;// +L" __{ " + skoarce + L" }__";
 
-	//s += L"\n";
+	s += L"\n";
 	
-	log->d(s);
+	log->i(s);
 
 	for (auto x : children) {
 		x->log_tree(log, tab + 1);
@@ -166,15 +172,15 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 
 }
 
-wstring SkoarNoad::draw_tree(int tab)	{
+SkoarString SkoarNoad::draw_tree(int tab)	{
 	int n = 16;
 	
-	wstring s = wstring(tab * 2, L' ');
+	SkoarString s = SkoarString(tab * 2, L' ');
 	
 	//delete tabs;
 
 	if (voice != nullptr) {
-		s += *voice + L":";
+		s += voice->name + L":";
 	}
 	else {
 		s += L" novoice :";
@@ -193,7 +199,7 @@ wstring SkoarNoad::draw_tree(int tab)	{
 
 	return s;
 
-	//wstring sa = skoap->asString() + ":";
+	//SkoarString sa = skoap->asString() + ":";
 	//stirng *sv;
 
 	/*address.reverseDo{
@@ -285,14 +291,14 @@ void SkoarNoad::inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g) {
 
 // - debug here if it's crashing while performing the skoar
 // - modifies &here
-void SkoarNoad::inorder_from_here(list<int> &here, SpellOfNoads f) {
+void SkoarNoad::inorder_from_here(list<SkoarInt> &here, SpellOfNoads f) {
 
 	if (here.empty())
 		inorder(f);
 	
 	else {
-		int i = 0;
-		int j = here.back();
+		SkoarInt i = 0;
+        SkoarInt j = here.back();
 		here.pop_back();
 		
 		if (!children.empty())

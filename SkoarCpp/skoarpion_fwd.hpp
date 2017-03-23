@@ -1,4 +1,4 @@
 #pragma once
 
 class Skoarpion;
-class SkoarProjection;
+class SkoarpionProjection;

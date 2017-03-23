@@ -1,6 +1,6 @@
 #pragma once
 #include "skoarpuscle.hpp"
-
+#include "event.hpp"
 
 class SkoarpuscleSkoarpion : public Skoarpuscle {
 public:
@@ -22,25 +22,35 @@ public:
 
 class SkoarpuscleSkoarpionSig : public Skoarpuscle {
 public:
+    SkoarString name;
+    SkoarpusclePtr arg_list; // is a SkoarpuscleArgList
     SkoarpuscleSkoarpionSig(SkoarNoadPtr);
 };
 
 class SkoarpuscleArgExpr : public Skoarpuscle {
 public:
-    SkoarpuscleArgExpr();
+    SkoarString name;
+    SkoarpusclePtr expr; // is a SkoarpuscleExpr
+    SkoarpuscleArgExpr(SkoarNoadPtr);
 };
 
 class SkoarpuscleArgList : public Skoarpuscle {
 public:
+    SkoarDic args_dict;
+    list<SkoarString> args_names;
+
     SkoarpuscleArgList(SkoarNoadPtr);
+
+    void on_enter(SkoarMinstrelPtr) override;
+
 };
 
 class SkoarpuscleProjection : public Skoarpuscle {
 public:
-    SkoarpuscleProjection(SkoarProjectionPtr);
+    SkoarpuscleProjection(SkoarpionProjectionPtr);
 };
 
 class SkoarpuscleProjections : public Skoarpuscle {
 public:
-    SkoarpuscleProjections(ListOfSkoarProjectionsPtr);
+    SkoarpuscleProjections(ListOfSkoarpionProjectionsPtr);
 };

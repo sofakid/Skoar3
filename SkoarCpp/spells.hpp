@@ -18,8 +18,9 @@ typedef shared_ptr<Skoarpuscle> SkoarpusclePtr;
 typedef shared_ptr<SkoarDic> SkoarDicPtr;
 typedef shared_ptr<SkoarMinstrel> SkoarMinstrelPtr;
 typedef shared_ptr<Skoarpion> SkoarpionPtr;
-typedef shared_ptr<SkoarProjection> SkoarProjectionPtr;
+typedef shared_ptr<SkoarpionProjection> SkoarpionProjectionPtr;
 typedef shared_ptr<SkoarKoar> SkoarKoarPtr;
+typedef shared_ptr<SkoarEvent> SkoarEventPtr;
 
 
 typedef list<SkoarDicPtr> ListOfSkoarDics;
@@ -31,8 +32,8 @@ typedef shared_ptr<ListOfSkoarpuscles> ListOfSkoarpusclesPtr;
 typedef list<SkoarpionPtr> ListOfSkoarpions;
 typedef shared_ptr<ListOfSkoarpions> ListOfSkoarpionsPtr;
 
-typedef list<SkoarProjectionPtr> ListOfSkoarProjections;
-typedef shared_ptr<ListOfSkoarProjections> ListOfSkoarProjectionsPtr;
+typedef list<SkoarpionProjectionPtr> ListOfSkoarpionProjections;
+typedef shared_ptr<ListOfSkoarpionProjections> ListOfSkoarpionProjectionsPtr;
 
 typedef wstring SkoarString;
 
