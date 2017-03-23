@@ -16,23 +16,25 @@ public:
     SkoarKoarPtr koar;
     SkoarKoarPtr all_voice;
 
+    const SpellOfHappening& happenSpell;
+
     //SkoarControls controls;
 
     SkoarEventStreamPtr event_stream; //kek save me.
 
     // don't use this, use SkoarMinstrel::New.
-    SkoarMinstrel(SkoarString, SkoarKoarPtr, Skoar*);
+    SkoarMinstrel(SkoarString, SkoarKoarPtr, Skoar*, const SpellOfHappening& happenSpell);
 
     ~SkoarMinstrel();
 
     // create and initialize minstrel, return a shared_ptr
-    static SkoarMinstrelPtr New(SkoarString name, SkoarKoarPtr koar, Skoar* skoar);
+    static SkoarMinstrelPtr New(SkoarString name, SkoarKoarPtr koar, Skoar* skoar, const SpellOfHappening& happenSpell);
     static void EventStream(SkoarMinstrelPtr m);
     
-    SkoarEventPtr nextEvent();
-    SkoarEventStreamPtr pfunk();
-
     void reset_colons();
+
+    void happen(SkoarEventPtr);
+
 
 };
 
@@ -45,10 +47,8 @@ public:
 
     ListOfMinstrels minstrels;
     //SkoarTroll troll;
-    
-    Skoarchestra(Skoar*);
+    const SpellOfHappening& happenSpell;
 
-    SkoarEventStreamPtr eventStream();
-    SkoarEventStreamPtr pfunk();
+    Skoarchestra(Skoar*, const SpellOfHappening&);
 
 };

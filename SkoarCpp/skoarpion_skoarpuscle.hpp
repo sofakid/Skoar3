@@ -4,6 +4,7 @@
 
 class SkoarpuscleSkoarpion : public Skoarpuscle {
 public:
+    void asString(wostream &out) override { out << "SkoarpuscleSkoarpion" << " :: " ; }
     const SkoarpionPtr val;
     SkoarpusclePtr args;
 
@@ -23,6 +24,7 @@ public:
 
 class SkoarpuscleSkoarpionSig : public Skoarpuscle {
 public:
+    void asString(wostream &out) override { out << "SkoarpuscleSkoarpionSig" << " :: " ; }
     SkoarString name;
     SkoarpusclePtr arg_list; // is a SkoarpuscleArgList
     SkoarpuscleSkoarpionSig(SkoarNoadPtr);
@@ -30,6 +32,7 @@ public:
 
 class SkoarpuscleArgExpr : public Skoarpuscle {
 public:
+    void asString(wostream &out) override { out << "SkoarpuscleArgExpr" << " :: " ; }
     SkoarString name;
     SkoarpusclePtr expr; // is a SkoarpuscleExpr
     SkoarpuscleArgExpr(SkoarNoadPtr);
@@ -37,6 +40,7 @@ public:
 
 class SkoarpuscleArgList : public Skoarpuscle {
 public:
+    void asString(wostream &out) override { out << "SkoarpuscleArgList" << " :: " ; }
     SkoarDic args_dict;
     list<SkoarString> args_names;
 
@@ -48,10 +52,12 @@ public:
 
 class SkoarpuscleProjection : public Skoarpuscle {
 public:
+    void asString(wostream &out) override { out << "SkoarpuscleProjection" << " :: " ; }
     SkoarpuscleProjection(SkoarpionProjectionPtr);
 };
 
 class SkoarpuscleProjections : public Skoarpuscle {
 public:
+    void asString(wostream &out) override { out << "SkoarpuscleProjections" << " :: " ; }
     SkoarpuscleProjections(ListOfSkoarpionProjectionsPtr);
 };

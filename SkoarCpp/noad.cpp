@@ -161,23 +161,26 @@ void SkoarNoad::add_noad(SkoarNoadPtr noad) {
 void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 	int n = 16;
 
+    wostringstream out;
+
 	SkoarString s = SkoarString(tab * 2, L' ');
 
 	//delete tabs;
 
 	if (voice != nullptr) {
-		s += voice->name + L":";
+		out << voice->name + L":" << s;
 	}
 	else {
-		s += L" novoice :";
+		out << L" novoice :" << s;
 	}
 
+    out << name;
 	if (skoarpuscle != nullptr) {
-		s += skoarpuscle->asString() + L" - ";
+        out << " :: ";
+		skoarpuscle->asString(out);
 	}
-	s += name;// +L" __{ " + skoarce + L" }__";
 
-	log->i(s);
+	log->i(out.str());
 
 	for (auto x : children) {
 		x->log_tree(log, tab + 1);
@@ -185,7 +188,7 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 
 }
 
-SkoarString SkoarNoad::draw_tree(int tab)	{
+void SkoarNoad::draw_tree(wostringstream &out, int tab)	{
 	int n = 16;
 	
 	SkoarString s = SkoarString(tab * 2, L' ');
@@ -193,24 +196,22 @@ SkoarString SkoarNoad::draw_tree(int tab)	{
 	//delete tabs;
 
 	if (voice != nullptr) {
-		s += voice->name + L":";
+		out << voice->name << L":" << s;
 	}
 	else {
-		s += L" novoice :";
+        out << L" novoice :" << s;
 	}
+
+    out << name;
 
 	if (skoarpuscle != nullptr) {
-		s += skoarpuscle->asString() + L" - ";
+        out << " - " << *skoarpuscle;
 	}
-	s += name;// +L" __{ " + skoarce + L" }__";
-
-	s += L"\n";
+    out << L"\n";
 
 	for (auto x : children) {
-		s += x->draw_tree(tab + 1);
+		x->draw_tree(out, tab + 1);
 	}
-
-	return s;
 
 	//SkoarString sa = skoap->asString() + ":";
 	//stirng *sv;
@@ -242,7 +243,6 @@ SkoarString SkoarNoad::draw_tree(int tab)	{
 	};
 	};
 	*/
-	return s;
 }
 
 

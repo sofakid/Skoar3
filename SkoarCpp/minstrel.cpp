@@ -3,12 +3,13 @@
 
 // --- SkoarMinstrel -------------------------------------
 
-SkoarMinstrel::SkoarMinstrel(SkoarString name, SkoarKoarPtr koar, Skoar* skoar) :
+SkoarMinstrel::SkoarMinstrel(SkoarString name, SkoarKoarPtr koar, Skoar* skoar, const SpellOfHappening& spell) :
     skoar(skoar),
     koar(koar),
     fairy(nullptr),
     event_stream(nullptr),
-    all_voice(skoar->all_voice)
+    all_voice(skoar->all_voice),
+    happenSpell(spell)
 {
     // some defaults
     koar->put(L"octave", make_skoarpuscle(5));
@@ -34,8 +35,8 @@ SkoarMinstrel::~SkoarMinstrel() {
     skoar = nullptr;
 }
 
-SkoarMinstrelPtr SkoarMinstrel::New(SkoarString name, SkoarKoarPtr koar, Skoar* skoar) {
-    auto m = make_shared<SkoarMinstrel>(name, koar, skoar);
+SkoarMinstrelPtr SkoarMinstrel::New(SkoarString name, SkoarKoarPtr koar, Skoar* skoar, const SpellOfHappening& spell) {
+    auto m = make_shared<SkoarMinstrel>(name, koar, skoar, spell);
     m->fairy = make_shared<SkoarFairy>(L"$" + name, m);
     SkoarMinstrel::EventStream(m);
     return m;
@@ -44,7 +45,7 @@ SkoarMinstrelPtr SkoarMinstrel::New(SkoarString name, SkoarKoarPtr koar, Skoar* 
 void SkoarMinstrel::EventStream(SkoarMinstrelPtr m) {
     auto x = m->skoar->tree->next_skoarpuscle();
     auto skoarpion = skoarpuscle_ptr<SkoarpuscleSkoarpion>(x)->val;
-
+    
     auto f_event_stream = [=]() {
         auto running = false;
 
@@ -94,43 +95,31 @@ void SkoarMinstrel::EventStream(SkoarMinstrelPtr m) {
     };
 }
 
-SkoarEventPtr SkoarMinstrel::nextEvent() {
-    return nullptr;
-}
-
-SkoarEventStreamPtr SkoarMinstrel::pfunk() {
-    return nullptr;
-}
-
 void SkoarMinstrel::reset_colons() {
     //fairy->forget_that_you_have_seen(SkoarpuscleBars);
     //koar->state_put(L"colons_burned", make_shared<SkoarDic>());
 }
 
+void SkoarMinstrel::happen(SkoarEventPtr p) {
+    happenSpell(p);
+}
 
 
 // --- Skoarchestra ----------------------------------------
 
-Skoarchestra::Skoarchestra(Skoar* skoar) {
+Skoarchestra::Skoarchestra(Skoar* skoar, const SpellOfHappening& spell) :
+    happenSpell(spell)
+{
     if (skoar->voices.size() == 1) {
-        minstrels.push_back(SkoarMinstrel::New(L"all", skoar->all_voice, skoar));
+        minstrels.push_back(SkoarMinstrel::New(L"all", skoar->all_voice, skoar, happenSpell));
     }
     else {
         for (auto kv : skoar->voices) {
             auto v = kv.second;
-            minstrels.push_back(SkoarMinstrel::New(v->name, v, skoar));
+            minstrels.push_back(SkoarMinstrel::New(v->name, v, skoar, happenSpell));
         }
     }
     
     //minstrels.push_back(skoar->skoarsfjord->troll);
     skoar->running = minstrels.size();
 }
-
-SkoarEventStreamPtr Skoarchestra::eventStream() {
-    return nullptr;
-}
-
-SkoarEventStreamPtr Skoarchestra::pfunk() {
-    return nullptr;
-}
-

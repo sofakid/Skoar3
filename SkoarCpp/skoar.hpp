@@ -41,7 +41,7 @@ public:
 	void play();
 	void pskoar();
 	SkoarMinstrelPtr pvoice(SkoarString *voice_name);
-	void draw_skoarpions();
+	void draw_skoarpions(ISkoarLog *);
 
     void one_less_running();
 };

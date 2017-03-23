@@ -110,7 +110,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 	log->i("---< Decorated Skoar Tree >---");
 	tree->log_tree(log);
 
-	draw_skoarpions();
+	draw_skoarpions(log);
 
 	log->i("+++ Skoar Parsed +++");// +tree->draw_tree());
 
@@ -178,18 +178,21 @@ SkoarMinstrelPtr Skoar::pvoice(SkoarString *voice_name) {
     return nullptr; //make_shared<SkoarMinstrel>();// this->tree, voices[voice_name], this->pfunk());
 }
 
-void Skoar::draw_skoarpions() {
+void Skoar::draw_skoarpions(ISkoarLog *log) {
+    wostringstream stream;
+
 	for (auto x : skoarpions) {
-		//x->post_tree();
+		x->draw_tree(stream);
 
 		//"Projections: ".postln;
 		for (auto pairs : voices) {
 			auto koar_name = pairs.first;
 			auto projection = Skoarpion::projection(x, koar_name);
 
-			//projection->block->draw_tree();
+			projection->proj->draw_tree(stream);
 		}
 	}
+    log->i("draw_skoarpions\n", stream.str());
 }
 
 void Skoar::one_less_running() {

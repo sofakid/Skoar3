@@ -103,6 +103,7 @@ private:
 
 class SkoarpuscleFairy : public Skoarpuscle {
 public:
-	SkoarpuscleFairy();
+    void asString(wostream &out) override { out << "SkoarpuscleFairy" << " :: $" ; }
+    SkoarpuscleFairy();
 
 };

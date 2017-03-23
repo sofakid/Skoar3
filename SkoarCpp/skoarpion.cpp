@@ -167,6 +167,29 @@ SkoarpionProjectionPtr Skoarpion::projection(SkoarpionPtr skoarpion, SkoarString
 	return make_shared<SkoarpionProjection>(skoarpion, koar_name);
 }
 
+void Skoarpion::draw_tree(wostringstream &out) {
+    out << "--< Skoarpion " << name << " >---\n";
+
+    if (is_skoarpuscle<SkoarpuscleArgList>(arg_list)) {
+        out << "arg_list: ";
+        arg_list->asString(out);
+        out << "\n";
+
+        auto listy = skoarpuscle_ptr<SkoarpuscleArgList>(arg_list)->args_names;
+
+        for (auto x : listy ) {
+            out << x << " ";
+        }
+
+        out << "\n";
+    }
+
+    if (body != nullptr) {
+        body->draw_tree(out);
+    }
+
+}
+
 // --- SkoarpionProjection ------------------------------------------------
 
 SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koar_name) :
@@ -224,4 +247,3 @@ SkoarNoadAddress SkoarpionProjection::map_dst(SkoarNoadPtr dst) {
     addr.push_back(skip_to[j]);
     return addr;
 }
-

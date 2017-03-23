@@ -87,7 +87,7 @@ public:
 	// showing the tree
 	// ----------------
 	void log_tree(ISkoarLog *log, int tab = 1);
-	SkoarString draw_tree(int tab = 1);
+	void draw_tree(wostringstream &out, int tab = 1);
 	
 	// -----------------
 	// climbing the Tree

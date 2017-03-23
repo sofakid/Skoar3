@@ -34,8 +34,7 @@ public:
 
 	static SkoarpionProjectionPtr projection(SkoarpionPtr skoarpion, SkoarString);
 
-    //void log_tree();
-    //SkoarString draw_tree();
+    void draw_tree(wostringstream &stream);
 };
 
 
@@ -54,6 +53,8 @@ public:
     SkoarNoadPtr   meditation();
     */
     SkoarNoadAddress map_dst(SkoarNoadPtr);
+
+    void draw_tree(wostringstream &stream);
 
 private:
     SkoarNoadPtr body;
