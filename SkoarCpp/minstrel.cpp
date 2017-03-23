@@ -103,19 +103,27 @@ SkoarEventStreamPtr SkoarMinstrel::pfunk() {
 }
 
 void SkoarMinstrel::reset_colons() {
-
+    //fairy->forget_that_you_have_seen(SkoarpuscleBars);
+    //koar->state_put(L"colons_burned", make_shared<SkoarDic>());
 }
 
 
 
 // --- Skoarchestra ----------------------------------------
 
-Skoarchestra::Skoarchestra(Skoar*) {
-
-}
-
-Skoarchestra::~Skoarchestra() {
-
+Skoarchestra::Skoarchestra(Skoar* skoar) {
+    if (skoar->voices.size() == 1) {
+        minstrels.push_back(SkoarMinstrel::New(L"all", skoar->all_voice, skoar));
+    }
+    else {
+        for (auto kv : skoar->voices) {
+            auto v = kv.second;
+            minstrels.push_back(SkoarMinstrel::New(v->name, v, skoar));
+        }
+    }
+    
+    //minstrels.push_back(skoar->skoarsfjord->troll);
+    skoar->running = minstrels.size();
 }
 
 SkoarEventStreamPtr Skoarchestra::eventStream() {

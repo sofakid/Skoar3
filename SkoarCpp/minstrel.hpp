@@ -47,7 +47,6 @@ public:
     //SkoarTroll troll;
     
     Skoarchestra(Skoar*);
-    ~Skoarchestra();
 
     SkoarEventStreamPtr eventStream();
     SkoarEventStreamPtr pfunk();
