@@ -210,7 +210,7 @@ void SkoarKoar::do_skoarpion(
 		projection = Skoarpion::projection(skoarpion, name);
 	}
 
-	subtree = projection->performMsg(msg_arr);
+	subtree = projection->proj;
 
 	this->nav_loop(subtree, projection, minstrel, inlined);
 

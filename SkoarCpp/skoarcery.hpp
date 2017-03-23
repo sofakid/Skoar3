@@ -7,11 +7,12 @@ using namespace std;
 #include <regex>
 #include <map>
 #include <set>
-#include <memory>
+#include <vector>
+#include <exception>
 
+#include <memory>
 #include <typeinfo>
 #include <type_traits>
-#include <exception>
 #include <functional>
 
 #include "logging.hpp"

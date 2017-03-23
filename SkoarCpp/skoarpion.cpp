@@ -5,6 +5,7 @@
 #include "skoarpuscle.hpp"
 #include "skoar.hpp"
 #include "all_skoarpuscles.hpp"
+#include "koar.hpp"
 
 // --- Skoarpion ------------------------------------------------
 SkoarpionPtr Skoarpion::NewFromSkoar(Skoar* skoar) {
@@ -56,7 +57,7 @@ void Skoarpion::init_from_skoar(Skoar* skoar) {
         }
     }
 
-    list<SkoarInt> address;
+    SkoarNoadAddress address;
     body->decorate_zero(skoar->all_voice, body, address, 0);
     n = body->size;
 }
@@ -76,7 +77,7 @@ void Skoarpion::init_from_subtree(Skoar* skoar, SkoarNoadPtr subtree) {
         }
     }
 
-    list<SkoarInt> address;
+    SkoarNoadAddress address;
     body->decorate_zero(skoar->all_voice, body, address, 0);
     n = subtree->size;
 }
@@ -145,18 +146,68 @@ void Skoarpion::init_from_noad(Skoar* skoar, SkoarNoadPtr noad) {
 
     for (auto sec : sections) {
         auto i = 0;
-        list<SkoarInt> parent_address;
+        SkoarNoadAddress parent_address;
         sec->decorate_zero(skoar->all_voice, sec, parent_address, i);
     }
 
-    list<SkoarInt> address;
     body = sections.front(); // really? in skoar.sc it's sections[0].. wha?
     n = body->size;
 }
 
-
-
-// --- SkoarpionProjection ------------------------------------------------
 SkoarpionProjectionPtr Skoarpion::projection(SkoarpionPtr skoarpion, SkoarString koar_name) {
 	return make_shared<SkoarpionProjection>(skoarpion, koar_name);
 }
+
+// --- SkoarpionProjection ------------------------------------------------
+
+SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koar_name) :
+    body(nullptr),
+    proj(SkoarNoad::NewArtificial(L"projection"))
+{
+    auto kids = skoarpion->body->children;
+
+    skip_to.reserve(kids.size());
+    size_t i = 0;
+
+    for (auto x : kids) {
+        auto s = x->voice->name;
+        if ((s == koar_name) || (s == L"all")) {
+            auto addr = x->address;
+            auto m = addr.size();
+
+            if (m > 0) {
+                skip_to[addr[m - 1]] = i;
+            }
+            ++i;
+
+            // don't use add_noad, it corrupts noad.
+            proj->children.push_back(x);
+            proj->skoap = x->skoap;
+        }
+    }
+
+    // need these?
+    //arr = proj->children;
+    //i = 0;
+    //n = arr.size();
+}
+
+
+/*list<SkoarInt> get_skip_to();
+SkoarString    get_name();
+SkoarNoadPtr   block();
+SkoarNoadPtr   in_line();
+SkoarNoadPtr   meditation();
+*/
+SkoarNoadAddress SkoarpionProjection::map_dst(SkoarNoadPtr dst) {
+    auto addr = dst->address;
+    
+    if (addr.empty())
+        return addr;
+
+    auto j = addr.back();
+    addr.pop_back();
+    addr.push_back(skip_to[j]);
+    return addr;
+}
+

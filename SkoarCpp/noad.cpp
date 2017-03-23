@@ -11,6 +11,21 @@
 
 #include "memories.hpp"
 
+/*
+// --- SkoarNoadAddress ---------------------------------------------------------
+SkoarNoadAddress::SkoarNoadAddress(size_t n) {
+    data.reserve(n);
+}
+
+SkoarNoadAddress::SkoarNoadAddress(const SkoarNoadAddress &other) {
+    data = other.data;
+}
+
+SkoarInt& SkoarNoadAddress::operator[] (size_t i) {
+    return data[i];
+}
+*/
+
 // ==========================
 // The Parse Tree - SkoarNoad
 // ==========================
@@ -84,7 +99,7 @@ SkoarString *SkoarNoad::asString() {
 // -------------------
 // decorating the tree
 // -------------------
-void SkoarNoad::decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &parent_address, SkoarInt i) {
+void SkoarNoad::decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i) {
 
 	if (voice == nullptr) {
 		voice = v;
@@ -107,7 +122,7 @@ void SkoarNoad::decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &pa
 
 }
 
-void SkoarNoad::decorate(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &parent_address, SkoarInt i) {
+void SkoarNoad::decorate(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i) {
 
 	if (voice == nullptr) {
 		voice = v;
@@ -118,8 +133,8 @@ void SkoarNoad::decorate(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &parent_
 	}
 
     // decorate starts with an existing address
-	address.push_back(i);
-	address.splice(address.end(), parent_address);
+    address = parent_address;
+	address.emplace(address.begin(), i);
 	skoap = s;
 
 	i = 0;
@@ -291,7 +306,7 @@ void SkoarNoad::inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g) {
 
 // - debug here if it's crashing while performing the skoar
 // - modifies &here
-void SkoarNoad::inorder_from_here(list<SkoarInt> &here, SpellOfNoads f) {
+void SkoarNoad::inorder_from_here(SkoarNoadAddress &here, SpellOfNoads f) {
 
 	if (here.empty())
 		inorder(f);

@@ -12,10 +12,10 @@ public:
 	SkoarDic();
     ~SkoarDic();
 
-	SkoarpusclePtr SkoarDic::operator[](SkoarString *key);
-    SkoarpusclePtr SkoarDic::operator[](SkoarString &key);
-    SkoarpusclePtr SkoarDic::operator[](const SkoarString &key);
-    SkoarpusclePtr SkoarDic::operator[](const wchar_t *key);
+	SkoarpusclePtr operator[](SkoarString *key);
+    SkoarpusclePtr operator[](SkoarString &key);
+    SkoarpusclePtr operator[](const SkoarString &key);
+    SkoarpusclePtr operator[](const wchar_t *key);
 };
 
 class SkoarEvent : SkoarDic {

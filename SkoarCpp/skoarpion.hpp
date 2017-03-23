@@ -8,6 +8,8 @@
 
 #include "spells.hpp"
 
+#include "noad.hpp"
+
 class Skoarpion {
 public:
 
@@ -34,22 +36,14 @@ public:
     //SkoarString draw_tree();
 };
 
-/*
-class SkoarProjection {
-public:
-
-	SkoarNoadPtr performMsg(list<SkoarString> &msg_arr);
-
-	list<int> *map_dst(SkoarNoadPtr dst);
-};
-*/
 
 
 class SkoarpionProjection {
 public:
+    SkoarNoadPtr proj;
 
-    SkoarpionProjection(SkoarpionPtr, SkoarString) {
-    }
+    SkoarpionProjection(SkoarpionPtr, SkoarString);
+    
 
     /*list<SkoarInt> get_skip_to();
     SkoarString    get_name();
@@ -57,21 +51,18 @@ public:
     SkoarNoadPtr   in_line();
     SkoarNoadPtr   meditation();
     */
-    list<SkoarInt> map_dst(SkoarNoadPtr) {
-        list<SkoarInt> out;
-        return out;
-    }
-
-    SkoarNoadPtr performMsg(list<SkoarString>&) {
-        return nullptr;
-    }
+    SkoarNoadAddress map_dst(SkoarNoadPtr);
 
 private:
     SkoarNoadPtr body;
-    SkoarNoadPtr proj;
+    
 
-    list<SkoarInt> skip_to;
+    SkoarNoadAddress skip_to;
 
+    // do we need these? from SkoarIteratoar
+    //list<SkoarNoadPtr> arr;
+    //size_t i;
+    //size_t n;
 
 
 };

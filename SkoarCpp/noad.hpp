@@ -8,13 +8,21 @@
 #include "spells.hpp"
 #include "styles.hpp"
 
+
+class SkoarNoadAddress : public vector<SkoarInt> {
+
+};
+
+
 // ==========================
 // The Parse Tree - SkoarNoad
 // ==========================
 class SkoarNoad {
 public:
 
-	list<SkoarInt>  address;      // a list code to find the noad quickly
+
+
+    SkoarNoadAddress address;     // a list code to find the noad quickly
     SkoarNoadPtr parent;          // the parent noad
 
 	list<SkoarNoadPtr> children;  // a list of child noads
@@ -67,8 +75,8 @@ public:
 	// -------------------
 	// decorating the tree
 	// -------------------
-	void decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &parent_address, SkoarInt i);
-	void decorate(SkoarKoarPtr v, SkoarNoadPtr s, list<SkoarInt> &parent_address, SkoarInt i);
+	void decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i);
+	void decorate(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i);
 
 	// ----------------
 	// growing the tree
@@ -95,10 +103,8 @@ public:
 	void inorder(SpellOfNoads f);
     void inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g);
 
-
-
 	// debug here if it's crashing while performing the skoar
-	void inorder_from_here(list<SkoarInt> &here, SpellOfNoads f);
+	void inorder_from_here(SkoarNoadAddress &here, SpellOfNoads f);
 	
 	// expect skoarpuscle
     SkoarpusclePtr next_skoarpuscle();
