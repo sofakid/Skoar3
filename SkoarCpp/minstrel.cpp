@@ -47,7 +47,6 @@ SkoarMinstrelPtr SkoarMinstrel::New(SkoarString name, SkoarKoarPtr koar, Skoar* 
     auto m = make_shared<SkoarMinstrel>(name, koar, skoar, spell);
     m->fairy = make_shared<SkoarFairy>(L"$" + name, m);
     SkoarMinstrel::EventStream(m);
-    m->start();
     return m;
 }
 
@@ -119,7 +118,6 @@ void SkoarMinstrel::happen(SkoarEventPtr p) {
 
 
 // --- Skoarchestra ----------------------------------------
-
 Skoarchestra::Skoarchestra(Skoar* skoar, const SpellOfHappening& spell) :
     happenSpell(spell)
 {
@@ -136,3 +134,5 @@ Skoarchestra::Skoarchestra(Skoar* skoar, const SpellOfHappening& spell) :
     //minstrels.push_back(skoar->skoarsfjord->troll);
     skoar->running = minstrels.size();
 }
+
+

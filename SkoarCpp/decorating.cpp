@@ -46,17 +46,17 @@ Skoarmantics::Skoarmantics() : table({
 
     {ESkoarNoad::skoar, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(Skoarpion::NewFromSkoar(skoar));
-        noad->children.clear();
+        noad->clear_children();
     }},
 
     {ESkoarNoad::skoarpion, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion>(Skoarpion::NewFromSkoarNoad(skoar, noad));
-        noad->children.clear();
+        noad->clear_children();
     }},
 
     {ESkoarNoad::meditation, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleMeditation>(skoar, noad);
-        noad->children.clear();
+        noad->clear_children();
     }},
 
     {ESkoarNoad::conditional, SpellOfSkoarmantics {
@@ -138,12 +138,12 @@ Skoarmantics::Skoarmantics() : table({
 
     {ESkoarNoad::loop, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleLoop>(skoar, noad);
-        noad->children.clear();
+        noad->clear_children();
     }},
 
     {ESkoarNoad::musical_keyword_misc, SpellOfSkoarmantics {
         noad->skoarpuscle = noad->next_skoarpuscle();
-        noad->children.clear();
+        noad->clear_children();
     }},
 
     {ESkoarNoad::cthulhu, SpellOfSkoarmantics {
@@ -162,7 +162,7 @@ Skoarmantics::Skoarmantics() : table({
 
         if (is_skoarpuscle<SkoarpuscleBars>(x)) {
             skoarpuscle_ptr<SkoarpuscleBars>(x)->noad = noad;
-            noad->children.clear();
+            noad->clear_children();
         }
 
     }},
@@ -211,7 +211,7 @@ Skoarmantics::Skoarmantics() : table({
 
     {ESkoarNoad::arg_expr, SpellOfSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleArgExpr>(noad);
-        noad->children.clear();
+        noad->clear_children();
     }},
 
     {ESkoarNoad::skrp_sig, SpellOfSkoarmantics {
@@ -224,7 +224,7 @@ Skoarmantics::Skoarmantics() : table({
         if (msg != nullptr) {
             if (is_skoarpuscle<SkoarpuscleList>(msg)) {
                 // i'm not sure what i want this to mean
-                noad->children.clear();
+                noad->clear_children();
             }
             else if (is_skoarpuscle<SkoarpuscleLoop>(msg)) {
                 noad->skoarpuscle = make_shared<SkoarpuscleLoopMsg>(msg);
@@ -234,7 +234,7 @@ Skoarmantics::Skoarmantics() : table({
                     loopy->foreach(listy);
                     loopy->on_enter(m);
                 };
-                noad->children.clear();
+                noad->clear_children();
             }
             else if (is_skoarpuscle<SkoarpuscleMsgNameWithArgs>(msg)) {
                 // we need the tree to have the same
