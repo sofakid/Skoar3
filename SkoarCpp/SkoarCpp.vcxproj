@@ -354,6 +354,7 @@
     <ClCompile Include="skoarpion.cpp" />
     <ClCompile Include="skoarpion_skoarpuscle.cpp" />
     <ClCompile Include="skoarpuscle.cpp" />
+    <ClCompile Include="skoarpuscle_as_string.cpp" />
     <ClCompile Include="skoarpuscle_structors.cpp" />
     <ClCompile Include="styles.cpp" />
     <ClCompile Include="toker.cpp" />

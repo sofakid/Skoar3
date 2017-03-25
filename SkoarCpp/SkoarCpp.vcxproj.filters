@@ -242,5 +242,8 @@
     <ClCompile Include="skoarpuscle_structors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="skoarpuscle_as_string.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
