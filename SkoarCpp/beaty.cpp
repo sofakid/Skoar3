@@ -8,6 +8,9 @@
 
 // --- SkoarpuscleDuration ------------------------------------------------
 SkoarpuscleDuration::SkoarpuscleDuration(SkoarToke *toke) {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarpuscle(L"Duration");
+#endif
     //val = toke->lexeme.length();
     auto s = toke->lexeme;
     auto n = s.length();
@@ -19,7 +22,18 @@ SkoarpuscleDuration::SkoarpuscleDuration(SkoarToke *toke) {
 
 SkoarpuscleDuration::SkoarpuscleDuration(SkoarInt min, SkoarFloat sec) :
     minutes(min),
-    seconds(sec) {}
+    seconds(sec) 
+{
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarpuscle(L"Duration");
+#endif
+}
+
+SkoarpuscleDuration::~SkoarpuscleDuration() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocSkoarpuscle(L"Duration");
+#endif
+}
 
 void SkoarpuscleDuration::on_enter(SkoarMinstrelPtr m) {
     m->fairy->impress(make_shared<SkoarpuscleDuration>(minutes, seconds));
@@ -28,7 +42,16 @@ void SkoarpuscleDuration::on_enter(SkoarMinstrelPtr m) {
 
 // --- SkoarpuscleExactBeat -----------------------------------------------
 SkoarpuscleExactBeat::SkoarpuscleExactBeat(SkoarToke *toke) {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarpuscle(L"ExactBeat");
+#endif
     impressionable = false;
+}
+
+SkoarpuscleExactBeat::~SkoarpuscleExactBeat() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocSkoarpuscle(L"ExactBeat");
+#endif
 }
 
 void SkoarpuscleExactBeat::on_enter(SkoarMinstrelPtr m) {
@@ -56,7 +79,16 @@ void SkoarpuscleExactBeat::after(SkoarMinstrelPtr m) {
 
 // --- SkoarpuscleExactRest -----------------------------------------------
 SkoarpuscleExactRest::SkoarpuscleExactRest(SkoarToke *toke) {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarpuscle(L"ExactRest");
+#endif
     impressionable = false;
+}
+
+SkoarpuscleExactRest::~SkoarpuscleExactRest() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocSkoarpuscle(L"ExactRest");
+#endif
 }
 
 void SkoarpuscleExactRest::on_enter(SkoarMinstrelPtr m) {
@@ -75,7 +107,7 @@ void SkoarpuscleExactRest::after(SkoarMinstrelPtr m) {
     //noat->execute(m);
 
     // create an event with everything we've collected up until now
-    //auto e = m->koar->event(m);
+    auto e = m->koar->event(m);
 
     //e[L"dur"] = dur * e[L"tempo"];
     //e[L"isRest"] = true;
@@ -117,6 +149,9 @@ SkoarFloat SkoarpuscleBeat::beat_long(SkoarString s, SkoarInt n) {
 }
 
 SkoarpuscleBeat::SkoarpuscleBeat(SkoarToke *toke) {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarpuscle(L"Beat");
+#endif
     impressionable = false;
     
     s = toke->lexeme;
@@ -157,6 +192,12 @@ SkoarpuscleBeat::SkoarpuscleBeat(SkoarToke *toke) {
     }
 }
 
+SkoarpuscleBeat::~SkoarpuscleBeat() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocSkoarpuscle(L"Beat");
+#endif
+}
+
 
 void SkoarpuscleBeat::on_enter_sometimes(SkoarMinstrelPtr m) {
     SkoarFloat dur = val;
@@ -166,14 +207,17 @@ void SkoarpuscleBeat::on_enter_sometimes(SkoarMinstrelPtr m) {
     //noat->execute(m);
 
     // create an event with everything we've collected up until now
-    //auto e = m->koar->event(m);
+    auto e = m->koar->event(m);
 
-    //e[L"dur"] = dur;
-    //m->fairy->consider(e);
+    e->put(L"dur", make_skoarpuscle(dur));
+    m->fairy->consider(e);
 }
 
 // --- SkoarpuscleRest -----------------------------------------------------
 SkoarpuscleRest::SkoarpuscleRest(SkoarToke *toke) {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarpuscle(L"Rest");
+#endif
     impressionable = false;
 
     s = toke->lexeme;
@@ -187,6 +231,13 @@ SkoarpuscleRest::SkoarpuscleRest(SkoarToke *toke) {
     }
 }
 
+SkoarpuscleRest::~SkoarpuscleRest() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocSkoarpuscle(L"Rest");
+#endif
+}
+
+
 void SkoarpuscleRest::on_enter_sometimes(SkoarMinstrelPtr m) {
     SkoarFloat dur = val;
 
@@ -195,10 +246,10 @@ void SkoarpuscleRest::on_enter_sometimes(SkoarMinstrelPtr m) {
     //noat->execute(m);
 
     // create an event with everything we've collected up until now
-    //auto e = m->koar->event(m);
+    auto e = m->koar->event(m);
 
-    //e[L"dur"] = dur;
-    //e[L"isRest"] = true;
+    e->put(L"dur", make_skoarpuscle(dur));
+    e->put(L"isRest", make_skoarpuscle(true));
 
-    //m->fairy->consider(e);
+    m->fairy->consider(e);
 }

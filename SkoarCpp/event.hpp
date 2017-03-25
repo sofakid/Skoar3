@@ -12,15 +12,13 @@ public:
 	SkoarDic();
     ~SkoarDic();
 
-	SkoarpusclePtr& operator[](SkoarString *key);
-    SkoarpusclePtr& operator[](SkoarString &key);
-    SkoarpusclePtr& operator[](const SkoarString &key);
-    SkoarpusclePtr& operator[](const wchar_t *key);
+    void put(SkoarString k, SkoarpusclePtr v);
+    SkoarpusclePtr at(const SkoarString &k);
+
 };
 
-class SkoarEvent : SkoarDic {
+class SkoarEvent : public SkoarDic {
 public:
-
 	void from(SkoarDicPtr);
 };
 

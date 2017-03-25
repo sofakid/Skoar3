@@ -32,15 +32,15 @@ public:
 
     SkoarInt running;
 
+    bool parsedOk;
+
 	Skoar(SkoarString skoarce, ISkoarLog *log);
     ~Skoar();
 
 	void decorate();
 	SkoarKoarPtr get_voice(const SkoarString &k);
 	void cthulhu(SkoarNoadPtr noad);
-	void play();
-	void pskoar();
-	SkoarMinstrelPtr pvoice(SkoarString *voice_name);
+    void play(const SpellOfHappening& spell);
 	void draw_skoarpions(ISkoarLog *);
 
     void one_less_running();

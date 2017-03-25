@@ -166,6 +166,15 @@ class CppTongue(Tongue):
         name = Arg("", "~" + self.last_class)
         self.method_h(name, *args, **kwargs)
 
+    def virtual_destructor_h(self, *args, **kwargs):
+        name = Arg("", "~" + self.last_class)
+        self.virtual_method_h(name, *args, **kwargs)
+
+    def destructor_override_h(self, *args, **kwargs):
+        name = Arg("", "~" + self.last_class)
+        self.method_override_h(name, *args, **kwargs)
+
+
     def function_h(self, name, *args, **kwargs):
         s = name.type + " " + name.name + "("
         s += self.expand_args(*args, **kwargs) + ")"

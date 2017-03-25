@@ -10,32 +10,36 @@
 // --- Skoarpion ------------------------------------------------
 SkoarpionPtr Skoarpion::NewFromSkoar(Skoar* skoar) {
     
-    auto skoarpion = make_shared<Skoarpion>();
+    auto skoarpion = make_shared<Skoarpion>(L"from skoar");
     skoarpion->init_from_skoar(skoar);
     skoar->skoarpions.push_back(skoarpion);
 	return skoarpion;
 }
 
 SkoarpionPtr Skoarpion::NewFromSkoarNoad(Skoar* skoar, SkoarNoadPtr noad) {
-    auto skoarpion = make_shared<Skoarpion>();
+    auto skoarpion = make_shared<Skoarpion>(L"from noad");
     skoarpion->init_from_noad(skoar, noad);
     skoar->skoarpions.push_back(skoarpion);
     return skoarpion;
 }
 
 SkoarpionPtr Skoarpion::NewFromSubtree(Skoar* skoar, SkoarNoadPtr subtree) {
-    auto skoarpion = make_shared<Skoarpion>();
+    auto skoarpion = make_shared<Skoarpion>(L"from subtree");
     skoarpion->init_from_subtree(skoar, subtree);
     skoar->skoarpions.push_back(skoarpion);
     return skoarpion;
 }
 
-Skoarpion::Skoarpion() :
+Skoarpion::Skoarpion(const SkoarString from) :
     skoar(nullptr),
     body(nullptr),
     n(0),
-    name(L"uninitialized")
+    name(L"uninitialized"),
+    made_from(from)
 {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarpion(made_from);
+#endif
 }
 
 Skoarpion::Skoarpion(const Skoarpion *other) :
@@ -43,8 +47,29 @@ Skoarpion::Skoarpion(const Skoarpion *other) :
     body(other->body),
     n(other->n),
     name(other->name),
-    arg_list(other->arg_list)
+    arg_list(other->arg_list),
+    made_from(other->made_from)
 {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarpion(made_from);
+#endif
+}
+
+Skoarpion::~Skoarpion() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocSkoarpion(made_from);
+#endif
+    clear();
+}
+
+void Skoarpion::clear() {
+    if (body != nullptr) {
+        body->clear();
+        body = nullptr;
+    }
+    n = 0;
+    arg_list = nullptr;
+    skoar = nullptr;
 }
 
 void Skoarpion::init_from_skoar(Skoar* skoar) {
@@ -191,7 +216,6 @@ void Skoarpion::draw_tree(wostringstream &out) {
 }
 
 // --- SkoarpionProjection ------------------------------------------------
-
 SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koar_name) :
     body(nullptr),
     proj(SkoarNoad::NewArtificial(L"projection"))

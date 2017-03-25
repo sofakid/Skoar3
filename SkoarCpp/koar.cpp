@@ -15,7 +15,7 @@ SkoarKoar::SkoarKoar(Skoar *skoar, const SkoarString &name) :
     name(name),
     skoarboard(make_shared<SkoarDic>())
 {
-    (*skoarboard)[L"voice"] = make_skoarpuscle(name);
+    skoarboard->put(L"voice", make_skoarpuscle(name));
 	stack.push_back(skoarboard);
 }
 
@@ -31,7 +31,7 @@ SkoarKoar::~SkoarKoar() {
 // State and scope stuff
 // ---------------------
 void SkoarKoar::put(SkoarString k, SkoarpusclePtr v) {
-	(*(stack.back()))[k] = v;
+	stack.back()->put(k, v);
 }
 
 SkoarpusclePtr SkoarKoar::at(const SkoarString &k) {
@@ -39,7 +39,7 @@ SkoarpusclePtr SkoarKoar::at(const SkoarString &k) {
     SkoarpusclePtr out = nullptr;
 
 	for (auto rev_it = stack.rbegin(); rev_it != stack.rend(); rev_it++) {
-        out = (**rev_it)[k];
+        out = (*rev_it)->at(k);
 		if (out != nullptr) {
 			return out;
 		}
@@ -49,14 +49,14 @@ SkoarpusclePtr SkoarKoar::at(const SkoarString &k) {
 }
 
 void SkoarKoar::state_put(SkoarString &k, SkoarpusclePtr v) {
-	(*(state_stack.back()))[k] = v;
+	state_stack.back()->put(k, v);
 }
 
 SkoarpusclePtr SkoarKoar::state_at(SkoarString &k) {
 	SkoarpusclePtr out = nullptr;
 
 	for (auto rev_it = stack.rbegin(); rev_it != stack.rend(); rev_it++) {
-		out = (**rev_it)[k];
+		out = (*rev_it)->at(k);
 		if (out != nullptr) {
 			return out;
 		}
@@ -101,7 +101,7 @@ void SkoarKoar::set_args(
     SkoarpusclePtr args_prov)
 {
 	size_t i = 0, n = 0;
-	auto vars = *(stack.back());
+	auto vars = stack.back();
 
     SkoarpuscleArgList *args_list;
     if (is_skoarpuscle<SkoarpuscleArgList>(args_spec)) {
@@ -129,20 +129,20 @@ void SkoarKoar::set_args(
 
         if (is_skoarpuscle<SkoarpuscleCat>(x)) {
             // not found, use default
-            auto y = args_list->args_dict[arg_name];
+            auto y = args_list->args_dict.at(arg_name);
 
             // if (is_skoarpuscle<SkoarpuscleExpr>(y)) {
             //    flatten(y)
             // }
 
-            vars[arg_name] = y;
+            vars->put(arg_name, y);
         }
         else if (is_skoarpuscle<SkoarpusclePair>(x)) {
             auto pair = skoarpuscle_ptr<SkoarpusclePair>(x);
-            vars[pair->val.first] = pair->val.second;
+            vars->put(pair->val.first, pair->val.second);
         }
         else {
-            vars[arg_name] = x;
+            vars->put(arg_name, x);
         }
     }
 
@@ -156,9 +156,9 @@ void SkoarKoar::push_state() {
 
 	state_stack.push_back(state);
 
-	(*state)[L"colons_burned"] = make_shared<SkoarpuscleList>();
-	(*state)[L"al_fine"]       = make_skoarpuscle(false);
-	(*state)[L"projections"]   = make_shared<SkoarpuscleProjections>(projections);
+	state->put(L"colons_burned", make_shared<SkoarpuscleList>());
+	state->put(L"al_fine",       make_skoarpuscle(false));
+	//state->put(L"projections",   make_shared<SkoarpuscleProjections>(projections));
 
 	stack.push_back(make_shared<SkoarDic>());
 	

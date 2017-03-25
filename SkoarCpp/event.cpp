@@ -12,24 +12,12 @@ SkoarDic::~SkoarDic() {
     table.clear();
 }
 
-
-SkoarpusclePtr& SkoarDic::operator[](SkoarString *key) {
-	if (key == nullptr)
-		throw SkoarError(L"Tried to use a null key on a SkoarDic.");
-
-	return table[*key];
+void SkoarDic::put(SkoarString k, SkoarpusclePtr v) {
+    table[k] = v;
 }
 
-SkoarpusclePtr& SkoarDic::operator[](SkoarString &key) {
-	return table[key];
-}
-
-SkoarpusclePtr& SkoarDic::operator[](const wchar_t* key) {
-    return table[SkoarString(key)];
-}
-
-SkoarpusclePtr& SkoarDic::operator[](const SkoarString &key) {
-    return table[key];
+SkoarpusclePtr SkoarDic::at(const SkoarString &k) {
+    return table[k];
 }
 
 void SkoarEvent::from(SkoarDicPtr dic) {

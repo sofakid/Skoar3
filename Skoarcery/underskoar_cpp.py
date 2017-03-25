@@ -58,11 +58,9 @@ def skoarToke_cpp():
     _____.stmt(_.v_ass(_.v_attr(size_), n_))
     _____.stmt("kind = ESkoarToke::Unknown")
     _____.stmt("style = SkoarStyles::EStyle::nostyle")
-    _____.stmt("++SkoarMemories.Tokes")
     _.end()
     
     _.destructor()
-    _____.stmt("--SkoarMemories.Tokes")
     _.end()
 
     _.cmt("how many characters to burn from the buffer")
@@ -100,7 +98,7 @@ def skoarToke_h():
     _____.constructor_h()
     _____.constructor_h(s_, offs_, n_)
 
-    _____.destructor_h()
+    _____.virtual_destructor_h()
     
     _____.cmt("how many characters to burn from the buffer")
     _____.method_h(burn_)
@@ -168,11 +166,19 @@ def Eof_token():
     
     _.constructor()
     _____.stmt("kind = ESkoarToke::Eof")
-    _____.stmt("++SkoarMemories.Tokes")
+    _____.raw('''
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocToke(L"''' + "Eof" + '''");
+#endif
+''')
     _.end()
     
     _.destructor()
-    _____.stmt("--SkoarMemories.Tokes")
+    _____.raw('''
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocToke(L"''' + "Eof" + '''");
+#endif
+''')
     _.end()
 
     _.method(burn_, buf_, offs_)
@@ -201,7 +207,7 @@ def Eof_token_h():
     
     _____.nl()
     _____.constructor_h()
-    _____.destructor_h()
+    _____.destructor_override_h()
     
     _____.static_method_h(burn_, buf_, offs_)
     _____.static_method_h(match_toke_, buf_, offs_)
@@ -223,11 +229,19 @@ def typical_token_cpp(token):
     _____.stmt(_.v_ass(_.v_attr(size_), n_))
     _____.stmt(_.v_ass(_.v_attr(kind_), kind_token_))
     _____.stmt(_.v_ass(_.v_attr(style_), style_token_))
-    _____.stmt("++SkoarMemories.Tokes")
+    _____.raw('''
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocToke(L"''' + token.name + '''");
+#endif
+''')
     _.end()
     
     _.destructor()
-    _____.stmt("--SkoarMemories.Tokes")
+    _____.raw('''
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocToke(L"''' + token.name + '''");
+#endif
+''')
     _.end()
 
     _.method(match_toke_, buf_, offs_)
@@ -251,7 +265,7 @@ def typical_token_h(token):
    
     _____.nl()
     _____.constructor_h(s_, offs_, n_)
-    _____.destructor_h()
+    _____.destructor_override_h()
 
     _____.static_method_h(match_toke_, buf_, offs_)
     _.end_class()

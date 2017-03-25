@@ -39,7 +39,9 @@ SkoarNoad::SkoarNoad(SkoarString &nameArg, SkoarNoadPtr parentArg, const ESkoarN
     voice(nullptr),
     skoarpuscle(nullptr)
 {
-    ++SkoarMemories.Noads;
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocNoad(name);
+#endif
 }
 
 SkoarNoadPtr SkoarNoad::New(SkoarString &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
@@ -68,7 +70,9 @@ SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg)
 }
 
 SkoarNoad::~SkoarNoad() {
-    --SkoarMemories.Noads;
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocNoad(name);
+#endif
 
     parent = nullptr;
     skoarce = nullptr;
@@ -159,6 +163,10 @@ void SkoarNoad::add_noad(SkoarNoadPtr noad) {
 // showing the tree
 // ----------------
 void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
+
+    if (log->getLevel() != ISkoarLog::debug)
+        return;
+
 	int n = 16;
 
     wostringstream out;
@@ -189,6 +197,7 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 }
 
 void SkoarNoad::draw_tree(wostringstream &out, int tab)	{
+    
 	int n = 16;
 	
 	SkoarString s = SkoarString(tab * 2, L' ');

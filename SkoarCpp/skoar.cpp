@@ -12,7 +12,7 @@
 #include "logging.hpp"
 #include "styles.hpp"
 #include "toke_inspector.hpp"
-#include "minstrel_fwd.hpp"
+#include "minstrel.hpp"
 
 #include <ctime>
 
@@ -40,9 +40,14 @@ void Skoar::init() {
 Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
     skoarce(skoarce + L"\n"), // i don't like this + L"\n" business.
     log(log),
-    toker(this->skoarce)
+    toker(this->skoarce),
+    parsedOk(false)
 {
     Skoar::init();
+
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoar();
+#endif
 
 	//this->skoarce = skoarce;
 	clock_t start_time;
@@ -60,7 +65,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 
 	//skoarpions = List[];
 
-    log->i(">>> parsing skoar...");
+    log->d(">>> parsing skoar...");
 	start_time = clock();
     try {
         tree = parser.skoar(nullptr);
@@ -107,22 +112,35 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
     f_parse_time = static_cast<float>(parse_time) / CLOCKS_PER_SEC;
     f_decorate_time = static_cast<float>(decorate_time) / CLOCKS_PER_SEC;
 
-	log->i("---< Decorated Skoar Tree >---");
+	log->d("---< Decorated Skoar Tree >---");
 	tree->log_tree(log);
 
 	draw_skoarpions(log);
 
-	log->i("+++ Skoar Parsed +++");// +tree->draw_tree());
-
+	log->d("+++ Skoar Parsed +++");// +tree->draw_tree());
+    parsedOk = true;
     
 
-	log->i("seconds parsing",    f_parse_time, 
+	log->d("seconds parsing",    f_parse_time, 
            "seconds decorating", f_decorate_time, 
            "seconds total: ",    f_parse_time + f_decorate_time);
 }
 
 Skoar::~Skoar() {
+    if (parsedOk) {
+        for (auto skoarpion : skoarpions) {
+            skoarpion->clear();
+        }
+        skoarpions.clear();
+        voices.clear();
+        tree->clear();
+
+    }
     tree = nullptr;
+
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocSkoar();
+#endif
 }
 
 
@@ -166,31 +184,29 @@ void Skoar::cthulhu(SkoarNoadPtr noad) {
 
 }
 
-void Skoar::play() {
-	//pskoar().play();
-}
-
-void Skoar::pskoar() {
-	//return new Skoarchestra(this)->pfunk();
-}
-
-SkoarMinstrelPtr Skoar::pvoice(SkoarString *voice_name) {
-    return nullptr; //make_shared<SkoarMinstrel>();// this->tree, voices[voice_name], this->pfunk());
+void Skoar::play(const SpellOfHappening& spell) {
+    Skoarchestra x(this, spell);
 }
 
 void Skoar::draw_skoarpions(ISkoarLog *log) {
+
+    if (log->getLevel() != ISkoarLog::debug)
+        return;
+
     wostringstream stream;
 
 	for (auto x : skoarpions) {
+        stream << "\n";
 		x->draw_tree(stream);
 
-		//"Projections: ".postln;
+        stream << "\nProjections:\n";
 		for (auto pairs : voices) {
 			auto koar_name = pairs.first;
 			auto projection = Skoarpion::projection(x, koar_name);
 
 			projection->proj->draw_tree(stream);
-		}
+            stream << "\n";
+        }
 	}
     log->i("draw_skoarpions\n", stream.str());
 }

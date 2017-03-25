@@ -39,15 +39,20 @@ SkoarMinstrelPtr SkoarMinstrel::New(SkoarString name, SkoarKoarPtr koar, Skoar* 
     auto m = make_shared<SkoarMinstrel>(name, koar, skoar, spell);
     m->fairy = make_shared<SkoarFairy>(L"$" + name, m);
     SkoarMinstrel::EventStream(m);
+    m->start();
     return m;
+}
+
+void SkoarMinstrel::start() {
+    f();
 }
 
 void SkoarMinstrel::EventStream(SkoarMinstrelPtr m) {
     auto x = m->skoar->tree->next_skoarpuscle();
     auto skoarpion = skoarpuscle_ptr<SkoarpuscleSkoarpion>(x)->val;
     
-    auto f_event_stream = [=]() {
-        auto running = false;
+    m->f = [=]() {
+        auto running = true;
 
         while (running) {
             try {

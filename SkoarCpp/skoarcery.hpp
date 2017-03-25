@@ -2,6 +2,8 @@
 
 using namespace std;
 
+#define SKOAR_DEBUG_MEMORY 1
+
 #include <string>
 #include <list>
 #include <regex>

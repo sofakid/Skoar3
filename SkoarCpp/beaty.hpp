@@ -13,6 +13,8 @@ public:
 
     SkoarpuscleDuration(SkoarToke *);
     SkoarpuscleDuration(SkoarInt, SkoarFloat);
+    ~SkoarpuscleDuration() override;
+
     void on_enter(SkoarMinstrelPtr) override;
 };
 
@@ -20,6 +22,8 @@ class SkoarpuscleExactBeat : public Skoarpuscle {
 public:
     void asString(wostream &out) override { out << "SkoarpuscleExactBeat" << " :: " ; }
     SkoarpuscleExactBeat(SkoarToke *);
+    ~SkoarpuscleExactBeat() override;
+
     void on_enter(SkoarMinstrelPtr) override;
     void after(SkoarMinstrelPtr);
 };
@@ -28,6 +32,8 @@ class SkoarpuscleExactRest : public Skoarpuscle {
 public:
     void asString(wostream &out) override { out << "SkoarpuscleExactRest" << " :: " ; }
     SkoarpuscleExactRest(SkoarToke *);
+    ~SkoarpuscleExactRest() override;
+
     void on_enter(SkoarMinstrelPtr) override;
     void after(SkoarMinstrelPtr);
 };
@@ -48,6 +54,8 @@ public:
     bool is_exact;
 
     SkoarpuscleBeat(SkoarToke *);
+    ~SkoarpuscleBeat() override;
+
     void on_enter_sometimes(SkoarMinstrelPtr);
 };
 
@@ -64,5 +72,7 @@ public:
     bool is_exact;
 
     SkoarpuscleRest(SkoarToke *);
+    ~SkoarpuscleRest() override;
+
     void on_enter_sometimes(SkoarMinstrelPtr);
 };

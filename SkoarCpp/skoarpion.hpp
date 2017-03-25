@@ -23,8 +23,13 @@ public:
     SkoarpusclePtr arg_list;
     SkoarInt n;
 
-	Skoarpion();
+    const SkoarString made_from;
+
+	Skoarpion(const SkoarString);
     Skoarpion(const Skoarpion *);
+    ~Skoarpion();
+
+    void clear();
 
 
     void init_from_skoar(Skoar*);                 // the entire skoar gets put in a skoarpion

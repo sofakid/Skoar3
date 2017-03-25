@@ -17,6 +17,7 @@ public:
     SkoarKoarPtr all_voice;
 
     const SpellOfHappening& happenSpell;
+    SpellOfSimplicity f;
 
     //SkoarControls controls;
 
@@ -32,6 +33,8 @@ public:
     static void EventStream(SkoarMinstrelPtr m);
     
     void reset_colons();
+
+    void start();
 
     void happen(SkoarEventPtr);
 

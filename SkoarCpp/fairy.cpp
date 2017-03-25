@@ -185,6 +185,8 @@ SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
     if (is_skoarpuscle<SkoarpuscleDeref>(x)) {
         impression = skoarpuscle_ptr<SkoarpuscleDeref>(x)->lookup(minstrel);
     };
+    
+    impression = x;
 
     if (impression->isNoatworthy() == true) {
         noat = impression;
@@ -224,11 +226,10 @@ SkoarpusclePtr SkoarFairy::cast_arcane_magic() {
     return impression;
 }
 
-void SkoarFairy::consider(SkoarEvent&) {
-    /*
-    var x;
-		
-	x = e[\tempo];
+void SkoarFairy::consider(SkoarEventPtr e) {
+    
+    auto xs = e->at(L"tempo");
+    /*auto x = 
 	if (x <= 0) {
 		x = 1;
 	};
@@ -237,9 +238,10 @@ void SkoarFairy::consider(SkoarEvent&) {
 	//(name++".consider :: " ++ e).postln;
 	e.yield;
     */
+    minstrel->happen(e);
 }
 
-void SkoarFairy::consider_amp(SkoarEvent&, SkoarMinstrelPtr) {
+void SkoarFairy::consider_amp(SkoarEventPtr, SkoarMinstrelPtr) {
     /*
     if (worries.isNil) {
 		if (noating == true) {

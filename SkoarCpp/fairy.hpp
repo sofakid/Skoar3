@@ -65,8 +65,8 @@ public:
     void charge_arcane_magic(ArcaneMagic spell);
     SkoarpusclePtr cast_arcane_magic();
 
-    void consider(SkoarEvent&);
-    void consider_amp(SkoarEvent&, SkoarMinstrelPtr);
+    void consider(SkoarEventPtr);
+    void consider_amp(SkoarEventPtr, SkoarMinstrelPtr);
 
 
 private:
