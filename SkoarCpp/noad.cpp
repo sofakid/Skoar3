@@ -73,15 +73,7 @@ SkoarNoad::~SkoarNoad() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.deallocNoad(name);
 #endif
-
-    parent = nullptr;
-    skoarce = nullptr;
-    toke = nullptr;
-    voice = nullptr;
-    skoarpuscle = nullptr;
-    size = 0;
-    offs = 0;
-    children.clear();
+    clear();
 }
 
 void SkoarNoad::clear() {
@@ -89,8 +81,21 @@ void SkoarNoad::clear() {
     // should then trigger destruction.
     depth_visit([](SkoarNoad *noad) {
         noad->children.clear();
-        noad->parent = nullptr;
+        noad->clear_values();
     });
+    children.clear();
+    clear_values();
+}
+
+void SkoarNoad::clear_values() {
+    parent = nullptr;
+    skoap = nullptr;
+    skoarce = nullptr;
+    toke = nullptr;
+    voice = nullptr;
+    skoarpuscle = nullptr;
+    size = 0;
+    offs = 0;
 }
 
 SkoarString *SkoarNoad::asString() {

@@ -10,15 +10,20 @@ public:
 	//Skoarpuscle *not_found;
 
 	SkoarDic();
-    ~SkoarDic();
+    virtual ~SkoarDic();
 
     void put(SkoarString k, SkoarpusclePtr v);
     SkoarpusclePtr at(const SkoarString &k);
+
+    void clear();
 
 };
 
 class SkoarEvent : public SkoarDic {
 public:
+    SkoarEvent();
+    ~SkoarEvent() override;
+
 	void from(SkoarDicPtr);
 };
 

@@ -132,7 +132,16 @@ Skoar::~Skoar() {
             skoarpion->clear();
         }
         skoarpions.clear();
+        
+        for (auto v_pair : voices) {
+            auto voice = v_pair.second;
+            if (voice != nullptr)
+                voice->clear();
+        }
+        
         voices.clear();
+        all_voice = nullptr;
+        
         tree->clear();
 
     }

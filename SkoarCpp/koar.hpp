@@ -40,6 +40,8 @@ public:
 
 	SkoarKoar(Skoar *skoar, const SkoarString &nom);
     ~SkoarKoar();
+
+    void clear();
 	
     // ---------------------
 	// State and scope stuff

@@ -184,7 +184,8 @@ void Skoarpion::init_from_noad(Skoar* skoar, SkoarNoadPtr noad) {
         sec->decorate_zero(skoar->all_voice, sec, parent_address, i);
     }
 
-    body = sections.front(); // really? in skoar.sc it's sections[0].. wha?
+    body = sections.front(); // we only support one skoarpion section for now
+    sections.clear();
     n = body->size;
 }
 

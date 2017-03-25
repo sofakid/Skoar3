@@ -69,6 +69,7 @@ public:
     static SkoarNoadPtr NewArtificial(const wchar_t *nameArg);
 
     void clear();
+    void clear_values();
 
 	SkoarString *asString();
 

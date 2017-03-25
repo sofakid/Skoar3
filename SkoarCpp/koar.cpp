@@ -15,13 +15,25 @@ SkoarKoar::SkoarKoar(Skoar *skoar, const SkoarString &name) :
     name(name),
     skoarboard(make_shared<SkoarDic>())
 {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocKoar(name);
+#endif
     skoarboard->put(L"voice", make_skoarpuscle(name));
 	stack.push_back(skoarboard);
 }
 
 SkoarKoar::~SkoarKoar() {
-    
-    skoarboard = nullptr;
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocKoar(name);
+#endif
+    clear();
+}
+
+void SkoarKoar::clear() {
+    if (skoarboard != nullptr) {
+        skoarboard->clear();
+        skoarboard = nullptr;
+    }
     stack.clear();
     state_stack.clear();
     skoar = nullptr;

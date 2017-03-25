@@ -4,10 +4,16 @@
 #include "exception.hpp"
 
 SkoarDic::SkoarDic() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarDic(L"dic");
+#endif
 	//not_found = nullptr;
 }
 
 SkoarDic::~SkoarDic() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocSkoarDic(L"dic");
+#endif
     //not_found = nullptr;
     table.clear();
 }
@@ -18,6 +24,27 @@ void SkoarDic::put(SkoarString k, SkoarpusclePtr v) {
 
 SkoarpusclePtr SkoarDic::at(const SkoarString &k) {
     return table[k];
+}
+
+void SkoarDic::clear() {
+    table.clear();
+}
+
+
+// --- SkoarEvent --------------------------------------------
+SkoarEvent::SkoarEvent() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocSkoarDic(L"event");
+#endif
+    //not_found = nullptr;
+}
+
+SkoarEvent::~SkoarEvent() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocSkoarDic(L"event");
+#endif
+    //not_found = nullptr;
+    table.clear();
 }
 
 void SkoarEvent::from(SkoarDicPtr dic) {
