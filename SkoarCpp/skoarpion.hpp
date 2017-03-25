@@ -47,9 +47,10 @@ public:
 class SkoarpionProjection {
 public:
     SkoarNoadPtr proj;
+    const SkoarString name;
 
     SkoarpionProjection(SkoarpionPtr, SkoarString);
-    
+    ~SkoarpionProjection();
 
     /*list<SkoarInt> get_skip_to();
     SkoarString    get_name();
@@ -59,7 +60,7 @@ public:
     */
     SkoarNoadAddress map_dst(SkoarNoadPtr);
 
-    void draw_tree(wostringstream &stream);
+    //void draw_tree(wostringstream &stream);
 
 private:
     SkoarNoadPtr body;

@@ -9,6 +9,7 @@
 class SkoarMinstrel {
 public:
 
+    const SkoarString name;
     Skoar* skoar;
 
 	SkoarFairyPtr fairy;

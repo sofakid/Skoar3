@@ -9,7 +9,6 @@
 
 // --- Skoarpion ------------------------------------------------
 SkoarpionPtr Skoarpion::NewFromSkoar(Skoar* skoar) {
-    
     auto skoarpion = make_shared<Skoarpion>(L"from skoar");
     skoarpion->init_from_skoar(skoar);
     skoar->skoarpions.push_back(skoarpion);
@@ -219,8 +218,12 @@ void Skoarpion::draw_tree(wostringstream &out) {
 // --- SkoarpionProjection ------------------------------------------------
 SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koar_name) :
     body(nullptr),
-    proj(SkoarNoad::NewArtificial(L"projection"))
+    proj(SkoarNoad::NewArtificial(L"projection")),
+    name(skoarpion->name + SkoarString(L":") + koar_name)
 {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocProjection(name);
+#endif
     auto kids = skoarpion->body->children;
 
     size_t n = kids.size();
@@ -254,6 +257,12 @@ SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koa
     //n = arr.size();
 }
 
+SkoarpionProjection::~SkoarpionProjection()
+{
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocProjection(name);
+#endif
+}
 
 /*list<SkoarInt> get_skip_to();
 SkoarString    get_name();

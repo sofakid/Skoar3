@@ -3,7 +3,8 @@
 
 // --- SkoarMinstrel -------------------------------------
 
-SkoarMinstrel::SkoarMinstrel(SkoarString name, SkoarKoarPtr koar, Skoar* skoar, const SpellOfHappening& spell) :
+SkoarMinstrel::SkoarMinstrel(SkoarString minstrel_name, SkoarKoarPtr koar, Skoar* skoar, const SpellOfHappening& spell) :
+    name(minstrel_name),
     skoar(skoar),
     koar(koar),
     fairy(nullptr),
@@ -11,6 +12,10 @@ SkoarMinstrel::SkoarMinstrel(SkoarString name, SkoarKoarPtr koar, Skoar* skoar, 
     all_voice(skoar->all_voice),
     happenSpell(spell)
 {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.allocMinstrel(name);
+#endif
+
     // some defaults
     koar->put(L"octave", make_skoarpuscle(5));
     koar->put(L"tempo", make_skoarpuscle(1));
@@ -26,6 +31,9 @@ SkoarMinstrel::SkoarMinstrel(SkoarString name, SkoarKoarPtr koar, Skoar* skoar, 
 }
 
 SkoarMinstrel::~SkoarMinstrel() {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories.deallocMinstrel(name);
+#endif
     //event_stream->destroy();
     event_stream = nullptr;
     fairy->fly_away();
