@@ -45,7 +45,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
     */
 
     SkoarLog.setLevel(ISkoarLog::debug);
-    Skoar fun(L"a: 'hello' ] a: 'world' )", &SkoarLog);
+    Skoar fun(L"a: 'hello' ] a: 'world' ) 7 + 2 ]]]", &SkoarLog);
     SkoarLog.i("Skoar done", SkoarMemories);
     SkoarLog.i("\n");
 
@@ -71,6 +71,18 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
         }
 
         SkoarLog.w("yay", x, d);
+
+        wostringstream out;
+        for (auto kv : e->table) {
+            out << "\n" << kv.first << ": ";
+            
+            if (kv.second != nullptr)
+                out << *(kv.second);
+            else
+                out << "=^.^=";
+
+        }
+        SkoarLog.i("Event", out.str());
     });
     
     wstring instr;

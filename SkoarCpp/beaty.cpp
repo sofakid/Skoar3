@@ -187,7 +187,7 @@ SkoarpuscleBeat::SkoarpuscleBeat(SkoarToke *toke) {
 
     if (toke->kind == ESkoarToke::Eighths) {
         val = SkoarpuscleBeat::beat_short(s, n);
-    } {
+    } else {
         val = SkoarpuscleBeat::beat_long(s, n);
     }
 }
@@ -226,7 +226,7 @@ SkoarpuscleRest::SkoarpuscleRest(SkoarToke *toke) {
     if (toke->kind == ESkoarToke::Quavers) {
         // size -1 for the / (we just count the o's)
         val = SkoarpuscleBeat::beat_short(s, n - 1);
-    } {
+    } else {
         val = SkoarpuscleBeat::beat_long(s, n);
     }
 }

@@ -117,6 +117,7 @@ public:
 	// performing the tree
 	// -------------------
 	void enter_noad(SkoarMinstrelPtr minstrel);
+    void evaluate(SkoarMinstrelPtr minstrel);
 
 	// ------------------
 	// searching the tree

@@ -16,27 +16,27 @@ void SkoarpuscleUnknown::asString(wostream &out) {
 }
 
 void SkoarpuscleCat::asString(wostream &out) {
-    out << "SkoarpuscleCat" << " :: =^.^=";
+    out << "=^.^=";
 }
 
 void SkoarpuscleTrue::asString(wostream &out) {
-    out << "SkoarpuscleTrue" << " :: true";
+    out << "true";
 }
 
 void SkoarpuscleFalse::asString(wostream &out) {
-    out << "SkoarpuscleFalse" << " :: false";
+    out << "false";
 }
 
 void SkoarpuscleFreq::asString(wostream &out) {
-    out << "SkoarpuscleFreq" << " :: " << val;
+    out << val << "Hz";
 }
 
 void SkoarpuscleInt::asString(wostream &out) {
-    out << "SkoarpuscleInt" << " :: " << val;
+    out << val;
 }
 
 void SkoarpuscleFloat::asString(wostream &out) {
-    out << "SkoarpuscleFloat" << " :: " << val;
+    out << val;
 }
 
 void SkoarpuscleNoat::asString(wostream &out) {
@@ -48,11 +48,11 @@ void SkoarpuscleChoard::asString(wostream &out) {
 }
 
 void SkoarpuscleString::asString(wostream &out) {
-    out << "SkoarpuscleString" << " :: " << val;
+    out << val;
 }
 
 void SkoarpuscleSymbol::asString(wostream &out) {
-    out << "SkoarpuscleSymbol" << " :: " << val;
+    out << "@" << val;
 }
 
 void SkoarpuscleSymbolName::asString(wostream &out) {

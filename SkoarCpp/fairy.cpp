@@ -188,15 +188,53 @@ template<>
 SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
     //("$:" ++name++ ".impression: " ++x.asString).postln;
     
+    if (is_skoarpuscle<SkoarpuscleFairy>(x)) {
+        return impression;
+    };
+
+    if (is_skoarpuscle<SkoarpusclePair>(x)) {
+        skoarpuscle_ptr<SkoarpusclePair>(x)->assign(minstrel);
+    };
+
     if (is_skoarpuscle<SkoarpuscleDeref>(x)) {
         impression = skoarpuscle_ptr<SkoarpuscleDeref>(x)->lookup(minstrel);
     };
     
     impression = x;
 
-    if (impression->isNoatworthy() == true) {
-        noat = impression;
-    };
+    if (noating) {
+        if (impression->isNoatworthy() == true) {
+            noat = impression;
+            noatworthy = true;
+        }
+        else {
+            noatworthy = false;
+        }
+    }
+    else {
+        noatworthy = false;
+    }
+    minstrel->koar->put(L"impression", impression);
+
+    if (is_skoarpuscle<SkoarpuscleUGen>(x)) {
+        //lute.impress(impression);
+    }
+    else if (is_skoarpuscle<SkoarpuscleInt>(x) || is_skoarpuscle<SkoarpuscleFloat>(x)) {
+        minstrel->koar->put(L"num_impression", impression);
+        //num_impression = impression;
+        minstrel->koar->put(L"exact_dur", impression);
+    }
+    else if (is_skoarpuscle<SkoarpuscleSymbol>(x)) {
+        minstrel->koar->put(L"sym_impression", impression);
+        //sym_impression = impression;
+    }
+    else if (is_skoarpuscle<SkoarpuscleDynamic>(x)) {
+        minstrel->koar->put(L"dyn_impression", impression);
+        //dyn_impression = impression;
+    }
+    else if (is_skoarpuscle<SkoarpuscleDuration>(x)) {
+        minstrel->koar->put(L"exact_dur", impression);
+    }
 
     return impression;
 }

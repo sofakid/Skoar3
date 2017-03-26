@@ -403,6 +403,11 @@ void SkoarNoad::enter_noad(SkoarMinstrelPtr minstrel) {
     }
 }
 
+void SkoarNoad::evaluate(SkoarMinstrelPtr minstrel) {
+    inorder([=](SkoarNoad* x) {
+        x->enter_noad(minstrel); 
+    });
+}
 
 // ------------------
 // searching the tree

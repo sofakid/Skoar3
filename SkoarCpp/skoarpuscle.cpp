@@ -9,6 +9,7 @@
 #include "skoarpion.hpp"
 #include "skoarpion_skoarpuscle.hpp"
 #include "make_skoarpuscle.hpp"
+#include "operators.hpp"
 
 
 
@@ -741,7 +742,7 @@ void SkoarpusclePair::assign(SkoarMinstrelPtr m) {
     } {
         val
     };*/
-    //Skoar.ops.assign(m, val.second(), val.first());
+    SkoarOps::getInstance()->assign(m, val.second, make_shared<SkoarpuscleSymbolColon>(val.first));
 
     m->fairy->pop_noating();
 }

@@ -13,6 +13,7 @@
 #include "lute.hpp"
 #include "meditation.hpp"
 #include "all_skoarpuscles.hpp"
+#include "operators.hpp"
 
 // ============
 // Skoarmantics
@@ -397,7 +398,7 @@ Skoarmantics::Skoarmantics() : table({
         if (op == L"=>") {
             noad->on_enter = [=](SkoarMinstrelPtr m) {
                 auto x = m->fairy->cast_arcane_magic();
-                //skoar->ops->assign(m, x, settable);
+                SkoarOps::getInstance()->assign(m, x, settable);
                 m->fairy->impress(x);
             };
         }

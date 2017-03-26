@@ -30,8 +30,7 @@ void Skoar::init() {
         SkoarParser::init();
         SkoarTokeInspector::init();
         Skoarmantics::init();
-        
-        // todo ops table
+        SkoarOps::init();
 
         isInitialized = true;
     }
