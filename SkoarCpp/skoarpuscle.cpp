@@ -742,12 +742,37 @@ void SkoarpusclePair::assign(SkoarMinstrelPtr m) {
     } {
         val
     };*/
+
+    if (is_skoarpuscle<SkoarpuscleExpr>(val.second)) {
+        auto expr_p = skoarpuscle_ptr<SkoarpuscleExpr>(val.second);
+        expr_p->flatten(m);
+    }
+
     SkoarOps::getInstance()->assign(m, val.second, make_shared<SkoarpuscleSymbolColon>(val.first));
 
     m->fairy->pop_noating();
 }
 
 // --- SkoarpuscleExpr ---------------------------------------------------------
+
+
+SkoarpusclePtr SkoarpuscleExpr::flatten(SkoarMinstrelPtr m) {
+
+    m->fairy->push();
+    if (val != nullptr) {
+        val->evaluate(m);
+    } 
+    else {
+        m->fairy->impress(nullptr);
+    }
+
+    result = m->fairy->impression;
+    
+    // result = result->flatten(m);
+
+    m->fairy->pop();
+    return result;
+}
 
 /*flatten {
 		| m |

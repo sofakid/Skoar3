@@ -877,7 +877,7 @@ SkoarpuscleExpr::SkoarpuscleExpr(SkoarNoadPtr noad) {
     SkoarMemories.allocSkoarpuscle(L"Expr");
 #endif
 
-    // val = noad;
+    val = noad;
     result = nullptr;
 }
 

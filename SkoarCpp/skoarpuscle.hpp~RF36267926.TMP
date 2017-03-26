@@ -576,13 +576,12 @@ public:
 
 class SkoarpuscleExpr : public Skoarpuscle {
 public:
-    SkoarNoadPtr val;
     SkoarpusclePtr result;
     SkoarpuscleExpr(SkoarNoadPtr);
     ~SkoarpuscleExpr() override;
     
     void asString(wostream &out) override;
 
-    SkoarpusclePtr flatten(SkoarMinstrelPtr m);
+    void flatten(SkoarMinstrelPtr m);
 
 };
