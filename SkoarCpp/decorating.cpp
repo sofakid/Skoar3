@@ -112,7 +112,12 @@ Skoarmantics::Skoarmantics() : table({
         
         if (noad->parent->name != L"assignment") {
             noad->on_enter = [=](SkoarMinstrelPtr m) {
-                skoarpuscle_ptr<SkoarpuscleBeat>(xp)->on_enter_sometimes(m);
+                if (is_skoarpuscle<SkoarpuscleBeat>(xp)) {
+                    skoarpuscle_ptr<SkoarpuscleBeat>(xp)->on_enter_sometimes(m);
+                }
+                else if (is_skoarpuscle<SkoarpuscleRest>(xp)) {
+                    skoarpuscle_ptr<SkoarpuscleRest>(xp)->on_enter_sometimes(m);
+                }
             };
         }
     }},
@@ -431,7 +436,7 @@ Skoarmantics::Skoarmantics() : table({
             m->fairy->charge_arcane_magic(
                 [=]() {
                     SkoarpusclePtr right = m->fairy->impression;
-                    //op->calculate(m, left, right);
+                    skoarpuscle_ptr<SkoarpuscleMathOp>(op)->calculate(m, left, right);
                     return m->fairy->impression;
                 }
             );

@@ -45,7 +45,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
     */
 
     SkoarLog.setLevel(ISkoarLog::debug);
-    Skoar fun(L"a: 'hello' ] a: 'world' ) 7 + 2 ]]]", &SkoarLog);
+    Skoar fun(L"a: 'hello' ] a: 'world' ) b: 7 + 2.2 ]]] b: 7.0 + 2.8 }}} b: 7.2 + 1 ]]] c: 4 + false ))) a: =^.^=  b: 2.2 1.1 }}", &SkoarLog);
     SkoarLog.i("Skoar done", SkoarMemories);
     SkoarLog.i("\n");
 
@@ -80,6 +80,15 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
                 out << *(kv.second);
             else
                 out << "=^.^=";
+
+            if (check_skoarpuscle_val<SkoarpuscleString, SkoarString>(kv.second, L"hello")) {
+                out << "  helloooo found!!!";
+            }
+
+            list<SkoarFloat> desires = { 1.1, 2.2, 3.3, 4.4, 5.5 };
+            if (check_skoarpuscle_val_in<SkoarpuscleFloat, SkoarFloat>(kv.second, desires)) {
+                out << "  desire found!!!";
+            }
 
         }
         SkoarLog.i("Event", out.str());

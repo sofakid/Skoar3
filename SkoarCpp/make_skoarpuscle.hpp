@@ -76,3 +76,36 @@ R* flatten_skoarpuscle(SkoarpusclePtr p) {
     return nullptr;
 }
 */
+
+template <class T, typename V>
+bool check_skoarpuscle_val(SkoarpusclePtr p, V val) {
+    auto x = is_skoarpuscle<T>(p);
+    if (x == false)
+        return false;
+
+    auto ptr = skoarpuscle_ptr<T>(p);
+
+    if (typeid(ptr->val) != typeid(val))
+        return false;
+
+    if (ptr->val != val)
+        return false;
+
+    return true;
+}
+
+template <class T, typename V>
+bool check_skoarpuscle_val_in(SkoarpusclePtr p, list<V> &in) {
+    auto x = is_skoarpuscle<T>(p);
+    if (x == false)
+        return false;
+
+    auto ptr = skoarpuscle_ptr<T>(p);
+
+    for (auto el : in) {
+        if (ptr->val == el)
+            return true;
+    }
+
+    return false;
+}

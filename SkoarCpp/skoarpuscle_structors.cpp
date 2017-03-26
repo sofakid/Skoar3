@@ -9,6 +9,7 @@
 #include "skoarpion.hpp"
 #include "skoarpion_skoarpuscle.hpp"
 #include "make_skoarpuscle.hpp"
+#include "operators.hpp"
 
 
 // --- SkoarpuscleUnknown ---------------------------------------------------------
@@ -265,22 +266,22 @@ SkoarpuscleMathOp::SkoarpuscleMathOp(SkoarToke *toke) : val(toke->lexeme) {
 
     if (s == L"+") {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            // Skoar::ops.add(m, a, b);
+            SkoarOps::getInstance()->add(m, a, b);
         };
     }
     else if (s == L"*") {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            // Skoar::ops.multiply(m, a, b);
+            // SkoarOps::getInstance()->multiply(m, a, b);
         };
     }
     else if (s == L"/") {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            // Skoar::ops.divide(m, a, b);
+            // SkoarOps::getInstance()->divide(m, a, b);
         };
     }
     else if (s == L"-") {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            // Skoar::ops.sub(m, a, b);
+            // SkoarOps::getInstance()->sub(m, a, b);
         };
     }
 }
@@ -405,7 +406,6 @@ SkoarpuscleConditional::~SkoarpuscleConditional() {
 }
 
 // --- SkoarpuscleTimes ---------------------------------------------------------
-
 SkoarpuscleTimes::SkoarpuscleTimes() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Times");

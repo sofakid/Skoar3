@@ -78,7 +78,9 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
     
     // -----------------------------------------------------------------
     { ESkoarToke::String, SpellOfToking{
-        noad->skoarpuscle = make_shared<SkoarpuscleString>(toke->lexeme);
+        auto s = toke->lexeme;
+        auto n = s.length();
+        noad->skoarpuscle = make_shared<SkoarpuscleString>(s.substr(1, n - 2));
         noad->toke = nullptr;
     } },
 
