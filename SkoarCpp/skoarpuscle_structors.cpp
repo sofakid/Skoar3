@@ -25,7 +25,7 @@ SkoarpuscleUnknown::~SkoarpuscleUnknown() {
 }
 
 // --- SkoarpuscleCat ---------------------------------------------------------
-SkoarpuscleCat::SkoarpuscleCat() {
+SkoarpuscleCat::SkoarpuscleCat() : Skoarpuscle(ESkoarpuscle::Cat) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Cat");
 #endif
@@ -44,7 +44,7 @@ SkoarpuscleCat::SkoarpuscleCat(nullptr_t) : SkoarpuscleCat() {
 
 
 // --- SkoarpuscleTrue ---------------------------------------------------------
-SkoarpuscleTrue::SkoarpuscleTrue() {
+SkoarpuscleTrue::SkoarpuscleTrue() : Skoarpuscle(ESkoarpuscle::True) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"True");
 #endif
@@ -62,7 +62,8 @@ SkoarpuscleTrue::SkoarpuscleTrue(bool x) : SkoarpuscleTrue() {
 }
 
 // --- SkoarpuscleFalse ---------------------------------------------------------
-SkoarpuscleFalse::SkoarpuscleFalse() {
+SkoarpuscleFalse::SkoarpuscleFalse() : 
+    Skoarpuscle(ESkoarpuscle::False) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"False");
 #endif
@@ -79,7 +80,9 @@ SkoarpuscleFalse::SkoarpuscleFalse(bool x) : SkoarpuscleFalse() {
 }
 
 // --- SkoarpuscleInt ---------------------------------------------------------
-SkoarpuscleInt::SkoarpuscleInt(SkoarInt v) : val(v) {
+SkoarpuscleInt::SkoarpuscleInt(SkoarInt v) : 
+    Skoarpuscle(ESkoarpuscle::Int), 
+    val(v) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Int");
 #endif
@@ -94,7 +97,9 @@ SkoarpuscleInt::~SkoarpuscleInt() {
 }
 
 // --- SkoarpuscleFloat ---------------------------------------------------------
-SkoarpuscleFloat::SkoarpuscleFloat(SkoarFloat v) : val(v) {
+SkoarpuscleFloat::SkoarpuscleFloat(SkoarFloat v) : 
+    Skoarpuscle(ESkoarpuscle::Float), 
+    val(v) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Float");
 #endif
@@ -109,7 +114,8 @@ SkoarpuscleFloat::~SkoarpuscleFloat() {
 }
 
 // --- SkoarpuscleFreq ---------------------------------------------------------
-SkoarpuscleFreq::SkoarpuscleFreq(SkoarFloat v) :
+SkoarpuscleFreq::SkoarpuscleFreq(SkoarFloat v) : 
+    Skoarpuscle(ESkoarpuscle::Freq),
     val(v)
 {
 #if SKOAR_DEBUG_MEMORY
@@ -134,7 +140,9 @@ SkoarpuscleFreq::SkoarpuscleFreq(SkoarInt v) :
 }
 
 // --- SkoarpuscleNoat ---------------------------------------------------------
-SkoarpuscleNoat::SkoarpuscleNoat(SkoarString&) : val(0) {
+SkoarpuscleNoat::SkoarpuscleNoat(SkoarString&) : 
+    Skoarpuscle(ESkoarpuscle::Noat),
+    val(0) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Noat");
 #endif
@@ -149,7 +157,9 @@ SkoarpuscleNoat::~SkoarpuscleNoat() {
 }
 
 // --- SkoarpuscleChoard ---------------------------------------------------------
-SkoarpuscleChoard::SkoarpuscleChoard(SkoarString&) : val(0) {
+SkoarpuscleChoard::SkoarpuscleChoard(SkoarString&) : 
+    Skoarpuscle(ESkoarpuscle::Choard), 
+    val(0) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Choard");
 #endif
@@ -164,7 +174,9 @@ SkoarpuscleChoard::~SkoarpuscleChoard() {
 }
 
 // --- SkoarpuscleString ---------------------------------------------------------
-SkoarpuscleString::SkoarpuscleString(SkoarString s) : val(s) {
+SkoarpuscleString::SkoarpuscleString(SkoarString s) : 
+    Skoarpuscle(ESkoarpuscle::String),
+    val(s) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"String");
 #endif
@@ -213,7 +225,9 @@ inline SkoarString clean_symbol_colon(SkoarString &lex) {
     return std::regex_replace(lex, expr, L"");
 }
 
-SkoarpuscleSymbolColon::SkoarpuscleSymbolColon(SkoarString lex) : val(clean_symbol_colon(lex)) {
+SkoarpuscleSymbolColon::SkoarpuscleSymbolColon(SkoarString lex) : 
+    Skoarpuscle(ESkoarpuscle::SymbolColon),
+    val(clean_symbol_colon(lex)) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"SymbolColon");
 #endif
@@ -486,18 +500,12 @@ SkoarpuscleListEnd::~SkoarpuscleListEnd() {
 }
 
 // --- SkoarpuscleList ---------------------------------------------------------
-SkoarpuscleList::SkoarpuscleList() :
-    val(make_shared<ListOfSkoarpuscles>())
-{
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"List");
-#endif
-
-    noaty = true;
-    impressionable = true;
-}
+SkoarpuscleList::SkoarpuscleList() : 
+    SkoarpuscleList(make_shared<ListOfSkoarpuscles>())
+{}
 
 SkoarpuscleList::SkoarpuscleList(ListOfSkoarpusclesPtr x) :
+    Skoarpuscle(ESkoarpuscle::List),
     val(x)
 {
 #if SKOAR_DEBUG_MEMORY

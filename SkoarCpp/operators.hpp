@@ -1,50 +1,129 @@
 #pragma once
 #include "skoarcery.hpp"
+#include "spells.hpp"
 #include "all_skoarpuscles.hpp"
+
+typedef function<SkoarpusclePtr(SkoarpusclePtr, SkoarpusclePtr, SkoarMinstrelPtr)> SpellOfMath;
+
+typedef map<ESkoarpuscle::Kind, SpellOfMath> YTable;
+typedef map<ESkoarpuscle::Kind, YTable> XTable;
+
+#define MathMagic [](SkoarpusclePtr x, SkoarpusclePtr y, SkoarMinstrelPtr m)
+#define EMath ESkoarpuscle
 
 class SkoarOps {
 public:
 
+    XTable addition = {
+        {EMath::Cat,   {{ EMath::Any, MathMagic { return make_skoarpuscle(nullptr); } }}},
+        {EMath::False, {{ EMath::Any, MathMagic { return x; } }}},
+        {EMath::True,  {{ EMath::Any, MathMagic { return y; } }}},
+
+        {EMath::Envelope, {{ EMath::Any, MathMagic { return make_skoarpuscle(nullptr); } }}},
+
+        {EMath::UGen, {
+            {EMath::Int,       MathMagic{ return skoarpuscle_ptr<SkoarpuscleUGen>(x)->add(y); }},
+            {EMath::Float,     MathMagic{ return skoarpuscle_ptr<SkoarpuscleUGen>(x)->add(y); }},
+            {EMath::HashLevel, MathMagic{ return skoarpuscle_ptr<SkoarpuscleUGen>(x)->add(y); }},
+            {EMath::Freq,      MathMagic{ return make_skoarpuscle(nullptr); }},
+
+            {EMath::Noat,   MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::Choard, MathMagic{ return make_skoarpuscle(nullptr); }},
+
+            {EMath::False, MathMagic{ return skoarpuscle_ptr<SkoarpuscleUGen>(x)->mul(make_skoarpuscle(0.0)); }},
+            {EMath::True,  MathMagic{ return x; }},
+
+            {EMath::Symbol, MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::String, MathMagic{ return make_skoarpuscle(nullptr); }},
+
+            {EMath::List,     MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::UGen,     MathMagic{ return skoarpuscle_ptr<SkoarpuscleUGen>(y)->add(x); }},
+            {EMath::Envelope, MathMagic{ return make_skoarpuscle(nullptr); }}
+        }},
+
+        {EMath::Int,{
+            {EMath::Int,       MathMagic{
+                return make_skoarpuscle(
+                    skoarpuscle_ptr<SkoarpuscleInt>(x)->val +
+                    skoarpuscle_ptr<SkoarpuscleInt>(y)->val
+                );
+            }},
+            {EMath::Float,     MathMagic{
+                return make_skoarpuscle(
+                    static_cast<SkoarFloat>(skoarpuscle_ptr<SkoarpuscleInt>(x)->val) +
+                    skoarpuscle_ptr<SkoarpuscleFloat>(y)->val
+                );
+            }},
+            {EMath::HashLevel, MathMagic{
+                return make_skoarpuscle(
+                    static_cast<SkoarFloat>(skoarpuscle_ptr<SkoarpuscleInt>(x)->val) +
+                    skoarpuscle_ptr<SkoarpuscleHashLevel>(y)->val
+                );
+            }},
+            {EMath::Freq,      MathMagic{
+                return make_skoarpuscle(
+                    static_cast<SkoarFloat>(skoarpuscle_ptr<SkoarpuscleInt>(x)->val) +
+                    skoarpuscle_ptr<SkoarpuscleFreq>(y)->val
+                );
+            }},
+
+            {EMath::Noat,   MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::Choard, MathMagic{ return make_skoarpuscle(nullptr); }},
+
+            {EMath::False, MathMagic{ return y; }},
+            {EMath::True,  MathMagic{ return x; }},
+
+            {EMath::Symbol, MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::String, MathMagic{ return make_skoarpuscle(nullptr); }},
+
+            {EMath::List,     MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::UGen,     MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::Envelope, MathMagic{ return make_skoarpuscle(nullptr); }}
+        }},
+
+        {EMath::Float, {
+            {EMath::Int, MathMagic{
+                return make_skoarpuscle(
+                    skoarpuscle_ptr<SkoarpuscleFloat>(x)->val +
+                    static_cast<SkoarFloat>(skoarpuscle_ptr<SkoarpuscleInt>(y)->val)
+                );
+            }},
+            {EMath::Float, MathMagic{
+                return make_skoarpuscle(
+                    skoarpuscle_ptr<SkoarpuscleFloat>(x)->val +
+                    skoarpuscle_ptr<SkoarpuscleFloat>(y)->val
+                );
+            }},
+            {EMath::HashLevel, MathMagic{
+                return make_skoarpuscle(
+                    skoarpuscle_ptr<SkoarpuscleFloat>(x)->val +
+                    skoarpuscle_ptr<SkoarpuscleHashLevel>(y)->val
+                );
+            }},
+            {EMath::Freq, MathMagic{
+                return make_skoarpuscle(
+                    skoarpuscle_ptr<SkoarpuscleFloat>(x)->val +
+                    skoarpuscle_ptr<SkoarpuscleFreq>(y)->val
+                );
+            }},
+
+            {EMath::Noat,   MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::Choard, MathMagic{ return make_skoarpuscle(nullptr); }},
+
+            {EMath::False, MathMagic{ return y; }},
+            {EMath::True,  MathMagic{ return x; } },
+
+            {EMath::Symbol, MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::String, MathMagic{ return make_skoarpuscle(nullptr); }},
+
+            {EMath::List, MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::UGen, MathMagic{ return make_skoarpuscle(nullptr); }},
+            {EMath::Envelope, MathMagic{ return make_skoarpuscle(nullptr); }}
+        }}
+
+    };
+
 };
 
-namespace SkoarOperations {
-
-    //template <typename X, typename Y>
-    //SkoarpusclePtr add(X x, Y y, SkoarMinstrelPtr m) {
-    //    make_skoarpuscle<SkoarpuscleCat>();
-    //}
-    /*
-#define SKOP_ADD(X,Y,Z,C) SkoarpusclePtr add(X x, Y y, SkoarMinstrelPtr m) { return make_shared<Z>((C)); }
-
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleInt,       SkoarpuscleInt,   x.val + y.val);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleFloat,     SkoarpuscleFloat, static_cast<SkoarFloat>(x.val) + y.val);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleHashLevel, SkoarpuscleFloat, static_cast<SkoarFloat>(x.val) + y.val);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleFreq,      SkoarpuscleFreq,  static_cast<SkoarFloat>(x.val) + y.val);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleNoat,      SkoarpuscleCat,   nullptr);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleChoard,    SkoarpuscleCat,   nullptr);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleFalse,     SkoarpuscleFalse, false);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleTrue,      SkoarpuscleInt,   x.val);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleSymbol,    SkoarpuscleCat,   nullptr);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleString,    SkoarpuscleCat,   nullptr);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleList,      SkoarpuscleCat,   nullptr);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleUGen,      SkoarpuscleCat,   nullptr);
-    SKOP_ADD(SkoarpuscleInt, SkoarpuscleEnvelope,  SkoarpuscleCat,   nullptr);
-
-
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleInt, SkoarpuscleFloat,       x.val + static_cast<SkoarFloat>(y.val));
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleFloat, SkoarpuscleFloat,     x.val + y.val);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleHashLevel, SkoarpuscleFloat, x.val + y.val);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleFreq, SkoarpuscleFreq,       x.val + y.val);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleNoat, SkoarpuscleCat,        nullptr);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleChoard, SkoarpuscleCat,      nullptr);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleFalse, SkoarpuscleFalse,     false);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleTrue, SkoarpuscleFloat,      x.val);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleSymbol, SkoarpuscleCat,      nullptr);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleString, SkoarpuscleCat,      nullptr);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleList, SkoarpuscleCat,        nullptr);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleUGen, SkoarpuscleCat,        nullptr);
-    SKOP_ADD(SkoarpuscleFloat, SkoarpuscleEnvelope, SkoarpuscleCat,    nullptr);
-
-#undef SKOP_ADD
-*/
-}
+#undef MathMagic
+#undef EMath

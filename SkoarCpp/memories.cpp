@@ -53,7 +53,7 @@ std::wostream& operator << (std::wostream& out, const SkoarMem& o) {
             if (count != 0) {
                 if (show == false) {
                     show = true;
-                    out << "\n--- Excess " << x_pair.first << " ---------------------------\n";
+                    out << "\n--- " << x_pair.first << " ---------------------------\n";
                 }
                 out << "    " << entry_pair.first << ": " << count << "\n";
             }

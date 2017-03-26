@@ -291,6 +291,7 @@
     <ClInclude Include="meditation.hpp" />
     <ClInclude Include="memories.hpp" />
     <ClInclude Include="skoarpion_skoarpuscle.hpp" />
+    <ClInclude Include="skoarpuscle_types.hpp" />
     <ClInclude Include="styles.hpp" />
     <ClInclude Include="decorating.hpp" />
     <ClInclude Include="decorating_fwd.hpp" />

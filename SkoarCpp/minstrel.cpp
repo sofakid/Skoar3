@@ -56,55 +56,57 @@ void SkoarMinstrel::start() {
 
 void SkoarMinstrel::EventStream(SkoarMinstrelPtr m) {
     auto x = m->skoar->tree->next_skoarpuscle();
-    auto skoarpion = skoarpuscle_ptr<SkoarpuscleSkoarpion>(x)->val;
-    
-    m->f = [=]() {
-        auto running = true;
+    if (is_skoarpuscle<SkoarpuscleSkoarpion>(x)) {
+        auto skoarpion = skoarpuscle_ptr<SkoarpuscleSkoarpion>(x)->val;
 
-        while (running) {
-            try {
-                m->koar->do_skoarpion(skoarpion, m, SkoarKoar::EExecStyle::NORMAL, nullptr);
+        m->f = [=]() {
+            auto running = true;
 
-                throw SkoarNav(SkoarNav::DONE);
+            while (running) {
+                try {
+                    m->koar->do_skoarpion(skoarpion, m, SkoarKoar::EExecStyle::NORMAL, nullptr);
+
+                    throw SkoarNav(SkoarNav::DONE);
+                }
+                catch (SkoarNav &nav_result) {
+                    switch (nav_result.code) {
+
+                    case SkoarNav::DONE:
+                        running = false;
+                        break;
+
+                    case SkoarNav::CODA:
+                        throw SkoarError(L"Unhandled Coda");
+                        break;
+
+                    case SkoarNav::DA_CAPO:
+                        // do nothing, will enter skoarpion again
+                        break;
+
+                    case SkoarNav::SEGNO:
+                        throw SkoarError(L"Unhandled Segno");
+                        break;
+
+                    case SkoarNav::COLON:
+                        // do nothing, will enter skoarpion again
+                        break;
+
+                    case SkoarNav::FINE:
+                        running = false;
+                        break;
+                    };
+
+                }
             }
-            catch (SkoarNav &nav_result) {
-                switch (nav_result.code) {
 
-                case SkoarNav::DONE:
-                    running = false;
-                    break;
+            // todo: uncomment when lute exists
+            //if (m->fairy->lute != nullptr) {
+            //    m->fairy->lute->flush_everything();
+            //}
 
-                case SkoarNav::CODA:
-                    throw SkoarError(L"Unhandled Coda");
-                    break;
-
-                case SkoarNav::DA_CAPO:
-                    // do nothing, will enter skoarpion again
-                    break;
-
-                case SkoarNav::SEGNO:
-                    throw SkoarError(L"Unhandled Segno");
-                    break;
-
-                case SkoarNav::COLON:
-                    // do nothing, will enter skoarpion again
-                    break;
-
-                case SkoarNav::FINE:
-                    running = false;
-                    break;
-                };
-
-            }
-        }
-
-        // todo: uncomment when lute exists
-        //if (m->fairy->lute != nullptr) {
-        //    m->fairy->lute->flush_everything();
-        //}
-
-        m->skoar->one_less_running();
-    };
+            m->skoar->one_less_running();
+        };
+    }
 }
 
 void SkoarMinstrel::reset_colons() {

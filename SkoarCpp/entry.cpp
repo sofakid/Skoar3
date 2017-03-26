@@ -26,7 +26,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
     //SkoarLog.i("Skoar done", SkoarMemories);
     //SkoarLog.i("\n");
 
-    
+    /*
     Skoar(L"a ) ]] {! derp<x> !! !x ) 0 a# !} !derp<2>  \n\n\n55 nine: 9 @food {! dorp<s:6> !! @worp !s )) !} {: )) :: 3 times :}", &SkoarLog);
     SkoarLog.i("Skoar done", SkoarMemories);
     SkoarLog.i("\n");
@@ -42,14 +42,37 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
     Skoar(L"{! derp !!\n.alice 0\n.bob 0\n.alice 1\n.bob 1!}", &SkoarLog);
     SkoarLog.i("Skoar done", SkoarMemories);
     SkoarLog.i("\n");
-    
-
-    /*
-    Skoar fun(L"a: 'hello world' ] b:2 )", &SkoarLog);
-    fun.play([&](SkoarEventPtr e) {
-        SkoarLog.w("yay", e->at(L"a"), e->at(L"dur"));
-    });
     */
+
+    SkoarLog.setLevel(ISkoarLog::debug);
+    Skoar fun(L"a: 'hello' ] a: 'world' )", &SkoarLog);
+    SkoarLog.i("Skoar done", SkoarMemories);
+    SkoarLog.i("\n");
+
+    fun.play([&](SkoarEventPtr e) {
+        auto xs = e->at(L"a");
+        auto ds = e->at(L"dur");
+
+        SkoarString x;
+        SkoarFloat d;
+
+        if (is_skoarpuscle<SkoarpuscleString>(xs)) {
+            x = skoarpuscle_ptr<SkoarpuscleString>(xs)->val;
+        }
+        else {
+            x = L"";
+        }
+
+        if (is_skoarpuscle<SkoarpuscleFloat>(ds)) {
+            d = skoarpuscle_ptr<SkoarpuscleFloat>(ds)->val;
+        }
+        else {
+            d = 0.0;
+        }
+
+        SkoarLog.w("yay", x, d);
+    });
+    
     wstring instr;
     std::wcin >> instr;
 }

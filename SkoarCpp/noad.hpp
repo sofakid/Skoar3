@@ -67,6 +67,7 @@ public:
     static SkoarNoadPtr NewArtificial(SkoarString &nameArg, SkoarNoadPtr parentArg);
     static SkoarNoadPtr NewArtificial(const wchar_t *nameArg, SkoarNoadPtr parentArg);
     static SkoarNoadPtr NewArtificial(const wchar_t *nameArg);
+    static SkoarNoadPtr NewAlias(const wchar_t *nameArg);
 
     void clear();
     void clear_children();

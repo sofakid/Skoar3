@@ -15,6 +15,13 @@ public:
     SkoarpuscleUGen(SkoarString, Type);
 
     SkoarString defaultMsg();
+
+    SkoarpusclePtr add(SkoarpusclePtr);
+    SkoarpusclePtr sub(SkoarpusclePtr);
+    SkoarpusclePtr mul(SkoarpusclePtr);
+    SkoarpusclePtr div(SkoarpusclePtr);
+    SkoarpusclePtr divBy(SkoarpusclePtr);
+
 };
 
 class SkoarpuscleUGenWithArgs : public SkoarpuscleUGen {

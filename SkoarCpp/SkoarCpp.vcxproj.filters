@@ -159,6 +159,9 @@
     <ClInclude Include="all_skoarpuscles.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="skoarpuscle_types.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="toker.cpp">

@@ -99,7 +99,7 @@ namespace ESkoarNoad {
         unknown = 0,
         toke,
         artificial,
-        args,
+        alias,
 """)
 
         for x in SortedNonterminals:

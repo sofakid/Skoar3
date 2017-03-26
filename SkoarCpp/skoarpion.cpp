@@ -92,6 +92,7 @@ void Skoarpion::init_from_skoar(Skoar* skoar) {
 
     SkoarNoadAddress address;
     body->decorate_zero(skoar->all_voice, body, address, 0);
+
     n = body->size;
 }
 
@@ -212,21 +213,21 @@ void Skoarpion::draw_tree(wostringstream &out) {
     if (body != nullptr) {
         body->draw_tree(out);
     }
-
 }
 
 // --- SkoarpionProjection ------------------------------------------------
 SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koar_name) :
     body(nullptr),
-    proj(SkoarNoad::NewArtificial(L"projection")),
+    proj(SkoarNoad::NewAlias(L"projection")),
     name(skoarpion->name + SkoarString(L":") + koar_name)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocProjection(name);
 #endif
-    auto kids = skoarpion->body->children;
 
-    size_t n = kids.size();
+    proj->voice = skoarpion->skoar->get_voice(koar_name);
+    //auto kids = static_cast<const list<SkoarNoadPtr>&>();
+    size_t n = skoarpion->body->children.size();
     skip_to.reserve(n);
     
     size_t i = 0;
@@ -234,25 +235,31 @@ SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koa
         skip_to.push_back(0);
     i = 0;
     
-    for (auto x : kids) {
-        auto s = x->voice->name;
+    for (const SkoarNoadPtr &x : skoarpion->body->children) {
+        auto voice = x->voice;
+        SkoarString s;
+        if (voice == nullptr) {
+            s = L"all";
+        }
+        else {
+            s = x->voice->name;
+        }
         if ((s == koar_name) || (s == L"all")) {
-            auto addr = x->address;
-            auto m = addr.size();
+            auto addr = &x->address;
+            auto m = addr->size();
 
             if (m > 0) {
-                skip_to[addr[m - 1]] = i;
+                skip_to[(*addr)[m - 1]] = i;
             }
             ++i;
-
-            // don't use add_noad, it corrupts noad.
-            proj->children.push_back(x);
+            
+            proj->add_noad(x);
             proj->skoap = x->skoap;
         }
     }
 
     // need these?
-    //arr = proj->children;
+    //arr = &(proj->children);
     //i = 0;
     //n = arr.size();
 }
@@ -262,6 +269,7 @@ SkoarpionProjection::~SkoarpionProjection()
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.deallocProjection(name);
 #endif
+    proj = nullptr;
 }
 
 /*list<SkoarInt> get_skip_to();

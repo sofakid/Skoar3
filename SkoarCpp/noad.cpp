@@ -69,6 +69,12 @@ SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg)
     return SkoarNoad::New<ESkoarNoad::artificial>(SkoarString(nameArg), nullptr);
 }
 
+SkoarNoadPtr SkoarNoad::NewAlias(const wchar_t *nameArg)
+{
+    return SkoarNoad::New<ESkoarNoad::alias>(SkoarString(nameArg), nullptr);
+}
+
+
 SkoarNoad::~SkoarNoad() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.deallocNoad(name);
@@ -77,7 +83,14 @@ SkoarNoad::~SkoarNoad() {
 }
 
 void SkoarNoad::clear() {
-    clear_children();
+    if (kind == ESkoarNoad::alias) {
+        // this one just erases the children references
+        children.clear();
+    } 
+    else {
+        // this one erases the entire subtree
+        clear_children();
+    }
     clear_values();
 }
 
@@ -384,6 +397,10 @@ void SkoarNoad::enter_noad(SkoarMinstrelPtr minstrel) {
 	if (on_enter) {
 		on_enter(minstrel);
 	}
+
+    if (skoarpuscle != nullptr) {
+        skoarpuscle->on_enter(minstrel);
+    }
 }
 
 

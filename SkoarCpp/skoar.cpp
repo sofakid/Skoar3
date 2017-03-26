@@ -195,6 +195,9 @@ void Skoar::cthulhu(SkoarNoadPtr noad) {
 
 void Skoar::play(const SpellOfHappening& spell) {
     Skoarchestra x(this, spell);
+    for (auto m : x.minstrels) {
+        m->start();
+    }
 }
 
 void Skoar::draw_skoarpions(ISkoarLog *log) {
@@ -213,10 +216,12 @@ void Skoar::draw_skoarpions(ISkoarLog *log) {
 			auto koar_name = pairs.first;
 			auto projection = Skoarpion::projection(x, koar_name);
 
-			projection->proj->draw_tree(stream);
+            projection = Skoarpion::projection(x, koar_name);
+            projection->proj->draw_tree(stream);
             stream << "\n";
         }
 	}
+    
     log->i("draw_skoarpions\n", stream.str());
 }
 

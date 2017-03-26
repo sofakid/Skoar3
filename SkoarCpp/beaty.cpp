@@ -202,7 +202,7 @@ SkoarpuscleBeat::~SkoarpuscleBeat() {
 void SkoarpuscleBeat::on_enter_sometimes(SkoarMinstrelPtr m) {
     SkoarFloat dur = val;
 
-    auto noat = m->fairy->noat->asNoat();
+    //auto noat = m->fairy->noat->asNoat();
 
     //noat->execute(m);
 
@@ -241,7 +241,7 @@ SkoarpuscleRest::~SkoarpuscleRest() {
 void SkoarpuscleRest::on_enter_sometimes(SkoarMinstrelPtr m) {
     SkoarFloat dur = val;
 
-    auto noat = m->fairy->noat->asNoat();
+    //auto noat = m->fairy->noat->asNoat();
 
     //noat->execute(m);
 

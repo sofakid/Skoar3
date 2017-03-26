@@ -13,13 +13,25 @@
 #include "exception.hpp"
 #include "memories.hpp"
 
+#include "skoarpuscle_types.hpp"
+
 class Skoarpuscle {
 public:
     
+    const ESkoarpuscle::Kind kind;
+
     Skoarpuscle() :
         impressionable(true),
         noatworthy(false),
-        county(false) {
+        county(false),
+        kind(ESkoarpuscle::Kind::Other) {
+    }
+
+    Skoarpuscle(ESkoarpuscle::Kind kind) :
+        impressionable(true),
+        noatworthy(false),
+        county(false),
+        kind(kind) {
     }
  
     virtual ~Skoarpuscle() {
