@@ -16,7 +16,7 @@ public:
 	SkoarToke* see(ESkoarToke::Kind want);
 	SkoarToke* sees(list<ESkoarToke::Kind> *wants);
 
-	SkoarTokePtr burn(ESkoarToke::Kind want);
+	SkoarTokePtr burn(ESkoarToke::Kind want, SkoarNoadPtr noad);
 
 	void eof();
 	void dump();

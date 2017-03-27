@@ -284,6 +284,7 @@
     <ClInclude Include="all_skoarpuscles.hpp" />
     <ClInclude Include="beaty.hpp" />
     <ClInclude Include="beaty_fwd.hpp" />
+    <ClInclude Include="catch.hpp" />
     <ClInclude Include="dsp.hpp" />
     <ClInclude Include="envelope.hpp" />
     <ClInclude Include="lute.hpp" />
@@ -291,6 +292,7 @@
     <ClInclude Include="meditation.hpp" />
     <ClInclude Include="memories.hpp" />
     <ClInclude Include="skoarpion_skoarpuscle.hpp" />
+    <ClInclude Include="testing_util.hpp" />
     <ClInclude Include="skoarpuscle_types.hpp" />
     <ClInclude Include="styles.hpp" />
     <ClInclude Include="decorating.hpp" />
@@ -335,7 +337,12 @@
     <ClCompile Include="beaty.cpp" />
     <ClCompile Include="decorating.cpp" />
     <ClCompile Include="dsp.cpp" />
-    <ClCompile Include="entry.cpp" />
+    <ClCompile Include="entry.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Deb Prog|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Rel Prog|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="envelope.cpp" />
     <ClCompile Include="event.cpp" />
     <ClCompile Include="exception.cpp" />
@@ -358,6 +365,8 @@
     <ClCompile Include="skoarpuscle_as_string.cpp" />
     <ClCompile Include="skoarpuscle_structors.cpp" />
     <ClCompile Include="styles.cpp" />
+    <ClCompile Include="test_basics.cpp" />
+    <ClCompile Include="test_main.cpp" />
     <ClCompile Include="toker.cpp" />
     <ClCompile Include="toke_inspector.cpp" />
   </ItemGroup>

@@ -45,7 +45,10 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
     */
 
     SkoarLog.setLevel(ISkoarLog::debug);
-    Skoar fun(L"a: 'hello' ] a: 'world' ) b: 7 + 2.2 ]]] b: 7.0 + 2.8 }}} b: 7.2 + 1 ]]] c: 4 + false ))) a: =^.^=  b: 2.2 1.1 }}", &SkoarLog);
+    Skoar fun(L"a: 7 ] 6 ) !a }}", &SkoarLog);
+    //Skoar fun(L"a: 'hello' ] a: 'world' ) b: 7 + 2.2 ]]] b: 7.0 + 2.8 }}} b: 7.2 + 1 ]]] c: 4 + false ))) a: =^.^=  b: 2.2 1.1 }}", &SkoarLog);
+    //Skoar fun(L"a: 'hello' ] a: 'world' ) b: 7 + 2.2 ]]] b: 7.0 + 2.8 }}} b: 7.2 + 1 ]]] c: 4 + false ))) a: =^.^=  b: 2.2 1.1 }}", &SkoarLog);
+    //Skoar fun(L"a: 'hello' ] a: 'world' ) b: 7 + 2.2 ]]] b: 7.0 + 2.8 }}} b: 7.2 + 1 ]]] c: 4 + false ))) a: =^.^=  b: 2.2 1.1 }}", &SkoarLog);
     SkoarLog.i("Skoar done", SkoarMemories);
     SkoarLog.i("\n");
 

@@ -157,10 +157,6 @@ void SkoarParser::init() {
             ____CPP.stmt("this->fail_too_deep(parent)")
             CPP.end_if()
 
-            if A.name == "skoar":
-                CPP.raw("    try {\n")
-                CPP.tab += 1
-
             # each production
             for P in R:
 
@@ -183,7 +179,7 @@ void SkoarParser::init() {
                 for x in alpha:
                     if isinstance(x, Terminal):
                         CPP.stmt('skoarStats->tokeFreq[ESkoarToke::' + x.name + '] += 0.1f')
-                        CPP.stmt('toke_noad = SkoarNoad::New(wstring(L"' + x.toker_name + '"), noad, toker->burn(ESkoarToke::' + x.name + '))')
+                        CPP.stmt('toke_noad = SkoarNoad::New(wstring(L"' + x.toker_name + '"), noad, toker->burn(ESkoarToke::' + x.name + ', noad))')
                         CPP.stmt('noad->add_noad(toke_noad)')
 
                         # debugging
@@ -213,15 +209,6 @@ void SkoarParser::init() {
                 CPP.stmt("this->fail(noad)")
                 CPP.return_(CPP.null)
 
-            if A.name == "skoar":
-                CPP.raw("""
-    }
-    catch (SkoarError &e) {
-        this->toker_fail(e, noad);
-    }
-""")
-                CPP.tab -= 1
-                CPP.return_(CPP.null)
             CPP.end() # CPP.method(Ax, Parentx)
 
         CPP.nl()
@@ -291,12 +278,6 @@ struct SkoarStats {
         CPP.method(fail_too_deep_, noad_)
         CPP.stmt("toker->dump()")
         CPP.stmt("throw SkoarParseException(L\"Parse tree too deep!\", noad)")
-        CPP.end()
-
-        HPP.method_h(toker_fail_, skoar_error_, noad_)
-        CPP.method(toker_fail_, skoar_error_, noad_)
-        CPP.stmt("toker->dump()")
-        CPP.stmt("throw SkoarParseException(e.wwhat(), noad)")
         CPP.end()
 
         HPP.raw("""

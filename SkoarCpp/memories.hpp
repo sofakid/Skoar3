@@ -34,6 +34,34 @@ public:
     MemoriesMap SkoarDicsMap;
     MemoriesMap EventsMap;
 
+
+    // --------------------------------------------------------------------------
+    // for testing use only!
+    void reset() {
+        Tokes = 0;
+        Noads = 0;
+        Skoars = 0;
+        Skoarpuscles = 0;
+        Skoarpions = 0;
+        Projections = 0;
+        Koars = 0;
+        Fairies = 0;
+        Minstrels = 0;
+        SkoarDics = 0;
+        Events = 0;
+
+        TokesMap.clear();
+        NoadsMap.clear();
+        SkoarpusclesMap.clear();
+        SkoarpionsMap.clear();
+        ProjectionsMap.clear();
+        KoarsMap.clear();
+        FairiesMap.clear();
+        MinstrelsMap.clear();
+        SkoarDicsMap.clear();
+        EventsMap.clear();
+    }
+    
     // --------------------------------------------------------------------------
     void alloc(SkoarString &name, MemoriesMap &Map) {
         Map[name] += 1;
@@ -78,6 +106,7 @@ public:
     void deallocEvent(SkoarString name) { dealloc(name, EventsMap); Events -= 1; }
 
     friend std::wostream& operator << (std::wostream& out, const SkoarMem& obj);
+    friend std::ostream& operator << (std::ostream& out, const SkoarMem& obj);
 
 };
 

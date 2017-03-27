@@ -13,15 +13,31 @@ const wchar_t* SkoarError::wwhat() const throw() {
 	return sWhat.c_str();
 }
 
+
+
+// --- SkoarTokerException --------------------------------------------------------
+SkoarTokerException::SkoarTokerException() : 
+    SkoarTokerException(L"Toker fail.") {
+}
+
+
+SkoarTokerException::SkoarTokerException(SkoarString s) :
+    SkoarTokerException(s, nullptr) {
+}
+
+SkoarTokerException::SkoarTokerException(SkoarString s, SkoarNoadPtr noad) :
+    SkoarError(s), noad(noad) {
+}
+
+
 // --- SkoarParseException --------------------------------------------------------
 SkoarParseException::SkoarParseException() {
-	sWhat = SkoarString(L"Parse fail.");
+    sWhat = SkoarString(L"Parse fail.");
 }
 
 SkoarParseException::SkoarParseException(SkoarString s, SkoarNoadPtr noad) :
     SkoarError(s), noad(noad) {
 }
-
 // --- SkoarpuscleException --------------------------------------------------------
 SkoarpuscleException::SkoarpuscleException() : SkoarError() {
 }

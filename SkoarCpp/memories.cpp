@@ -63,4 +63,15 @@ std::wostream& operator << (std::wostream& out, const SkoarMem& o) {
     return out;
 }
 
+// for Catch
+std::ostream& operator << (std::ostream& out, const SkoarMem& o) {
+    wostringstream wout;
+    wout << o;
+    auto ws = wout.str();
+    string s(ws.begin(), ws.end());
+    out << s;
+    return out;
+
+}
+
 SkoarMem SkoarMemories;

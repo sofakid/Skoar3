@@ -46,7 +46,7 @@ SkoarToke* SkoarToker::sees(std::list<ESkoarToke::Kind> *wants) {
 	return nullptr;
 }
 
-SkoarTokePtr SkoarToker::burn(ESkoarToke::Kind want) {
+SkoarTokePtr SkoarToker::burn(ESkoarToke::Kind want, SkoarNoadPtr noad) {
 
 	auto toke = i_saw;
 
@@ -66,7 +66,7 @@ SkoarTokePtr SkoarToker::burn(ESkoarToke::Kind want) {
 	puts("Toker Fail.");
 	this->dump();
 
-	throw SkoarError(wstring(L"toker fail"));
+	throw SkoarTokerException(wstring(L"toker fail"), noad);
 }
 
 void SkoarToker::eof() {

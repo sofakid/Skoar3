@@ -13,6 +13,17 @@ public:
 	virtual const wchar_t* wwhat() const throw();
 };
 
+
+class SkoarTokerException : public SkoarError {
+public:
+    SkoarNoadPtr noad;
+
+    SkoarTokerException();
+    SkoarTokerException(SkoarString s);
+    SkoarTokerException(SkoarString s, SkoarNoadPtr noad);
+};
+
+
 class SkoarParseException : public SkoarError {
 public:
     SkoarNoadPtr noad;
