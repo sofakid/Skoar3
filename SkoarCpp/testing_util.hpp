@@ -85,11 +85,13 @@ VectorOfSkoarEventsPtr make_events_vec(const Args&... args) {
 }
 
 
-// --- compare event vectors ------------------------------------------------
-
 // --- comparing event vectors --------------------------------------------------------
 
 void compare_skoarpuscles_equal(SkoarpusclePtr desire, SkoarpusclePtr reality);
 void require_desire_in_event(SkoarString k, SkoarpusclePtr v, SkoarEventPtr ev);
 void require_subset_of_event(SkoarEventPtr desire, SkoarEventPtr ev);
 void compare_desires_to_events(VectorOfSkoarEventsPtr desires, VectorOfSkoarEventsPtr events);
+
+// --- run skoars and expect events ---------------------------------------------------
+
+void run_and_expect(SkoarString skoarce, VectorOfSkoarEventsPtr desires);

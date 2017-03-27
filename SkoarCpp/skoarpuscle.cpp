@@ -108,8 +108,7 @@ SkoarpusclePtr SkoarpuscleSymbol::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPt
 
 // --- SkoarpuscleDeref ---------------------------------------------------------
 SkoarpusclePtr SkoarpuscleDeref::lookup(SkoarMinstrelPtr minstrel) {
-	//return minstrel->koar[val];
-    return make_shared<SkoarpuscleCat>();
+	return minstrel->koar->at(val);
 }
 
 //Poco::DynamicAny SkoarpuscleDeref::flatten(SkoarMinstrelPtr m) {
@@ -148,10 +147,9 @@ void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
         if (result != nullptr) {
             m->fairy->impress(result);
         }
-        // not sure about this.. it seems to go nowhere..
-        //else {
-        //    expr.flatten(m);
-        //}
+        else {
+            //expr.flatten(m);
+        }
         m->fairy->pop_noating();
 
     }

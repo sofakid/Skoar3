@@ -171,3 +171,12 @@ void compare_desires_to_events(VectorOfSkoarEventsPtr desires, VectorOfSkoarEven
     }
 
 }
+
+
+void run_and_expect(SkoarString skoarce, VectorOfSkoarEventsPtr desires) {
+    SkoarNullLogger SkoarLog;
+    Skoar skoar(skoarce, &SkoarLog);
+    REQUIRE(skoar.parsedOk);
+    auto events = skoar_get_events(&skoar);
+    compare_desires_to_events(desires, events);
+}

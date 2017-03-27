@@ -104,8 +104,8 @@ SymbolName*:      [a-zA-Z0-9_][a-zA-Z0-9_]*(?![[a-zA-Z0-9_fi \\t]*:)
 SymbolColon*:     [a-zA-Z_][a-zA-Z0-9_]*[ \\t]*:(?![:|}])
 
 
-SkoarpionStartWithSig:  [{]!(?=(.(?!![}]))*!!)
-SkoarpionStart:         [{]!(?=(.(?!!!))*![}])
+SkoarpionStartWithSig:  [{]!(?=([^!](?!![}]))*!!)
+SkoarpionStart:         [{]!(?=([^!](?!!!))*![}])
 SkoarpionEnd:           ![}]
 SkoarpionSep:           !!
 
