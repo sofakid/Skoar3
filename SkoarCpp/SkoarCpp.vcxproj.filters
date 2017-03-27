@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Testing">
+      <UniqueIdentifier>{fc121402-1b4b-4bbc-a29b-80e470df2e87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="toker.hpp">
@@ -166,7 +169,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="testing_util.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Testing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,11 +257,20 @@
     <ClCompile Include="skoarpuscle_as_string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test_main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="testing_util.cpp">
+      <Filter>Testing</Filter>
     </ClCompile>
     <ClCompile Include="test_basics.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="test_main.cpp">
+      <Filter>Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="test_memory.cpp">
+      <Filter>Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="test_sanity.cpp">
+      <Filter>Testing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

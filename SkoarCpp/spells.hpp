@@ -12,6 +12,7 @@
 
 typedef long long SkoarInt;
 typedef double SkoarFloat;
+typedef wstring SkoarString;
 
 typedef unique_ptr<SkoarToke> SkoarTokePtr;
 typedef shared_ptr<SkoarNoad> SkoarNoadPtr;
@@ -31,6 +32,13 @@ typedef list<SkoarMinstrelPtr> ListOfMinstrels;
 typedef list<SkoarDicPtr> ListOfSkoarDics;
 typedef unique_ptr<ListOfSkoarDics> ListOfSkoarDicsPtr;
 
+typedef list<SkoarEventPtr> ListOfSkoarEvents;
+typedef shared_ptr<ListOfSkoarEvents> ListOfSkoarEventsPtr;
+
+
+typedef vector<SkoarEventPtr> VectorOfSkoarEvents;
+typedef shared_ptr<VectorOfSkoarEvents> VectorOfSkoarEventsPtr;
+
 typedef list<SkoarpusclePtr> ListOfSkoarpuscles;
 typedef shared_ptr<ListOfSkoarpuscles> ListOfSkoarpusclesPtr;
 
@@ -39,8 +47,6 @@ typedef shared_ptr<ListOfSkoarpions> ListOfSkoarpionsPtr;
 
 typedef list<SkoarpionProjectionPtr> ListOfSkoarpionProjections;
 typedef shared_ptr<ListOfSkoarpionProjections> ListOfSkoarpionProjectionsPtr;
-
-typedef wstring SkoarString;
 
 typedef function<void(SkoarMinstrelPtr)> SpellOfMinstrels;
 typedef function<void(SkoarNoad *)> SpellOfNoads;

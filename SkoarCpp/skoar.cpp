@@ -69,15 +69,35 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
     try {
         tree = parser.skoar(nullptr);
     }
+    catch (SkoarTokerException *e) {
+        // someday we can like, underline the error or something.
+        log->e("parse fail", e->wwhat());
+
+        // delete the unfinished tree
+        auto x = e->noad;
+        while (x->parent != nullptr) {
+            auto parent = x->parent;
+            x->clear();
+            x = parent;
+        }
+        // delete the broken tree
+        x->clear();
+        x = nullptr;
+        e->noad = nullptr;
+
+        return;
+    }
     catch (SkoarParseException *e) {
         // someday we can like, underline the error or something.
         log->e("parse fail", e->wwhat());
 
         // delete the unfinished tree
         auto x = e->noad;
-        while (x->parent != nullptr)
-            x = x->parent;
-
+        while (x->parent != nullptr) {
+            auto parent = x->parent;
+            x->clear();
+            x = parent;
+        }
         // delete the broken tree
         x->clear();
         x = nullptr;

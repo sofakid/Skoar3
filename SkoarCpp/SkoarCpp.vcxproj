@@ -365,8 +365,11 @@
     <ClCompile Include="skoarpuscle_as_string.cpp" />
     <ClCompile Include="skoarpuscle_structors.cpp" />
     <ClCompile Include="styles.cpp" />
+    <ClCompile Include="testing_util.cpp" />
     <ClCompile Include="test_basics.cpp" />
     <ClCompile Include="test_main.cpp" />
+    <ClCompile Include="test_memory.cpp" />
+    <ClCompile Include="test_sanity.cpp" />
     <ClCompile Include="toker.cpp" />
     <ClCompile Include="toke_inspector.cpp" />
   </ItemGroup>
