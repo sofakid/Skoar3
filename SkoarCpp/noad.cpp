@@ -452,12 +452,17 @@ void SkoarNoad::match(SkoarNoadPtr p, list<ESkoarToke::Kind>& desires, SpellOfNo
 ListOfSkoarpusclesPtr SkoarNoad::collect_skoarpuscles(int j) {
     ListOfSkoarpusclesPtr results = make_shared<ListOfSkoarpuscles>();
 
+    if (j == 0) {
+        if (skoarpuscle != nullptr)
+            results->push_back(skoarpuscle);
+    }
+
     auto child = children.cbegin();
     for (int i = 0; i < j; ++i)
         ++child;
 
     while (j++ < children.size()) {
-        (*child)->inorder([=](SkoarNoad *noad) {
+        (*(child++))->inorder([=](SkoarNoad *noad) {
             if (noad->skoarpuscle != nullptr)
                 results->push_back(noad->skoarpuscle);
         });

@@ -136,6 +136,10 @@ void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
         return;
     }
 
+    if (is_skoarpuscle<SkoarpusclePair>(x)) {
+        x = skoarpuscle_ptr<SkoarpusclePair>(x)->val.second;
+    }
+
     if (is_skoarpuscle<SkoarpuscleSkoarpion>(x)) {
         skoarpuscle_ptr<SkoarpuscleSkoarpion>(x)->run(m);
     } 
@@ -145,10 +149,13 @@ void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
 
         m->fairy->push_noating();
         if (result != nullptr) {
+            if (is_skoarpuscle<SkoarpusclePair>(result)) {
+                result = skoarpuscle_ptr<SkoarpusclePair>(result)->val.second;
+            }
             m->fairy->impress(result);
         }
         else {
-            //expr.flatten(m);
+            skoarpuscle_ptr<SkoarpuscleExpr>(x)->flatten(m);
         }
         m->fairy->pop_noating();
 
@@ -741,9 +748,9 @@ void SkoarpusclePair::assign(SkoarMinstrelPtr m) {
         val
     };*/
 
-    if (is_skoarpuscle<SkoarpuscleExpr>(val.second)) {
-        auto expr_p = skoarpuscle_ptr<SkoarpuscleExpr>(val.second);
-        expr_p->flatten(m);
+    SkoarpusclePtr x = val.second;
+    if (is_skoarpuscle<SkoarpuscleExpr>(x)) {
+        x = skoarpuscle_ptr<SkoarpuscleExpr>(x)->flatten(m);
     }
 
     SkoarOps::getInstance()->assign(m, val.second, make_shared<SkoarpuscleSymbolColon>(val.first));
@@ -766,7 +773,9 @@ SkoarpusclePtr SkoarpuscleExpr::flatten(SkoarMinstrelPtr m) {
 
     result = m->fairy->impression;
     
-    // result = result->flatten(m);
+    if (is_skoarpuscle<SkoarpusclePair>(result)) {
+        result = skoarpuscle_ptr<SkoarpusclePair>(result)->val.second;
+    }
 
     m->fairy->pop();
     return result;

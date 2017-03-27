@@ -19,7 +19,6 @@ public:
     SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 
     void run(SkoarMinstrelPtr m);
-    void on_enter_method(SkoarMinstrelPtr m);
     void on_enter(SkoarMinstrelPtr) override;
 };
 

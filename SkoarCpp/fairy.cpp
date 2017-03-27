@@ -83,7 +83,7 @@ void SkoarFairy::push() {
     listy_stack.push_back(make_shared<ListOfSkoarpuscles>());
     //"$.push;".postln;
 
-    //minstrel->koar->push_state();
+    minstrel->koar->push_state();
 }
 
 SkoarpusclePtr SkoarFairy::pop() {
@@ -93,6 +93,8 @@ SkoarpusclePtr SkoarFairy::pop() {
 
     magic = magic_stack.back();
     magic_stack.pop_back();
+
+    minstrel->koar->pop_state();
 
     auto listy = listy_stack.back();
     listy_stack.pop_back();
@@ -192,13 +194,19 @@ SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
         return impression;
     };
 
+
     if (is_skoarpuscle<SkoarpusclePair>(x)) {
         skoarpuscle_ptr<SkoarpusclePair>(x)->assign(minstrel);
     };
 
     if (is_skoarpuscle<SkoarpuscleDeref>(x)) {
-        impression = skoarpuscle_ptr<SkoarpuscleDeref>(x)->lookup(minstrel);
+        x = skoarpuscle_ptr<SkoarpuscleDeref>(x)->lookup(minstrel);
     };
+    
+
+    if (x->isImpressionable() == false) {
+        return x;
+    }
     
     impression = x;
 

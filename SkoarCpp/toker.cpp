@@ -63,8 +63,8 @@ SkoarTokePtr SkoarToker::burn(ESkoarToke::Kind want, SkoarNoadPtr noad) {
 
 	//msg = "Tried to burn " + want->name + ", but saw " + toke->asString;
 
-	puts("Toker Fail.");
-	this->dump();
+	//puts("Toker Fail.");
+	//this->dump();
 
 	throw SkoarTokerException(wstring(L"toker fail"), noad);
 }

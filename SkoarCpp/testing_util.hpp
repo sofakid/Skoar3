@@ -94,4 +94,5 @@ void compare_desires_to_events(VectorOfSkoarEventsPtr desires, VectorOfSkoarEven
 
 // --- run skoars and expect events ---------------------------------------------------
 
-void run_and_expect(SkoarString skoarce, VectorOfSkoarEventsPtr desires);
+void run_and_expect(SkoarString skoarce, VectorOfSkoarEventsPtr desires); 
+void run_and_expect_d(SkoarString skoarce, VectorOfSkoarEventsPtr desires); // verbose one

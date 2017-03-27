@@ -17,7 +17,7 @@
 
 class Skoarpuscle {
 public:
-    
+
     const ESkoarpuscle::Kind kind;
 
     Skoarpuscle() :
@@ -33,34 +33,34 @@ public:
         county(false),
         kind(kind) {
     }
- 
+
     virtual ~Skoarpuscle() {
     }
 
     virtual void on_enter(SkoarMinstrelPtr) {};
 
-	virtual bool isNoatworthy() { return noatworthy; }
+    virtual bool isNoatworthy() { return noatworthy; }
     bool isCounty() { return county; }
 
     virtual bool asCount() {
         throw SkoarpuscleException(L"asCount() called on noncounty skoarpuscle.");
     }
 
-	virtual void* asNoat() {
+    virtual void* asNoat() {
         throw SkoarpuscleException(L"asNoat() called on incompatible skoarpuscle.");
-	}
+    }
 
-	virtual SkoarpusclePtr skoar_msg(SkoarpuscleMsg* msg, SkoarMinstrelPtr minstrel) {
+    virtual SkoarpusclePtr skoar_msg(SkoarpuscleMsg* msg, SkoarMinstrelPtr minstrel) {
         throw SkoarpuscleException(L"skoar_msg() called on incompatible skoarpuscle.");
-	}
-	
+    }
+
     //virtual Poco::DynamicAny flatten(SkoarMinstrelPtr m) {
     //    return val;
     //}
-   
-	virtual void asString(wostream &out) {
-		out << L"Skoarpuscle";
-	}
+
+    virtual void asString(wostream &out) {
+        out << L"Skoarpuscle";
+    }
 
     virtual bool canBeDivisor() {
         return false;
@@ -70,11 +70,15 @@ public:
         x.asString(out);
         return out;
     }
-    
+
+    bool isImpressionable() {
+        return impressionable;
+    }
+
 protected:
+    bool impressionable;
     bool noatworthy;
     bool county;
-    bool impressionable;
 };
 
 class SkoarpuscleUnknown : public Skoarpuscle {

@@ -51,27 +51,26 @@ SkoarpuscleSkoarpion::~SkoarpuscleSkoarpion(){
 
 
 void SkoarpuscleSkoarpion::on_enter(SkoarMinstrelPtr m) {
-    on_enter_method(m);
+    auto name = val->name;
+    auto skrpskrp = make_shared<SkoarpuscleSkoarpion>(this);
+    if (name.size() > 0) {
+        m->koar->put(name, skrpskrp);
+    }
+    else {
+        m->fairy->impress(skrpskrp);
+    }
 }
 
 void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
-    
+    auto impression = m->fairy->impression;
+    //("SKRP_Skoarpion :: msg_arr :: " ++ msg_arr ++ " :: impression :: " ++  impression).postln;													
+    m->koar->do_skoarpion(val, m, SkoarKoar::EExecStyle::NORMAL, impression);
 }
 
 
 SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
     //args = msg->get_msg_arr(minstrel);
     return nullptr;
-}
-
-void SkoarpuscleSkoarpion::on_enter_method(SkoarMinstrelPtr m) {
-    
-    auto name = val->name;
-    if (name.size() > 0) {
-        m->koar->put(name, make_shared<SkoarpuscleSkoarpion>(this));
-    }
-
-    m->koar->do_skoarpion(val, m, SkoarKoar::EExecStyle::NORMAL, args);
 }
 
 // --- SkoarpuscleSkoarpionSig ----------------------------------------------

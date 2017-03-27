@@ -205,6 +205,8 @@ Skoarmantics::Skoarmantics() : table({
             x->on_exit(m);
         };
 
+        noad->add_noad(end_noad);
+
     }},
 
     {ESkoarNoad::listy, SpellOfSkoarmantics {

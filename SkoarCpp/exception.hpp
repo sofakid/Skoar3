@@ -11,6 +11,7 @@ public:
 	SkoarError();
 	SkoarError(SkoarString s);
 	virtual const wchar_t* wwhat() const throw();
+    virtual const char* what() const throw();
 };
 
 

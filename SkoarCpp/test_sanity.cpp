@@ -89,6 +89,46 @@ TEST_CASE("Assignments", "[sanity]") {
 
 }
 
+
+TEST_CASE("Derefs", "[sanity]") {
+
+    MakeEventSep X;
+    SkoarString a = L"a";
+    SkoarString b = L"b";
+    SkoarString c = L"c";
+
+    SkoarString tony = L"tony";
+    SkoarString socrates = L"socrates";
+    SkoarString qux = L"qux";
+    SkoarString yay = L"yay";
+
+    SkoarString num_impression = L"num_impression";
+
+    SECTION("simple deref 0") {
+        run_and_expect(L"a: 4 7 ) !a )", make_events_vec(
+            a, 4, num_impression, 7, X,
+            a, 4, num_impression, 4, X
+        ));
+    }
+    
+    SECTION("simple deref 1") {
+        run_and_expect(L"a: 4 ) b: 7.0 ) c: !a )", make_events_vec(
+            a, 4, X,
+            a, 4, b, 7.0, X,
+            a, 4, b, 7.0, c, 4, X
+        ));
+    }
+    
+    SECTION("simple deref 2") {
+        run_and_expect(L"a: 'tony' ) b: !a a: false )", make_events_vec(
+            a, tony, X,
+            a, false, b, tony, X
+        ));
+    }
+    
+}
+
+
 TEST_CASE("Skoarpions", "[sanity]") {
 
     MakeEventSep X;
@@ -102,6 +142,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     SkoarString foo = L"foo";
     SkoarString yay = L"yay";
 
+    
     SECTION("define nice") {
         run_and_expect(L"{! !} {! x !! !} {! x<a> !! !} {! x<a:2, b : 3> !! !} {! c# !} foo:2)", make_events_vec(
             foo, 2, X
@@ -115,21 +156,56 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
  
     SECTION("skoarpion_sigless") {
-        run_and_expect(L"foo: 3 {! foo: 2 !} )", make_events_vec(
+        run_and_expect(L"foo: 3 {! foo: 2 ) !} )", make_events_vec(
             foo, 3, X
         ));
     }
-    
-    SECTION("skoarpion_scope") {
-        run_and_expect(L"foo: 3 {! x<foo:2> !! ) !} ) !x ) !x<7> )", make_events_vec(
-            foo, 3, X,
-            foo, 2, X,
+
+    /* sort out lists first
+    SECTION("skoarpion_scope with args") {
+        run_and_expect_d(L"foo: 3 {! x<foo:2> !! ) !} ) !x<7> )", make_events_vec(
             foo, 3, X,
             foo, 7, X,
             foo, 3, X
         ));
     }
-    
-   
+    /*
+    SECTION("skoarpion_scope with named args") {
+        run_and_expect(L"foo: 3 {! x<foo:2> !! ) !} ) !x<foo:7> )", make_events_vec(
+            foo, 3, X,
+            foo, 7, X,
+            foo, 3, X
+        ));
+    }
+
+    /*
+    SECTION("skoarpion_scope with incorrectly named args") {
+        run_and_expect(L"foo: 3 {! x<foo:2> !! ) !} ) !x<fee:7> )", make_events_vec(
+            foo, 3, X,
+            foo, 2, X,
+            foo, 3, X
+        ));
+    }
+
+    /*
+    SECTION("skoarpion_scope without args") {
+        run_and_expect(L"foo: 3 {! x<foo:2> !! )) !} ) !x )).", make_events_vec(
+            foo, 3, X,
+            foo, 2, X,
+            foo, 3, X
+        ));
+    }
+
+    SECTION("verbosing") {
+        SkoarConsoleLogger SkoarLog;
+        SkoarString skoarce(L"foo: 3 {! x<foo:2> !! )) !} ) !x )).");
+
+        Skoar skoar(skoarce, &SkoarLog);
+
+        REQUIRE(skoar.parsedOk);
+        auto events = skoar_get_events(&skoar);
+        //compare_desires_to_events(desires, events);
+
+    }*/
 }
 

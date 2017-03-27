@@ -216,8 +216,8 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
 
     { ESkoarToke::MsgNameWithArgs, SpellOfToking{
         auto s = toke->lexeme;
-        auto n = s.length() - 2;
-        noad->skoarpuscle = make_shared<SkoarpuscleMsgName>(s.substr(0, n));
+        auto n = s.length() - 1;
+        noad->skoarpuscle = make_shared<SkoarpuscleMsgNameWithArgs>(s.substr(0, n));
         noad->toke = nullptr;
     } },
 

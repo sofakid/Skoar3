@@ -83,9 +83,14 @@ bool check_skoarpuscle_symbol(SkoarpusclePtr p, SkoarString v) {
 
 VectorOfSkoarEventsPtr skoar_get_events(Skoar* skoar) {
     auto events = make_shared<VectorOfSkoarEvents>();
-    skoar->play([&](SkoarEventPtr e) {
-        events->push_back(e);
-    });
+    try {
+        skoar->play([&](SkoarEventPtr e) {
+            events->push_back(e);
+        });
+    }
+    catch (SkoarError &e) {
+        FAIL(SkoarString_to_s(e.wwhat()));
+    }
     return events;
 }
 
@@ -167,6 +172,7 @@ void compare_desires_to_events(VectorOfSkoarEventsPtr desires, VectorOfSkoarEven
     auto n = desires->size();
 
     for (int i = 0; i < n; ++i) {
+        INFO("beat " << i + 1);
         require_subset_of_event(desires->at(i), events->at(i));
     }
 
@@ -174,8 +180,28 @@ void compare_desires_to_events(VectorOfSkoarEventsPtr desires, VectorOfSkoarEven
 
 
 void run_and_expect(SkoarString skoarce, VectorOfSkoarEventsPtr desires) {
+    
     SkoarNullLogger SkoarLog;
+    
+    INFO("run_and_expect :: \"" << SkoarString_to_s(skoarce) << "\"");
+
     Skoar skoar(skoarce, &SkoarLog);
+
+    REQUIRE(skoar.parsedOk);
+    auto events = skoar_get_events(&skoar);
+    compare_desires_to_events(desires, events);
+}
+
+
+void run_and_expect_d(SkoarString skoarce, VectorOfSkoarEventsPtr desires) {
+
+    SkoarConsoleLogger SkoarLog;
+    SkoarLog.setLevel(ISkoarLog::debug);
+
+    INFO("run_and_expect :: \"" << SkoarString_to_s(skoarce) << "\"");
+
+    Skoar skoar(skoarce, &SkoarLog);
+
     REQUIRE(skoar.parsedOk);
     auto events = skoar_get_events(&skoar);
     compare_desires_to_events(desires, events);

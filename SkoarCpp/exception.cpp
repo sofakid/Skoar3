@@ -13,6 +13,11 @@ const wchar_t* SkoarError::wwhat() const throw() {
 	return sWhat.c_str();
 }
 
+const char* SkoarError::what() const throw() {
+    string s(sWhat.begin(), sWhat.end());
+    return s.c_str();
+}
+
 
 
 // --- SkoarTokerException --------------------------------------------------------
