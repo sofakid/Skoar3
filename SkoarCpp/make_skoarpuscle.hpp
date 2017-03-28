@@ -38,6 +38,12 @@ inline SkoarpusclePtr make_skoarpuscle(bool x) {
     return make_shared<SkoarpuscleFalse>();
 }
 
+inline SkoarpusclePtr make_skoarpuscle(ListOfSkoarpusclesPtr x) {
+    return make_shared<SkoarpuscleList>(x);
+}
+
+
+
 // --- skoarpuscle_ptr -----------------------------------------------------
 
 // cast and get raw pointer 

@@ -51,6 +51,27 @@ TEST_CASE("Beats and Rests", "[sanity]") {
 }
 
 
+TEST_CASE("Lists", "[sanity]") {
+
+    MakeEventSep X;
+    SkoarString a = L"a";
+    SkoarString b = L"b";
+    SkoarString c = L"c";
+
+    SkoarString tony = L"tony";
+    SkoarString socrates = L"socrates";
+    SkoarString qux = L"qux";
+    SkoarString yay = L"yay";
+
+    SECTION("simple list 1") {
+        run_and_expect(L"a: <0, true, 'qux'> )", make_events_vec(
+            a, make_listy(0, true, qux), X
+        ));
+    }
+
+}
+
+
 TEST_CASE("Assignments", "[sanity]") {
 
     MakeEventSep X;

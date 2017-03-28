@@ -21,22 +21,6 @@ typedef shared_ptr<vector<SkoarEventPtr>> EventsPtr;
 
 VectorOfSkoarEventsPtr skoar_get_events(Skoar* skoar);
 
-
-//template <pair<SkoarString, typename T> ... Pairs>
-/*template<typename Type, typename... Args>
-SkoarEventPtr make_event(SkoarEventPtr e, const Pairs&... pairs) {
-    SkoarEventPtr e make_shared<SkoarEvent>();
-    skoar_event_add<T>(e);
-}*/
-
-/*
-template<typename Type, typename... Args>
-void build_event_r(SkoarEventPtr e, Type value, const Args&... args)
-{
-    msg << L" :: " << value;
-    build_event_r(e, args...);
-}*/
-
 // --- make_event ------------------------------------------------
 
 template<typename Type, typename... Args>
@@ -84,6 +68,24 @@ VectorOfSkoarEventsPtr make_events_vec(const Args&... args) {
     return vec;
 }
 
+// --- make_listy ---------------------------------------------------------------------
+
+template<typename Type, typename... Args>
+void make_listy_r(ListOfSkoarpusclesPtr listy, const Type& value, const Args&... args)
+{
+    listy->push_back(make_skoarpuscle(value));
+    make_listy_r(listy, args...);
+}
+
+void make_listy_r(ListOfSkoarpusclesPtr);
+
+template<typename... Args>
+ListOfSkoarpusclesPtr make_listy(const Args&... args) {
+    auto listy = make_shared<ListOfSkoarpuscles>();
+    make_listy_r(listy, args...);
+    return listy;
+}
+
 
 // --- comparing event vectors --------------------------------------------------------
 
@@ -91,6 +93,9 @@ void compare_skoarpuscles_equal(SkoarpusclePtr desire, SkoarpusclePtr reality);
 void require_desire_in_event(SkoarString k, SkoarpusclePtr v, SkoarEventPtr ev);
 void require_subset_of_event(SkoarEventPtr desire, SkoarEventPtr ev);
 void compare_desires_to_events(VectorOfSkoarEventsPtr desires, VectorOfSkoarEventsPtr events);
+
+void compare_lists(ListOfSkoarpusclesPtr desires, ListOfSkoarpusclesPtr realities);
+
 
 // --- run skoars and expect events ---------------------------------------------------
 

@@ -104,6 +104,10 @@ void make_events_vec_r(VectorOfSkoarEventsPtr, SkoarEventPtr) {
     // done
 }
 
+void make_listy_r(ListOfSkoarpusclesPtr) {
+    // done
+}
+
 // --- comparing event vectors --------------------------------------------------------
 
 void compare_skoarpuscles_equal(SkoarpusclePtr desire, SkoarpusclePtr reality) {
@@ -132,6 +136,12 @@ void compare_skoarpuscles_equal(SkoarpusclePtr desire, SkoarpusclePtr reality) {
     if (is_skoarpuscle<SkoarpuscleSymbol>(desire)) {
         auto desire_val = skoarpuscle_ptr<SkoarpuscleSymbol>(desire)->val;
         REQUIRE(check_skoarpuscle_symbol(reality, desire_val));
+    }
+
+    if (is_skoarpuscle<SkoarpuscleList>(desire)) {
+        auto desire_val = skoarpuscle_ptr<SkoarpuscleList>(desire)->val;
+        auto reality_val = skoarpuscle_ptr<SkoarpuscleList>(reality)->val;
+        compare_lists(desire_val, reality_val);
     }
 
     // todo: more kinds
@@ -176,6 +186,20 @@ void compare_desires_to_events(VectorOfSkoarEventsPtr desires, VectorOfSkoarEven
         require_subset_of_event(desires->at(i), events->at(i));
     }
 
+}
+
+void compare_lists(ListOfSkoarpusclesPtr desires, ListOfSkoarpusclesPtr realities) {
+    REQUIRE(desires->size() == realities->size());
+
+    auto n = desires->size();
+
+    auto des_it = desires->cbegin();
+    auto real_it = realities->cbegin();
+
+    for (int i = 0; i < n; ++i) {
+        INFO("list i: " << i);
+        compare_skoarpuscles_equal(*(des_it++), *(real_it++));
+    }
 }
 
 
