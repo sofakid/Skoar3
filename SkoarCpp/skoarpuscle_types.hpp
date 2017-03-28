@@ -3,6 +3,7 @@
 namespace ESkoarpuscle {
 
     enum Kind {
+        // can do math and compare these kinds
         Cat,
         Int,
         Float,
@@ -28,7 +29,13 @@ namespace ESkoarpuscle {
         SymbolColon,
 
         Other,
-        Any
+        Any,
+
+        // other kinds we need to know about,
+        Times,
+        Bars,
+        Colons,
+        RepeatSigns,
     };
 }
 

@@ -139,7 +139,7 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
     
     // -----------------------------------------------------------------
     { ESkoarToke::Bars, SpellOfToking{
-        noad->skoarpuscle = make_shared<SkoarpuscleBars>(toke);
+        noad->skoarpuscle = make_shared<SkoarpuscleBars>(toke, noad);
         noad->toke = nullptr;
     } },
 
@@ -240,7 +240,7 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
 
     // -----------------------------------------------------------------
     { ESkoarToke::Times, SpellOfToking{
-        noad->skoarpuscle = make_shared<SkoarpuscleTimes>();
+        noad->skoarpuscle = make_shared<SkoarpuscleTimes>(noad);
         noad->toke = nullptr;
     } },
 

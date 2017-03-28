@@ -3,6 +3,11 @@
 #include "all_skoarpuscles.hpp"
 #include "spells.hpp"
 
+typedef map<SkoarString, SkoarInt> FairyTimesAddressMap;
+typedef map<ESkoarpuscle::Kind, FairyTimesAddressMap> FairyTimesMap;
+typedef shared_ptr<FairyTimesMap> FairyTimesMapPtr;
+typedef list<FairyTimesMapPtr> ListOfFairyTimesMaps;
+
 
 class SkoarFairy {
 public:
@@ -37,8 +42,10 @@ public:
     void push_times_seen();
     void pop_times_seen();
 
-    SkoarInt how_many_times_have_you_seen(Skoarpuscle*);
-    void forget_that_you_have_seen(Skoarpuscle*);
+    SkoarInt how_many_times_have_you_seen(ESkoarpuscle::Kind, SkoarNoadAddress);
+    void forget_that_you_have_seen(ESkoarpuscle::Kind);
+    void forget_that_you_have_seen(SkoarNoadAddress);
+
     
     void push_compare();
     void pop_compare();
@@ -82,9 +89,8 @@ private:
     
     ListOfSkoarpuscles boolean_stack;
     
-
-    list<shared_ptr<map<Skoarpuscle*, SkoarInt>>> times_seen_stack;
-    shared_ptr<map<Skoarpuscle*, SkoarInt>> times_seen;
+    ListOfFairyTimesMaps times_seen_stack;
+    FairyTimesMapPtr times_seen;
 
     SkoarpusclePtr exact;
 

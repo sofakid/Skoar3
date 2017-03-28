@@ -10,7 +10,15 @@
 
 
 class SkoarNoadAddress : public vector<SkoarInt> {
+public:
 
+    SkoarString code() {
+        wostringstream kode;
+        for (auto x : *this) {
+            kode << L"." << x;
+        }
+        return kode.str();
+    }
 };
 
 

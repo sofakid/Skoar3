@@ -69,8 +69,8 @@ public:
 		SkoarNoadPtr dst, 
 		SkoarpionProjectionPtr projection, 
 		SkoarMinstrelPtr minstrel,
-		bool inlined);
+        SpellOfDecency cleanup);
 
-	void bubble_up_nav(SkoarNav &nav, bool inlined);
+	void bubble_up_nav(SkoarNav &nav, SpellOfDecency cleanup);
 };
 

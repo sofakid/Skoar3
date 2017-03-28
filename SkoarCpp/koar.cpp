@@ -225,19 +225,23 @@ void SkoarKoar::do_skoarpion(
 
 	subtree = projection->proj;
 
-	this->nav_loop(subtree, projection, minstrel, exec_style == EExecStyle::INLINE);
+    SpellOfDecency cleanup = [&]() {
+        if (exec_style != EExecStyle::INLINE) {
+            pop_state();
+            minstrel->fairy->pop_times_seen();
+        }
+    };
 
-	if (exec_style != EExecStyle::INLINE) {
-		pop_state();
-        minstrel->fairy->pop_times_seen();
-	}
+	nav_loop(subtree, projection, minstrel, cleanup);
+
+	
 }
 
 void SkoarKoar::nav_loop(
 	SkoarNoadPtr dst,
 	SkoarpionProjectionPtr projection,
 	SkoarMinstrelPtr minstrel,
-	bool inlined) {
+    SpellOfDecency cleanup) {
 
 	auto running = true;
 	auto subtree = dst;
@@ -267,14 +271,14 @@ void SkoarKoar::nav_loop(
 				break;
 
 			case SkoarNav::DA_CAPO:
-				bubble_up_nav(nav_result, inlined);
+				bubble_up_nav(nav_result, cleanup);
 				break;
 
 			case SkoarNav::SEGNO:
 				/*dst = state_at(L"segno_seen");
 
 				if ((dst !? (_->skoap)) != subtree->skoap) {
-					bubble_up_nav(nav_result, inlined);
+					bubble_up_nav(nav_result, cleanup);
 				};*/
 				break;
 
@@ -282,26 +286,25 @@ void SkoarKoar::nav_loop(
 				//dst = state_at(L"colon_seen");
 
 				//if ((dst !? (_->skoap)) != subtree->skoap) {
-				//   bubble_up_nav(nav_result, inlined);
+				//   bubble_up_nav(nav_result, cleanup);
 				//};
 				break;
 
 			case SkoarNav::FINE:
-				bubble_up_nav(nav_result, inlined);
+				bubble_up_nav(nav_result, cleanup);
 				break;
 			};
 
 		}
 	}
+    cleanup();
 }
 
-void SkoarKoar::bubble_up_nav(SkoarNav &nav, bool inlined) {
+void SkoarKoar::bubble_up_nav(SkoarNav &nav, SpellOfDecency cleanup) {
 	
 	// the nav throw will abort do_skoarpion,
 	// we have to clean up here.
-	if (inlined == false) {
-		pop_state();
-	}
+    cleanup();
 
 	throw nav;
 	

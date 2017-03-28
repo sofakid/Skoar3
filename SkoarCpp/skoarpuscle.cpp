@@ -42,7 +42,6 @@ void SkoarpuscleInt::on_enter(SkoarMinstrelPtr m) {
 
 void *SkoarpuscleInt::asNoat() { return nullptr; }
 
-
 // --- SkoarpuscleFloat ---------------------------------------------------------
 void SkoarpuscleFloat::on_enter(SkoarMinstrelPtr m) { 
     m->fairy->impress(val);
@@ -268,11 +267,23 @@ void SkoarpuscleTimes::on_enter(SkoarMinstrelPtr m) {
     auto desired_times = m->fairy->cast_arcane_magic();
 
     if (desired_times->isCounty()) {
-        auto times_seen = m->fairy->how_many_times_have_you_seen(this);
+        auto times_seen = m->fairy->how_many_times_have_you_seen(ESkoarpuscle::Times, address);
         auto times = desired_times->asCount();
-        auto x = times_seen % times;
-        const bool b = x != 0;
-        m->fairy->impress(make_skoarpuscle(b));
+       
+        m->fairy->impress(make_skoarpuscle(times_seen < times));
+    }
+    else {
+        if (is_skoarpuscle<SkoarpuscleTrue>(desired_times) ||
+            is_skoarpuscle<SkoarpuscleFalse>(desired_times) ||
+            is_skoarpuscle<SkoarpuscleCat>(desired_times)) {
+            m->fairy->impress(desired_times);
+        }
+        else {
+            // todo: handle durations
+            m->fairy->impress(make_skoarpuscle(false));
+        }
+
+
     }
 }
 

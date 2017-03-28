@@ -110,7 +110,7 @@ void SkoarMinstrel::EventStream(SkoarMinstrelPtr m) {
 }
 
 void SkoarMinstrel::reset_colons() {
-    //fairy->forget_that_you_have_seen(SkoarpuscleBars);
+    fairy->forget_that_you_have_seen(ESkoarpuscle::Bars);
     //koar->state_put(L"colons_burned", make_shared<SkoarDic>());
 }
 

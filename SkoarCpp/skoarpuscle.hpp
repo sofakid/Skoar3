@@ -42,7 +42,7 @@ public:
     virtual bool isNoatworthy() { return noatworthy; }
     bool isCounty() { return county; }
 
-    virtual bool asCount() {
+    virtual SkoarInt asCount() {
         throw SkoarpuscleException(L"asCount() called on noncounty skoarpuscle.");
     }
 
@@ -148,6 +148,8 @@ public:
     void asString(wostream &out) override;
 
 	void *asNoat() override;
+    SkoarInt asCount() override;
+
     void on_enter(SkoarMinstrelPtr) override;
 };
 
@@ -233,8 +235,9 @@ public:
 
 class SkoarpuscleTimes : public Skoarpuscle {
 public:
-    
-    SkoarpuscleTimes();
+    const SkoarNoadAddress& address;
+
+    SkoarpuscleTimes(SkoarNoadPtr);
     ~SkoarpuscleTimes() override;
     void asString(wostream &out) override;
 
@@ -246,9 +249,10 @@ class SkoarpuscleBars : public Skoarpuscle {
 	bool pre_repeat;
 	bool post_repeat;
 public:
+    const SkoarNoadAddress& address;
     const SkoarString val;
     SkoarNoadPtr noad;
-	SkoarpuscleBars(SkoarToke *);
+	SkoarpuscleBars(SkoarToke*, SkoarNoadPtr);
     ~SkoarpuscleBars() override;
     void asString(wostream &out) override;
 

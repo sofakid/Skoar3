@@ -227,7 +227,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
         ));
     }
 
-    /* sort out lists first
+    /* sort out lists first */
     SECTION("skoarpion_scope with args") {
         run_and_expect_d(L"foo: 3 {! x<foo:2> !! ) !} ) !x<7> )", make_events_vec(
             foo, 3, X,
@@ -273,6 +273,99 @@ TEST_CASE("Skoarpions", "[sanity]") {
         //compare_desires_to_events(desires, events);
 
     }*/
+}
+
+
+TEST_CASE("Loops", "[sanity]") {
+    MakeEventSep X;
+    SkoarString a = L"a";
+    SkoarString b = L"b";
+    SkoarString c = L"c";
+
+    SkoarString dur = L"dur";
+    SkoarString tony = L"tony";
+    SkoarString socrates = L"socrates";
+    SkoarString qux = L"qux";
+    SkoarString foo = L"foo";
+    SkoarString yay = L"yay";
+
+    SkoarpusclePtr cat = make_skoarpuscle(nullptr);
+
+
+    SECTION("simple loop once 1") {
+        run_and_expect(L"{: ) :}", make_events_vec(
+            dur, 1.0, X
+        ));
+    }
+
+    SECTION("simple loop once 2") {
+        run_and_expect(L"{: ) :: 1 times :}", make_events_vec(
+            dur, 1.0, X
+        ));
+    }
+
+    /* i'm undecided what i want to do here.. doing through the loop once is correct at the moment.. it's like a do while.. */
+    SECTION("simple loop no times") {
+        run_and_expect(L"{: ) :: 0 times :}", make_events_vec(
+            X
+        ));
+    }
+
+    SECTION("simple loop no times") {
+        run_and_expect(L"{: ) :: =^.^= times :}", make_events_vec(
+            X
+        ));
+    }
+
+    SECTION("simple loop no times") {
+        run_and_expect(L"{: ) :: false :}", make_events_vec(
+            X
+        ));
+    }
+    
+    SECTION("simple loop 2 times") {
+        run_and_expect(L"{: ) :: 2 times :}", make_events_vec(
+            dur, 1.0, X,
+            dur, 1.0, X
+        ));
+    }
+
+    SECTION("simple loop 3 times") {
+        run_and_expect(L"{: ) :: 3 times :}", make_events_vec(
+            dur, 1.0, X,
+            dur, 1.0, X,
+            dur, 1.0, X
+        ));
+    }
+
+    SECTION("simple loop 7 times") {
+        run_and_expect(L"{: ) :: 7 times :}", make_events_vec(
+            dur, 1.0, X,
+            dur, 1.0, X,
+            dur, 1.0, X,
+            dur, 1.0, X,
+            dur, 1.0, X,
+            dur, 1.0, X,
+            dur, 1.0, X
+        ));
+    }
+
+    SECTION("foreach") {
+        run_and_expect(L"<0, 1, 2.5, true, 'yay'>.{: a: $ ) :}", make_events_vec(
+            a, 0,    dur, 1.0, X,
+            a, 1,    dur, 1.0, X,
+            a, 2.5,  dur, 1.0, X,
+            a, true, dur, 1.0, X,
+            a, yay,  dur, 1.0, X
+        ));
+    }
+
+    SECTION("foreach expr") {
+        run_and_expect(L"<0 + 2, 1 + 3.0>.{: a: $ ) :}", make_events_vec(
+            a, 2, dur, 1.0, X,
+            a, 4.0, dur, 1.0, X
+        ));
+    }
 }
 
 

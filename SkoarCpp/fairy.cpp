@@ -133,7 +133,7 @@ void SkoarFairy::incr_i() {
 
 void SkoarFairy::push_times_seen() {
     times_seen_stack.push_back(times_seen);
-    times_seen = make_shared<map<Skoarpuscle*, SkoarInt>>();
+    times_seen = make_shared<FairyTimesMap>();
 }
 
 void SkoarFairy::pop_times_seen() {
@@ -141,17 +141,38 @@ void SkoarFairy::pop_times_seen() {
     times_seen_stack.pop_back();
 }
 
-SkoarInt SkoarFairy::how_many_times_have_you_seen(Skoarpuscle* x) {
-    auto times = (*times_seen)[x];
+/*
+typedef map<SkoarNoadAddress, SkoarInt> FairyTimesAddressSeen;
+typedef map<ESkoarpuscle::Kind, FairyTimesAddressSeen> FairyTimesMap;
+typedef shared_ptr<FairyTimesMap> FairyTimesMapPtr;
+typedef list<FairyTimesMapPtr> ListOfFairyTimesMaps;
+*/
+SkoarInt SkoarFairy::how_many_times_have_you_seen(ESkoarpuscle::Kind kind, SkoarNoadAddress address) {
+
+    auto &addressMap = (*times_seen)[kind];
+    auto times = addressMap[address.code()];
 
     ++times;
-    (*times_seen)[x] = times;
+    addressMap[address.code()] = times;
     return times;
 }
 
-void SkoarFairy::forget_that_you_have_seen(Skoarpuscle*) {
-
+void SkoarFairy::forget_that_you_have_seen(ESkoarpuscle::Kind kind) {
+    for (auto times_map : times_seen_stack) {
+        (*times_map)[kind].clear();
+    }
 }
+
+
+void SkoarFairy::forget_that_you_have_seen(SkoarNoadAddress address) {
+    for (auto times_map : times_seen_stack) {
+        for (auto kv : *times_map) {
+            auto addressMap = kv.second;
+            addressMap.erase(address.code());
+        }
+    }
+}
+
 
 void SkoarFairy::push_compare() {
     compare_stack.push_back(l_value);
@@ -190,6 +211,10 @@ template<>
 SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
     //("$:" ++name++ ".impression: " ++x.asString).postln;
     
+    if (x == nullptr) {
+        x = make_skoarpuscle(nullptr);
+    }
+
     if (is_skoarpuscle<SkoarpuscleFairy>(x)) {
         return impression;
     };

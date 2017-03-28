@@ -89,6 +89,11 @@ SkoarpuscleInt::SkoarpuscleInt(SkoarInt v) :
 #endif
     noatworthy = true;
     impressionable = true;
+    county = true;
+}
+
+SkoarInt SkoarpuscleInt::asCount() {
+    return val;
 }
 
 SkoarpuscleInt::~SkoarpuscleInt() {
@@ -406,7 +411,9 @@ SkoarpuscleConditional::~SkoarpuscleConditional() {
 }
 
 // --- SkoarpuscleTimes ---------------------------------------------------------
-SkoarpuscleTimes::SkoarpuscleTimes() {
+SkoarpuscleTimes::SkoarpuscleTimes(SkoarNoadPtr noad) :
+    address(noad->address)
+{
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Times");
 #endif
@@ -584,8 +591,9 @@ SkoarpuscleMsgNameWithArgs::~SkoarpuscleMsgNameWithArgs() {
 // -----------------------------
 
 // --- SkoarpuscleBars ---------------------------------------------------------
-SkoarpuscleBars::SkoarpuscleBars(SkoarToke *toke) :
-    val(toke->lexeme)
+SkoarpuscleBars::SkoarpuscleBars(SkoarToke* toke, SkoarNoadPtr noad) :
+    val(toke->lexeme),
+    address(noad->address)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Bars");
