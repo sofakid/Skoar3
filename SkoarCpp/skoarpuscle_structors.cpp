@@ -858,7 +858,7 @@ SkoarpuscleHashLevel::~SkoarpuscleHashLevel() {
 
 // --- SkoarpusclePair ---------------------------------------------------------
 SkoarpusclePair::SkoarpusclePair(SkoarString k, SkoarpusclePtr v) :
-    val(make_pair(k, v))
+    val(make_pair(k, v == nullptr ? make_skoarpuscle(nullptr) : v))
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Pair");

@@ -267,7 +267,7 @@ void SkoarFairy::charge_arcane_magic(ArcaneMagic spell) {
         if (x != nullptr) {
             impress(x);
         }
-        return nullptr;
+        return make_skoarpuscle(nullptr);
     };
 }
 

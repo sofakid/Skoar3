@@ -141,6 +141,7 @@ void compare_skoarpuscles_equal(SkoarpusclePtr desire, SkoarpusclePtr reality) {
     if (is_skoarpuscle<SkoarpuscleList>(desire)) {
         auto desire_val = skoarpuscle_ptr<SkoarpuscleList>(desire)->val;
         auto reality_val = skoarpuscle_ptr<SkoarpuscleList>(reality)->val;
+        INFO("comparing lists");
         compare_lists(desire_val, reality_val);
     }
 
@@ -197,8 +198,14 @@ void compare_lists(ListOfSkoarpusclesPtr desires, ListOfSkoarpusclesPtr realitie
     auto real_it = realities->cbegin();
 
     for (int i = 0; i < n; ++i) {
-        INFO("list i: " << i);
-        compare_skoarpuscles_equal(*(des_it++), *(real_it++));
+        auto des_x = *(des_it++);
+        auto real_x = *(real_it++);
+
+        wostringstream stream;
+        stream << " :: desire: " << *des_x << " :: reality " << *real_x;
+        INFO("list i: " << i << SkoarString_to_s(stream.str()));
+    
+        compare_skoarpuscles_equal(des_x, real_x);
     }
 }
 

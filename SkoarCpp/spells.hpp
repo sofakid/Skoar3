@@ -58,7 +58,7 @@ typedef function<void(SkoarToke *, SkoarNoadPtr)> SpellOfTokeyDecoration;
 typedef function<void(Skoar *, SkoarNoadPtr)> SpellOfNoadyDecoration;
 
 typedef function<SkoarpusclePtr()> ArcaneMagic;
-#define HarmlessMagic [](){return nullptr;}
+#define HarmlessMagic [](){return make_skoarpuscle(nullptr);}
 
 typedef function<void()> SpellOfSimplicity;
 typedef function<void(SkoarEventPtr)> SpellOfHappening;

@@ -40,8 +40,12 @@ public:
 	void decorate();
 	SkoarKoarPtr get_voice(const SkoarString &k);
 	void cthulhu(SkoarNoadPtr noad);
-    void play(const SpellOfHappening& spell);
 	void draw_skoarpions(ISkoarLog *);
+
+
+    void play(const SpellOfHappening& spell);
+
+    void play_voice(SkoarString voice, const SpellOfHappening& spell);
 
     void one_less_running();
 };

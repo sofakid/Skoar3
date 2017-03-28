@@ -213,13 +213,6 @@ void Skoar::cthulhu(SkoarNoadPtr noad) {
 
 }
 
-void Skoar::play(const SpellOfHappening& spell) {
-    Skoarchestra x(this, spell);
-    for (auto m : x.minstrels) {
-        m->start();
-    }
-}
-
 void Skoar::draw_skoarpions(ISkoarLog *log) {
 
     if (log->getLevel() != ISkoarLog::debug)
@@ -244,6 +237,23 @@ void Skoar::draw_skoarpions(ISkoarLog *log) {
     
     log->i("draw_skoarpions\n", stream.str());
 }
+
+void Skoar::play(const SpellOfHappening& spell) {
+    Skoarchestra x(this, spell);
+    for (auto m : x.minstrels) {
+        m->start();
+    }
+}
+
+void Skoar::play_voice(SkoarString voice, const SpellOfHappening& spell) {
+    Skoarchestra x(this, spell);
+    for (auto m : x.minstrels) {
+        if (m->koar->name == voice) {
+            m->start();
+        }
+    }
+}
+
 
 void Skoar::one_less_running() {
     // todo: lock a mutex
