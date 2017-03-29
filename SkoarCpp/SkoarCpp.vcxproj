@@ -329,6 +329,8 @@
     <ClInclude Include="skoar_fwd.hpp" />
     <ClInclude Include="skoar_public.hpp" />
     <ClInclude Include="spells.hpp" />
+    <ClInclude Include="testoar.hpp" />
+    <ClInclude Include="testoar_streams.hpp" />
     <ClInclude Include="toker.hpp" />
     <ClInclude Include="toker_fwd.hpp" />
     <ClInclude Include="toke_inspector.hpp" />
@@ -338,10 +340,10 @@
     <ClCompile Include="decorating.cpp" />
     <ClCompile Include="dsp.cpp" />
     <ClCompile Include="entry.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Deb Prog|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Rel Prog|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Deb Prog|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Rel Prog|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="envelope.cpp" />
     <ClCompile Include="event.cpp" />
@@ -366,8 +368,14 @@
     <ClCompile Include="skoarpuscle_structors.cpp" />
     <ClCompile Include="styles.cpp" />
     <ClCompile Include="testing_util.cpp" />
-    <ClCompile Include="test_basics.cpp" />
-    <ClCompile Include="test_main.cpp" />
+    <ClCompile Include="testoar.cpp" />
+    <ClCompile Include="testoar_streams.cpp" />
+    <ClCompile Include="test_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Deb Prog|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Rel Prog|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="test_memory.cpp" />
     <ClCompile Include="test_sanity.cpp" />
     <ClCompile Include="toker.cpp" />

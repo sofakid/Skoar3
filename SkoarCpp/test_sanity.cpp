@@ -1,10 +1,23 @@
 #include "testing_util.hpp"
 
-TEST_CASE("Beats and Rests", "[sanity]") {
+MakeEventSep X;
+SkoarString a = L"a";
+SkoarString b = L"b";
+SkoarString c = L"c";
 
-    MakeEventSep X;
-    SkoarString dur = L"dur";
-    SkoarString isRest = L"isRest";
+SkoarString dur = L"dur";
+SkoarString isRest = L"isRest";
+
+SkoarString tony = L"tony";
+SkoarString socrates = L"socrates";
+SkoarString qux = L"qux";
+SkoarString foo = L"foo";
+SkoarString yay = L"yay";
+SkoarString num_impression = L"num_impression";
+
+SkoarpusclePtr cat = make_skoarpuscle(nullptr);
+
+TEST_CASE("Beats and Rests", "[sanity]") {
 
     SECTION("long_beats") {
         run_and_expect(L") ). )) )). ))) )))) .))))) )))))) )))))))", make_events_vec(
@@ -52,16 +65,6 @@ TEST_CASE("Beats and Rests", "[sanity]") {
 
 
 TEST_CASE("Lists", "[sanity]") {
-
-    MakeEventSep X;
-    SkoarString a = L"a";
-    SkoarString b = L"b";
-    SkoarString c = L"c";
-
-    SkoarString tony = L"tony";
-    SkoarString socrates = L"socrates";
-    SkoarString qux = L"qux";
-    SkoarString yay = L"yay";
 
     SECTION("simple list assignment") {
         run_and_expect(L"a: <0, true, 'qux'> )", make_events_vec(
@@ -119,16 +122,6 @@ TEST_CASE("Lists", "[sanity]") {
 
 TEST_CASE("Assignments", "[sanity]") {
 
-    MakeEventSep X;
-    SkoarString a = L"a";
-    SkoarString b = L"b";
-    SkoarString c = L"c";
-
-    SkoarString tony = L"tony";
-    SkoarString socrates = L"socrates";
-    SkoarString qux = L"qux";
-    SkoarString yay = L"yay";
-
     SECTION("simple assignments 1") {
         run_and_expect(L"a: 4 ) b: 7.0 ) c: 'yay' )", make_events_vec(
             a, 4, X,
@@ -158,18 +151,6 @@ TEST_CASE("Assignments", "[sanity]") {
 
 TEST_CASE("Derefs", "[sanity]") {
 
-    MakeEventSep X;
-    SkoarString a = L"a";
-    SkoarString b = L"b";
-    SkoarString c = L"c";
-
-    SkoarString tony = L"tony";
-    SkoarString socrates = L"socrates";
-    SkoarString qux = L"qux";
-    SkoarString yay = L"yay";
-
-    SkoarString num_impression = L"num_impression";
-
     SECTION("simple deref 0") {
         run_and_expect(L"a: 4 7 ) !a )", make_events_vec(
             a, 4, num_impression, 7, X,
@@ -196,18 +177,6 @@ TEST_CASE("Derefs", "[sanity]") {
 
 
 TEST_CASE("Skoarpions", "[sanity]") {
-
-    MakeEventSep X;
-    SkoarString a = L"a";
-    SkoarString b = L"b";
-    SkoarString c = L"c";
-
-    SkoarString tony = L"tony";
-    SkoarString socrates = L"socrates";
-    SkoarString qux = L"qux";
-    SkoarString foo = L"foo";
-    SkoarString yay = L"yay";
-
     
     SECTION("define nice") {
         run_and_expect(L"{! !} {! x !! !} {! x<a> !! !} {! x<a:2, b : 3> !! !} {! c# !} foo:2)", make_events_vec(
@@ -227,7 +196,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
         ));
     }
 
-    /* sort out lists first */
+    /* sort out lists first 
     SECTION("skoarpion_scope with args") {
         run_and_expect_d(L"foo: 3 {! x<foo:2> !! ) !} ) !x<7> )", make_events_vec(
             foo, 3, X,
@@ -277,21 +246,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
 
 
 TEST_CASE("Loops", "[sanity]") {
-    MakeEventSep X;
-    SkoarString a = L"a";
-    SkoarString b = L"b";
-    SkoarString c = L"c";
-
-    SkoarString dur = L"dur";
-    SkoarString tony = L"tony";
-    SkoarString socrates = L"socrates";
-    SkoarString qux = L"qux";
-    SkoarString foo = L"foo";
-    SkoarString yay = L"yay";
-
-    SkoarpusclePtr cat = make_skoarpuscle(nullptr);
-
-
+   
     SECTION("simple loop once 1") {
         run_and_expect(L"{: ) :}", make_events_vec(
             dur, 1.0, X
@@ -393,5 +348,48 @@ TEST_CASE("Fairy", "[sanity]") {
             foo, 7, dur, 4.0, X
         ));
     }
+
+}
+
+TEST_CASE("conditionals", "[sanity]") {
+    
+
+    SECTION("if true") {
+        run_and_expect(L" a: 9 {? true ?? a: 7 ?} )))", make_events_vec(
+            a, 7, X
+        ));
+    }
+
+    SECTION("if false") {
+        run_and_expect(L" a: 9 {? false ?? a: 7 ?} )))", make_events_vec(
+            a, 9, X
+        ));
+    }
+
+    SECTION("if cat") {
+        run_and_expect(L" a: 9 {? =^.^= ?? a: 7 ?} )))", make_events_vec(
+            a, 9, X
+        ));
+    }
+
+    SECTION("ifelse true") {
+        run_and_expect(L"{? true ?? a: 7 ?? a: 8 ?} )))", make_events_vec(
+            a, 7, X
+        ));
+    }
+
+    SECTION("ifelse false") {
+        run_and_expect(L"{? false ?? a: 7 ?? a: 8 ?} )))", make_events_vec(
+            a, 8, X
+        ));
+    }
+
+    SECTION("ifelse cat") {
+        run_and_expect(L"{? =^.^= ?? a: 7 ?? a: 8 ?} )))", make_events_vec(
+            a, 8, X
+        ));
+    }
+
+
 
 }

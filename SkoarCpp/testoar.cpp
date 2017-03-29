@@ -1,0 +1,124 @@
+#define CATCH_CONFIG_NOSTDOUT 
+#define CATCH_CONFIG_RUNNER
+#include "catch.hpp"
+
+#include "exception.hpp"
+#include "testoar.hpp"
+#include "testoar_streams.hpp"
+
+#ifdef CATCH_CONFIG_NOSTDOUT
+namespace Catch {
+    // I #define CATCH_CONFIG_NOSTDOUT so then I must implement these functions
+
+    std::ostream& Catch::cout() {
+        return TestoarCatchStreamoar::getInstance()->outStream;
+    }
+    std::ostream& Catch::cerr() {
+        return TestoarCatchStreamoar::getInstance()->errStream;
+    }
+}
+#endif
+
+// --- private (this file) functions ----------------------------------------------------------------------
+
+static ListOfTagCountPairs getListOfTags(Catch::Config const& config);
+
+static ListOfTagCountPairs getListOfTags(Catch::Config const& config) {
+    Catch::TestSpec testSpec = config.testSpec();
+    if (config.testSpec().hasFilters() == false) {
+        testSpec = Catch::TestSpecParser(Catch::ITagAliasRegistry::get()).parse("*").testSpec();
+    }
+
+    std::map<std::string, Catch::TagInfo> tagCounts;
+    ListOfTagCountPairs outList;
+
+    std::vector<Catch::TestCase> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
+    for (std::vector<Catch::TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
+        it != itEnd;
+        ++it) {
+        for (std::set<std::string>::const_iterator  tagIt = it->getTestCaseInfo().tags.begin(),
+            tagItEnd = it->getTestCaseInfo().tags.end();
+            tagIt != tagItEnd;
+            ++tagIt) {
+            std::string tagName = *tagIt;
+            std::string lcaseTagName = Catch::toLower(tagName);
+            std::map<std::string, Catch::TagInfo>::iterator countIt = tagCounts.find(lcaseTagName);
+            if (countIt == tagCounts.end())
+                countIt = tagCounts.insert(std::make_pair(lcaseTagName, Catch::TagInfo())).first;
+            countIt->second.add(tagName);
+        }
+    }
+
+    for (std::map<std::string, Catch::TagInfo>::const_iterator countIt = tagCounts.begin(),
+        countItEnd = tagCounts.end();
+        countIt != countItEnd;
+        ++countIt) {
+
+        outList.push_back(make_pair(countIt->second.all(), countIt->second.count));
+
+    }
+
+    return outList;
+}
+
+
+static ListOfTestCases getListOfTestCases(Catch::Config const& config) {
+    Catch::TestSpec testSpec = config.testSpec();
+    if (config.testSpec().hasFilters() == false) {
+        testSpec = Catch::TestSpecParser(Catch::ITagAliasRegistry::get()).parse("*").testSpec();
+    }
+
+    std::map<std::string, Catch::TagInfo> tagCounts;
+    ListOfTestCases outList;
+
+    std::vector<Catch::TestCase> matchedTestCases = filterTests(getAllTestCasesSorted(config), testSpec, config);
+    for (std::vector<Catch::TestCase>::const_iterator it = matchedTestCases.begin(), itEnd = matchedTestCases.end();
+        it != itEnd;
+        ++it) {
+
+        outList.push_back(it->name);
+    }
+
+    return outList;
+}
+
+// --- public functions ----------------------------------------------------------------------------
+void TestoarInitialize(SpellOfUtterance out, SpellOfUtterance err) {
+    TestoarCatchStreamoar::setInstance(out, err);
+}
+
+ListOfTagCountPairs TestoarGetListOfTags() {
+    Catch::ConfigData configData;
+    configData.listTags = true;
+    Catch::Config config(configData);
+    return getListOfTags(config);
+}
+
+ListOfTestCases TestoarGetListOfTestCases(string tag) {
+    Catch::ConfigData configData;
+    configData.listTests = true;
+    configData.testsOrTags.push_back(tag);
+    Catch::Config config(configData);
+    return getListOfTestCases(config);
+}
+
+int TestoarRunTests() {
+    const char* argv[] = { "Testoar" };
+    int argc = 1;
+    return Catch::Session().run(argc, argv);
+
+}
+
+int TestoarRunTestsByTag(string tag) {
+    const char* argv[] = { "Testoar", tag.c_str() };
+    int argc = 2;
+    Catch::Session().run(argc, argv);
+    return 0;
+}
+
+
+int TestoarRunTestsByTestCase(string tag) {
+    const char* argv[] = { "Testoar", tag.c_str() };
+    int argc = 2;
+    return Catch::Session().run(argc, argv);
+}

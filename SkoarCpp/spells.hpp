@@ -65,3 +65,6 @@ typedef function<SkoarpusclePtr()> ArcaneMagic;
 
 typedef function<void()> SpellOfSimplicity;
 typedef function<void(SkoarEventPtr)> SpellOfHappening;
+
+
+typedef function<void(string&)> SpellOfUtterance;

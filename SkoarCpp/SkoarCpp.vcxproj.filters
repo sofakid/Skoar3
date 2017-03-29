@@ -171,6 +171,12 @@
     <ClInclude Include="testing_util.hpp">
       <Filter>Testing</Filter>
     </ClInclude>
+    <ClInclude Include="testoar_streams.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testoar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="toker.cpp">
@@ -260,9 +266,6 @@
     <ClCompile Include="testing_util.cpp">
       <Filter>Testing</Filter>
     </ClCompile>
-    <ClCompile Include="test_basics.cpp">
-      <Filter>Testing</Filter>
-    </ClCompile>
     <ClCompile Include="test_main.cpp">
       <Filter>Testing</Filter>
     </ClCompile>
@@ -271,6 +274,12 @@
     </ClCompile>
     <ClCompile Include="test_sanity.cpp">
       <Filter>Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="testoar_streams.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="testoar.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

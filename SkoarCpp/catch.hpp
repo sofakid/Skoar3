@@ -6923,6 +6923,7 @@ namespace Catch {
         }
         ~Session() {
             Catch::cleanUp();
+            alreadyInstantiated = false;
         }
 
         void showHelp( std::string const& processName ) {
@@ -7372,8 +7373,8 @@ namespace Catch {
         return *getTheRegistryHub();
     }
     void cleanUp() {
-        delete getTheRegistryHub();
-        getTheRegistryHub() = CATCH_NULL;
+        //delete getTheRegistryHub();
+        //getTheRegistryHub() = CATCH_NULL;
         cleanUpContext();
     }
     std::string translateActiveException() {
