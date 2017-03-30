@@ -9,7 +9,7 @@
 // --- SkoarpuscleDuration ------------------------------------------------
 SkoarpuscleDuration::SkoarpuscleDuration(SkoarToke *toke) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"Duration");
+    SkoarMemories::o().allocSkoarpuscle(L"Duration");
 #endif
     //val = toke->lexeme.length();
     auto s = toke->lexeme;
@@ -25,13 +25,13 @@ SkoarpuscleDuration::SkoarpuscleDuration(SkoarInt min, SkoarFloat sec) :
     seconds(sec) 
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"Duration");
+    SkoarMemories::o().allocSkoarpuscle(L"Duration");
 #endif
 }
 
 SkoarpuscleDuration::~SkoarpuscleDuration() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpuscle(L"Duration");
+    SkoarMemories::o().deallocSkoarpuscle(L"Duration");
 #endif
 }
 
@@ -43,14 +43,14 @@ void SkoarpuscleDuration::on_enter(SkoarMinstrelPtr m) {
 // --- SkoarpuscleExactBeat -----------------------------------------------
 SkoarpuscleExactBeat::SkoarpuscleExactBeat(SkoarToke* /*toke*/) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"ExactBeat");
+    SkoarMemories::o().allocSkoarpuscle(L"ExactBeat");
 #endif
     impressionable = false;
 }
 
 SkoarpuscleExactBeat::~SkoarpuscleExactBeat() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpuscle(L"ExactBeat");
+    SkoarMemories::o().deallocSkoarpuscle(L"ExactBeat");
 #endif
 }
 
@@ -80,14 +80,14 @@ void SkoarpuscleExactBeat::after(SkoarMinstrelPtr m) {
 // --- SkoarpuscleExactRest -----------------------------------------------
 SkoarpuscleExactRest::SkoarpuscleExactRest(SkoarToke* /*toke*/) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"ExactRest");
+    SkoarMemories::o().allocSkoarpuscle(L"ExactRest");
 #endif
     impressionable = false;
 }
 
 SkoarpuscleExactRest::~SkoarpuscleExactRest() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpuscle(L"ExactRest");
+    SkoarMemories::o().deallocSkoarpuscle(L"ExactRest");
 #endif
 }
 
@@ -150,7 +150,7 @@ SkoarFloat SkoarpuscleBeat::beat_long(SkoarString s, SkoarInt n) {
 
 SkoarpuscleBeat::SkoarpuscleBeat(SkoarToke *toke) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"Beat");
+    SkoarMemories::o().allocSkoarpuscle(L"Beat");
 #endif
     impressionable = false;
     
@@ -194,7 +194,7 @@ SkoarpuscleBeat::SkoarpuscleBeat(SkoarToke *toke) {
 
 SkoarpuscleBeat::~SkoarpuscleBeat() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpuscle(L"Beat");
+    SkoarMemories::o().deallocSkoarpuscle(L"Beat");
 #endif
 }
 
@@ -216,7 +216,7 @@ void SkoarpuscleBeat::on_enter_sometimes(SkoarMinstrelPtr m) {
 // --- SkoarpuscleRest -----------------------------------------------------
 SkoarpuscleRest::SkoarpuscleRest(SkoarToke *toke) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"Rest");
+    SkoarMemories::o().allocSkoarpuscle(L"Rest");
 #endif
     impressionable = false;
 
@@ -233,7 +233,7 @@ SkoarpuscleRest::SkoarpuscleRest(SkoarToke *toke) {
 
 SkoarpuscleRest::~SkoarpuscleRest() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpuscle(L"Rest");
+    SkoarMemories::o().deallocSkoarpuscle(L"Rest");
 #endif
 }
 

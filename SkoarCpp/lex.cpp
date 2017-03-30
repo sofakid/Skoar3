@@ -37,14 +37,14 @@ size_t SkoarToke::burn() {
     kind = ESkoarToke::Eof;
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Eof");
+    SkoarMemories::o().allocToke(L"Eof");
 #endif
 }
 
  Toke_Eof::~Toke_Eof() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Eof");
+    SkoarMemories::o().deallocToke(L"Eof");
 #endif
 }
 
@@ -90,14 +90,14 @@ const std::wregex Toke_AUGen::rgx = wregex(L"a[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*
     this->style = SkoarStyles::Toke::style<ESkoarToke::AUGen>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"AUGen");
+    SkoarMemories::o().allocToke(L"AUGen");
 #endif
 }
 
  Toke_AUGen::~Toke_AUGen() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"AUGen");
+    SkoarMemories::o().deallocToke(L"AUGen");
 #endif
 }
 
@@ -120,14 +120,14 @@ const std::wregex Toke_AUGenWithArgs::rgx = wregex(L"a[A-Z][a-zA-Z0-9_]*<");
     this->style = SkoarStyles::Toke::style<ESkoarToke::AUGenWithArgs>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"AUGenWithArgs");
+    SkoarMemories::o().allocToke(L"AUGenWithArgs");
 #endif
 }
 
  Toke_AUGenWithArgs::~Toke_AUGenWithArgs() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"AUGenWithArgs");
+    SkoarMemories::o().deallocToke(L"AUGenWithArgs");
 #endif
 }
 
@@ -150,14 +150,14 @@ const std::wregex Toke_AlCoda::rgx = wregex(L"al(la)? coda");
     this->style = SkoarStyles::Toke::style<ESkoarToke::AlCoda>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"AlCoda");
+    SkoarMemories::o().allocToke(L"AlCoda");
 #endif
 }
 
  Toke_AlCoda::~Toke_AlCoda() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"AlCoda");
+    SkoarMemories::o().deallocToke(L"AlCoda");
 #endif
 }
 
@@ -180,14 +180,14 @@ const std::wregex Toke_AlFine::rgx = wregex(L"al fine");
     this->style = SkoarStyles::Toke::style<ESkoarToke::AlFine>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"AlFine");
+    SkoarMemories::o().allocToke(L"AlFine");
 #endif
 }
 
  Toke_AlFine::~Toke_AlFine() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"AlFine");
+    SkoarMemories::o().deallocToke(L"AlFine");
 #endif
 }
 
@@ -210,14 +210,14 @@ const std::wregex Toke_AlSegno::rgx = wregex(L"al segno");
     this->style = SkoarStyles::Toke::style<ESkoarToke::AlSegno>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"AlSegno");
+    SkoarMemories::o().allocToke(L"AlSegno");
 #endif
 }
 
  Toke_AlSegno::~Toke_AlSegno() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"AlSegno");
+    SkoarMemories::o().deallocToke(L"AlSegno");
 #endif
 }
 
@@ -240,14 +240,14 @@ const std::wregex Toke_AssOp::rgx = wregex(L"=>|[+]>|->|[*]>");
     this->style = SkoarStyles::Toke::style<ESkoarToke::AssOp>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"AssOp");
+    SkoarMemories::o().allocToke(L"AssOp");
 #endif
 }
 
  Toke_AssOp::~Toke_AssOp() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"AssOp");
+    SkoarMemories::o().deallocToke(L"AssOp");
 #endif
 }
 
@@ -270,14 +270,14 @@ const std::wregex Toke_Bars::rgx = wregex(L":?\\|+:?");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Bars>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Bars");
+    SkoarMemories::o().allocToke(L"Bars");
 #endif
 }
 
  Toke_Bars::~Toke_Bars() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Bars");
+    SkoarMemories::o().deallocToke(L"Bars");
 #endif
 }
 
@@ -300,14 +300,14 @@ const std::wregex Toke_BooleanOp::rgx = wregex(L"==|!=|<=|>=|and|or|xor");
     this->style = SkoarStyles::Toke::style<ESkoarToke::BooleanOp>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"BooleanOp");
+    SkoarMemories::o().allocToke(L"BooleanOp");
 #endif
 }
 
  Toke_BooleanOp::~Toke_BooleanOp() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"BooleanOp");
+    SkoarMemories::o().deallocToke(L"BooleanOp");
 #endif
 }
 
@@ -330,14 +330,14 @@ const std::wregex Toke_Carrot::rgx = wregex(L"\\^(?!\\^[(])");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Carrot>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Carrot");
+    SkoarMemories::o().allocToke(L"Carrot");
 #endif
 }
 
  Toke_Carrot::~Toke_Carrot() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Carrot");
+    SkoarMemories::o().deallocToke(L"Carrot");
 #endif
 }
 
@@ -360,14 +360,14 @@ const std::wregex Toke_Cat::rgx = wregex(L"=\\^\\.\\^=");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Cat>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Cat");
+    SkoarMemories::o().allocToke(L"Cat");
 #endif
 }
 
  Toke_Cat::~Toke_Cat() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Cat");
+    SkoarMemories::o().deallocToke(L"Cat");
 #endif
 }
 
@@ -390,14 +390,14 @@ const std::wregex Toke_Choard::rgx = wregex(L"~*[ABCDEFG](?![.ce-ln-rt-zA-LN-Z]|
     this->style = SkoarStyles::Toke::style<ESkoarToke::Choard>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Choard");
+    SkoarMemories::o().allocToke(L"Choard");
 #endif
 }
 
  Toke_Choard::~Toke_Choard() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Choard");
+    SkoarMemories::o().deallocToke(L"Choard");
 #endif
 }
 
@@ -420,14 +420,14 @@ const std::wregex Toke_Coda::rgx = wregex(L"\\([+]\\)(?:`(?:[a-zA-Z_][a-zA-Z0-9_
     this->style = SkoarStyles::Toke::style<ESkoarToke::Coda>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Coda");
+    SkoarMemories::o().allocToke(L"Coda");
 #endif
 }
 
  Toke_Coda::~Toke_Coda() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Coda");
+    SkoarMemories::o().deallocToke(L"Coda");
 #endif
 }
 
@@ -450,14 +450,14 @@ const std::wregex Toke_Comment::rgx = wregex(L"<[?](.|[\\n\\r])*?[?]>");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Comment>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Comment");
+    SkoarMemories::o().allocToke(L"Comment");
 #endif
 }
 
  Toke_Comment::~Toke_Comment() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Comment");
+    SkoarMemories::o().deallocToke(L"Comment");
 #endif
 }
 
@@ -480,14 +480,14 @@ const std::wregex Toke_CondE::rgx = wregex(L"[?][}]");
     this->style = SkoarStyles::Toke::style<ESkoarToke::CondE>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"CondE");
+    SkoarMemories::o().allocToke(L"CondE");
 #endif
 }
 
  Toke_CondE::~Toke_CondE() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"CondE");
+    SkoarMemories::o().deallocToke(L"CondE");
 #endif
 }
 
@@ -510,14 +510,14 @@ const std::wregex Toke_CondIf::rgx = wregex(L"[?][?](?![}])");
     this->style = SkoarStyles::Toke::style<ESkoarToke::CondIf>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"CondIf");
+    SkoarMemories::o().allocToke(L"CondIf");
 #endif
 }
 
  Toke_CondIf::~Toke_CondIf() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"CondIf");
+    SkoarMemories::o().deallocToke(L"CondIf");
 #endif
 }
 
@@ -540,14 +540,14 @@ const std::wregex Toke_CondS::rgx = wregex(L"[{][?][\\n]*");
     this->style = SkoarStyles::Toke::style<ESkoarToke::CondS>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"CondS");
+    SkoarMemories::o().allocToke(L"CondS");
 #endif
 }
 
  Toke_CondS::~Toke_CondS() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"CondS");
+    SkoarMemories::o().deallocToke(L"CondS");
 #endif
 }
 
@@ -570,14 +570,14 @@ const std::wregex Toke_Crotchets::rgx = wregex(L"[}]+\\.?");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Crotchets>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Crotchets");
+    SkoarMemories::o().allocToke(L"Crotchets");
 #endif
 }
 
  Toke_Crotchets::~Toke_Crotchets() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Crotchets");
+    SkoarMemories::o().deallocToke(L"Crotchets");
 #endif
 }
 
@@ -600,14 +600,14 @@ const std::wregex Toke_DUGen::rgx = wregex(L"d[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*
     this->style = SkoarStyles::Toke::style<ESkoarToke::DUGen>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"DUGen");
+    SkoarMemories::o().allocToke(L"DUGen");
 #endif
 }
 
  Toke_DUGen::~Toke_DUGen() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"DUGen");
+    SkoarMemories::o().deallocToke(L"DUGen");
 #endif
 }
 
@@ -630,14 +630,14 @@ const std::wregex Toke_DUGenWithArgs::rgx = wregex(L"d[A-Z][a-zA-Z0-9_]*<");
     this->style = SkoarStyles::Toke::style<ESkoarToke::DUGenWithArgs>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"DUGenWithArgs");
+    SkoarMemories::o().allocToke(L"DUGenWithArgs");
 #endif
 }
 
  Toke_DUGenWithArgs::~Toke_DUGenWithArgs() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"DUGenWithArgs");
+    SkoarMemories::o().deallocToke(L"DUGenWithArgs");
 #endif
 }
 
@@ -660,14 +660,14 @@ const std::wregex Toke_DaCapo::rgx = wregex(L"D\\.C\\.|Da Capo");
     this->style = SkoarStyles::Toke::style<ESkoarToke::DaCapo>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"DaCapo");
+    SkoarMemories::o().allocToke(L"DaCapo");
 #endif
 }
 
  Toke_DaCapo::~Toke_DaCapo() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"DaCapo");
+    SkoarMemories::o().deallocToke(L"DaCapo");
 #endif
 }
 
@@ -690,14 +690,14 @@ const std::wregex Toke_DalSegno::rgx = wregex(L"D\\.S\\.|Dal Segno");
     this->style = SkoarStyles::Toke::style<ESkoarToke::DalSegno>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"DalSegno");
+    SkoarMemories::o().allocToke(L"DalSegno");
 #endif
 }
 
  Toke_DalSegno::~Toke_DalSegno() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"DalSegno");
+    SkoarMemories::o().deallocToke(L"DalSegno");
 #endif
 }
 
@@ -720,14 +720,14 @@ const std::wregex Toke_Deref::rgx = wregex(L"!(?![!}]|=)");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Deref>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Deref");
+    SkoarMemories::o().allocToke(L"Deref");
 #endif
 }
 
  Toke_Deref::~Toke_Deref() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Deref");
+    SkoarMemories::o().deallocToke(L"Deref");
 #endif
 }
 
@@ -750,14 +750,14 @@ const std::wregex Toke_Duration::rgx = wregex(L"[0-9]+:[0-9]+(\\.[0-9]+)?");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Duration>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Duration");
+    SkoarMemories::o().allocToke(L"Duration");
 #endif
 }
 
  Toke_Duration::~Toke_Duration() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Duration");
+    SkoarMemories::o().deallocToke(L"Duration");
 #endif
 }
 
@@ -780,14 +780,14 @@ const std::wregex Toke_DynFP::rgx = wregex(L"fp(?![a-oq-zA-Z0-9_])");
     this->style = SkoarStyles::Toke::style<ESkoarToke::DynFP>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"DynFP");
+    SkoarMemories::o().allocToke(L"DynFP");
 #endif
 }
 
  Toke_DynFP::~Toke_DynFP() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"DynFP");
+    SkoarMemories::o().deallocToke(L"DynFP");
 #endif
 }
 
@@ -810,14 +810,14 @@ const std::wregex Toke_DynForte::rgx = wregex(L"m(ezzo)?f(orte)?|f+orte|ff+(?![a
     this->style = SkoarStyles::Toke::style<ESkoarToke::DynForte>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"DynForte");
+    SkoarMemories::o().allocToke(L"DynForte");
 #endif
 }
 
  Toke_DynForte::~Toke_DynForte() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"DynForte");
+    SkoarMemories::o().deallocToke(L"DynForte");
 #endif
 }
 
@@ -840,14 +840,14 @@ const std::wregex Toke_DynPiano::rgx = wregex(L"(m(ezzo)?p|p+)(iano)?(?![a-oq-zA
     this->style = SkoarStyles::Toke::style<ESkoarToke::DynPiano>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"DynPiano");
+    SkoarMemories::o().allocToke(L"DynPiano");
 #endif
 }
 
  Toke_DynPiano::~Toke_DynPiano() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"DynPiano");
+    SkoarMemories::o().deallocToke(L"DynPiano");
 #endif
 }
 
@@ -870,14 +870,14 @@ const std::wregex Toke_DynSFZ::rgx = wregex(L"sfz(?![a-oq-zA-Z0-9_])");
     this->style = SkoarStyles::Toke::style<ESkoarToke::DynSFZ>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"DynSFZ");
+    SkoarMemories::o().allocToke(L"DynSFZ");
 #endif
 }
 
  Toke_DynSFZ::~Toke_DynSFZ() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"DynSFZ");
+    SkoarMemories::o().deallocToke(L"DynSFZ");
 #endif
 }
 
@@ -900,14 +900,14 @@ const std::wregex Toke_Eighths::rgx = wregex(L"\\.?\\]+(?:__?)?\\.?");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Eighths>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Eighths");
+    SkoarMemories::o().allocToke(L"Eighths");
 #endif
 }
 
  Toke_Eighths::~Toke_Eighths() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Eighths");
+    SkoarMemories::o().deallocToke(L"Eighths");
 #endif
 }
 
@@ -930,14 +930,14 @@ const std::wregex Toke_ExactBeat::rgx = wregex(L"[(](?![+])");
     this->style = SkoarStyles::Toke::style<ESkoarToke::ExactBeat>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"ExactBeat");
+    SkoarMemories::o().allocToke(L"ExactBeat");
 #endif
 }
 
  Toke_ExactBeat::~Toke_ExactBeat() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"ExactBeat");
+    SkoarMemories::o().deallocToke(L"ExactBeat");
 #endif
 }
 
@@ -960,14 +960,14 @@ const std::wregex Toke_ExactRest::rgx = wregex(L"[{](?![=?:!])");
     this->style = SkoarStyles::Toke::style<ESkoarToke::ExactRest>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"ExactRest");
+    SkoarMemories::o().allocToke(L"ExactRest");
 #endif
 }
 
  Toke_ExactRest::~Toke_ExactRest() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"ExactRest");
+    SkoarMemories::o().deallocToke(L"ExactRest");
 #endif
 }
 
@@ -990,14 +990,14 @@ const std::wregex Toke_Fairy::rgx = wregex(L"[$]");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Fairy>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Fairy");
+    SkoarMemories::o().allocToke(L"Fairy");
 #endif
 }
 
  Toke_Fairy::~Toke_Fairy() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Fairy");
+    SkoarMemories::o().deallocToke(L"Fairy");
 #endif
 }
 
@@ -1020,14 +1020,14 @@ const std::wregex Toke_False::rgx = wregex(L"no|false");
     this->style = SkoarStyles::Toke::style<ESkoarToke::False>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"False");
+    SkoarMemories::o().allocToke(L"False");
 #endif
 }
 
  Toke_False::~Toke_False() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"False");
+    SkoarMemories::o().deallocToke(L"False");
 #endif
 }
 
@@ -1050,14 +1050,14 @@ const std::wregex Toke_Fine::rgx = wregex(L"fine");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Fine>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Fine");
+    SkoarMemories::o().allocToke(L"Fine");
 #endif
 }
 
  Toke_Fine::~Toke_Fine() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Fine");
+    SkoarMemories::o().deallocToke(L"Fine");
 #endif
 }
 
@@ -1080,14 +1080,14 @@ const std::wregex Toke_Float::rgx = wregex(L"(-)?(0|[1-9][0-9]*)\\.[0-9]+(?!Hz|:
     this->style = SkoarStyles::Toke::style<ESkoarToke::Float>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Float");
+    SkoarMemories::o().allocToke(L"Float");
 #endif
 }
 
  Toke_Float::~Toke_Float() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Float");
+    SkoarMemories::o().deallocToke(L"Float");
 #endif
 }
 
@@ -1110,14 +1110,14 @@ const std::wregex Toke_Freq::rgx = wregex(L"(0|[1-9][0-9]*)(\\.[0-9]+)?Hz");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Freq>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Freq");
+    SkoarMemories::o().allocToke(L"Freq");
 #endif
 }
 
  Toke_Freq::~Toke_Freq() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Freq");
+    SkoarMemories::o().deallocToke(L"Freq");
 #endif
 }
 
@@ -1140,14 +1140,14 @@ const std::wregex Toke_HashLevel::rgx = wregex(L"\\[#*[ ]*\\]");
     this->style = SkoarStyles::Toke::style<ESkoarToke::HashLevel>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"HashLevel");
+    SkoarMemories::o().allocToke(L"HashLevel");
 #endif
 }
 
  Toke_HashLevel::~Toke_HashLevel() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"HashLevel");
+    SkoarMemories::o().deallocToke(L"HashLevel");
 #endif
 }
 
@@ -1170,14 +1170,14 @@ const std::wregex Toke_Int::rgx = wregex(L"(-)?(0|[1-9][0-9]*)(?![0-9]*Hz|[mv][a
     this->style = SkoarStyles::Toke::style<ESkoarToke::Int>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Int");
+    SkoarMemories::o().allocToke(L"Int");
 #endif
 }
 
  Toke_Int::~Toke_Int() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Int");
+    SkoarMemories::o().deallocToke(L"Int");
 #endif
 }
 
@@ -1200,14 +1200,14 @@ const std::wregex Toke_KUGen::rgx = wregex(L"k[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*
     this->style = SkoarStyles::Toke::style<ESkoarToke::KUGen>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"KUGen");
+    SkoarMemories::o().allocToke(L"KUGen");
 #endif
 }
 
  Toke_KUGen::~Toke_KUGen() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"KUGen");
+    SkoarMemories::o().deallocToke(L"KUGen");
 #endif
 }
 
@@ -1230,14 +1230,14 @@ const std::wregex Toke_KUGenWithArgs::rgx = wregex(L"k[A-Z][a-zA-Z0-9_]*<");
     this->style = SkoarStyles::Toke::style<ESkoarToke::KUGenWithArgs>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"KUGenWithArgs");
+    SkoarMemories::o().allocToke(L"KUGenWithArgs");
 #endif
 }
 
  Toke_KUGenWithArgs::~Toke_KUGenWithArgs() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"KUGenWithArgs");
+    SkoarMemories::o().deallocToke(L"KUGenWithArgs");
 #endif
 }
 
@@ -1260,14 +1260,14 @@ const std::wregex Toke_LWing::rgx = wregex(L"\\^\\^[(]");
     this->style = SkoarStyles::Toke::style<ESkoarToke::LWing>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"LWing");
+    SkoarMemories::o().allocToke(L"LWing");
 #endif
 }
 
  Toke_LWing::~Toke_LWing() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"LWing");
+    SkoarMemories::o().deallocToke(L"LWing");
 #endif
 }
 
@@ -1290,14 +1290,14 @@ const std::wregex Toke_ListE::rgx = wregex(L">(?![=])");
     this->style = SkoarStyles::Toke::style<ESkoarToke::ListE>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"ListE");
+    SkoarMemories::o().allocToke(L"ListE");
 #endif
 }
 
  Toke_ListE::~Toke_ListE() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"ListE");
+    SkoarMemories::o().deallocToke(L"ListE");
 #endif
 }
 
@@ -1320,14 +1320,14 @@ const std::wregex Toke_ListS::rgx = wregex(L"<(?![=?])|<(?=[=]\\^\\.)");
     this->style = SkoarStyles::Toke::style<ESkoarToke::ListS>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"ListS");
+    SkoarMemories::o().allocToke(L"ListS");
 #endif
 }
 
  Toke_ListS::~Toke_ListS() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"ListS");
+    SkoarMemories::o().deallocToke(L"ListS");
 #endif
 }
 
@@ -1350,14 +1350,14 @@ const std::wregex Toke_ListSep::rgx = wregex(L",");
     this->style = SkoarStyles::Toke::style<ESkoarToke::ListSep>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"ListSep");
+    SkoarMemories::o().allocToke(L"ListSep");
 #endif
 }
 
  Toke_ListSep::~Toke_ListSep() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"ListSep");
+    SkoarMemories::o().deallocToke(L"ListSep");
 #endif
 }
 
@@ -1380,14 +1380,14 @@ const std::wregex Toke_Loco::rgx = wregex(L"loco");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Loco>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Loco");
+    SkoarMemories::o().allocToke(L"Loco");
 #endif
 }
 
  Toke_Loco::~Toke_Loco() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Loco");
+    SkoarMemories::o().deallocToke(L"Loco");
 #endif
 }
 
@@ -1410,14 +1410,14 @@ const std::wregex Toke_LoopE::rgx = wregex(L":[}]");
     this->style = SkoarStyles::Toke::style<ESkoarToke::LoopE>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"LoopE");
+    SkoarMemories::o().allocToke(L"LoopE");
 #endif
 }
 
  Toke_LoopE::~Toke_LoopE() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"LoopE");
+    SkoarMemories::o().deallocToke(L"LoopE");
 #endif
 }
 
@@ -1440,14 +1440,14 @@ const std::wregex Toke_LoopS::rgx = wregex(L"[{]:[\\n]*");
     this->style = SkoarStyles::Toke::style<ESkoarToke::LoopS>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"LoopS");
+    SkoarMemories::o().allocToke(L"LoopS");
 #endif
 }
 
  Toke_LoopS::~Toke_LoopS() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"LoopS");
+    SkoarMemories::o().deallocToke(L"LoopS");
 #endif
 }
 
@@ -1470,14 +1470,14 @@ const std::wregex Toke_LoopSep::rgx = wregex(L"::[\\n]*(?![|])");
     this->style = SkoarStyles::Toke::style<ESkoarToke::LoopSep>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"LoopSep");
+    SkoarMemories::o().allocToke(L"LoopSep");
 #endif
 }
 
  Toke_LoopSep::~Toke_LoopSep() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"LoopSep");
+    SkoarMemories::o().deallocToke(L"LoopSep");
 #endif
 }
 
@@ -1500,14 +1500,14 @@ const std::wregex Toke_Lute::rgx = wregex(L"&(?!<)");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Lute>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Lute");
+    SkoarMemories::o().allocToke(L"Lute");
 #endif
 }
 
  Toke_Lute::~Toke_Lute() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Lute");
+    SkoarMemories::o().deallocToke(L"Lute");
 #endif
 }
 
@@ -1530,14 +1530,14 @@ const std::wregex Toke_LuteWithArgs::rgx = wregex(L"&<");
     this->style = SkoarStyles::Toke::style<ESkoarToke::LuteWithArgs>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"LuteWithArgs");
+    SkoarMemories::o().allocToke(L"LuteWithArgs");
 #endif
 }
 
  Toke_LuteWithArgs::~Toke_LuteWithArgs() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"LuteWithArgs");
+    SkoarMemories::o().deallocToke(L"LuteWithArgs");
 #endif
 }
 
@@ -1560,14 +1560,14 @@ const std::wregex Toke_MathOp::rgx = wregex(L"[+*\\-/%](?!>)");
     this->style = SkoarStyles::Toke::style<ESkoarToke::MathOp>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"MathOp");
+    SkoarMemories::o().allocToke(L"MathOp");
 #endif
 }
 
  Toke_MathOp::~Toke_MathOp() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"MathOp");
+    SkoarMemories::o().deallocToke(L"MathOp");
 #endif
 }
 
@@ -1590,14 +1590,14 @@ const std::wregex Toke_MeditationE::rgx = wregex(L"=[}]");
     this->style = SkoarStyles::Toke::style<ESkoarToke::MeditationE>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"MeditationE");
+    SkoarMemories::o().allocToke(L"MeditationE");
 #endif
 }
 
  Toke_MeditationE::~Toke_MeditationE() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"MeditationE");
+    SkoarMemories::o().deallocToke(L"MeditationE");
 #endif
 }
 
@@ -1620,14 +1620,14 @@ const std::wregex Toke_MeditationS::rgx = wregex(L"[{]=[\\n]*");
     this->style = SkoarStyles::Toke::style<ESkoarToke::MeditationS>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"MeditationS");
+    SkoarMemories::o().allocToke(L"MeditationS");
 #endif
 }
 
  Toke_MeditationS::~Toke_MeditationS() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"MeditationS");
+    SkoarMemories::o().deallocToke(L"MeditationS");
 #endif
 }
 
@@ -1650,14 +1650,14 @@ const std::wregex Toke_MsgName::rgx = wregex(L"[a-zA-Z_][a-zA-Z0-9_]*(?!<)");
     this->style = SkoarStyles::Toke::style<ESkoarToke::MsgName>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"MsgName");
+    SkoarMemories::o().allocToke(L"MsgName");
 #endif
 }
 
  Toke_MsgName::~Toke_MsgName() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"MsgName");
+    SkoarMemories::o().deallocToke(L"MsgName");
 #endif
 }
 
@@ -1680,14 +1680,14 @@ const std::wregex Toke_MsgNameWithArgs::rgx = wregex(L"[a-zA-Z_][a-zA-Z0-9_]*<")
     this->style = SkoarStyles::Toke::style<ESkoarToke::MsgNameWithArgs>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"MsgNameWithArgs");
+    SkoarMemories::o().allocToke(L"MsgNameWithArgs");
 #endif
 }
 
  Toke_MsgNameWithArgs::~Toke_MsgNameWithArgs() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"MsgNameWithArgs");
+    SkoarMemories::o().deallocToke(L"MsgNameWithArgs");
 #endif
 }
 
@@ -1710,14 +1710,14 @@ const std::wregex Toke_MsgOp::rgx = wregex(L"\\.(?![)\\]])");
     this->style = SkoarStyles::Toke::style<ESkoarToke::MsgOp>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"MsgOp");
+    SkoarMemories::o().allocToke(L"MsgOp");
 #endif
 }
 
  Toke_MsgOp::~Toke_MsgOp() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"MsgOp");
+    SkoarMemories::o().deallocToke(L"MsgOp");
 #endif
 }
 
@@ -1740,14 +1740,14 @@ const std::wregex Toke_NamedNoat::rgx = wregex(L"(?:_?)(?:[a-g](?![ac-zA-Z_]))(#
     this->style = SkoarStyles::Toke::style<ESkoarToke::NamedNoat>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"NamedNoat");
+    SkoarMemories::o().allocToke(L"NamedNoat");
 #endif
 }
 
  Toke_NamedNoat::~Toke_NamedNoat() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"NamedNoat");
+    SkoarMemories::o().deallocToke(L"NamedNoat");
 #endif
 }
 
@@ -1770,14 +1770,14 @@ const std::wregex Toke_Newline::rgx = wregex(L"[\\n\\r][\\n\\r \\t]*");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Newline>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Newline");
+    SkoarMemories::o().allocToke(L"Newline");
 #endif
 }
 
  Toke_Newline::~Toke_Newline() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Newline");
+    SkoarMemories::o().deallocToke(L"Newline");
 #endif
 }
 
@@ -1800,14 +1800,14 @@ const std::wregex Toke_Nosey::rgx = wregex(L",");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Nosey>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Nosey");
+    SkoarMemories::o().allocToke(L"Nosey");
 #endif
 }
 
  Toke_Nosey::~Toke_Nosey() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Nosey");
+    SkoarMemories::o().deallocToke(L"Nosey");
 #endif
 }
 
@@ -1830,14 +1830,14 @@ const std::wregex Toke_OctaveShift::rgx = wregex(L"~+o|o~+");
     this->style = SkoarStyles::Toke::style<ESkoarToke::OctaveShift>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"OctaveShift");
+    SkoarMemories::o().allocToke(L"OctaveShift");
 #endif
 }
 
  Toke_OctaveShift::~Toke_OctaveShift() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"OctaveShift");
+    SkoarMemories::o().deallocToke(L"OctaveShift");
 #endif
 }
 
@@ -1860,14 +1860,14 @@ const std::wregex Toke_OttavaA::rgx = wregex(L"8va|ottava (alta|sopra)|all' otta
     this->style = SkoarStyles::Toke::style<ESkoarToke::OttavaA>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"OttavaA");
+    SkoarMemories::o().allocToke(L"OttavaA");
 #endif
 }
 
  Toke_OttavaA::~Toke_OttavaA() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"OttavaA");
+    SkoarMemories::o().deallocToke(L"OttavaA");
 #endif
 }
 
@@ -1890,14 +1890,14 @@ const std::wregex Toke_OttavaB::rgx = wregex(L"8vb|ottava (bassa|sotto)");
     this->style = SkoarStyles::Toke::style<ESkoarToke::OttavaB>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"OttavaB");
+    SkoarMemories::o().allocToke(L"OttavaB");
 #endif
 }
 
  Toke_OttavaB::~Toke_OttavaB() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"OttavaB");
+    SkoarMemories::o().deallocToke(L"OttavaB");
 #endif
 }
 
@@ -1920,14 +1920,14 @@ const std::wregex Toke_Quarters::rgx = wregex(L"\\.?[)]+(?:__?)?\\.?");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Quarters>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Quarters");
+    SkoarMemories::o().allocToke(L"Quarters");
 #endif
 }
 
  Toke_Quarters::~Toke_Quarters() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Quarters");
+    SkoarMemories::o().deallocToke(L"Quarters");
 #endif
 }
 
@@ -1950,14 +1950,14 @@ const std::wregex Toke_Quavers::rgx = wregex(L"o+/\\.?");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Quavers>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Quavers");
+    SkoarMemories::o().allocToke(L"Quavers");
 #endif
 }
 
  Toke_Quavers::~Toke_Quavers() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Quavers");
+    SkoarMemories::o().deallocToke(L"Quavers");
 #endif
 }
 
@@ -1980,14 +1980,14 @@ const std::wregex Toke_QuindicesimaA::rgx = wregex(L"15ma|alla quindicesima");
     this->style = SkoarStyles::Toke::style<ESkoarToke::QuindicesimaA>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"QuindicesimaA");
+    SkoarMemories::o().allocToke(L"QuindicesimaA");
 #endif
 }
 
  Toke_QuindicesimaA::~Toke_QuindicesimaA() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"QuindicesimaA");
+    SkoarMemories::o().deallocToke(L"QuindicesimaA");
 #endif
 }
 
@@ -2010,14 +2010,14 @@ const std::wregex Toke_QuindicesimaB::rgx = wregex(L"15mb");
     this->style = SkoarStyles::Toke::style<ESkoarToke::QuindicesimaB>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"QuindicesimaB");
+    SkoarMemories::o().allocToke(L"QuindicesimaB");
 #endif
 }
 
  Toke_QuindicesimaB::~Toke_QuindicesimaB() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"QuindicesimaB");
+    SkoarMemories::o().deallocToke(L"QuindicesimaB");
 #endif
 }
 
@@ -2040,14 +2040,14 @@ const std::wregex Toke_RWing::rgx = wregex(L"[)]\\^\\^");
     this->style = SkoarStyles::Toke::style<ESkoarToke::RWing>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"RWing");
+    SkoarMemories::o().allocToke(L"RWing");
 #endif
 }
 
  Toke_RWing::~Toke_RWing() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"RWing");
+    SkoarMemories::o().deallocToke(L"RWing");
 #endif
 }
 
@@ -2070,14 +2070,14 @@ const std::wregex Toke_Segno::rgx = wregex(L",[Ss](?:egno)?`(?:[a-zA-Z_][a-zA-Z0
     this->style = SkoarStyles::Toke::style<ESkoarToke::Segno>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Segno");
+    SkoarMemories::o().allocToke(L"Segno");
 #endif
 }
 
  Toke_Segno::~Toke_Segno() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Segno");
+    SkoarMemories::o().deallocToke(L"Segno");
 #endif
 }
 
@@ -2100,14 +2100,14 @@ const std::wregex Toke_Semicolon::rgx = wregex(L";");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Semicolon>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Semicolon");
+    SkoarMemories::o().allocToke(L"Semicolon");
 #endif
 }
 
  Toke_Semicolon::~Toke_Semicolon() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Semicolon");
+    SkoarMemories::o().deallocToke(L"Semicolon");
 #endif
 }
 
@@ -2130,14 +2130,14 @@ const std::wregex Toke_SkoarpionEnd::rgx = wregex(L"![}]");
     this->style = SkoarStyles::Toke::style<ESkoarToke::SkoarpionEnd>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"SkoarpionEnd");
+    SkoarMemories::o().allocToke(L"SkoarpionEnd");
 #endif
 }
 
  Toke_SkoarpionEnd::~Toke_SkoarpionEnd() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"SkoarpionEnd");
+    SkoarMemories::o().deallocToke(L"SkoarpionEnd");
 #endif
 }
 
@@ -2160,14 +2160,14 @@ const std::wregex Toke_SkoarpionSep::rgx = wregex(L"!!");
     this->style = SkoarStyles::Toke::style<ESkoarToke::SkoarpionSep>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"SkoarpionSep");
+    SkoarMemories::o().allocToke(L"SkoarpionSep");
 #endif
 }
 
  Toke_SkoarpionSep::~Toke_SkoarpionSep() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"SkoarpionSep");
+    SkoarMemories::o().deallocToke(L"SkoarpionSep");
 #endif
 }
 
@@ -2190,14 +2190,14 @@ const std::wregex Toke_SkoarpionStart::rgx = wregex(L"[{]!(?=([^!](?!!!))*![}])"
     this->style = SkoarStyles::Toke::style<ESkoarToke::SkoarpionStart>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"SkoarpionStart");
+    SkoarMemories::o().allocToke(L"SkoarpionStart");
 #endif
 }
 
  Toke_SkoarpionStart::~Toke_SkoarpionStart() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"SkoarpionStart");
+    SkoarMemories::o().deallocToke(L"SkoarpionStart");
 #endif
 }
 
@@ -2220,14 +2220,14 @@ const std::wregex Toke_SkoarpionStartWithSig::rgx = wregex(L"[{]!(?=([^!](?!![}]
     this->style = SkoarStyles::Toke::style<ESkoarToke::SkoarpionStartWithSig>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"SkoarpionStartWithSig");
+    SkoarMemories::o().allocToke(L"SkoarpionStartWithSig");
 #endif
 }
 
  Toke_SkoarpionStartWithSig::~Toke_SkoarpionStartWithSig() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"SkoarpionStartWithSig");
+    SkoarMemories::o().deallocToke(L"SkoarpionStartWithSig");
 #endif
 }
 
@@ -2250,14 +2250,14 @@ const std::wregex Toke_String::rgx = wregex(L"'[^']*'");
     this->style = SkoarStyles::Toke::style<ESkoarToke::String>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"String");
+    SkoarMemories::o().allocToke(L"String");
 #endif
 }
 
  Toke_String::~Toke_String() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"String");
+    SkoarMemories::o().deallocToke(L"String");
 #endif
 }
 
@@ -2280,14 +2280,14 @@ const std::wregex Toke_Symbol::rgx = wregex(L"[\\\\@][a-zA-Z0-9_][a-zA-Z0-9_]*")
     this->style = SkoarStyles::Toke::style<ESkoarToke::Symbol>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Symbol");
+    SkoarMemories::o().allocToke(L"Symbol");
 #endif
 }
 
  Toke_Symbol::~Toke_Symbol() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Symbol");
+    SkoarMemories::o().deallocToke(L"Symbol");
 #endif
 }
 
@@ -2310,14 +2310,14 @@ const std::wregex Toke_SymbolColon::rgx = wregex(L"[a-zA-Z_][a-zA-Z0-9_]*[ \\t]*
     this->style = SkoarStyles::Toke::style<ESkoarToke::SymbolColon>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"SymbolColon");
+    SkoarMemories::o().allocToke(L"SymbolColon");
 #endif
 }
 
  Toke_SymbolColon::~Toke_SymbolColon() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"SymbolColon");
+    SkoarMemories::o().deallocToke(L"SymbolColon");
 #endif
 }
 
@@ -2340,14 +2340,14 @@ const std::wregex Toke_SymbolName::rgx = wregex(L"[a-zA-Z0-9_][a-zA-Z0-9_]*(?![[
     this->style = SkoarStyles::Toke::style<ESkoarToke::SymbolName>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"SymbolName");
+    SkoarMemories::o().allocToke(L"SymbolName");
 #endif
 }
 
  Toke_SymbolName::~Toke_SymbolName() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"SymbolName");
+    SkoarMemories::o().deallocToke(L"SymbolName");
 #endif
 }
 
@@ -2370,14 +2370,14 @@ const std::wregex Toke_Times::rgx = wregex(L"[Tt]imes");
     this->style = SkoarStyles::Toke::style<ESkoarToke::Times>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Times");
+    SkoarMemories::o().allocToke(L"Times");
 #endif
 }
 
  Toke_Times::~Toke_Times() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Times");
+    SkoarMemories::o().deallocToke(L"Times");
 #endif
 }
 
@@ -2400,14 +2400,14 @@ const std::wregex Toke_True::rgx = wregex(L"yes|true");
     this->style = SkoarStyles::Toke::style<ESkoarToke::True>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"True");
+    SkoarMemories::o().allocToke(L"True");
 #endif
 }
 
  Toke_True::~Toke_True() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"True");
+    SkoarMemories::o().deallocToke(L"True");
 #endif
 }
 
@@ -2430,14 +2430,14 @@ const std::wregex Toke_Tuplet::rgx = wregex(L"/\\d+(:\\d+)?|(du|tri|quadru)plets
     this->style = SkoarStyles::Toke::style<ESkoarToke::Tuplet>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Tuplet");
+    SkoarMemories::o().allocToke(L"Tuplet");
 #endif
 }
 
  Toke_Tuplet::~Toke_Tuplet() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Tuplet");
+    SkoarMemories::o().deallocToke(L"Tuplet");
 #endif
 }
 
@@ -2460,14 +2460,14 @@ const std::wregex Toke_Voice::rgx = wregex(L"\\.(([a-zA-Z_][a-zA-Z0-9_]*)?|\\.+)
     this->style = SkoarStyles::Toke::style<ESkoarToke::Voice>();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"Voice");
+    SkoarMemories::o().allocToke(L"Voice");
 #endif
 }
 
  Toke_Voice::~Toke_Voice() {
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"Voice");
+    SkoarMemories::o().deallocToke(L"Voice");
 #endif
 }
 

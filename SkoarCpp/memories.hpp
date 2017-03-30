@@ -110,4 +110,7 @@ public:
 
 };
 
-extern SkoarMem SkoarMemories;
+
+namespace SkoarMemories {
+    SkoarMem& o();
+}

@@ -5,14 +5,14 @@
 
 SkoarDic::SkoarDic() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarDic(L"dic");
+    SkoarMemories::o().allocSkoarDic(L"dic");
 #endif
 	//not_found = nullptr;
 }
 
 SkoarDic::~SkoarDic() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarDic(L"dic");
+    SkoarMemories::o().deallocSkoarDic(L"dic");
 #endif
     //not_found = nullptr;
     table.clear();
@@ -34,14 +34,14 @@ void SkoarDic::clear() {
 // --- SkoarEvent --------------------------------------------
 SkoarEvent::SkoarEvent() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarDic(L"event");
+    SkoarMemories::o().allocSkoarDic(L"event");
 #endif
     //not_found = nullptr;
 }
 
 SkoarEvent::~SkoarEvent() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarDic(L"event");
+    SkoarMemories::o().deallocSkoarDic(L"event");
 #endif
     //not_found = nullptr;
     table.clear();

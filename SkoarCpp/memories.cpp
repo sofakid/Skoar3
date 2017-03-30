@@ -74,4 +74,17 @@ std::ostream& operator << (std::ostream& out, const SkoarMem& o) {
 
 }
 
-SkoarMem SkoarMemories;
+namespace SkoarMemories {
+
+    unique_ptr<SkoarMem> Memories;
+
+    SkoarMem& o() {
+        static bool isInitialized = false;
+        if (isInitialized == false) {
+            Memories = make_unique<SkoarMem>();
+            isInitialized = true;
+        }
+        return *Memories;
+    }
+
+}

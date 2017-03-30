@@ -12,7 +12,7 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(const SkoarpuscleSkoarpion *that) :
     args(that->args)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"Skoarpion");
+    SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
 }
 
@@ -21,7 +21,7 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s) :
     args(nullptr)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"Skoarpion");
+    SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
 }
 
@@ -30,7 +30,7 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s, SkoarNoadPtr) :
     args(nullptr)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"Skoarpion");
+    SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
 }
 
@@ -39,13 +39,13 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpusclePtr s, SkoarpusclePtr args
     args(args)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"Skoarpion");
+    SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
 }
 
 SkoarpuscleSkoarpion::~SkoarpuscleSkoarpion(){
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpuscle(L"Skoarpion");
+    SkoarMemories::o().deallocSkoarpuscle(L"Skoarpion");
 #endif
 }
 
@@ -76,7 +76,7 @@ SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMin
 // --- SkoarpuscleSkoarpionSig ----------------------------------------------
 SkoarpuscleSkoarpionSig::SkoarpuscleSkoarpionSig(SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"SkoarpionSig");
+    SkoarMemories::o().allocSkoarpuscle(L"SkoarpionSig");
 #endif
     auto kidderator = noad->children.cbegin();
     auto x = (*kidderator)->skoarpuscle;
@@ -93,7 +93,7 @@ SkoarpuscleSkoarpionSig::SkoarpuscleSkoarpionSig(SkoarNoadPtr noad) {
 
 SkoarpuscleSkoarpionSig::~SkoarpuscleSkoarpionSig() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpuscle(L"SkoarpionSig");
+    SkoarMemories::o().deallocSkoarpuscle(L"SkoarpionSig");
 #endif
 }
 
@@ -109,7 +109,7 @@ or
 */
 SkoarpuscleArgExpr::SkoarpuscleArgExpr(SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"ArgExpr");
+    SkoarMemories::o().allocSkoarpuscle(L"ArgExpr");
 #endif
     auto x = noad->next_skoarpuscle();
 
@@ -130,7 +130,7 @@ SkoarpuscleArgExpr::SkoarpuscleArgExpr(SkoarNoadPtr noad) {
 
 SkoarpuscleArgExpr::~SkoarpuscleArgExpr() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpuscle(L"ArgExpr");
+    SkoarMemories::o().deallocSkoarpuscle(L"ArgExpr");
 #endif
 }
 
@@ -144,7 +144,7 @@ SkoarpuscleArgExpr::~SkoarpuscleArgExpr() {
 */
 SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpuscle(L"ArgList");
+    SkoarMemories::o().allocSkoarpuscle(L"ArgList");
 #endif
     
     auto skoarpuscles = noad->collect_skoarpuscles();
@@ -159,7 +159,7 @@ SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr noad) {
 
 SkoarpuscleArgList::~SkoarpuscleArgList() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpuscle(L"ArgList");
+    SkoarMemories::o().deallocSkoarpuscle(L"ArgList");
 #endif
 }
 

@@ -16,7 +16,7 @@ SkoarKoar::SkoarKoar(Skoar *skoar, const SkoarString &name) :
     skoarboard(make_shared<SkoarDic>())
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocKoar(name);
+    SkoarMemories::o().allocKoar(name);
 #endif
     skoarboard->put(L"voice", make_skoarpuscle(name));
 	stack.push_back(skoarboard);
@@ -24,7 +24,7 @@ SkoarKoar::SkoarKoar(Skoar *skoar, const SkoarString &name) :
 
 SkoarKoar::~SkoarKoar() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocKoar(name);
+    SkoarMemories::o().deallocKoar(name);
 #endif
     clear();
 }

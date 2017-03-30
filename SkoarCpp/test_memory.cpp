@@ -8,18 +8,18 @@
 // ----------------------------------------------------------------------------------------------------------------------------------------
 
 void require_no_memory_consumed() {
-    INFO(SkoarMemories);
-    REQUIRE(SkoarMemories.Tokes == 0);
-    REQUIRE(SkoarMemories.Noads == 0);
-    REQUIRE(SkoarMemories.Skoars == 0);
-    REQUIRE(SkoarMemories.Skoarpuscles == 0);
-    REQUIRE(SkoarMemories.Skoarpions == 0);
-    REQUIRE(SkoarMemories.Projections == 0);
-    REQUIRE(SkoarMemories.Koars == 0);
-    REQUIRE(SkoarMemories.Fairies == 0);
-    REQUIRE(SkoarMemories.Minstrels == 0);
-    REQUIRE(SkoarMemories.SkoarDics == 0);
-    REQUIRE(SkoarMemories.Events == 0);
+    INFO(SkoarMemories::o());
+    REQUIRE(SkoarMemories::o().Tokes == 0);
+    REQUIRE(SkoarMemories::o().Noads == 0);
+    REQUIRE(SkoarMemories::o().Skoars == 0);
+    REQUIRE(SkoarMemories::o().Skoarpuscles == 0);
+    REQUIRE(SkoarMemories::o().Skoarpions == 0);
+    REQUIRE(SkoarMemories::o().Projections == 0);
+    REQUIRE(SkoarMemories::o().Koars == 0);
+    REQUIRE(SkoarMemories::o().Fairies == 0);
+    REQUIRE(SkoarMemories::o().Minstrels == 0);
+    REQUIRE(SkoarMemories::o().SkoarDics == 0);
+    REQUIRE(SkoarMemories::o().Events == 0);
 }
 
 
@@ -27,20 +27,20 @@ TEST_CASE("skoar lite memories", "[memory]") {
 
     SkoarNullLogger SkoarLog;
 
-    SkoarMemories.reset();
+    SkoarMemories::o().reset();
 
     require_no_memory_consumed();
 
-    REQUIRE(SkoarMemories.TokesMap.size() == 0);
-    REQUIRE(SkoarMemories.NoadsMap.size() == 0);
-    REQUIRE(SkoarMemories.SkoarpusclesMap.size() == 0);
-    REQUIRE(SkoarMemories.SkoarpionsMap.size() == 0);
-    REQUIRE(SkoarMemories.ProjectionsMap.size() == 0);
-    REQUIRE(SkoarMemories.KoarsMap.size() == 0);
-    REQUIRE(SkoarMemories.FairiesMap.size() == 0);
-    REQUIRE(SkoarMemories.MinstrelsMap.size() == 0);
-    REQUIRE(SkoarMemories.SkoarDicsMap.size() == 0);
-    REQUIRE(SkoarMemories.EventsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().TokesMap.size() == 0);
+    REQUIRE(SkoarMemories::o().NoadsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().SkoarpusclesMap.size() == 0);
+    REQUIRE(SkoarMemories::o().SkoarpionsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().ProjectionsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().KoarsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().FairiesMap.size() == 0);
+    REQUIRE(SkoarMemories::o().MinstrelsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().SkoarDicsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().EventsMap.size() == 0);
 
     SECTION("SkoarLite memory cleanup - valid skoar") {
         SkoarLite(L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food {!dorp<s:6> !!@worp !s )) !} {: )) :: 3 times :}", &SkoarLog);
@@ -78,19 +78,19 @@ TEST_CASE("Skoar Memories", "[memory]") {
 
     SkoarConsoleLogger SkoarLog;
 
-    SkoarMemories.reset();
+    SkoarMemories::o().reset();
 
     require_no_memory_consumed();
-    REQUIRE(SkoarMemories.TokesMap.size() == 0);
-    REQUIRE(SkoarMemories.NoadsMap.size() == 0);
-    REQUIRE(SkoarMemories.SkoarpusclesMap.size() == 0);
-    REQUIRE(SkoarMemories.SkoarpionsMap.size() == 0);
-    REQUIRE(SkoarMemories.ProjectionsMap.size() == 0);
-    REQUIRE(SkoarMemories.KoarsMap.size() == 0);
-    REQUIRE(SkoarMemories.FairiesMap.size() == 0);
-    REQUIRE(SkoarMemories.MinstrelsMap.size() == 0);
-    REQUIRE(SkoarMemories.SkoarDicsMap.size() == 0);
-    REQUIRE(SkoarMemories.EventsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().TokesMap.size() == 0);
+    REQUIRE(SkoarMemories::o().NoadsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().SkoarpusclesMap.size() == 0);
+    REQUIRE(SkoarMemories::o().SkoarpionsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().ProjectionsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().KoarsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().FairiesMap.size() == 0);
+    REQUIRE(SkoarMemories::o().MinstrelsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().SkoarDicsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().EventsMap.size() == 0);
 
     SECTION("Skoar memory cleanup - valid skoar") {
         Skoar(L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food {!dorp<s:6> !!@worp !s )) !} {: )) :: 3 times :}", &SkoarLog);

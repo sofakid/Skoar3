@@ -45,7 +45,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
     Skoar::init();
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoar();
+    SkoarMemories::o().allocSkoar();
 #endif
 
 	//this->skoarce = skoarce;
@@ -168,7 +168,7 @@ Skoar::~Skoar() {
     tree = nullptr;
 
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoar();
+    SkoarMemories::o().deallocSkoar();
 #endif
 }
 
@@ -368,7 +368,7 @@ SkoarLite::~SkoarLite() {
     //log->i("\n\n");
     //log->i("----------------------------------");
     //log->i("Deleting SkoarLite...");
-    //log->w("Memories", SkoarMemories);
+    //log->w("Memories", SkoarMemories::o());
 
     if (parsedOk) {
         tree->clear();
@@ -379,7 +379,7 @@ SkoarLite::~SkoarLite() {
     f_elapsed_time = static_cast<float>(elapsed_time) / CLOCKS_PER_SEC;
 
     //log->i("Deleted SkoarLite.", "elapsed_time", f_elapsed_time);
-    //log->w("Memories", SkoarMemories);
+    //log->w("Memories", SkoarMemories::o());
     //log->i("----------------------------------\n\n");
 
 }

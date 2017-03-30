@@ -37,7 +37,7 @@ Skoarpion::Skoarpion(const SkoarString from) :
     made_from(from)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpion(made_from);
+    SkoarMemories::o().allocSkoarpion(made_from);
 #endif
 }
 
@@ -50,13 +50,13 @@ Skoarpion::Skoarpion(const Skoarpion *other) :
     made_from(other->made_from)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocSkoarpion(made_from);
+    SkoarMemories::o().allocSkoarpion(made_from);
 #endif
 }
 
 Skoarpion::~Skoarpion() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocSkoarpion(made_from);
+    SkoarMemories::o().deallocSkoarpion(made_from);
 #endif
     clear();
 }
@@ -221,7 +221,7 @@ SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koa
     name(skoarpion->name + SkoarString(L":") + koar_name)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocProjection(name);
+    SkoarMemories::o().allocProjection(name);
 #endif
 
     proj->voice = skoarpion->skoar->get_voice(koar_name);
@@ -266,7 +266,7 @@ SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koa
 SkoarpionProjection::~SkoarpionProjection()
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocProjection(name);
+    SkoarMemories::o().deallocProjection(name);
 #endif
     proj = nullptr;
 }

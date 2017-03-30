@@ -40,7 +40,7 @@ SkoarNoad::SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoa
     skoarpuscle(nullptr)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocNoad(name);
+    SkoarMemories::o().allocNoad(name);
 #endif
 }
 
@@ -72,7 +72,7 @@ SkoarNoadPtr SkoarNoad::NewAlias(const wchar_t *nameArg)
 
 SkoarNoad::~SkoarNoad() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocNoad(name);
+    SkoarMemories::o().deallocNoad(name);
 #endif
     clear();
 }

@@ -13,7 +13,7 @@ SkoarMinstrel::SkoarMinstrel(SkoarString minstrel_name, SkoarKoarPtr koar, Skoar
     happenSpell(spell)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocMinstrel(name);
+    SkoarMemories::o().allocMinstrel(name);
 #endif
 
     // some defaults
@@ -32,7 +32,7 @@ SkoarMinstrel::SkoarMinstrel(SkoarString minstrel_name, SkoarKoarPtr koar, Skoar
 
 SkoarMinstrel::~SkoarMinstrel() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocMinstrel(name);
+    SkoarMemories::o().deallocMinstrel(name);
 #endif
     //event_stream->destroy();
     event_stream = nullptr;

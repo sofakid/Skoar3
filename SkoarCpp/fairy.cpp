@@ -12,14 +12,14 @@ SkoarFairy::SkoarFairy(SkoarString nom, SkoarMinstrelPtr m) :
     times_seen(nullptr)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocFairy(name);
+    SkoarMemories::o().allocFairy(name);
 #endif
     push_times_seen();
 }
 
 SkoarFairy::~SkoarFairy() {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocFairy(name);
+    SkoarMemories::o().deallocFairy(name);
 #endif
     fly_away();
 }
