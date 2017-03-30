@@ -76,14 +76,19 @@ std::ostream& operator << (std::ostream& out, const SkoarMem& o) {
 
 namespace SkoarMemories {
 
-    unique_ptr<SkoarMem> Memories;
+    // I'm tempted to use a unique_ptr here, but, when killing the app, the memories 
+    // object is destroyed before a bunch of skoarpuscles dealloc...
+    // This only happens in debug builds, when quitting, so I really can't be arsed to do this "better". 
+    // This stops the debugger from freaking out.
+    SkoarMem* Memories;
 
     SkoarMem& o() {
         static bool isInitialized = false;
         if (isInitialized == false) {
-            Memories = make_unique<SkoarMem>();
+            Memories = new SkoarMem();
             isInitialized = true;
         }
+
         return *Memories;
     }
 
