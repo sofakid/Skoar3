@@ -40,7 +40,7 @@ public:
 	void decorate();
 	SkoarKoarPtr get_voice(const SkoarString &k);
 	void cthulhu(SkoarNoadPtr noad);
-	void draw_skoarpions(ISkoarLog *);
+	void draw_skoarpions();
 
 
     void play(const SpellOfHappening& spell);

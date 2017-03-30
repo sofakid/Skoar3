@@ -68,7 +68,7 @@ void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
 }
 
 
-SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
+SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr minstrel) {
     //args = msg->get_msg_arr(minstrel);
     return nullptr;
 }

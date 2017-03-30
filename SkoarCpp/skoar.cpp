@@ -135,7 +135,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 	log->d("---< Decorated Skoar Tree >---");
 	tree->log_tree(log);
 
-	draw_skoarpions(log);
+	draw_skoarpions();
 
 	log->d("+++ Skoar Parsed +++");// +tree->draw_tree());
     parsedOk = true;
@@ -213,7 +213,7 @@ void Skoar::cthulhu(SkoarNoadPtr noad) {
 
 }
 
-void Skoar::draw_skoarpions(ISkoarLog *log) {
+void Skoar::draw_skoarpions() {
 
     if (log->getLevel() != ISkoarLog::debug)
         return;

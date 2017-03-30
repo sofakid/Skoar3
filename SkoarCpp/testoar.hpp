@@ -14,11 +14,3 @@ ListOfTestCases TestoarGetListOfTestCases(string tag);
 int TestoarRunTests();
 int TestoarRunTestsByTag(string tag);
 int TestoarRunTestsByTestCase(string tag);
-
-
-void CreateChildProcess(PROCESS_INFORMATION&, wstring args);
-void WriteToPipe(void);
-void ReadFromPipe(void);
-void ErrorExit(PTSTR);
-
-void TestoarRunAsChild(wstring args);

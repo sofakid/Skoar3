@@ -95,7 +95,7 @@ void SkoarpuscleSymbol::on_enter(SkoarMinstrelPtr m) {
     m->fairy->impress(make_shared<SkoarpuscleSymbol>(val));
 }
 
-SkoarpusclePtr SkoarpuscleSymbol::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
+SkoarpusclePtr SkoarpuscleSymbol::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr minstrel) {
     
     /* this was how we called underlying SC class methods.. 
        don't know what I want to do with this anymore. */
@@ -185,7 +185,7 @@ void SkoarpuscleDeref::do_deref(SkoarMinstrelPtr m) {
 }
 
 
-SkoarpusclePtr SkoarpuscleDeref::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
+SkoarpusclePtr SkoarpuscleDeref::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr minstrel) {
 
 	auto ret = val;
 	auto x = lookup(minstrel);
@@ -477,7 +477,7 @@ void *SkoarpuscleList::asNoat() {
     return nullptr;
 }
 
-SkoarpusclePtr SkoarpuscleList::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
+SkoarpusclePtr SkoarpuscleList::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr minstrel) {
 	// ready to port as commented
     /*
     var o = msg.get_msg_arr(minstrel);
@@ -562,7 +562,7 @@ void SkoarpuscleMsg::on_enter(SkoarMinstrelPtr m) {
 
 }
 
-SkoarpusclePtr SkoarpuscleMsg::skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr m) {
+SkoarpusclePtr SkoarpuscleMsg::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr m) {
     SkoarpusclePtr result = m->fairy->impression;
     if (is_skoarpuscle<SkoarpuscleList>(result)) {
         result = skoarpuscle_ptr<SkoarpuscleList>(result)->skoar_msg(this, m);

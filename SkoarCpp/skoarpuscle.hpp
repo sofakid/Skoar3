@@ -50,7 +50,7 @@ public:
         throw SkoarpuscleException(L"asNoat() called on incompatible skoarpuscle.");
     }
 
-    virtual SkoarpusclePtr skoar_msg(SkoarpuscleMsg* msg, SkoarMinstrelPtr minstrel) {
+    virtual SkoarpusclePtr skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr /*minstrel*/) {
         throw SkoarpuscleException(L"skoar_msg() called on incompatible skoarpuscle.");
     }
 

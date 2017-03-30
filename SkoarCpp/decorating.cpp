@@ -42,6 +42,8 @@ Skoarmantics* Skoarmantics::instance() {
 }
 
 #define SpellOfSkoarmantics [](Skoar *skoar, SkoarNoadPtr noad)
+#define SpellOfSimpleSkoarmantics [](Skoar* /*skoar*/, SkoarNoadPtr noad)
+
 
 Skoarmantics::Skoarmantics() : table({
 
@@ -64,7 +66,7 @@ Skoarmantics::Skoarmantics() : table({
         noad->skoarpuscle = make_shared<SkoarpuscleConditional>(skoar, noad);
     }},
 
-    {ESkoarNoad::boolean_expr, SpellOfSkoarmantics { 
+    {ESkoarNoad::boolean_expr, SpellOfSimpleSkoarmantics {
         
         // we insert a node at the end of the boolean expression
         // so we can restore the impression
@@ -84,7 +86,7 @@ Skoarmantics::Skoarmantics() : table({
         
     }},
 
-    {ESkoarNoad::boolean, SpellOfSkoarmantics {
+    {ESkoarNoad::boolean, SpellOfSimpleSkoarmantics {
         
         // we insert a node at the end of the expression
         // so we can evaluate the result
@@ -106,7 +108,7 @@ Skoarmantics::Skoarmantics() : table({
         
     }},
 
-    {ESkoarNoad::regular_beat, SpellOfSkoarmantics {
+    {ESkoarNoad::regular_beat, SpellOfSimpleSkoarmantics {
         auto xp = noad->next_skoarpuscle();
         noad->skoarpuscle = xp;
         
@@ -122,7 +124,7 @@ Skoarmantics::Skoarmantics() : table({
         }
     }},
 
-    {ESkoarNoad::exact_beat, SpellOfSkoarmantics {
+    {ESkoarNoad::exact_beat, SpellOfSimpleSkoarmantics {
         auto skoarpuscle = noad->next_skoarpuscle();
         auto end_noad = SkoarNoad::NewArtificial(L"exact_beat_end", noad);
         end_noad->on_enter = [=](SkoarMinstrelPtr m) {
@@ -132,7 +134,7 @@ Skoarmantics::Skoarmantics() : table({
         noad->add_noad(end_noad);
     }},
 
-    {ESkoarNoad::exact_rest, SpellOfSkoarmantics {
+    {ESkoarNoad::exact_rest, SpellOfSimpleSkoarmantics {
         auto skoarpuscle = noad->next_skoarpuscle();
         auto end_noad = SkoarNoad::NewArtificial(L"exact_rest_end", noad);
         end_noad->on_enter = [=](SkoarMinstrelPtr m) {
@@ -147,7 +149,7 @@ Skoarmantics::Skoarmantics() : table({
         noad->children.clear();
     }},
 
-    {ESkoarNoad::musical_keyword_misc, SpellOfSkoarmantics {
+    {ESkoarNoad::musical_keyword_misc, SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = noad->next_skoarpuscle();
         noad->children.clear();
     }},
@@ -158,11 +160,11 @@ Skoarmantics::Skoarmantics() : table({
         };
     }},
 
-    {ESkoarNoad::dal_goto, SpellOfSkoarmantics {
+    {ESkoarNoad::dal_goto, SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleGoto>(noad);
     }},
 
-    {ESkoarNoad::marker, SpellOfSkoarmantics {
+    {ESkoarNoad::marker, SpellOfSimpleSkoarmantics {
         auto x = noad->next_skoarpuscle();
         noad->skoarpuscle = x;
 
@@ -175,7 +177,7 @@ Skoarmantics::Skoarmantics() : table({
 
     // deref*         : Deref MsgNameWithArgs listy_suffix
     //                | Deref MsgName
-    {ESkoarNoad::deref, SpellOfSkoarmantics {
+    {ESkoarNoad::deref, SpellOfSimpleSkoarmantics {
         auto end_noad = SkoarNoad::NewArtificial(L"deref_end", noad);
 
         auto it = noad->children.begin();
@@ -209,24 +211,24 @@ Skoarmantics::Skoarmantics() : table({
 
     }},
 
-    {ESkoarNoad::listy, SpellOfSkoarmantics {
+    {ESkoarNoad::listy, SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleList>();
     }},
 
-    {ESkoarNoad::arg_listy, SpellOfSkoarmantics {
+    {ESkoarNoad::arg_listy, SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleArgList>(noad);
     }},
 
-    {ESkoarNoad::arg_expr, SpellOfSkoarmantics {
+    {ESkoarNoad::arg_expr, SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleArgExpr>(noad);
         noad->children.clear();
     }},
 
-    {ESkoarNoad::skrp_sig, SpellOfSkoarmantics {
+    {ESkoarNoad::skrp_sig, SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleSkoarpionSig>(noad);
     }},
 
-    {ESkoarNoad::msg, SpellOfSkoarmantics {
+    {ESkoarNoad::msg, SpellOfSimpleSkoarmantics {
         SkoarpusclePtr msg = noad->next_skoarpuscle();
 
         if (msg != nullptr) {
@@ -270,7 +272,7 @@ Skoarmantics::Skoarmantics() : table({
         }
     }},
 
-    {ESkoarNoad::ugen_simple, SpellOfSkoarmantics {
+    {ESkoarNoad::ugen_simple, SpellOfSimpleSkoarmantics {
         auto ugen = noad->next_skoarpuscle();
         auto msg = make_shared<SkoarpuscleMsg>(skoarpuscle_ptr<SkoarpuscleUGen>(ugen)->defaultMsg(), nullptr);
         msg->dest = ugen;
@@ -280,7 +282,7 @@ Skoarmantics::Skoarmantics() : table({
         noad->add_noad(end_noad);
     }},
 
-    {ESkoarNoad::ugen_with_args, SpellOfSkoarmantics {
+    {ESkoarNoad::ugen_with_args, SpellOfSimpleSkoarmantics {
         auto ugen = noad->next_skoarpuscle();
         auto args = make_shared<SkoarpuscleArgs>();
         auto msg = make_shared<SkoarpuscleMsg>(skoarpuscle_ptr<SkoarpuscleUGen>(ugen)->defaultMsg(), args);
@@ -291,7 +293,7 @@ Skoarmantics::Skoarmantics() : table({
         noad->add_noad(end_noad);
     }},
 
-    {ESkoarNoad::lute, SpellOfSkoarmantics {
+    {ESkoarNoad::lute, SpellOfSimpleSkoarmantics {
         auto lute = noad->next_skoarpuscle();
         auto lute_ptr = skoarpuscle_ptr<SkoarpuscleLute>(lute);
         
@@ -306,7 +308,7 @@ Skoarmantics::Skoarmantics() : table({
         }
     }},
 
-    {ESkoarNoad::expr, SpellOfSkoarmantics {
+    {ESkoarNoad::expr, SpellOfSimpleSkoarmantics {
         // we insert a node at the end of the expression
         // so we can impress the result
         auto end_noad = SkoarNoad::NewArtificial(L"expr_end", noad);
@@ -352,7 +354,7 @@ Skoarmantics::Skoarmantics() : table({
         noad->add_noad(end_noad);
     }},
 
-    {ESkoarNoad::msgable, SpellOfSkoarmantics {
+    {ESkoarNoad::msgable, SpellOfSimpleSkoarmantics {
         auto skoarpuscle = noad->next_skoarpuscle();
         
         if (is_skoarpuscle<SkoarpuscleUGen>(skoarpuscle)) {
@@ -396,7 +398,7 @@ Skoarmantics::Skoarmantics() : table({
         }
     }},
 
-    {ESkoarNoad::assignment, SpellOfSkoarmantics {
+    {ESkoarNoad::assignment, SpellOfSimpleSkoarmantics {
         auto child = noad->children.begin();
         auto op = (*child++)->toke->lexeme;
 
@@ -429,7 +431,7 @@ Skoarmantics::Skoarmantics() : table({
         }
     }},
 
-    {ESkoarNoad::math, SpellOfSkoarmantics {
+    {ESkoarNoad::math, SpellOfSimpleSkoarmantics {
         auto op = noad->children.front()->skoarpuscle;
 
         noad->on_enter = [=](SkoarMinstrelPtr m) {

@@ -58,7 +58,7 @@ SkoarpuscleTrue::~SkoarpuscleTrue() {
 #endif
 }
 
-SkoarpuscleTrue::SkoarpuscleTrue(bool x) : SkoarpuscleTrue() {
+SkoarpuscleTrue::SkoarpuscleTrue(bool /*x*/) : SkoarpuscleTrue() {
     // assert x == true
 }
 
@@ -76,7 +76,7 @@ SkoarpuscleFalse::~SkoarpuscleFalse() {
     SkoarMemories.deallocSkoarpuscle(L"False");
 #endif
 }
-SkoarpuscleFalse::SkoarpuscleFalse(bool x) : SkoarpuscleFalse() {
+SkoarpuscleFalse::SkoarpuscleFalse(bool /*x*/) : SkoarpuscleFalse() {
     // assert x == false
 }
 
@@ -299,7 +299,7 @@ SkoarpuscleMathOp::~SkoarpuscleMathOp() {
 }
 
 // --- SkoarpuscleBooleanOp ---------------------------------------------------------
-SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarNoadPtr noad, SkoarToke *toke) {
+SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarNoadPtr /*noad*/, SkoarToke* /*toke*/) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"BooleanOp");
 #endif
@@ -631,13 +631,13 @@ SkoarpuscleFine::~SkoarpuscleFine() {
 }
 
 // --- SkoarpuscleSegno ---------------------------------------------------------
-SkoarpuscleSegno::SkoarpuscleSegno(SkoarNoadPtr nod, SkoarToke *toke) {
+SkoarpuscleSegno::SkoarpuscleSegno(SkoarNoadPtr nod, SkoarToke* /*toke*/) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"Segno");
 #endif
 
-    auto s = &toke->lexeme;
-    auto n = s->length();
+    //auto s = &toke->lexeme;
+    //auto n = s->length();
 
     noad = nod;
 

@@ -4,7 +4,7 @@
 
 // --- make_skoarpuscle -----------------------------------------------------
 
-inline SkoarpusclePtr make_skoarpuscle(nullptr_t x) {
+inline SkoarpusclePtr make_skoarpuscle(nullptr_t) {
     return make_shared<SkoarpuscleCat>();
 }
 

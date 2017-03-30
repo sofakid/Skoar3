@@ -112,7 +112,6 @@ void SkoarKoar::set_args(
     SkoarpusclePtr args_spec,
     SkoarpusclePtr args_prov)
 {
-	size_t i = 0, n = 0;
 	auto vars = stack.back();
 
     SkoarpuscleArgList *args_list;

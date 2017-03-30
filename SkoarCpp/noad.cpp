@@ -30,7 +30,7 @@ SkoarInt& SkoarNoadAddress::operator[] (size_t i) {
 // The Parse Tree - SkoarNoad
 // ==========================
 
-SkoarNoad::SkoarNoad(SkoarString &nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg) :
+SkoarNoad::SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg) :
     parent(parentArg),
     name(nameArg),
     skoarce(nullptr),
@@ -44,7 +44,7 @@ SkoarNoad::SkoarNoad(SkoarString &nameArg, SkoarNoadPtr parentArg, const ESkoarN
 #endif
 }
 
-SkoarNoadPtr SkoarNoad::New(SkoarString &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
+SkoarNoadPtr SkoarNoad::New(const wchar_t *nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
 {
     SkoarNoadPtr x = make_shared<SkoarNoad>(nameArg, parentArg, ESkoarNoad::toke, toke->style);
     x->skoarce = &toke->lexeme;
@@ -54,24 +54,19 @@ SkoarNoadPtr SkoarNoad::New(SkoarString &nameArg, SkoarNoadPtr parentArg, SkoarT
     return x;
 }
 
-SkoarNoadPtr SkoarNoad::NewArtificial(SkoarString &nameArg, SkoarNoadPtr parentArg)
+SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg, SkoarNoadPtr parentArg)
 {
     return SkoarNoad::New<ESkoarNoad::artificial>(nameArg, parentArg);
 }
 
-SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg, SkoarNoadPtr parentArg)
-{
-    return SkoarNoad::New<ESkoarNoad::artificial>(SkoarString(nameArg), parentArg);
-}
-
 SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg)
 {
-    return SkoarNoad::New<ESkoarNoad::artificial>(SkoarString(nameArg), nullptr);
+    return SkoarNoad::New<ESkoarNoad::artificial>(nameArg, nullptr);
 }
 
 SkoarNoadPtr SkoarNoad::NewAlias(const wchar_t *nameArg)
 {
-    return SkoarNoad::New<ESkoarNoad::alias>(SkoarString(nameArg), nullptr);
+    return SkoarNoad::New<ESkoarNoad::alias>(nameArg, nullptr);
 }
 
 
@@ -124,7 +119,7 @@ SkoarString *SkoarNoad::asString() {
 // -------------------
 // decorating the tree
 // -------------------
-void SkoarNoad::decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i) {
+void SkoarNoad::decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &/*parent_address*/, SkoarInt i) {
 
 	if (voice == nullptr) {
 		voice = v;
@@ -188,8 +183,6 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
     if (log->getLevel() != ISkoarLog::debug)
         return;
 
-	int n = 16;
-
     wostringstream out;
 
 	SkoarString s = SkoarString(tab * 2, L' ');
@@ -218,9 +211,7 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 }
 
 void SkoarNoad::draw_tree(wostringstream &out, int tab)	{
-    
-	int n = 16;
-	
+ 
 	SkoarString s = SkoarString(tab * 2, L' ');
 	
 	//delete tabs;
@@ -346,9 +337,10 @@ void SkoarNoad::inorder_from_here(SkoarNoadAddress &here, SpellOfNoads f) {
 		
 		if (!children.empty())
 			for (auto child: children) {
-				if (i < j)
-					++i;
-					continue;
+                if (i < j) {
+                    ++i;
+                    continue;
+                }
 
 				if (i == j)
 					child->inorder_from_here(here, f);

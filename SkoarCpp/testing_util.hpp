@@ -51,7 +51,7 @@ void make_events_vec_r(VectorOfSkoarEventsPtr vec, SkoarEventPtr e, const SkoarS
 }
 
 template<typename... Args>
-void make_events_vec_r(VectorOfSkoarEventsPtr vec, SkoarEventPtr e, const MakeEventSep& sep, const Args&... args)
+void make_events_vec_r(VectorOfSkoarEventsPtr vec, SkoarEventPtr e, const MakeEventSep&, const Args&... args)
 {
     vec->push_back(e);
     SkoarEventPtr e_new = make_shared<SkoarEvent>();

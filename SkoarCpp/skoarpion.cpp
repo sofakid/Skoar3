@@ -71,14 +71,13 @@ void Skoarpion::clear() {
     skoar = nullptr;
 }
 
-void Skoarpion::init_from_skoar(Skoar* skoar) {
+void Skoarpion::init_from_skoar(Skoar* skr) {
     name = L"skoar";
-    this->skoar = skoar;
+    skoar = skr;
     
     body = SkoarNoad::NewArtificial(L"section");
 
     for (auto line : skoar->tree->children) {
-        auto i = 0;
         auto v = line->next_skoarpuscle();
 
         if (is_skoarpuscle<SkoarpuscleVoice>(v)) {
@@ -97,9 +96,9 @@ void Skoarpion::init_from_skoar(Skoar* skoar) {
 }
 
 
-void Skoarpion::init_from_subtree(Skoar* skoar, SkoarNoadPtr subtree) {
+void Skoarpion::init_from_subtree(Skoar* skr, SkoarNoadPtr subtree) {
     name = L"=^.^=";
-    this->skoar = skoar;
+    skoar = skr;
 
     body = subtree;
 
@@ -116,9 +115,9 @@ void Skoarpion::init_from_subtree(Skoar* skoar, SkoarNoadPtr subtree) {
     n = subtree->size;
 }
 
-void Skoarpion::init_from_noad(Skoar* skoar, SkoarNoadPtr noad) {
+void Skoarpion::init_from_noad(Skoar* skr, SkoarNoadPtr noad) {
     
-    this->skoar = skoar;
+    skoar = skr;
 
     auto kidderatoar = noad->children.cbegin();
 

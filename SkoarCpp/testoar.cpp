@@ -85,6 +85,7 @@ static ListOfTestCases getListOfTestCases(Catch::Config const& config) {
 // --- public functions ----------------------------------------------------------------------------
 void TestoarInitialize(SpellOfUtterance out, SpellOfUtterance err) {
     TestoarCatchStreamoar::setInstance(out, err);
+    Catch::Session();
 }
 
 ListOfTagCountPairs TestoarGetListOfTags() {
@@ -104,21 +105,17 @@ ListOfTestCases TestoarGetListOfTestCases(string tag) {
 
 int TestoarRunTests() {
     const char* argv[] = { "Testoar" };
-    int argc = 1;
-    return Catch::Session().run(argc, argv);
+    return Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
 
 }
 
 int TestoarRunTestsByTag(string tag) {
     const char* argv[] = { "Testoar", tag.c_str() };
-    int argc = 2;
-    Catch::Session().run(argc, argv);
+    Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
     return 0;
 }
 
-
 int TestoarRunTestsByTestCase(string tag) {
     const char* argv[] = { "Testoar", tag.c_str() };
-    int argc = 2;
-    return Catch::Session().run(argc, argv);
+    return Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
 }

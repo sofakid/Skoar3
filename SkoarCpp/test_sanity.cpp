@@ -325,21 +325,7 @@ TEST_CASE("Loops", "[sanity]") {
 
 
 TEST_CASE("Fairy", "[sanity]") {
-    MakeEventSep X;
-    SkoarString a = L"a";
-    SkoarString b = L"b";
-    SkoarString c = L"c";
-
-    SkoarString dur = L"dur";
-    SkoarString tony = L"tony";
-    SkoarString socrates = L"socrates";
-    SkoarString qux = L"qux";
-    SkoarString foo = L"foo";
-    SkoarString yay = L"yay";
-
-    SkoarpusclePtr cat = make_skoarpuscle(nullptr);
-
-
+  
     SECTION("literal fairy with simple skoarpion") {
         run_and_expect(L"foo: $ ) {! x !! foo: 2 )) 7 !} ). 3 !x foo: $ )))", make_events_vec(
             foo, cat, dur, 1.0, X,

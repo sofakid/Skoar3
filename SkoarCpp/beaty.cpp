@@ -41,7 +41,7 @@ void SkoarpuscleDuration::on_enter(SkoarMinstrelPtr m) {
 
 
 // --- SkoarpuscleExactBeat -----------------------------------------------
-SkoarpuscleExactBeat::SkoarpuscleExactBeat(SkoarToke *toke) {
+SkoarpuscleExactBeat::SkoarpuscleExactBeat(SkoarToke* /*toke*/) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"ExactBeat");
 #endif
@@ -65,7 +65,7 @@ void SkoarpuscleExactBeat::after(SkoarMinstrelPtr m) {
     m->fairy->pop();
     m->fairy->pop_noating();
 
-    auto noat = m->fairy->noat->asNoat();
+    //auto noat = m->fairy->noat->asNoat();
 
     //noat->execute(m);
 
@@ -78,7 +78,7 @@ void SkoarpuscleExactBeat::after(SkoarMinstrelPtr m) {
 
 
 // --- SkoarpuscleExactRest -----------------------------------------------
-SkoarpuscleExactRest::SkoarpuscleExactRest(SkoarToke *toke) {
+SkoarpuscleExactRest::SkoarpuscleExactRest(SkoarToke* /*toke*/) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories.allocSkoarpuscle(L"ExactRest");
 #endif
@@ -102,7 +102,7 @@ void SkoarpuscleExactRest::after(SkoarMinstrelPtr m) {
     m->fairy->pop();
     m->fairy->pop_noating();
 
-    auto noat = m->fairy->noat->asNoat();
+    //auto noat = m->fairy->noat->asNoat();
 
     //noat->execute(m);
 

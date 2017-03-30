@@ -8,8 +8,9 @@ TestoarOutStream::TestoarOutStream(const SpellOfUtterance &spell) :
 
 int TestoarOutStream::StreamBuffer::sync()
 {
-    spell(str());
-    str("");
+    auto s = str();
+    str(""); 
+    spell(s);
     return 0;
 }
 

@@ -148,7 +148,7 @@ void SkoarParser::init() {
             if A.intermediate:
                 CPP.var(Noadx, Parentx.name)
             else:
-                CPP.var(Noadx, "SkoarNoad::New<ESkoarNoad::"+ A.name +">(wstring(L\""+ A.name +"\"), parent)")
+                CPP.var(Noadx, "SkoarNoad::New<ESkoarNoad::"+ A.name +">(L\""+ A.name +"\", parent)")
 
             CPP.var(Desiresx, CPP.null)
             CPP.nl()
@@ -179,7 +179,7 @@ void SkoarParser::init() {
                 for x in alpha:
                     if isinstance(x, Terminal):
                         CPP.stmt('skoarStats->tokeFreq[ESkoarToke::' + x.name + '] += 0.1f')
-                        CPP.stmt('toke_noad = SkoarNoad::New(wstring(L"' + x.toker_name + '"), noad, toker->burn(ESkoarToke::' + x.name + ', noad))')
+                        CPP.stmt('toke_noad = SkoarNoad::New(L"' + x.toker_name + '", noad, toker->burn(ESkoarToke::' + x.name + ', noad))')
                         CPP.stmt('noad->add_noad(toke_noad)')
 
                         # debugging

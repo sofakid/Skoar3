@@ -61,18 +61,17 @@ public:
     //    kind(ESkoarNoad::unknown),
     //    style(SkoarStyles::EStyle::nostyle);
 
-    SkoarNoad(SkoarString &nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg);
+    SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg);
     ~SkoarNoad();
 
     // can't figure out how to do this as a constructor..
     template<const ESkoarNoad::Kind kindArg>
-    static SkoarNoadPtr New(SkoarString &nameArg, SkoarNoadPtr parentArg)
+    static SkoarNoadPtr New(const wchar_t *nameArg, SkoarNoadPtr parentArg)
     {
         return std::make_shared<SkoarNoad>(nameArg, parentArg, kindArg, SkoarStyles::Noad::style<kindArg>());
     }
 
-    static SkoarNoadPtr New(SkoarString &nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke);
-    static SkoarNoadPtr NewArtificial(SkoarString &nameArg, SkoarNoadPtr parentArg);
+    static SkoarNoadPtr New(const wchar_t *nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke);
     static SkoarNoadPtr NewArtificial(const wchar_t *nameArg, SkoarNoadPtr parentArg);
     static SkoarNoadPtr NewArtificial(const wchar_t *nameArg);
     static SkoarNoadPtr NewAlias(const wchar_t *nameArg);
