@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_NOSTDOUT 
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
+#include "testoar_reporter.hpp"
 
 #include "exception.hpp"
 #include "testoar.hpp"
@@ -112,18 +113,23 @@ ListOfTestCases TestoarGetListOfTestCases(string tag) {
 }
 
 int TestoarRunTests() {
-    const char* argv[] = { "Testoar" };
+    const char* argv[] = { "Testoar", "-r", "skoar" };
     return Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
 
 }
 
 int TestoarRunTestsByTag(string tag) {
-    const char* argv[] = { "Testoar", tag.c_str() };
+    const char* argv[] = { "Testoar", "-r", "skoar", tag.c_str() };
     Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
     return 0;
 }
 
-int TestoarRunTestsByTestCase(string tag) {
-    const char* argv[] = { "Testoar", tag.c_str() };
+int TestoarRunTestsByTestCase(string tc) {
+    const char* argv[] = { "Testoar", "-r", "skoar", tc.c_str() };
+    return Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
+}
+
+int TestoarRunTestsByTestCaseSection(string tc, string section) {
+    const char* argv[] = { "Testoar", "-r", "skoar", tc.c_str(), "-c", section.c_str() };
     return Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
 }

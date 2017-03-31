@@ -177,6 +177,9 @@
     <ClInclude Include="testoar.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="testoar_reporter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="toker.cpp">
@@ -278,7 +281,7 @@
     <ClCompile Include="testoar_streams.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="testoar.cpp">
+    <ClCompile Include="testoar_catch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

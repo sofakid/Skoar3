@@ -15,3 +15,4 @@ ListOfTestCases TestoarGetListOfTestCases(string tag);
 int TestoarRunTests();
 int TestoarRunTestsByTag(string tag);
 int TestoarRunTestsByTestCase(string tag);
+int TestoarRunTestsByTestCaseSection(string tc, string section);

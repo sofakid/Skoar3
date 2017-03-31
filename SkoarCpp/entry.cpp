@@ -1,3 +1,7 @@
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
+#include "testoar_reporter.hpp"
+/*
 #include "skoar_public.hpp"
 #include <iostream>
 
@@ -22,4 +26,4 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[]) {
     
 }
 
-
+*/

@@ -330,6 +330,7 @@
     <ClInclude Include="skoar_public.hpp" />
     <ClInclude Include="spells.hpp" />
     <ClInclude Include="testoar.hpp" />
+    <ClInclude Include="testoar_reporter.hpp" />
     <ClInclude Include="testoar_streams.hpp" />
     <ClInclude Include="toker.hpp" />
     <ClInclude Include="toker_fwd.hpp" />
@@ -368,7 +369,7 @@
     <ClCompile Include="skoarpuscle_structors.cpp" />
     <ClCompile Include="styles.cpp" />
     <ClCompile Include="testing_util.cpp" />
-    <ClCompile Include="testoar.cpp" />
+    <ClCompile Include="testoar_catch.cpp" />
     <ClCompile Include="testoar_streams.cpp" />
     <ClCompile Include="test_main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
