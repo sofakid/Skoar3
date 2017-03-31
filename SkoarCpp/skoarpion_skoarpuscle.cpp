@@ -47,6 +47,8 @@ SkoarpuscleSkoarpion::~SkoarpuscleSkoarpion(){
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"Skoarpion");
 #endif
+    val = nullptr;
+    args = nullptr;
 }
 
 
@@ -95,6 +97,8 @@ SkoarpuscleSkoarpionSig::~SkoarpuscleSkoarpionSig() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"SkoarpionSig");
 #endif
+    arg_list = nullptr;
+    name = nullptr;
 }
 
 // --- SkoarpuscleArgExpr ----------------------------------------------
@@ -132,6 +136,8 @@ SkoarpuscleArgExpr::~SkoarpuscleArgExpr() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"ArgExpr");
 #endif
+    name = nullptr;
+    expr = nullptr;
 }
 
 // --- SkoarpuscleArgList ----------------------------------------------
@@ -161,6 +167,8 @@ SkoarpuscleArgList::~SkoarpuscleArgList() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"ArgList");
 #endif
+    args_dict.clear();
+    args_names.clear();
 }
 
 void SkoarpuscleArgList::on_enter(SkoarMinstrelPtr m) {

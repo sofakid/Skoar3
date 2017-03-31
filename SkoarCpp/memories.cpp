@@ -27,7 +27,7 @@ std::wostream& operator << (std::wostream& out, const SkoarMem& o) {
         L"\n Koars: " << o.Koars <<
         L"\n Fairies: " << o.Fairies <<
         L"\n Minstrels: " << o.Minstrels <<
-        L"\n SkoarDics: " << o.Minstrels <<
+        L"\n SkoarDics: " << o.SkoarDics <<
         L"\n Events: " << o.Events;
 
     list<pair<SkoarString, const MemoriesMap*>> maps = {

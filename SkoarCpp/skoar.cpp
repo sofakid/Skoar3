@@ -40,7 +40,8 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
     skoarce(skoarce + L"\n"), // i don't like this + L"\n" business.
     log(log),
     toker(this->skoarce),
-    parsedOk(false)
+    parsedOk(false),
+    decoratedOk(false)
 {
     Skoar::init();
 
@@ -117,8 +118,9 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
         // delete the broken tree
         tree->clear();
         tree = nullptr;
+        return;
     }
-
+    parsedOk = true;
 	parse_time = clock() - start_time;
 	
 	//"---< Undecorated Skoar Tree >---".postln; tree.draw_tree.postln;
@@ -126,8 +128,16 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 	//tree->log_tree(log);
 
 	//log->i("<<< tree created, now decorating...");
-	decorate();
-	decorate_time = clock()- start_time - parse_time;
+    try {
+        decorate();
+    }
+    catch (SkoarDecoratingException &e) {
+        log->e("failed decorating", e.wwhat());
+        tree->clear();
+        return;
+    }
+    decoratedOk = true;
+    decorate_time = clock() - start_time - parse_time;
 
     f_parse_time = static_cast<float>(parse_time) / CLOCKS_PER_SEC;
     f_decorate_time = static_cast<float>(decorate_time) / CLOCKS_PER_SEC;
@@ -138,7 +148,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 	draw_skoarpions();
 
 	log->d("+++ Skoar Parsed +++");// +tree->draw_tree());
-    parsedOk = true;
+    
     
 
 	log->d("seconds parsing",    f_parse_time, 
@@ -147,7 +157,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 }
 
 Skoar::~Skoar() {
-    if (parsedOk) {
+    if (decoratedOk) {
         for (auto skoarpion : skoarpions) {
             skoarpion->clear();
         }
@@ -164,7 +174,27 @@ Skoar::~Skoar() {
         
         tree->clear();
 
+    } 
+    else if (parsedOk) {
+        for (auto skoarpion : skoarpions) {
+            skoarpion->clear();
+        }
+        skoarpions.clear();
+
+        for (auto v_pair : voices) {
+            auto voice = v_pair.second;
+            if (voice != nullptr)
+                voice->clear();
+        }
+
+        voices.clear();
+        all_voice = nullptr;
+
+        tree->clear();
+
     }
+
+    
     tree = nullptr;
 
 #if SKOAR_DEBUG_MEMORY

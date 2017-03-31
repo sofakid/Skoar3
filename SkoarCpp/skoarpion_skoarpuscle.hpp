@@ -5,7 +5,7 @@
 class SkoarpuscleSkoarpion : public Skoarpuscle {
 public:
     void asString(wostream &out) override { out << "SkoarpuscleSkoarpion" << " :: " ; }
-    const SkoarpionPtr val;
+    SkoarpionPtr val;
     SkoarpusclePtr args;
 
     SkoarpuscleSkoarpion(const SkoarpuscleSkoarpion*);

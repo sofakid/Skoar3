@@ -9,6 +9,7 @@
 #include "lute.hpp"
 #include "meditation.hpp"
 #include "fairy.hpp"
+#include "exception.hpp"
 
 static SkoarTokeInspector* inspector;
 void SkoarTokeInspector::init() {
@@ -57,8 +58,17 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
     } },
 
     { ESkoarToke::Int, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleInt>(stoi(toke->lexeme));
-        noad->toke = nullptr;
+        try {
+            noad->skoarpuscle = make_shared<SkoarpuscleInt>(stoll(toke->lexeme));
+            noad->toke = nullptr;
+        }
+        catch (const std::invalid_argument& /*ia*/) {
+            throw SkoarDecoratingException(L"stoll - invalid arg");
+        }
+        catch (const std::out_of_range& /*oor*/) {
+            throw SkoarDecoratingException(L"stoll - out of range");
+        }
+        
     } },
 
     { ESkoarToke::Float, SpellOfToking {

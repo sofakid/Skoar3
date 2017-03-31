@@ -33,6 +33,7 @@ public:
     SkoarInt running;
 
     bool parsedOk;
+    bool decoratedOk;
 
 	Skoar(SkoarString skoarce, ISkoarLog *log);
     ~Skoar();
