@@ -22,6 +22,7 @@ namespace Catch {
 // --- private (this file) functions ----------------------------------------------------------------------
 
 static ListOfTagCountPairs getListOfTagsCounts(Catch::Config const& config);
+static ListOfTestCases getListOfTestCases(Catch::Config const& config);
 
 static ListOfTagCountPairs getListOfTagsCounts(Catch::Config const& config) {
     Catch::TestSpec testSpec = config.testSpec();
