@@ -20,21 +20,17 @@ void require_no_memory_consumed() {
 
 void require_fresh_memory_tables() {
     INFO(SkoarMemories::o());
-    REQUIRE(SkoarMemories::o().Tokes == 0);
-    REQUIRE(SkoarMemories::o().Noads == 0);
-    REQUIRE(SkoarMemories::o().Skoars == 0);
-    REQUIRE(SkoarMemories::o().Skoarpuscles == 0);
-    REQUIRE(SkoarMemories::o().Skoarpions == 0);
-    REQUIRE(SkoarMemories::o().Projections == 0);
-    REQUIRE(SkoarMemories::o().Koars == 0);
-    REQUIRE(SkoarMemories::o().Fairies == 0);
-    REQUIRE(SkoarMemories::o().Minstrels == 0);
-    REQUIRE(SkoarMemories::o().SkoarDics == 0);
-    REQUIRE(SkoarMemories::o().Events == 0);
+    REQUIRE(SkoarMemories::o().TokesMap.size() == 0);
+    REQUIRE(SkoarMemories::o().NoadsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().SkoarpusclesMap.size() == 0);
+    REQUIRE(SkoarMemories::o().SkoarpionsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().ProjectionsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().KoarsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().FairiesMap.size() == 0);
+    REQUIRE(SkoarMemories::o().MinstrelsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().SkoarDicsMap.size() == 0);
+    REQUIRE(SkoarMemories::o().EventsMap.size() == 0);
 }
-
-
-
 
 // ----------------------------------------------------------------------------------------------------------------------------------------
 // Test Creating SkoarLites - these don't decorate the tree or try to play it.. just creates tokes and noads..
