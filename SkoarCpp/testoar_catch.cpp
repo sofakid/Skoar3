@@ -21,9 +21,9 @@ namespace Catch {
 
 // --- private (this file) functions ----------------------------------------------------------------------
 
-static ListOfTagCountPairs getListOfTags(Catch::Config const& config);
+static ListOfTagCountPairs getListOfTagsCounts(Catch::Config const& config);
 
-static ListOfTagCountPairs getListOfTags(Catch::Config const& config) {
+static ListOfTagCountPairs getListOfTagsCounts(Catch::Config const& config) {
     Catch::TestSpec testSpec = config.testSpec();
     if (config.testSpec().hasFilters() == false) {
         testSpec = Catch::TestSpecParser(Catch::ITagAliasRegistry::get()).parse("*").testSpec();
@@ -82,17 +82,24 @@ static ListOfTestCases getListOfTestCases(Catch::Config const& config) {
     return outList;
 }
 
+
 // --- public functions ----------------------------------------------------------------------------
+
 void TestoarInitialize(SpellOfUtterance out, SpellOfUtterance err) {
     TestoarCatchStreamoar::setInstance(out, err);
     Catch::Session();
 }
 
-ListOfTagCountPairs TestoarGetListOfTags() {
+ListOfTags TestoarGetListOfTags() {
     Catch::ConfigData configData;
     configData.listTags = true;
     Catch::Config config(configData);
-    return getListOfTags(config);
+    ListOfTags out;
+    auto pairs = getListOfTagsCounts(config);
+    for (auto kv : pairs) {
+        out.push_back(kv.first);
+    }
+    return out;
 }
 
 ListOfTestCases TestoarGetListOfTestCases(string tag) {
