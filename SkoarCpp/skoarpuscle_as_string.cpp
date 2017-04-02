@@ -12,167 +12,489 @@
 
 
 void SkoarpuscleUnknown::asString(wostream &out) {
-    out << "SkoarpuscleUnknown";
+    out << "Unknown";
+}
+void SkoarpuscleUnknown::typeAsString(wostream &out) {
+    out << "Unknown";
+}
+void SkoarpuscleUnknown::valAsString(wostream &out) {
+    out << "Unknown";
 }
 
+
 void SkoarpuscleCat::asString(wostream &out) {
+    out << "Cat";
+}
+void SkoarpuscleCat::typeAsString(wostream &out) {
+    out << "Cat";
+}
+void SkoarpuscleCat::valAsString(wostream &out) {
     out << "=^.^=";
 }
 
+
+
 void SkoarpuscleTrue::asString(wostream &out) {
+    out << "True";
+}
+void SkoarpuscleTrue::typeAsString(wostream &out) {
+    out << "True";
+}
+void SkoarpuscleTrue::valAsString(wostream &out) {
     out << "true";
 }
 
+
 void SkoarpuscleFalse::asString(wostream &out) {
+    out << "False";
+}
+void SkoarpuscleFalse::typeAsString(wostream &out) {
+    out << "False";
+}
+void SkoarpuscleFalse::valAsString(wostream &out) {
     out << "false";
 }
+
+
+
+
 
 void SkoarpuscleFreq::asString(wostream &out) {
     out << val << "Hz";
 }
+void SkoarpuscleFreq::typeAsString(wostream &out) {
+    out << "Freq";
+}
+void SkoarpuscleFreq::valAsString(wostream &out) {
+    out << val << "Hz";
+}
+
+
 
 void SkoarpuscleInt::asString(wostream &out) {
+    out << "Int" << " :: " << val;
+}
+void SkoarpuscleInt::typeAsString(wostream &out) {
+    out << "Int";
+}
+void SkoarpuscleInt::valAsString(wostream &out) {
     out << val;
 }
+
+
 
 void SkoarpuscleFloat::asString(wostream &out) {
+    out << "Float" << " :: " << val;
+}
+void SkoarpuscleFloat::typeAsString(wostream &out) {
+    out << "Float";
+}
+void SkoarpuscleFloat::valAsString(wostream &out) {
     out << val;
 }
 
+
+
 void SkoarpuscleNoat::asString(wostream &out) {
-    out << "SkoarpuscleNoat" << " :: " << val;
+    out << "Noat" << " :: " << val;
+}
+void SkoarpuscleNoat::typeAsString(wostream &out) {
+    out << "Noat";
+}
+void SkoarpuscleNoat::valAsString(wostream &out) {
+    out << val;
 }
 
+
+
 void SkoarpuscleChoard::asString(wostream &out) {
-    out << "SkoarpuscleChoard" << " :: " << val;
+    out << "Choard" << " :: " << val;
 }
+void SkoarpuscleChoard::typeAsString(wostream &out) {
+    out << "Choard";
+}
+void SkoarpuscleChoard::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleString::asString(wostream &out) {
     out << val;
 }
+void SkoarpuscleString::typeAsString(wostream &out) {
+    out << "String";
+}
+void SkoarpuscleString::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleSymbol::asString(wostream &out) {
     out << "@" << val;
 }
+void SkoarpuscleSymbol::typeAsString(wostream &out) {
+    out << "Symbol";
+}
+void SkoarpuscleSymbol::valAsString(wostream &out) {
+    out << "@" << val;
+}
+
+
 
 void SkoarpuscleSymbolName::asString(wostream &out) {
-    out << "SkoarpuscleSymbolName" << " :: " << val;
+    out << "SymbolName" << " :: " << val;
 }
+void SkoarpuscleSymbolName::typeAsString(wostream &out) {
+    out << "SymbolName";
+}
+void SkoarpuscleSymbolName::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleSymbolColon::asString(wostream &out) {
-    out << "SkoarpuscleSymbolColon" << " :: " << val;
+    out << "SymbolColon" << " :: " << val;
 }
+void SkoarpuscleSymbolColon::typeAsString(wostream &out) {
+    out << "SymbolColon";
+}
+void SkoarpuscleSymbolColon::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleTimes::asString(wostream &out) {
-    out << "SkoarpuscleTimes";
+    out << "Times";
 }
+void SkoarpuscleTimes::typeAsString(wostream &out) {
+    out << "Times";
+}
+
+
 
 void SkoarpuscleBars::asString(wostream &out) {
-    out << "SkoarpuscleBars";
+    out << "Bars";
 }
+void SkoarpuscleBars::typeAsString(wostream &out) {
+    out << "Bars";
+}
+void SkoarpuscleBars::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleCarrots::asString(wostream &out) {
-    out << "SkoarpuscleCarrots" << " :: " << val;
+    out << "Carrots" << " :: " << val;
 }
+void SkoarpuscleCarrots::typeAsString(wostream &out) {
+    out << "Carrots";
+}
+void SkoarpuscleCarrots::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleTuplet::asString(wostream &out) {
-    out << "SkoarpuscleTuplet" << " :: " << val;
+    out << "Tuplet" << " :: " << val;
 }
+void SkoarpuscleTuplet::typeAsString(wostream &out) {
+    out << "Tuplet";
+}
+void SkoarpuscleTuplet::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleDynamic::asString(wostream &out) {
-    out << "SkoarpuscleDynamic" << " :: " << val;
+    out << "Dynamic" << " :: " << val;
 }
+void SkoarpuscleDynamic::typeAsString(wostream &out) {
+    out << "Dynamic";
+}
+void SkoarpuscleDynamic::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleOctaveShift::asString(wostream &out) {
-    out << "SkoarpuscleOctaveShift" << " :: " << val;
+    out << "OctaveShift" << " :: " << val;
 }
+void SkoarpuscleOctaveShift::typeAsString(wostream &out) {
+    out << "OctaveShift";
+}
+void SkoarpuscleOctaveShift::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleBooleanOp::asString(wostream &out) {
-    out << "SkoarpuscleBooleanOp";
+    out << "BooleanOp";
 }
+void SkoarpuscleBooleanOp::typeAsString(wostream &out) {
+    out << "BooleanOp";
+}
+void SkoarpuscleBooleanOp::valAsString(wostream &out) {
+    out << "BooleanOp";
+}
+
+
 
 void SkoarpuscleVoice::asString(wostream &out) {
-    out << "SkoarpuscleVoice" << " :: " << val;
+    out << "Voice" << " :: " << val;
 }
+void SkoarpuscleVoice::typeAsString(wostream &out) {
+    out << "Voice";
+}
+void SkoarpuscleVoice::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleSegno::asString(wostream &out) {
-    out << "SkoarpuscleSegno";
+    out << "Segno";
 }
+void SkoarpuscleSegno::typeAsString(wostream &out) {
+    out << "Segno";
+}
+void SkoarpuscleSegno::valAsString(wostream &out) {
+    out << "Segno";
+}
+
+
 
 void SkoarpuscleFine::asString(wostream &out) {
-    out << "SkoarpuscleFine";
+    out << "Fine";
 }
+void SkoarpuscleFine::typeAsString(wostream &out) {
+    out << "Fine";
+}
+void SkoarpuscleFine::valAsString(wostream &out) {
+    out << "Fine";
+}
+
+
 
 void SkoarpuscleMsgName::asString(wostream &out) {
-    out << "SkoarpuscleMsgName" << " :: " << val;
+    out << "MsgName" << " :: " << val;
 }
+void SkoarpuscleMsgName::typeAsString(wostream &out) {
+    out << "MsgName";
+}
+void SkoarpuscleMsgName::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleMsgNameWithArgs::asString(wostream &out) {
-    out << "SkoarpuscleMsgNameWithArgs" << " :: " << val;
+    out << "MsgNameWithArgs" << " :: " << val;
 }
+void SkoarpuscleMsgNameWithArgs::typeAsString(wostream &out) {
+    out << "MsgNameWithArgs";
+}
+void SkoarpuscleMsgNameWithArgs::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleMathOp::asString(wostream &out) {
-    out << "SkoarpuscleMathOp" << " :: " << val;
+    out << "MathOp" << " :: " << val;
 }
+void SkoarpuscleMathOp::typeAsString(wostream &out) {
+    out << "MathOp";
+}
+void SkoarpuscleMathOp::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleList::asString(wostream &out) {
-    out << "SkoarpuscleList";
+    out << "List";
 }
+void SkoarpuscleList::typeAsString(wostream &out) {
+    out << "List";
+}
+void SkoarpuscleList::valAsString(wostream &out) {
+    out << "List";
+}
+
+
 
 void SkoarpuscleListSep::asString(wostream &out) {
-    out << "SkoarpuscleListSep";
+    out << "ListSep";
 }
+void SkoarpuscleListSep::typeAsString(wostream &out) {
+    out << "ListSep";
+}
+void SkoarpuscleListSep::valAsString(wostream &out) {
+    out << ",";
+}
+
+
 
 void SkoarpuscleListEnd::asString(wostream &out) {
-    out << "SkoarpuscleListEnd";
+    out << "ListEnd";
 }
+void SkoarpuscleListEnd::typeAsString(wostream &out) {
+    out << "ListEnd";
+}
+void SkoarpuscleListEnd::valAsString(wostream &out) {
+    out << ">";
+}
+
+
 
 void SkoarpuscleDeref::asString(wostream &out) {
-    out << "SkoarpuscleDeref" << " :: " << val;
+    out << "Deref" << " :: " << val;
 }
+void SkoarpuscleDeref::typeAsString(wostream &out) {
+    out << "Deref";
+}
+void SkoarpuscleDeref::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleConditional::asString(wostream &out) {
-    out << "SkoarpuscleConditional";
+    out << "Conditional";
 }
+void SkoarpuscleConditional::typeAsString(wostream &out) {
+    out << "Conditional";
+}
+void SkoarpuscleConditional::valAsString(wostream &out) {
+    out << "";
+}
+
+
 
 void SkoarpuscleBoolean::asString(wostream &out) {
-    out << "SkoarpuscleBoolean";
+    out << "Boolean";
 }
+void SkoarpuscleBoolean::typeAsString(wostream &out) {
+    out << "Boolean";
+}
+void SkoarpuscleBoolean::valAsString(wostream &out) {
+    out << "";
+}
+
+
 
 void SkoarpuscleLoop::asString(wostream &out) {
-    out << "SkoarpuscleLoop";
+    out << "Loop";
 }
+void SkoarpuscleLoop::typeAsString(wostream &out) {
+    out << "Loop";
+}
+void SkoarpuscleLoop::valAsString(wostream &out) {
+    out << "";
+}
+
+
 
 void SkoarpuscleLoopMsg::asString(wostream &out) {
-    out << "SkoarpuscleLoopMsg";
+    out << "LoopMsg";
 }
+void SkoarpuscleLoopMsg::typeAsString(wostream &out) {
+    out << "LoopMsg";
+}
+void SkoarpuscleLoopMsg::valAsString(wostream &out) {
+    out << "";
+}
+
+
 
 void SkoarpuscleGoto::asString(wostream &out) {
-    out << "SkoarpuscleGoto";
+    out << "Goto";
 }
+void SkoarpuscleGoto::typeAsString(wostream &out) {
+    out << "Goto";
+}
+void SkoarpuscleGoto::valAsString(wostream &) {
+}
+
+
 
 void SkoarpuscleArgs::asString(wostream &out) {
-    out << "SkoarpuscleArgs";
+    out << "Args";
 }
+void SkoarpuscleArgs::typeAsString(wostream &out) {
+    out << "Args";
+}
+void SkoarpuscleArgs::valAsString(wostream &) {
+}
+
+
 
 void SkoarpuscleMsg::asString(wostream &out) {
-    out << "SkoarpuscleMsg" << " :: " << val;
+    out << "Msg" << " :: " << val;
 }
+void SkoarpuscleMsg::typeAsString(wostream &out) {
+    out << "Msg";
+}
+void SkoarpuscleMsg::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpuscleExprEnd::asString(wostream &out) {
-    out << "SkoarpuscleExprEnd";
+    out << "ExprEnd";
 }
+void SkoarpuscleExprEnd::typeAsString(wostream &out) {
+    out << "ExprEnd";
+}
+void SkoarpuscleExprEnd::valAsString(wostream &) {
+}
+
+
 
 void SkoarpuscleHashLevel::asString(wostream &out) {
-    out << "SkoarpuscleHashLevel" << " :: " << val;
+    out << "HashLevel" << " :: " << val;
 }
+void SkoarpuscleHashLevel::typeAsString(wostream &out) {
+    out << "HashLevel";
+}
+void SkoarpuscleHashLevel::valAsString(wostream &out) {
+    out << val;
+}
+
+
 
 void SkoarpusclePair::asString(wostream &out) {
-    out << "SkoarpusclePair" << " :: " << val.first;
+    out << "Pair" << " :: " << val.first;
+}
+void SkoarpusclePair::typeAsString(wostream &out) {
+    out << "Pair" << " :: " << val.first;
+}
+void SkoarpusclePair::valAsString(wostream &out) {
+    out << val.first << " :: ";
+    val.second->valAsString(out);
 }
 
+
+
 void SkoarpuscleExpr::asString(wostream &out) {
-    out << "SkoarpuscleExpr";
+    out << "Expr";
 }
+void SkoarpuscleExpr::typeAsString(wostream &out) {
+    out << "Expr";
+}
+void SkoarpuscleExpr::valAsString(wostream &) {
+}
+
+
 
 

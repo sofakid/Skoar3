@@ -75,6 +75,10 @@ SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMin
     return nullptr;
 }
 
+void SkoarpuscleSkoarpion::asString(wostream &out) { 
+    out << "Skoarpion" << " :: " << val->name;
+}
+
 // --- SkoarpuscleSkoarpionSig ----------------------------------------------
 SkoarpuscleSkoarpionSig::SkoarpuscleSkoarpionSig(SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
@@ -99,6 +103,14 @@ SkoarpuscleSkoarpionSig::~SkoarpuscleSkoarpionSig() {
 #endif
     arg_list = nullptr;
     name = nullptr;
+}
+
+void SkoarpuscleSkoarpionSig::asString(wostream &out) {
+    out << "SkoarpionSig" << " :: " << name;
+    if (is_skoarpuscle<SkoarpuscleArgList>(arg_list)) {
+        out << " :: ";
+        skoarpuscle_ptr<SkoarpuscleArgList>(arg_list)->asString(out);
+    }
 }
 
 // --- SkoarpuscleArgExpr ----------------------------------------------
@@ -140,6 +152,14 @@ SkoarpuscleArgExpr::~SkoarpuscleArgExpr() {
     expr = nullptr;
 }
 
+void SkoarpuscleArgExpr::asString(wostream &out) {
+    out << "ArgExpr" << " :: " << name;
+    if (is_skoarpuscle<SkoarpuscleExpr>(expr)) {
+        out << " :: ";
+        skoarpuscle_ptr<SkoarpuscleExpr>(expr)->asString(out);
+    }
+}
+
 // --- SkoarpuscleArgList ----------------------------------------------
 /*
     arg_listy
@@ -174,4 +194,10 @@ SkoarpuscleArgList::~SkoarpuscleArgList() {
 void SkoarpuscleArgList::on_enter(SkoarMinstrelPtr m) {
     m->fairy->push_noating();
     m->fairy->push();
+}
+
+void SkoarpuscleArgList::asString(wostream &out) {
+    out << "ArgList";
+    for (auto x : args_names)
+        out << " :: " << x ;
 }

@@ -37,7 +37,9 @@ SkoarNoad::SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoa
     kind(kindArg),
     style(styleArg),
     voice(nullptr),
-    skoarpuscle(nullptr)
+    skoarpuscle(nullptr),
+    offs(0),
+    size(0)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocNoad(name);
