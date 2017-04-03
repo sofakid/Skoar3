@@ -188,8 +188,20 @@ void Skoarpion::init_from_noad(Skoar* skr, SkoarNoadPtr noad) {
     n = body->size;
 }
 
+// this is static, need a shared_ptr to the skoarpion.
 SkoarpionProjectionPtr Skoarpion::projection(SkoarpionPtr skoarpion, SkoarString koar_name) {
 	return make_shared<SkoarpionProjection>(skoarpion, koar_name);
+}
+
+ListOfSkoarpionProjectionsPtr Skoarpion::get_projections(SkoarpionPtr skoarpion, const ListOfSkoarStrings& voices) {
+    auto listy = make_shared<ListOfSkoarpionProjections>();
+
+    for (auto x : voices) {
+        auto projection = Skoarpion::projection(skoarpion, x);
+        listy->push_back(projection);
+    }
+
+    return listy;
 }
 
 void Skoarpion::draw_tree(wostringstream &out) {

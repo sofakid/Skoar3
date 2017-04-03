@@ -290,4 +290,7 @@ namespace SkoarStyles {
     
     std::wostream& operator << (std::wostream& out, const EStyle& obj);
 
+    inline int to_int(const EStyle& e) {
+        return static_cast<int>(static_cast<std::underlying_type<SkoarStyles::EStyle>::type>(e));
+    }
 }

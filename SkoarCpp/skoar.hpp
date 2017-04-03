@@ -43,6 +43,9 @@ public:
 	void cthulhu(SkoarNoadPtr noad);
 	void draw_skoarpions();
 
+    ListOfSkoarpionProjectionsPtr get_all_projections();
+    ListOfSkoarpionProjectionsPtr get_projections(SkoarString koar_name);
+    ListOfSkoarStrings get_all_voices();
 
     void play(const SpellOfHappening& spell);
 

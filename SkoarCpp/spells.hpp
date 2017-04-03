@@ -14,6 +14,14 @@ typedef long long SkoarInt;
 typedef double SkoarFloat;
 typedef wstring SkoarString;
 
+typedef list<SkoarInt> ListOfSkoarInts;
+typedef list<SkoarFloat> ListOfSkoarFloats;
+typedef list<SkoarString> ListOfSkoarStrings;
+
+typedef shared_ptr<list<SkoarInt>> ListOfSkoarIntsPtr;
+typedef shared_ptr<list<SkoarFloat>> ListOfSkoarFloatsPtr;
+typedef shared_ptr<list<SkoarString>> ListOfSkoarStringsPtr;
+
 typedef unique_ptr<SkoarToke> SkoarTokePtr;
 typedef shared_ptr<SkoarNoad> SkoarNoadPtr;
 typedef shared_ptr<Skoarpuscle> SkoarpusclePtr;

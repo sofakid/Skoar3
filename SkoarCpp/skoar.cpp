@@ -259,7 +259,6 @@ void Skoar::draw_skoarpions() {
 			auto koar_name = pairs.first;
 			auto projection = Skoarpion::projection(x, koar_name);
 
-            projection = Skoarpion::projection(x, koar_name);
             projection->proj->draw_tree(stream);
             stream << "\n";
         }
@@ -267,6 +266,41 @@ void Skoar::draw_skoarpions() {
     
     log->i("draw_skoarpions\n", stream.str());
 }
+
+ListOfSkoarpionProjectionsPtr Skoar::get_all_projections() {
+    auto listy = make_shared<ListOfSkoarpionProjections>();
+
+    for (auto x : skoarpions) {
+        
+        for (auto pairs : voices) {
+            auto koar_name = pairs.first;
+            auto projection = Skoarpion::projection(x, koar_name);
+            listy->push_back(projection);
+        }
+    }
+
+    return listy;
+}
+
+ListOfSkoarpionProjectionsPtr Skoar::get_projections(SkoarString koar_name) {
+    auto listy = make_shared<ListOfSkoarpionProjections>();
+
+    for (auto x : skoarpions) {
+        auto projection = Skoarpion::projection(x, koar_name);
+        listy->push_back(projection);
+    }
+
+    return listy;
+}
+
+ListOfSkoarStrings Skoar::get_all_voices() {
+    ListOfSkoarStrings out;
+    for (auto kv : voices) {
+        out.push_back(kv.first);
+    }
+    return out;
+}
+
 
 void Skoar::play(const SpellOfHappening& spell) {
     Skoarchestra x(this, spell);

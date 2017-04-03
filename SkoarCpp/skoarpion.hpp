@@ -39,6 +39,8 @@ public:
 
 	static SkoarpionProjectionPtr projection(SkoarpionPtr skoarpion, SkoarString);
 
+    static ListOfSkoarpionProjectionsPtr get_projections(SkoarpionPtr skoarpion, const ListOfSkoarStrings&);
+
     void draw_tree(wostringstream &stream);
 };
 
