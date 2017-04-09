@@ -42,7 +42,6 @@ public:
 	SkoarpusclePtr skoarpuscle;   // skoarpuscle types go here, just one.
 
 	SkoarTokePtr toke;
-	SkoarString *skoarce; 
 
 	size_t offs;
 	size_t size;
@@ -80,7 +79,7 @@ public:
     void clear_children();
     void clear_values();
 
-	SkoarString *asString();
+	SkoarString asString();
 
 	// -------------------
 	// decorating the tree

@@ -12,21 +12,6 @@
 
 #include "memories.hpp"
 
-/*
-// --- SkoarNoadAddress ---------------------------------------------------------
-SkoarNoadAddress::SkoarNoadAddress(size_t n) {
-    data.reserve(n);
-}
-
-SkoarNoadAddress::SkoarNoadAddress(const SkoarNoadAddress &other) {
-    data = other.data;
-}
-
-SkoarInt& SkoarNoadAddress::operator[] (size_t i) {
-    return data[i];
-}
-*/
-
 // ==========================
 // The Parse Tree - SkoarNoad
 // ==========================
@@ -34,7 +19,6 @@ SkoarInt& SkoarNoadAddress::operator[] (size_t i) {
 SkoarNoad::SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg) :
     parent(parentArg),
     name(nameArg),
-    skoarce(nullptr),
     kind(kindArg),
     style(styleArg),
     voice(nullptr),
@@ -51,7 +35,6 @@ SkoarNoad::SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoa
 SkoarNoadPtr SkoarNoad::New(const wchar_t *nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
 {
     SkoarNoadPtr x = make_shared<SkoarNoad>(nameArg, parentArg, ESkoarNoad::toke, toke->style);
-    x->skoarce = &toke->lexeme;
     x->size = toke->size;
     x->toke = move(toke);
 
@@ -105,7 +88,6 @@ void SkoarNoad::clear_children() {
 void SkoarNoad::clear_values() {
     parent = nullptr;
     skoap = nullptr;
-    skoarce = nullptr;
     toke = nullptr;
     voice = nullptr;
     skoarpuscle = nullptr;
@@ -113,11 +95,8 @@ void SkoarNoad::clear_values() {
     offs = 0;
 }
 
-SkoarString *SkoarNoad::asString() {
-    if (skoarce == nullptr)
-        return new SkoarString(name + L": nullptr");
-
-	return new SkoarString(name + L": " + *skoarce);
+SkoarString SkoarNoad::asString() {
+	return SkoarString(name);
 }
 
 // -------------------
@@ -165,7 +144,6 @@ void SkoarNoad::decorate(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &paren
 	for (auto y : children) {
 		y->decorate(v, s, address, i);
 		i = i + 1;
-		//skoarce += y->skoarce;
 	}
 
 }
@@ -390,15 +368,15 @@ SkoarToke* SkoarNoad::next_toke() {
 void SkoarNoad::enter_noad(SkoarMinstrelPtr minstrel) {
 
     if (on_enter) {
-        minstrel->before_entering_noad(minstrel);
+        minstrel->before_entering_noad(minstrel, this);
         on_enter(minstrel);
-        minstrel->after_entering_noad(minstrel);
+        minstrel->after_entering_noad(minstrel, this);
     }
 
     if (skoarpuscle != nullptr) {
-        minstrel->before_entering_skoarpuscle(minstrel);
+        minstrel->before_entering_skoarpuscle(minstrel, skoarpuscle);
         skoarpuscle->on_enter(minstrel);
-        minstrel->after_entering_skoarpuscle(minstrel);
+        minstrel->after_entering_skoarpuscle(minstrel, skoarpuscle);
     }
 }
 
