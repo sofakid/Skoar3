@@ -229,8 +229,11 @@ void SkoarKoar::do_skoarpion(
             pop_state();
             minstrel->fairy->pop_times_seen();
         }
+
+        minstrel->after_entering_skoarpion(minstrel);
     };
 
+    minstrel->before_entering_skoarpion(minstrel);
 	nav_loop(subtree, projection, minstrel, cleanup);
 
 	

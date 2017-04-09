@@ -1,16 +1,19 @@
 #include "minstrel.hpp"
 
-
 // --- SkoarMinstrel -------------------------------------
-
-SkoarMinstrel::SkoarMinstrel(SkoarString minstrel_name, SkoarKoarPtr koar, Skoar* skoar, const SpellOfHappening& spell) :
+SkoarMinstrel::SkoarMinstrel(
+    SkoarString minstrel_name, 
+    SkoarKoarPtr koar, 
+    Skoar* skoar, 
+    const SpellOfHappening& spell) 
+    :
     name(minstrel_name),
     skoar(skoar),
     koar(koar),
     fairy(nullptr),
-    event_stream(nullptr),
     all_voice(skoar->all_voice),
-    happenSpell(spell)
+    happenSpell(spell),
+    isDebugging(false)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocMinstrel(name);
@@ -34,8 +37,6 @@ SkoarMinstrel::~SkoarMinstrel() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocMinstrel(name);
 #endif
-    //event_stream->destroy();
-    event_stream = nullptr;
     fairy->fly_away();
     fairy = nullptr;
     koar = nullptr;
@@ -43,8 +44,27 @@ SkoarMinstrel::~SkoarMinstrel() {
     skoar = nullptr;
 }
 
-SkoarMinstrelPtr SkoarMinstrel::New(SkoarString name, SkoarKoarPtr koar, Skoar* skoar, const SpellOfHappening& spell) {
+SkoarMinstrelPtr SkoarMinstrel::New(
+    SkoarString name, 
+    SkoarKoarPtr koar, 
+    Skoar* skoar, 
+    const SpellOfHappening& spell) 
+{
     auto m = make_shared<SkoarMinstrel>(name, koar, skoar, spell);
+    m->fairy = make_shared<SkoarFairy>(L"$" + name, m);
+    SkoarMinstrel::EventStream(m);
+    return m;
+}
+
+
+SkoarMinstrelPtr SkoarMinstrel::NewDebugging(
+    SkoarString name, 
+    SkoarKoarPtr koar,
+    Skoar* skoar, 
+    const SpellOfHappening& spell, 
+    const MinstrelDebugConfig& config) 
+{
+    auto m = make_shared<DebuggingMinstrel>(name, koar, skoar, spell, config);
     m->fairy = make_shared<SkoarFairy>(L"$" + name, m);
     SkoarMinstrel::EventStream(m);
     return m;
@@ -119,6 +139,25 @@ void SkoarMinstrel::happen(SkoarEventPtr p) {
 }
 
 
+void SkoarMinstrel::before_entering_noad(SkoarMinstrelPtr) {
+}
+
+void SkoarMinstrel::after_entering_noad(SkoarMinstrelPtr) {
+}
+
+void SkoarMinstrel::before_entering_skoarpuscle(SkoarMinstrelPtr) {
+}
+
+void SkoarMinstrel::after_entering_skoarpuscle(SkoarMinstrelPtr) {
+}
+
+void SkoarMinstrel::before_entering_skoarpion(SkoarMinstrelPtr) {
+}
+
+void SkoarMinstrel::after_entering_skoarpion(SkoarMinstrelPtr) {
+}
+
+
 // --- Skoarchestra ----------------------------------------
 Skoarchestra::Skoarchestra(Skoar* skoar, const SpellOfHappening& spell) :
     happenSpell(spell)
@@ -138,3 +177,69 @@ Skoarchestra::Skoarchestra(Skoar* skoar, const SpellOfHappening& spell) :
 }
 
 
+// --- MinstrelDebugConfig -------------------------------------
+MinstrelDebugConfig::MinstrelDebugConfig(
+    const SpellOfMinstrels& before_entering_noad_spell,
+    const SpellOfMinstrels& after_entering_noad_spell,
+    const SpellOfMinstrels& before_entering_skoarpuscle_spell,
+    const SpellOfMinstrels& after_entering_skoarpuscle_spell,
+    const SpellOfMinstrels& before_entering_skoarpion_spell,
+    const SpellOfMinstrels& after_entering_skoarpion_spell
+) :
+    before_entering_noad(before_entering_noad_spell),
+    after_entering_noad(after_entering_noad_spell),
+    before_entering_skoarpuscle(before_entering_skoarpuscle_spell),
+    after_entering_skoarpuscle(after_entering_skoarpuscle_spell),
+    before_entering_skoarpion(before_entering_skoarpion_spell),
+    after_entering_skoarpion(after_entering_skoarpion_spell)
+{
+}
+
+// --- DebuggingMinstrel -------------------------------------
+DebuggingMinstrel::DebuggingMinstrel(
+    SkoarString minstrel_name,
+    SkoarKoarPtr koar,
+    Skoar* skoar,
+    const SpellOfHappening& spell,
+    const MinstrelDebugConfig& config)
+    :
+    SkoarMinstrel(minstrel_name, koar, skoar, spell),
+    
+    before_entering_noad_spell(config.before_entering_noad),
+    after_entering_noad_spell(config.after_entering_noad),
+
+    before_entering_skoarpuscle_spell(config.before_entering_skoarpuscle),
+    after_entering_skoarpuscle_spell(config.after_entering_skoarpuscle),
+    
+    before_entering_skoarpion_spell(config.before_entering_skoarpion),
+    after_entering_skoarpion_spell(config.after_entering_skoarpion)
+{
+}
+
+DebuggingMinstrel::~DebuggingMinstrel() {
+}
+
+
+void DebuggingMinstrel::before_entering_noad(SkoarMinstrelPtr m) {
+    before_entering_noad_spell(m);
+}
+
+void DebuggingMinstrel::after_entering_noad(SkoarMinstrelPtr m) {
+    after_entering_noad_spell(m);
+}
+
+void DebuggingMinstrel::before_entering_skoarpuscle(SkoarMinstrelPtr m) {
+    before_entering_skoarpuscle_spell(m);
+}
+
+void DebuggingMinstrel::after_entering_skoarpuscle(SkoarMinstrelPtr m) {
+    after_entering_skoarpuscle_spell(m);
+}
+
+void DebuggingMinstrel::before_entering_skoarpion(SkoarMinstrelPtr m) {
+    before_entering_skoarpion_spell(m);
+}
+
+void DebuggingMinstrel::after_entering_skoarpion(SkoarMinstrelPtr m) {
+    after_entering_skoarpion_spell(m);
+}

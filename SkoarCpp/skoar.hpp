@@ -7,6 +7,7 @@
 #include "rdpp_fwd.hpp"
 #include "operators_fwd.hpp"
 #include "skoarpion_fwd.hpp"
+#include "minstrel_fwd.hpp"
 
 #include "logging.hpp"
 #include "spells.hpp"
@@ -51,7 +52,11 @@ public:
 
     void play_voice(SkoarString voice, const SpellOfHappening& spell);
 
+    void debug_voice(SkoarString voice, const SpellOfHappening& spell, const MinstrelDebugConfig &config);
+
+    void one_more_running();
     void one_less_running();
+
 };
 
 class SkoarLite {

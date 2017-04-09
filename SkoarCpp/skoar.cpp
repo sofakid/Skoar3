@@ -127,6 +127,26 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
 	//log->i("---< Undecorated Skoar Tree >---");
 	//tree->log_tree(log);
 
+    // offs and size
+    size_t pos = 0;
+    tree->inorderBeforeAfter(
+        // Before
+        [&](SkoarNoad* noad) {
+            auto toke = noad->toke.get();
+
+            if (toke != nullptr) {
+                pos = toke->offs + toke->size;
+                noad->offs = toke->offs;
+            }
+            else {
+                noad->offs = pos;
+            }
+        },
+        // After
+        [&](SkoarNoad* noad) {
+            noad->size = pos - noad->offs;
+        });
+
 	//log->i("<<< tree created, now decorating...");
     try {
         decorate();
@@ -136,6 +156,7 @@ Skoar::Skoar(SkoarString skoarce, ISkoarLog *log) :
         tree->clear();
         return;
     }
+    
     decoratedOk = true;
     decorate_time = clock() - start_time - parse_time;
 
@@ -318,6 +339,19 @@ void Skoar::play_voice(SkoarString voice, const SpellOfHappening& spell) {
     }
 }
 
+void Skoar::debug_voice(SkoarString voice, const SpellOfHappening& spell, const MinstrelDebugConfig &config) {
+    auto v = voices[voice];
+    auto m = SkoarMinstrel::NewDebugging(voice, v, this, spell, config);
+    one_more_running();
+    m->start();
+    one_less_running();
+}
+
+void Skoar::one_more_running() {
+    // todo: lock a mutex
+    ++running;
+    // todo: unlock the mutex
+}
 
 void Skoar::one_less_running() {
     // todo: lock a mutex

@@ -8,6 +8,7 @@
 #include "noad.hpp"
 #include "styles.hpp"
 #include "koar.hpp"
+#include "minstrel.hpp"
 
 #include "memories.hpp"
 
@@ -39,7 +40,8 @@ SkoarNoad::SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoa
     voice(nullptr),
     skoarpuscle(nullptr),
     offs(0),
-    size(0)
+    size(0),
+    on_enter(nullptr)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocNoad(name);
@@ -160,12 +162,10 @@ void SkoarNoad::decorate(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &paren
 	skoap = s;
 
 	i = 0;
-	size = 0;
 	for (auto y : children) {
 		y->decorate(v, s, address, i);
 		i = i + 1;
 		//skoarce += y->skoarce;
-        size += y->size;
 	}
 
 }
@@ -388,12 +388,17 @@ SkoarToke* SkoarNoad::next_toke() {
 // performing the tree
 // -------------------
 void SkoarNoad::enter_noad(SkoarMinstrelPtr minstrel) {
-	if (on_enter) {
-		on_enter(minstrel);
-	}
+
+    if (on_enter) {
+        minstrel->before_entering_noad(minstrel);
+        on_enter(minstrel);
+        minstrel->after_entering_noad(minstrel);
+    }
 
     if (skoarpuscle != nullptr) {
+        minstrel->before_entering_skoarpuscle(minstrel);
         skoarpuscle->on_enter(minstrel);
+        minstrel->after_entering_skoarpuscle(minstrel);
     }
 }
 
