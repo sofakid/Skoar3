@@ -46,6 +46,8 @@ public:
 	size_t offs;
 	size_t size;
 
+    bool breakpoint;
+
 	SpellOfMinstrels on_enter;
 	
 	SkoarKoarPtr voice;       // what voice to use

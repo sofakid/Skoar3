@@ -25,6 +25,7 @@ SkoarNoad::SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoa
     skoarpuscle(nullptr),
     offs(0),
     size(0),
+    breakpoint(false),
     on_enter(nullptr)
 {
 #if SKOAR_DEBUG_MEMORY
