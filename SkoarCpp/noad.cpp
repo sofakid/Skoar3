@@ -44,7 +44,10 @@ SkoarNoadPtr SkoarNoad::New(const wchar_t *nameArg, SkoarNoadPtr parentArg, Skoa
 
 SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg, SkoarNoadPtr parentArg)
 {
-    return SkoarNoad::New<ESkoarNoad::artificial>(nameArg, parentArg);
+    auto x = SkoarNoad::New<ESkoarNoad::artificial>(nameArg, parentArg);
+    x->offs = parentArg->offs;
+    x->size = parentArg->size;
+    return x;
 }
 
 SkoarNoadPtr SkoarNoad::NewArtificial(const wchar_t *nameArg)
