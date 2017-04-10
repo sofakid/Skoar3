@@ -30,6 +30,10 @@ void SkoarDic::clear() {
     table.clear();
 }
 
+size_t SkoarDic::size() {
+    return table.size();
+}
+
 
 // --- SkoarEvent --------------------------------------------
 SkoarEvent::SkoarEvent() {

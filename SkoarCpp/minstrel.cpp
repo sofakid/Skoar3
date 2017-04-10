@@ -139,22 +139,22 @@ void SkoarMinstrel::happen(SkoarEventPtr p) {
 }
 
 
-void SkoarMinstrel::before_entering_noad(SkoarMinstrelPtr m, SkoarNoad* noad) {
+void SkoarMinstrel::before_entering_noad(SkoarMinstrelPtr, SkoarNoad*) {
 }
 
-void SkoarMinstrel::after_entering_noad(SkoarMinstrelPtr m, SkoarNoad* noad) {
+void SkoarMinstrel::after_entering_noad(SkoarMinstrelPtr, SkoarNoad*) {
 }
 
-void SkoarMinstrel::before_entering_skoarpuscle(SkoarMinstrelPtr m, SkoarpusclePtr skoarpuscle) {
+void SkoarMinstrel::before_entering_skoarpuscle(SkoarMinstrelPtr, SkoarpusclePtr) {
 }
 
-void SkoarMinstrel::after_entering_skoarpuscle(SkoarMinstrelPtr m, SkoarpusclePtr skoarpuscle) {
+void SkoarMinstrel::after_entering_skoarpuscle(SkoarMinstrelPtr, SkoarpusclePtr) {
 }
 
-void SkoarMinstrel::before_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionPtr skoarpion) {
+void SkoarMinstrel::before_entering_skoarpion(SkoarMinstrelPtr, SkoarpionPtr) {
 }
 
-void SkoarMinstrel::after_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionPtr skoarpion) {
+void SkoarMinstrel::after_entering_skoarpion(SkoarMinstrelPtr, SkoarpionPtr) {
 }
 
 

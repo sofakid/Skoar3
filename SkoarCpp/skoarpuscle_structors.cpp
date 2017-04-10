@@ -376,7 +376,7 @@ SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) 
         SkoarpionPtr if_body;
         SkoarpionPtr else_body;
 
-        auto boolean_expr = SkoarNoad::NewArtificial(L"cond_cond", nullptr);
+        auto boolean_expr = SkoarNoad::NewArtificial(L"cond_cond");
 
         auto child = x->children.cbegin();
         auto condition_skoarpuscle = (*child)->next_skoarpuscle();

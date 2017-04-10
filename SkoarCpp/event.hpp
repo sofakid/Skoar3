@@ -16,6 +16,7 @@ public:
     SkoarpusclePtr at(const SkoarString &k);
 
     void clear();
+    size_t size();
 
 };
 
