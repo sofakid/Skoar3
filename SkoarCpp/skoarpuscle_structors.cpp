@@ -410,6 +410,23 @@ SkoarpuscleConditional::~SkoarpuscleConditional() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"Conditional");
 #endif
+    for (auto x : ifs)
+    {
+        SkoarpionPtr z;
+        z = get<0> (x);
+        if (z != nullptr)
+            z->clear ();
+        
+        z = get<1> (x);
+        if (z != nullptr)
+            z->clear ();
+
+        z = get<2> (x);
+        if (z != nullptr)
+            z->clear ();
+
+    }
+    ifs.clear ();
 }
 
 // --- SkoarpuscleTimes ---------------------------------------------------------
