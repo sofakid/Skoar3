@@ -63,10 +63,13 @@ Skoarpion::~Skoarpion() {
 
 void Skoarpion::clear() {
     if (body != nullptr) {
-        body->clear();
+        body->clear ();
         body = nullptr;
     }
     n = 0;
+    if (arg_list != nullptr)
+        arg_list->clear ();
+
     arg_list = nullptr;
     skoar = nullptr;
 }
@@ -133,6 +136,8 @@ void Skoarpion::init_from_noad(Skoar* skr, SkoarNoadPtr noad) {
         auto p = skoarpuscle_ptr<SkoarpuscleSkoarpionSig>(kid_1_s);
         name = p->name;
         arg_list = p->arg_list;
+        p->clear ();
+        kid_1->clear ();
         suffix = (*(++kidderatoar));
     } 
     else {
@@ -185,6 +190,7 @@ void Skoarpion::init_from_noad(Skoar* skr, SkoarNoadPtr noad) {
     }
 
     body = sections.front(); // we only support one skoarpion section for now
+    
     sections.clear();
     n = body->size;
 }

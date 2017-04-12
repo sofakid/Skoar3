@@ -13,6 +13,8 @@ SkoarString socrates = L"socrates";
 SkoarString qux = L"qux";
 SkoarString foo = L"foo";
 SkoarString yay = L"yay";
+SkoarString amp_ = L"amp";
+SkoarString octave = L"octave";
 SkoarString num_impression = L"num_impression";
 
 SkoarpusclePtr cat = make_skoarpuscle(nullptr);
@@ -246,6 +248,12 @@ TEST_CASE("Loops", "[sanity]") {
         ));
     }
 
+    SECTION ("simple loop minus times") {
+        run_and_expect (L"{: ) :: -7 times :}", make_events_vec (
+            X
+        ));
+    }
+    
     /* i'm undecided what i want to do here.. doing through the loop once is correct at the moment.. it's like a do while.. */
     SECTION("simple loop no times") {
         run_and_expect(L"{: ) :: 0 times :}", make_events_vec(
@@ -319,6 +327,57 @@ TEST_CASE("Fairy", "[sanity]") {
             foo, cat, dur, 1.5, X,
             foo, 2, dur, 2.0, X,
             foo, 7, dur, 4.0, X
+        ));
+    }
+
+}
+
+
+TEST_CASE ("Dyanmics", "[sanity]") {
+
+    SECTION ("fortes") {
+        run_and_expect (L"0 mf) fff) mforte) forte) ff) ffforte) fforte)", make_events_vec (
+            amp_, 5.0 / 8.0, X,
+            amp_, 8.0 / 8.0, X,
+            amp_, 5.0 / 8.0, X,
+            amp_, 6.0 / 8.0, X,
+            amp_, 7.0 / 8.0, X,
+            amp_, 8.0 / 8.0, X,
+            amp_, 7.0 / 8.0, X
+        ));
+    }
+
+    SECTION ("pianos") {
+        run_and_expect (L"0 mp) ppp) mpiano) piano) ppiano) pppiano) pp) ppp) p)", make_events_vec (
+            amp_, 4.0 / 8.0, X,
+            amp_, 1.0 / 8.0, X,
+            amp_, 4.0 / 8.0, X,
+            amp_, 3.0 / 8.0, X,
+            amp_, 2.0 / 8.0, X,
+            amp_, 1.0 / 8.0, X,
+            amp_, 2.0 / 8.0, X,
+            amp_, 1.0 / 8.0, X,
+            amp_, 3.0 / 8.0, X
+        ));
+    }
+
+}
+
+
+TEST_CASE ("Octaves", "[sanity]") {
+
+    SECTION ("octave tails") {
+        run_and_expect (L"0 ) ~o ) ~~o ) o~ ) o~ ) o~~~ ) o~~ ) o~ ) o~~~ ) ~~~~~o )", make_events_vec (
+            octave, 5, X,
+            octave, 6, X,
+            octave, 8, X,
+            octave, 7, X,
+            octave, 6, X,
+            octave, 3, X,
+            octave, 1, X,
+            octave, 0, X,
+            octave, 0, X,
+            octave, 5, X
         ));
     }
 

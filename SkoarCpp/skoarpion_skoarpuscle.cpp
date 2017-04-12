@@ -47,8 +47,21 @@ SkoarpuscleSkoarpion::~SkoarpuscleSkoarpion(){
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"Skoarpion");
 #endif
-    val = nullptr;
+    
+    if (args != nullptr)
+        args->clear ();
+
     args = nullptr;
+    val = nullptr;
+}
+
+void SkoarpuscleSkoarpion::clear ()
+{
+    if (val != nullptr)
+        val->clear ();
+
+    if (args != nullptr)
+        args->clear ();
 }
 
 
@@ -101,8 +114,12 @@ SkoarpuscleSkoarpionSig::~SkoarpuscleSkoarpionSig() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"SkoarpionSig");
 #endif
+    clear ();
+}
+
+void SkoarpuscleSkoarpionSig::clear ()
+{
     arg_list = nullptr;
-    name = nullptr;
 }
 
 void SkoarpuscleSkoarpionSig::asString(wostream &out) {
@@ -148,8 +165,16 @@ SkoarpuscleArgExpr::~SkoarpuscleArgExpr() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"ArgExpr");
 #endif
-    name = nullptr;
-    expr = nullptr;
+    clear ();
+}
+
+void SkoarpuscleArgExpr::clear ()
+{
+    if (expr != nullptr)
+    {
+        expr->clear ();
+        expr = nullptr;
+    }
 }
 
 void SkoarpuscleArgExpr::asString(wostream &out) {
@@ -189,6 +214,12 @@ SkoarpuscleArgList::~SkoarpuscleArgList() {
 #endif
     args_dict.clear();
     args_names.clear();
+}
+
+void SkoarpuscleArgList::clear ()
+{
+    args_dict.clear ();
+    args_names.clear ();
 }
 
 void SkoarpuscleArgList::on_enter(SkoarMinstrelPtr m) {

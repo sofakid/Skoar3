@@ -742,8 +742,12 @@ void SkoarpuscleOctaveShift::on_enter(SkoarMinstrelPtr m) {
     SkoarInt x = 5;
     if (octave != nullptr)
         x = skoarpuscle_ptr<SkoarpuscleInt>(octave)->val;
+    
+    x += val;
+    if (x < 0)
+        x = 0;
 
-    m->koar->put(L"octave", make_skoarpuscle(x + val));
+    m->koar->put(L"octave", make_skoarpuscle(x));
 }
 // --- SkoarpuscleVoice ---------------------------------------------------------
 

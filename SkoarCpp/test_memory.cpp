@@ -73,12 +73,10 @@ TEST_CASE("SkoarLite Memories", "[memory]") {
 
     SECTION("unexpected end of skoarpion") {
         createSkoarLite (L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp<s:6> !!@worp !s )) !} {: )) :: 3 times !}");
-
     }
 
     SECTION("huge int") {
         createSkoarLite (L"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
-
     }
     
 }
@@ -90,8 +88,6 @@ TEST_CASE("SkoarLite Memories", "[memory]") {
 
 TEST_CASE("Memories - Simple Skoars", "[memory]") {
 
-    SkoarConsoleLogger SkoarLog;
-
     SkoarMemories::o().reset();
 
     require_no_memory_consumed();
@@ -99,99 +95,79 @@ TEST_CASE("Memories - Simple Skoars", "[memory]") {
 
     SECTION("simple beats") {
         createSkoar(L") ) )) ))) } } } }.");
-
     }
 
     SECTION("simple data types") {
         createSkoar(L"a _a# 7 2.182818459045 2600Hz true false @foo 'socrates' =^.^=");
-
     }
 
     SECTION("a loop 3 times") {
         createSkoar(L"{: )) :: 3 times :}");
-
     }
 
     SECTION("a foreach loop") {
         createSkoar(L"<0,1,2>.{: )) :}");
-
     }
 
     SECTION("a list") {
         createSkoar(L"<0,1,2>");
-
     }
 
     SECTION("a deref - no args") {
         createSkoar(L"!derp");
-
     }
 
     SECTION("a deref - some args") {
         createSkoar(L"!derp<3,true>");
-
     }
 
     SECTION("a msg - no args") {
         createSkoar(L"!derp.flerb");
-
     }
 
     SECTION("a msg - some args") {
         createSkoar(L"!derp.flerb<3,true>");
-
     }
 
     SECTION("a msg chain") {
         createSkoar(L"!derp.flerb.florb");
-
     }
 
     SECTION("a msg chain - some args 1") {
         createSkoar(L"!derp.flerb.florb<2>");
-
     }
 
     SECTION("a msg chain - some args 2") {
         createSkoar(L"!derp.flerb<1>.florb");
-
     }
 
     SECTION("assignment") {
         createSkoar(L"x: 7");
-
     }
 
     SECTION("assignment expr") {
         createSkoar(L"x: 7 + 3");
-
     }
 
     SECTION("ops - add") {
         createSkoar(L"2 + 3");
-
     }
 
     SECTION("fairy") {
         createSkoar(L"$");
-
     }
 
     SECTION("hashlevels") {
         createSkoar(L"[######   ]");
-
     }
 
     SECTION("cthulhu") {
         createSkoar(L"^^(;,;)^^");
-
     }
 }
 
 
 TEST_CASE("Memories - Musical keywords", "[memory]") {
-
-    SkoarConsoleLogger SkoarLog;
 
     SkoarMemories::o().reset();
 
@@ -199,34 +175,27 @@ TEST_CASE("Memories - Musical keywords", "[memory]") {
     require_fresh_memory_tables();
     SECTION("dynamics") {
         createSkoar(L"fff ff fforte forte mf mp piano ppiano ppp");
-
     }
 
     SECTION("bars") {
         createSkoar(L"| )) |: )) :| )) :|: ))");
-
     }
 
     SECTION("D.C. al fine") {
         createSkoar(L"D.C. al fine");
-
     }
 
     SECTION("fine") {
         createSkoar(L"fine");
-
     }
 
     SECTION("ottavas") {
         createSkoar(L"~~~o");
-
     }
 
 }
 
 TEST_CASE("Memories - Skoarpions", "[memory]") {
-
-    SkoarConsoleLogger SkoarLog;
 
     SkoarMemories::o().reset();
 
@@ -235,29 +204,23 @@ TEST_CASE("Memories - Skoarpions", "[memory]") {
 
     SECTION("skoarpion - no args") {
         createSkoar(L"{! derp !! ) !}");
-
     }
 
     SECTION("skoarpion - simple args") {
         createSkoar(L"{! derp<x> !! ) !}");
-
     }
 
     SECTION("skoarpion - default args") {
         createSkoar(L"{! derp<x:7> !! ) !}");
-
     }
 
     SECTION("skoarpion - default args expr") {
         createSkoar(L"{! derp<x:7 + 5> !! ) !}");
-
     }
 }
 
 
 TEST_CASE("Memories - Conditionals", "[memory]") {
-
-    SkoarConsoleLogger SkoarLog;
 
     SkoarMemories::o().reset();
 
@@ -266,19 +229,15 @@ TEST_CASE("Memories - Conditionals", "[memory]") {
 
     SECTION("if") {
         createSkoar(L"{? !x ?? )) ?}");
-
     }
 
     SECTION("ifelse") {
         createSkoar(L"{? !x ?? )) ?? }} ?}");
-
     }
 }
 
 
 TEST_CASE("Memories - Invalid Skoars", "[memory]") {
-
-    SkoarConsoleLogger SkoarLog;
 
     SkoarMemories::o().reset();
 
@@ -291,27 +250,22 @@ TEST_CASE("Memories - Invalid Skoars", "[memory]") {
 
     SECTION("malformed skoarpion start") {
         createSkoar(L"a) ]]{ ! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food {!dorp<s:6> !!@worp !s )) !} {: )) :: 3 times :}");
-
     }
 
     SECTION("unending skoarpion") {
         createSkoar(L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food {!dorp<s:6> !!@worp !s )) !} {: )) :: 3 times }");
-
     }
 
     SECTION("unexpected end of skoarpion") {
         createSkoar(L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp<s:6> !!@worp !s )) !} {: )) :: 3 times !}");
-
     }
 
     SECTION("huge int") {
         createSkoar(L"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
-
     }
 
     SECTION("huge float") {
         createSkoar(huge_float_string);
-
     }
 
 }

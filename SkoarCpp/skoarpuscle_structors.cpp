@@ -10,6 +10,7 @@
 #include "skoarpion_skoarpuscle.hpp"
 #include "make_skoarpuscle.hpp"
 #include "operators.hpp"
+#include "skoarpuscle_structors.h"
 
 
 // --- SkoarpuscleUnknown ---------------------------------------------------------
@@ -547,7 +548,19 @@ SkoarpuscleList::~SkoarpuscleList() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"List");
 #endif
-    val->clear();
+    clear ();
+        
+}
+
+void SkoarpuscleList::clear ()
+{
+    if (val != nullptr)
+    {
+        for (auto x : *val)
+            if (x != nullptr)
+                x->clear ();
+        val->clear ();
+    }
 }
 
 // --- SkoarpuscleArgs ---------------------------------------------------------
@@ -577,7 +590,17 @@ SkoarpuscleMsg::SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a) :
 SkoarpuscleMsg::~SkoarpuscleMsg() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"Msg");
+    clear ();
 #endif
+}
+
+void SkoarpuscleMsg::clear ()
+{
+    if (args != nullptr)
+        args->clear ();
+
+    if (dest != nullptr)
+        dest->clear ();
 }
 
 // --- SkoarpuscleMsgName ---------------------------------------------------------
@@ -779,7 +802,7 @@ inline SkoarInt decode_skoar_dynamic(SkoarString &s) {
         return 7;
     if (s == L"fforte")
         return 7;
-    return 0;
+    return 8;
 }
 
 SkoarpuscleDynamic::SkoarpuscleDynamic(SkoarToke *toke) :
@@ -899,6 +922,12 @@ SkoarpusclePair::~SkoarpusclePair() {
 #endif
 }
 
+void SkoarpusclePair::clear ()
+{
+    if (val.second != nullptr)
+        val.second->clear ();
+}
+
 // --- SkoarpuscleExpr ---------------------------------------------------------
 SkoarpuscleExpr::SkoarpuscleExpr(SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
@@ -914,4 +943,18 @@ SkoarpuscleExpr::~SkoarpuscleExpr() {
     SkoarMemories::o().deallocSkoarpuscle(L"Expr");
 #endif
     val = nullptr;
+}
+
+void SkoarpuscleExpr::clear ()
+{
+    
+    if (result != nullptr)
+        result->clear ();
+
+    if (val != nullptr)
+        val->clear ();
+
+    result = nullptr;
+    val = nullptr;
+
 }

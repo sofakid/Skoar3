@@ -37,6 +37,8 @@ public:
     virtual ~Skoarpuscle() {
     }
 
+    virtual void clear () {};
+
     virtual void on_enter(SkoarMinstrelPtr) {};
 
     virtual bool isNoatworthy() { return noatworthy; }
@@ -463,7 +465,8 @@ public:
     bool noaty;
     SkoarpuscleList();
     SkoarpuscleList(ListOfSkoarpusclesPtr listy);
-    ~SkoarpuscleList() override;
+    ~SkoarpuscleList() ;
+    void clear () override;
 
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
@@ -635,6 +638,7 @@ public:
 
     SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a);
     ~SkoarpuscleMsg() override;
+    void clear () override;
 
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
@@ -680,6 +684,8 @@ public:
     SkoarpusclePair(SkoarString, SkoarpusclePtr);
     ~SkoarpusclePair() override;
 
+    void clear () override;
+
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
@@ -693,6 +699,7 @@ public:
     SkoarpusclePtr result;
     SkoarpuscleExpr(SkoarNoadPtr);
     ~SkoarpuscleExpr() override;
+    void clear () override;
 
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;

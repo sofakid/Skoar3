@@ -14,6 +14,7 @@ public:
     SkoarpuscleSkoarpion(SkoarpusclePtr, SkoarpusclePtr);
     ~SkoarpuscleSkoarpion() override;
 
+    void clear () override;
 
     SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 
@@ -29,6 +30,8 @@ public:
     SkoarpusclePtr arg_list; // is a SkoarpuscleArgList
     SkoarpuscleSkoarpionSig(SkoarNoadPtr);
     ~SkoarpuscleSkoarpionSig() override;
+    void clear () override;
+
     void asString(wostream &out) override;
 };
 
@@ -38,6 +41,8 @@ public:
     SkoarpusclePtr expr; // is a SkoarpuscleExpr
     SkoarpuscleArgExpr(SkoarNoadPtr);
     ~SkoarpuscleArgExpr() override;
+    void clear () override;
+
     void asString(wostream &out) override;
 
 };
@@ -49,6 +54,7 @@ public:
 
     SkoarpuscleArgList(SkoarNoadPtr);
     ~SkoarpuscleArgList() override;
+    void clear () override;
 
     void on_enter(SkoarMinstrelPtr) override;
     void asString(wostream &out) override;
