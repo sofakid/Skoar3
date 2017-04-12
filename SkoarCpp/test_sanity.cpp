@@ -196,15 +196,14 @@ TEST_CASE("Skoarpions", "[sanity]") {
         ));
     }
 
-    /* sort out lists first 
     SECTION("skoarpion_scope with args") {
-        run_and_expect_d(L"foo: 3 {! x<foo:2> !! ) !} ) !x<7> )", make_events_vec(
+        run_and_expect(L"foo: 3 {! x<foo:2> !! ) !} ) !x<7> )", make_events_vec(
             foo, 3, X,
             foo, 7, X,
             foo, 3, X
         ));
     }
-    /*
+    
     SECTION("skoarpion_scope with named args") {
         run_and_expect(L"foo: 3 {! x<foo:2> !! ) !} ) !x<foo:7> )", make_events_vec(
             foo, 3, X,
@@ -213,7 +212,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
         ));
     }
 
-    /*
+    
     SECTION("skoarpion_scope with incorrectly named args") {
         run_and_expect(L"foo: 3 {! x<foo:2> !! ) !} ) !x<fee:7> )", make_events_vec(
             foo, 3, X,
@@ -222,7 +221,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
         ));
     }
 
-    /*
+    
     SECTION("skoarpion_scope without args") {
         run_and_expect(L"foo: 3 {! x<foo:2> !! )) !} ) !x )).", make_events_vec(
             foo, 3, X,
@@ -230,18 +229,6 @@ TEST_CASE("Skoarpions", "[sanity]") {
             foo, 3, X
         ));
     }
-
-    SECTION("verbosing") {
-        SkoarConsoleLogger SkoarLog;
-        SkoarString skoarce(L"foo: 3 {! x<foo:2> !! )) !} ) !x )).");
-
-        Skoar skoar(skoarce, &SkoarLog);
-
-        REQUIRE(skoar.parsedOk);
-        auto events = skoar_get_events(&skoar);
-        //compare_desires_to_events(desires, events);
-
-    }*/
 }
 
 

@@ -176,6 +176,7 @@ void Skoarpion::init_from_noad(Skoar* skr, SkoarNoadPtr noad) {
             line->add_noad(x);
         }
     }
+    suffix->children.clear ();
 
     for (auto sec : sections) {
         auto i = 0;

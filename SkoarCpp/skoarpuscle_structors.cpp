@@ -401,6 +401,7 @@ SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) 
 
         ifs.push_back(make_tuple(condition, if_body, else_body));
 
+        x->children.clear ();
     }
 
     noad->children.clear ();
@@ -912,4 +913,5 @@ SkoarpuscleExpr::~SkoarpuscleExpr() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"Expr");
 #endif
+    val = nullptr;
 }
