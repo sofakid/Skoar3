@@ -214,8 +214,7 @@ void run_and_expect(SkoarString skoarce, VectorOfSkoarEventsPtr desires) {
     
     SkoarNullLogger SkoarLog;
     
-    INFO("run_and_expect :: \"" << SkoarString_to_s(skoarce) << "\"");
-
+    INFO ("run_and_expect :: Skoar :: \"" << SkoarString_to_s (skoarce) << "\"");
     Skoar skoar(skoarce, &SkoarLog);
 
     REQUIRE(skoar.parsedOk);

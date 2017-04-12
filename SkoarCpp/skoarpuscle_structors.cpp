@@ -402,6 +402,8 @@ SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) 
         ifs.push_back(make_tuple(condition, if_body, else_body));
 
     }
+
+    noad->children.clear ();
 }
 
 SkoarpuscleConditional::~SkoarpuscleConditional() {
