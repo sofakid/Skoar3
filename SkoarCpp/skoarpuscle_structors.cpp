@@ -433,7 +433,7 @@ SkoarpuscleConditional::~SkoarpuscleConditional() {
 
 // --- SkoarpuscleTimes ---------------------------------------------------------
 SkoarpuscleTimes::SkoarpuscleTimes(SkoarNoadPtr noad) :
-    address(noad->address)
+    offs(noad->offs)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocSkoarpuscle(L"Times");

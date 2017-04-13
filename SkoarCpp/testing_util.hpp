@@ -19,7 +19,9 @@ bool check_skoarpuscle_symbol(SkoarpusclePtr p, SkoarString v);
 typedef shared_ptr<vector<SkoarEventPtr>> EventsPtr;
 
 
-VectorOfSkoarEventsPtr skoar_get_events(Skoar* skoar);
+VectorOfSkoarEventsPtr skoar_get_events (Skoar* skoar);
+VectorOfSkoarEventsPtr skoar_get_events_inf (Skoar * skoar, size_t num);
+
 
 // --- make_event ------------------------------------------------
 
@@ -29,6 +31,7 @@ void make_event_r(SkoarEventPtr e, SkoarString key, Type value, const Args&... a
     e->put(key, make_skoarpuscle(value));
     make_event_r(e, args...);
 }
+
 
 void make_event_r(SkoarEventPtr);
 
@@ -99,5 +102,11 @@ void compare_lists(ListOfSkoarpusclesPtr desires, ListOfSkoarpusclesPtr realitie
 
 // --- run skoars and expect events ---------------------------------------------------
 
+// run skoar and expect exact sequence of events
 void run_and_expect(SkoarString skoarce, VectorOfSkoarEventsPtr desires); 
+
+// expect an infinite stream of events, just read for the first expected ones, then kill minstrel.
+void run_and_expect_inf (SkoarString skoarce, VectorOfSkoarEventsPtr desires);
 void run_and_expect_d(SkoarString skoarce, VectorOfSkoarEventsPtr desires); // verbose one
+
+void print_skoarce (SkoarString skoarce);

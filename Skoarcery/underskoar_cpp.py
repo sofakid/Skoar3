@@ -168,7 +168,7 @@ def Eof_token():
     _____.stmt("kind = ESkoarToke::Eof")
     _____.raw('''
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"''' + "Eof" + '''");
+    SkoarMemories::o().allocToke(L"''' + "Eof" + '''");
 #endif
 ''')
     _.end()
@@ -176,7 +176,7 @@ def Eof_token():
     _.destructor()
     _____.raw('''
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"''' + "Eof" + '''");
+    SkoarMemories::o().deallocToke(L"''' + "Eof" + '''");
 #endif
 ''')
     _.end()
@@ -231,7 +231,7 @@ def typical_token_cpp(token):
     _____.stmt(_.v_ass(_.v_attr(style_), style_token_))
     _____.raw('''
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.allocToke(L"''' + token.name + '''");
+    SkoarMemories::o().allocToke(L"''' + token.name + '''");
 #endif
 ''')
     _.end()
@@ -239,7 +239,7 @@ def typical_token_cpp(token):
     _.destructor()
     _____.raw('''
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories.deallocToke(L"''' + token.name + '''");
+    SkoarMemories::o().deallocToke(L"''' + token.name + '''");
 #endif
 ''')
     _.end()

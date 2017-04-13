@@ -3,8 +3,8 @@
 #include "all_skoarpuscles.hpp"
 #include "spells.hpp"
 
-typedef map<SkoarString, SkoarInt> FairyTimesAddressMap;
-typedef map<ESkoarpuscle::Kind, FairyTimesAddressMap> FairyTimesMap;
+typedef map<size_t, SkoarInt> FairyTimesOffsMap;
+typedef map<ESkoarpuscle::Kind, FairyTimesOffsMap> FairyTimesMap;
 typedef shared_ptr<FairyTimesMap> FairyTimesMapPtr;
 typedef list<FairyTimesMapPtr> ListOfFairyTimesMaps;
 
@@ -42,9 +42,9 @@ public:
     void push_times_seen();
     void pop_times_seen();
 
-    SkoarInt how_many_times_have_you_seen(ESkoarpuscle::Kind, SkoarNoadAddress);
+    SkoarInt how_many_times_have_you_seen (ESkoarpuscle::Kind kind, size_t offs);
     void forget_that_you_have_seen(ESkoarpuscle::Kind);
-    void forget_that_you_have_seen(SkoarNoadAddress);
+    void forget_that_you_have_seen (size_t offs);
 
     
     void push_compare();

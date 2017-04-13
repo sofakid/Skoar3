@@ -42,7 +42,8 @@ public:
 	void decorate();
 	SkoarKoarPtr get_voice(const SkoarString &k);
 	void cthulhu(SkoarNoadPtr noad);
-	void draw_skoarpions();
+    void cthulhu (SkoarString s);
+    void draw_skoarpions();
 
     ListOfSkoarpionProjectionsPtr get_all_projections();
     ListOfSkoarpionProjectionsPtr get_projections(SkoarString koar_name);

@@ -78,7 +78,7 @@ MsgOp:            \\.(?![)\\]])
 MathOp:           [+*\\-/%](?!>) 
 
 NamedNoat*:       (?:_?)(?:[a-g](?![ac-zA-Z_]))(#|b)?(?![ \\t]*:(?![}:|]))
-Choard*:          ~*[ABCDEFG](?![.ce-ln-rt-zA-LN-Z]|a[l ])(#|b)?([Mm0-9]|sus|dim|aug|dom)*~*
+Choard*:          ~*[ABCDEFG](?![.ce-hj-ln-rt-zA-LN-Z]|a[l ])(#|b)?([Mm0-9]|sus|dim|aug|dom)*~*
 
 BooleanOp*:       ==|!=|<=|>=|and|or|xor
 CondS:            [{][?][\\n]*
@@ -101,7 +101,7 @@ MsgNameWithArgs*: [a-zA-Z_][a-zA-Z0-9_]*<
 
 Symbol*:          [\\\\@][a-zA-Z0-9_][a-zA-Z0-9_]*
 SymbolName*:      [a-zA-Z0-9_][a-zA-Z0-9_]*(?![[a-zA-Z0-9_fi \\t]*:)
-SymbolColon*:     [a-zA-Z_][a-zA-Z0-9_]*[ \\t]*:(?![:|}])
+SymbolColon*:     ([sS](?!egno\\s*:)|[a-rt-zA-RT-Z_])[a-zA-Z0-9_]*[ \\t]*:(?![:|}])
 
 
 SkoarpionStartWithSig:  [{]!(?=([^!](?!![}]))*!!)
@@ -113,14 +113,14 @@ Deref:            !(?![!}]|=)
 Nosey:            ,
 
 DaCapo:           D\\.C\\.|Da Capo
-DalSegno:         D\\.S\\.|Dal Segno
-Fine:             fine
-Segno*:           ,[Ss](?:egno)?`(?:[a-zA-Z_][a-zA-Z0-9_]*`)*
-Coda:             \\([+]\\)(?:`(?:[a-zA-Z_][a-zA-Z0-9_]*`)*)?
+DalSegno:         (D\\.S\\.|Dal Segno)(\\s*:\\s*[a-zA-Z0-9_]+)? 
+Fine:             [fF]ine
+Segno*:           [sS]egno(\\s*:\\s*[a-zA-Z0-9_]+)? 
+Coda:             (\\([+]\\)|[cC]oda)(\\s*:\\s*[a-zA-Z0-9_]+)?
 #Rep*:             %+
-AlCoda:           al(la)? coda
-AlSegno:          al segno
-AlFine:           al fine
+AlCoda:           al(la)? [cC]oda(\\s*:\\s*[a-zA-Z0-9_]+)? 
+AlSegno:          al [sS]egno(\\s*:\\s*[a-zA-Z0-9_]+)? 
+AlFine:           al [fF]ine
 
 AUGen*:           a[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
 AUGenWithArgs*:   a[A-Z][a-zA-Z0-9_]*<

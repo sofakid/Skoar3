@@ -75,7 +75,15 @@ void SkoarMinstrel::start() {
 }
 
 void SkoarMinstrel::EventStream(SkoarMinstrelPtr m) {
-    auto x = m->skoar->tree->next_skoarpuscle();
+    
+    if (m->skoar == nullptr)
+        return;
+
+    auto tree = m->skoar->tree;
+    if (tree == nullptr)
+        return;
+
+    auto x = tree->next_skoarpuscle();
     if (is_skoarpuscle<SkoarpuscleSkoarpion>(x)) {
         auto skoarpion = skoarpuscle_ptr<SkoarpuscleSkoarpion>(x)->val;
 

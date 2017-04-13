@@ -267,7 +267,7 @@ void SkoarpuscleTimes::on_enter(SkoarMinstrelPtr m) {
     auto desired_times = m->fairy->cast_arcane_magic();
 
     if (desired_times->isCounty()) {
-        auto times_seen = m->fairy->how_many_times_have_you_seen(ESkoarpuscle::Times, address);
+        auto times_seen = m->fairy->how_many_times_have_you_seen(ESkoarpuscle::Times, offs);
         auto times = desired_times->asCount();
        
         m->fairy->impress(make_skoarpuscle(times_seen < times));
@@ -282,7 +282,6 @@ void SkoarpuscleTimes::on_enter(SkoarMinstrelPtr m) {
             // todo: handle durations
             m->fairy->impress(make_skoarpuscle(false));
         }
-
 
     }
 }
@@ -299,6 +298,7 @@ void SkoarpuscleLoop::on_enter(SkoarMinstrelPtr m) {
 
     m->fairy->push_i();
     m->fairy->push_noating(true);
+    m->fairy->push_times_seen ();
 
     bool looping = true;
     
@@ -336,7 +336,10 @@ void SkoarpuscleLoop::on_enter(SkoarMinstrelPtr m) {
         if (condition == nullptr)
             looping = false;
     }
- 
+
+    m->fairy->pop_times_seen ();
+    m->fairy->pop_noating ();
+    m->fairy->pop_i ();
 }
 
 
@@ -735,6 +738,11 @@ void SkoarpuscleBars::on_enter(SkoarMinstrelPtr m) {
 // --- SkoarpuscleDynamic ---------------------------------------------------------
 
 SkoarFloat SkoarpuscleDynamic::amp() { return val / 8.0; }
+
+void SkoarpuscleDynamic::on_enter (SkoarMinstrelPtr m) {
+    m->koar->put (L"amp", make_skoarpuscle (amp()));
+}
+
 
 // --- SkoarpuscleOctaveShift ---------------------------------------------------------
 void SkoarpuscleOctaveShift::on_enter(SkoarMinstrelPtr m) {

@@ -128,6 +128,12 @@ void SkoarKoar::set_args(
     else if (is_skoarpuscle<SkoarpuscleList>(args_prov)) {
         args_provided = skoarpuscle_ptr<SkoarpuscleList>(args_prov)->val;
     }
+    else if (is_skoarpuscle<SkoarpusclePair> (args_prov))
+    {
+        // this isn't right.
+        args_provided = make_shared<ListOfSkoarpuscles> ();
+        args_provided->push_back (skoarpuscle_ptr<SkoarpusclePair> (args_prov)->val.second);
+    }
     else {
         args_provided = make_shared<ListOfSkoarpuscles>();
         auto n = args_list->args_names.size();

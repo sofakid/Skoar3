@@ -289,7 +289,7 @@ public:
 
 class SkoarpuscleTimes : public Skoarpuscle {
 public:
-    const SkoarNoadAddress& address;
+    const size_t& offs;
 
     SkoarpuscleTimes(SkoarNoadPtr);
     ~SkoarpuscleTimes() override;
@@ -351,6 +351,7 @@ public:
     void valAsString(wostream &out) override;
 
     SkoarFloat amp();
+    void on_enter (SkoarMinstrelPtr m) override;
 };
 
 class SkoarpuscleOctaveShift : public Skoarpuscle {
@@ -481,8 +482,6 @@ public:
     shared_ptr<SkoarpuscleList> div(SkoarMinstrelPtr, SkoarpusclePtr);
     shared_ptr<SkoarpuscleList> divBy(SkoarMinstrelPtr, SkoarpusclePtr);
     SkoarInt size();
-    //Poco::DynamicAny flatten(SkoarMinstrelPtr m) override;
-
 
 };
 

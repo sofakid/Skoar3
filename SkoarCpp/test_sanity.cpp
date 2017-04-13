@@ -231,6 +231,71 @@ TEST_CASE("Skoarpions", "[sanity]") {
             foo, 3, X
         ));
     }
+
+    SECTION ("skoarpion_scope with two args") {
+        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<4,6> )).", make_events_vec (
+            foo, 3, qux, 9, dur, 1.0, X,
+            foo, 4, qux, 6, X,
+            foo, 3, qux, 9, X
+        ));
+    }
+
+    SECTION ("skoarpion_scope with two args named") {
+        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<foo:4,qux:6> )).", make_events_vec (
+            foo, 3, qux, 9, dur, 1.0, X,
+            foo, 4, qux, 6, X,
+            foo, 3, qux, 9, X
+        ));
+    }
+
+    SECTION ("skoarpion_scope with two args named backwards") {
+        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<qux:6,foo:4> )).", make_events_vec (
+            foo, 3, qux, 9, dur, 1.0, X,
+            foo, 4, qux, 6, X,
+            foo, 3, qux, 9, X
+        ));
+    }
+
+    SECTION ("skoarpion_scope with two args named wack") {
+        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<qux:6,4> )).", make_events_vec (
+            foo, 3, qux, 9, dur, 1.0, X,
+            foo, 4, qux, 6, X,
+            foo, 3, qux, 9, X
+        ));
+    }
+
+    SECTION ("skoarpion_scope with two args named wiggity wack") {
+        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<6,foo:4> )).", make_events_vec (
+            foo, 3, qux, 9, dur, 1.0, X,
+            foo, 4, qux, 6, X,
+            foo, 3, qux, 9, X
+        ));
+    }
+
+    SECTION ("skoarpion_scope with two args two defaults") {
+        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x )).", make_events_vec (
+            foo, 3, qux, 9, dur, 1.0, X,
+            foo, 2, qux, 3, X,
+            foo, 3, qux, 9, X
+        ));
+    }
+
+    SECTION ("skoarpion_scope with two args first default") {
+        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<qux:5> )).", make_events_vec (
+            foo, 3, qux, 9, dur, 1.0, X,
+            foo, 2, qux, 5, X,
+            foo, 3, qux, 9, X
+        ));
+    }
+
+    SECTION ("skoarpion_scope with two args second default") {
+        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<4> )).", make_events_vec (
+            foo, 3, qux, 9, dur, 1.0, X,
+            foo, 4, qux, 3, X,
+            foo, 3, qux, 9, X
+        ));
+    }
+
 }
 
 
@@ -316,8 +381,465 @@ TEST_CASE("Loops", "[sanity]") {
             a, 4.0, dur, 1.0, X
         ));
     }
+
+    SECTION ("nested loop 1 times in 1 times") {
+        run_and_expect (L"{: ) {: )) :: 1 times :} :: 1 times :}", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X
+        ));
+
+    }
+
+    SECTION ("nested loop 2 times in 1 times") {
+        run_and_expect (L"{: ) {: )) :: 2 times :} :: 1 times :}", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X
+        ));
+
+    }
+
+    SECTION ("nested loop 1 times in 2 times") {
+        run_and_expect (L"{: ) {: )) :: 1 times :} :: 2 times :}", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 1.0, X,
+            dur, 2.0, X
+        ));
+
+    }
+
+    SECTION ("nested loop 2 times in 2 times") {
+        run_and_expect (L"{: ) {: )) :: 2 times :} :: 2 times :}", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X
+        ));
+
+    }
+
+    SECTION ("nested loop 2 times in 7 times") {
+        run_and_expect (L"{: ) {: )) :: 2 times :} :: 7 times :}", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X
+        ));
+
+    }
 }
 
+TEST_CASE ("Gotos - colons", "[sanity]") {
+
+    SECTION ("Simple colons") {
+        run_and_expect (L") |: )) :|", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("unbalanced colons - no start") {
+        run_and_expect (L") | )) :|", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 1.0, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("unbalanced colons - no end") {
+        run_and_expect (L") |: )) |", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("nested colons") {
+        run_and_expect (L") |: )) |: ))) :| :|", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X,
+            dur, 4.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+}
+
+
+TEST_CASE ("Gotos - Segno", "[sanity]") {
+
+    SECTION ("segnos exist") {
+        run_and_expect (L") segno )) ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("segnos exist, named") {
+        run_and_expect (L") segno:foo )) ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("segnos lowercase") {
+        run_and_expect (L") segno )) Dal Segno ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("segnos uppercase") {
+        run_and_expect (L") Segno )) Dal Segno ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("segnos Dal Segno al fine") {
+        run_and_expect (L") Segno )) Dal Segno al fine ))) fine )) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("segnos - named segno, unnamed dal segno") {
+        run_and_expect (L") Segno:derp )) Dal Segno )))", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("segnos D.S") {
+        run_and_expect (L") Segno )) D.S. ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("segnos D.S. al fine") {
+        run_and_expect (L") Segno )) D.S. al fine ))) fine )) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("segnos - named segno one") {
+        run_and_expect (L"Segno:lerp ) Segno:derp )) Dal Segno:derp )))", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("segnos - named segno two") {
+        run_and_expect (L"Segno:lerp ) Segno:derp )) Dal Segno:lerp )))", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+}
+
+
+TEST_CASE ("Gotos - Coda", "[sanity]") {
+
+    SECTION ("coda exists") {
+        run_and_expect (L") (+) )) ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("coda named exists") {
+        run_and_expect (L") (+):derp )) ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("coda al coda before") {
+        run_and_expect (L") (+) )) al coda ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("coda al coda after") {
+        run_and_expect (L") )) al coda ))) (+) ] ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 0.5, X
+        ));
+    }
+
+    SECTION ("coda Dal Segno al coda") {
+        run_and_expect (L") Segno )) al coda )))) Dal Segno al coda ))) (+) ] ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 8.0, X,
+            dur, 2.0, X,
+            dur, 0.5, X
+        ));
+    }
+
+    SECTION ("coda - named coda, unnamed al coda") {
+        run_and_expect (L") (+):derp )) al coda )))", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 4.0, X
+        ));
+    }
+
+    SECTION ("coda - named coda, named al coda") {
+        run_and_expect (L") (+):frankenstein )) al coda:frankenstein ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 3.0, X
+        ));
+    }
+
+    SECTION ("coda - multiple named codas, named al coda, inf loop") {
+        run_and_expect_inf (L"(+):foo ) (+):frankenstein )) al coda:frankenstein ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("coda - multiple named codas, named al coda one") {
+        run_and_expect (L") al coda:frankenstein ))) (+):foo ]] (+):frankenstein )) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("coda - multiple named codas, named al coda two") {
+        run_and_expect (L") al coda:foo ))) (+):foo ]] (+):frankenstein )) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 0.25, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("coda - coda in loop") {
+        run_and_expect (L") al coda:foo ))) {: ] (+):foo ]] :: 3 times :} (+):frankenstein )) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 0.25, X,
+            dur, 0.5, X,
+            dur, 0.25, X,
+            dur, 0.5, X,
+            dur, 0.25, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("coda - coda in skoarpion - 1") {
+        run_and_expect (L") al coda:socrates ))) {! <foo:3, qux,2> !! ] (+):socrates ]] !} (+):frankenstein )) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 0.25, foo, 3, qux, 2, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("coda - coda in skoarpion - 2") {
+        run_and_expect (L") al coda:foo ))) {! <foo:3, qux,2> !! ] (+):foo ]] !} (+):frankenstein )) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 0.25, foo, 3, qux, 2, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("coda - coda in conditional - when true") {
+        run_and_expect (L") al coda:foo ))) {? true ?? ] (+):foo ]] ?} (+):frankenstein )) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 0.25, foo, 3, qux, 2, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("coda - coda in conditional - when false") {
+        run_and_expect (L") al coda:foo ))) {? false ?? ] (+):foo ]] ?} )) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 0.25, foo, 3, qux, 2, X,
+            dur, 2.0, X
+        ));
+    }
+
+}
+
+
+TEST_CASE ("Gotos - da capos", "[sanity]") {
+
+    SECTION ("Da Capo") {
+        run_and_expect_inf (L") )) Da Capo ))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            
+            dur, 1.0, X,
+            dur, 2.0, X,
+            
+            dur, 1.0, X,
+            dur, 2.0, X
+        ));
+    }
+
+    SECTION ("Da Capo al fine later") {
+        run_and_expect (L") )) Da Capo al fine ))) fine )))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 3.0, X
+        ));
+    }
+
+    SECTION ("Da Capo al fine sooner") {
+        run_and_expect (L") fine )) Da Capo al fine ))) )))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            
+            dur, 1.0, X
+        ));
+    }
+
+    SECTION ("Da Capo al fine in skoarpion") {
+        run_and_expect (L") fine )) {! derp !! ] Da Capo al fine ]]] !} ))) !derp )))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 3.0, X,
+            dur, 0.5, X,
+
+            dur, 1.0, X
+        ));
+    }
+
+    SECTION ("Da Capo al fine in loop") {
+        run_and_expect (L") fine )) {: ] Da Capo al fine ]]] :: 3 times :} ))) )))) ", make_events_vec (
+            dur, 1.0, X,
+            dur, 2.0, X,
+            dur, 0.5, X,
+            
+            dur, 1.0, X
+        ));
+    }
+
+}
+
+TEST_CASE ("Tempo", "[sanity]") {
+
+    SECTION ("no tempo") {
+        run_and_expect (L")", make_events_vec (
+            L"bpm", 120.0, dur, 1.0, X
+        ));
+    }
+
+    SECTION ("simple tempo int") {
+        run_and_expect (L"): 200 ))", make_events_vec (
+            L"bpm", 200.0, dur, 2.0, X
+        ));
+    }
+
+    SECTION ("simple tempo float") {
+        run_and_expect (L"): 200.4 ))", make_events_vec (
+            L"bpm", 200.4, dur, 2.0, X
+        ));
+    }
+
+    SECTION ("expr tempo") {
+        run_and_expect (L"): 200 + 7 ))", make_events_vec (
+            L"bpm", 207.0, dur, 2.0, X
+        ));
+    }
+
+    SECTION ("increased tempo") {
+        run_and_expect (L"): !bpm + 7 ))", make_events_vec (
+            L"bpm", 127.0, dur, 2.0, X
+        ));
+    }
+
+    SECTION ("literal bpm int") {
+        run_and_expect (L"bpm: 70 ))", make_events_vec (
+            L"bpm", 70.0, dur, 2.0, X
+        ));
+    }
+
+    SECTION ("literal bpm float") {
+        run_and_expect (L"bpm: 70.3 ))", make_events_vec (
+            L"bpm", 70.3, dur, 2.0, X
+        ));
+    }
+
+    SECTION ("literal bps float") {
+        run_and_expect (L"bps: 1.0 ))", make_events_vec (
+            L"bpm", 60.0, L"bps", 1.0, dur, 2.0, X
+        ));
+    }
+
+    SECTION ("literal bps int") {
+        run_and_expect (L"bps: 3 ))", make_events_vec (
+            L"bpm", 180.0, L"bps", 3.0, dur, 2.0, X
+        ));
+    }
+
+}
 
 TEST_CASE("Fairy", "[sanity]") {
   
@@ -331,7 +853,6 @@ TEST_CASE("Fairy", "[sanity]") {
     }
 
 }
-
 
 TEST_CASE ("Dyanmics", "[sanity]") {
 
@@ -362,7 +883,6 @@ TEST_CASE ("Dyanmics", "[sanity]") {
     }
 
 }
-
 
 TEST_CASE ("Octaves", "[sanity]") {
 
@@ -421,7 +941,5 @@ TEST_CASE("conditionals", "[sanity]") {
             a, 8, X
         ));
     }
-
-
 
 }

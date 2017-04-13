@@ -147,13 +147,13 @@ typedef map<ESkoarpuscle::Kind, FairyTimesAddressSeen> FairyTimesMap;
 typedef shared_ptr<FairyTimesMap> FairyTimesMapPtr;
 typedef list<FairyTimesMapPtr> ListOfFairyTimesMaps;
 */
-SkoarInt SkoarFairy::how_many_times_have_you_seen(ESkoarpuscle::Kind kind, SkoarNoadAddress address) {
+SkoarInt SkoarFairy::how_many_times_have_you_seen(ESkoarpuscle::Kind kind, size_t offs) {
 
     auto &addressMap = (*times_seen)[kind];
-    auto times = addressMap[address.code()];
+    auto times = addressMap[offs];
 
     ++times;
-    addressMap[address.code()] = times;
+    addressMap[offs] = times;
     return times;
 }
 
@@ -164,11 +164,11 @@ void SkoarFairy::forget_that_you_have_seen(ESkoarpuscle::Kind kind) {
 }
 
 
-void SkoarFairy::forget_that_you_have_seen(SkoarNoadAddress address) {
+void SkoarFairy::forget_that_you_have_seen(size_t offs) {
     for (auto times_map : times_seen_stack) {
         for (auto kv : *times_map) {
             auto addressMap = kv.second;
-            addressMap.erase(address.code());
+            addressMap.erase(offs);
         }
     }
 }

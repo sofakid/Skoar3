@@ -81,15 +81,37 @@ bool check_skoarpuscle_symbol(SkoarpusclePtr p, SkoarString v) {
 }
 
 
-VectorOfSkoarEventsPtr skoar_get_events(Skoar* skoar) {
+VectorOfSkoarEventsPtr skoar_get_events (Skoar* skoar) {
+    auto events = make_shared<VectorOfSkoarEvents> ();
+    try
+    {
+        skoar->play ([&](SkoarEventPtr e) {
+            events->push_back (e);
+        });
+    }
+    catch (SkoarError &e)
+    {
+        FAIL (SkoarString_to_s (e.wwhat ()));
+    }
+    return events;
+}
+
+VectorOfSkoarEventsPtr skoar_get_events_inf(Skoar* skoar, size_t num) {
     auto events = make_shared<VectorOfSkoarEvents>();
     try {
+        size_t i = 0;
         skoar->play([&](SkoarEventPtr e) {
-            events->push_back(e);
+            events->push_back (e);
+
+            if (++i >= num)
+                skoar->cthulhu (L"skoar_get_events_inf");
+
         });
     }
     catch (SkoarError &e) {
-        FAIL(SkoarString_to_s(e.wwhat()));
+        
+        if (wstring(e.wwhat()) != wstring(L"skoar_get_events_inf"))
+            FAIL (SkoarString_to_s (e.wwhat ()));
     }
     return events;
 }
@@ -214,7 +236,7 @@ void run_and_expect(SkoarString skoarce, VectorOfSkoarEventsPtr desires) {
     
     SkoarNullLogger SkoarLog;
     
-    INFO ("run_and_expect :: SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
+    INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
     Skoar skoar(skoarce, &SkoarLog);
 
     REQUIRE(skoar.parsedOk);
@@ -223,16 +245,33 @@ void run_and_expect(SkoarString skoarce, VectorOfSkoarEventsPtr desires) {
 }
 
 
+void run_and_expect_inf (SkoarString skoarce, VectorOfSkoarEventsPtr desires) {
+
+    SkoarNullLogger SkoarLog;
+
+    INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
+
+    Skoar skoar (skoarce, &SkoarLog);
+
+    REQUIRE (skoar.parsedOk);
+    auto events = skoar_get_events_inf (&skoar, desires->size ());
+    compare_desires_to_events (desires, events);
+}
+
 void run_and_expect_d(SkoarString skoarce, VectorOfSkoarEventsPtr desires) {
 
     SkoarConsoleLogger SkoarLog;
     SkoarLog.setLevel(ISkoarLog::debug);
 
-    INFO("run_and_expect :: \"" << SkoarString_to_s(skoarce) << "\"");
+    INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
 
     Skoar skoar(skoarce, &SkoarLog);
 
     REQUIRE(skoar.parsedOk);
     auto events = skoar_get_events(&skoar);
     compare_desires_to_events(desires, events);
+}
+
+void print_skoarce (SkoarString skoarce) {
+    
 }

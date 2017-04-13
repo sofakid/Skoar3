@@ -264,6 +264,11 @@ void Skoar::cthulhu(SkoarNoadPtr noad) {
 
 }
 
+
+void Skoar::cthulhu (SkoarString s) {
+    throw SkoarError (s);
+}
+
 void Skoar::draw_skoarpions() {
 
     if (log->getLevel() != ISkoarLog::debug)

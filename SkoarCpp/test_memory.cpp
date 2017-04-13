@@ -34,7 +34,7 @@ void require_fresh_memory_tables() {
 
 void createSkoarLite (wstring skoarce) {
     SkoarNullLogger SkoarLog;
-    INFO ("createSkoarLite :: SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
+    INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
     SkoarLite (skoarce, &SkoarLog);
     require_no_memory_consumed ();
 
@@ -42,7 +42,7 @@ void createSkoarLite (wstring skoarce) {
 
 void createSkoar (wstring skoarce) {
     SkoarNullLogger SkoarLog;
-    INFO ("createSkoar :: SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
+    INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
     Skoar (skoarce, &SkoarLog);
     require_no_memory_consumed ();
 }
