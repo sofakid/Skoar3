@@ -259,29 +259,15 @@ void SkoarpuscleVoice::valAsString(wostream &out) {
 }
 
 
-
-void SkoarpuscleSegno::asString(wostream &out) {
-    out << "Segno";
+void SkoarpuscleCoda::asString (wostream &out) {
+    out << "(+):" << label << " @ " << offs;
 }
-void SkoarpuscleSegno::typeAsString(wostream &out) {
-    out << "Segno";
+void SkoarpuscleCoda::typeAsString (wostream &out) {
+    out << "Coda";
 }
-void SkoarpuscleSegno::valAsString(wostream &out) {
-    out << "Segno";
+void SkoarpuscleCoda::valAsString (wostream &out) {
+    out << "(+):" << label << " @ " << offs;
 }
-
-
-
-void SkoarpuscleFine::asString(wostream &out) {
-    out << "Fine";
-}
-void SkoarpuscleFine::typeAsString(wostream &out) {
-    out << "Fine";
-}
-void SkoarpuscleFine::valAsString(wostream &out) {
-    out << "Fine";
-}
-
 
 
 void SkoarpuscleMsgName::asString(wostream &out) {

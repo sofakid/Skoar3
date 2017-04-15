@@ -30,7 +30,7 @@ class SkoarMinstrel {
 public:
 
     const SkoarString name;
-    Skoar* skoar;
+    Skoar* const skoar;
 
 	SkoarFairyPtr fairy;
 
@@ -45,13 +45,13 @@ public:
     //SkoarControls controls;
 
     // don't use this, use SkoarMinstrel::New.
-    SkoarMinstrel(SkoarString, SkoarKoarPtr, Skoar*, const SpellOfHappening& happenSpell);
+    SkoarMinstrel(SkoarString, SkoarKoarPtr, Skoar* const, const SpellOfHappening& happenSpell);
 
     virtual ~SkoarMinstrel();
 
     // create and initialize minstrel, return a shared_ptr
-    static SkoarMinstrelPtr New(SkoarString name, SkoarKoarPtr koar, Skoar* skoar, const SpellOfHappening& happenSpell);
-    static SkoarMinstrelPtr NewDebugging(SkoarString name, SkoarKoarPtr koar, Skoar* skoar, const SpellOfHappening& happenSpell, const MinstrelDebugConfig& config);
+    static SkoarMinstrelPtr New(SkoarString name, SkoarKoarPtr koar, Skoar* const skoar, const SpellOfHappening& happenSpell);
+    static SkoarMinstrelPtr NewDebugging(SkoarString name, SkoarKoarPtr koar, Skoar* const skoar, const SpellOfHappening& happenSpell, const MinstrelDebugConfig& config);
 
     static void EventStream(SkoarMinstrelPtr m);
     

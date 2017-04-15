@@ -25,8 +25,7 @@ class SkoarpuscleDynamic;
 class SkoarpuscleOctaveShift;
 class SkoarpuscleBooleanOp;
 class SkoarpuscleVoice;
-class SkoarpuscleSegno;
-class SkoarpuscleFine;
+class SkoarpuscleCoda;
 
 class SkoarpuscleMathOp;
 

@@ -494,101 +494,6 @@ TEST_CASE ("Gotos - colons", "[sanity]") {
 
 }
 
-
-TEST_CASE ("Gotos - Segno", "[sanity]") {
-
-    SECTION ("segnos exist") {
-        run_and_expect (L") segno )) ))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-    SECTION ("segnos exist, named") {
-        run_and_expect (L") segno:foo )) ))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-    SECTION ("segnos lowercase") {
-        run_and_expect (L") segno )) Dal Segno ))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-    SECTION ("segnos uppercase") {
-        run_and_expect (L") Segno )) Dal Segno ))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-    SECTION ("segnos Dal Segno al fine") {
-        run_and_expect (L") Segno )) Dal Segno al fine ))) fine )) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-    SECTION ("segnos - named segno, unnamed dal segno") {
-        run_and_expect (L") Segno:derp )) Dal Segno )))", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-    SECTION ("segnos D.S") {
-        run_and_expect (L") Segno )) D.S. ))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-    SECTION ("segnos D.S. al fine") {
-        run_and_expect (L") Segno )) D.S. al fine ))) fine )) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-    SECTION ("segnos - named segno one") {
-        run_and_expect (L"Segno:lerp ) Segno:derp )) Dal Segno:derp )))", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-    SECTION ("segnos - named segno two") {
-        run_and_expect (L"Segno:lerp ) Segno:derp )) Dal Segno:lerp )))", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 4.0, X
-        ));
-    }
-
-}
-
-
 TEST_CASE ("Gotos - Coda", "[sanity]") {
 
     SECTION ("coda exists") {
@@ -608,7 +513,7 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda al coda before") {
-        run_and_expect (L") (+) )) al coda ))) ", make_events_vec (
+        run_and_expect_inf (L") (+) )) al coda ))) ", make_events_vec (
             dur, 1.0, X,
             dur, 2.0, X,
             dur, 2.0, X,
@@ -617,25 +522,15 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda al coda after") {
-        run_and_expect (L") )) al coda ))) (+) ] ", make_events_vec (
+        run_and_expect_inf (L") )) al coda ))) (+) ] ", make_events_vec (
             dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 0.5, X
-        ));
-    }
-
-    SECTION ("coda Dal Segno al coda") {
-        run_and_expect (L") Segno )) al coda )))) Dal Segno al coda ))) (+) ] ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 8.0, X,
             dur, 2.0, X,
             dur, 0.5, X
         ));
     }
 
     SECTION ("coda - named coda, unnamed al coda") {
-        run_and_expect (L") (+):derp )) al coda )))", make_events_vec (
+        run_and_expect_inf (L") (+):derp )) al coda )))", make_events_vec (
             dur, 1.0, X,
             dur, 2.0, X,
             dur, 2.0, X,
@@ -644,7 +539,7 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda - named coda, named al coda") {
-        run_and_expect (L") (+):frankenstein )) al coda:frankenstein ))) ", make_events_vec (
+        run_and_expect_inf (L") (+):frankenstein )) al coda:frankenstein ))) ", make_events_vec (
             dur, 1.0, X,
             dur, 2.0, X,
             dur, 2.0, X,
@@ -664,14 +559,14 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda - multiple named codas, named al coda one") {
-        run_and_expect (L") al coda:frankenstein ))) (+):foo ]] (+):frankenstein )) ", make_events_vec (
+        run_and_expect_inf (L") al coda:frankenstein ))) (+):foo ]] (+):frankenstein )) ", make_events_vec (
             dur, 1.0, X,
             dur, 2.0, X
         ));
     }
 
     SECTION ("coda - multiple named codas, named al coda two") {
-        run_and_expect (L") al coda:foo ))) (+):foo ]] (+):frankenstein )) ", make_events_vec (
+        run_and_expect_inf (L") al coda:foo ))) (+):foo ]] (+):frankenstein )) ", make_events_vec (
             dur, 1.0, X,
             dur, 0.25, X,
             dur, 2.0, X
@@ -679,7 +574,7 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda - coda in loop") {
-        run_and_expect (L") al coda:foo ))) {: ] (+):foo ]] :: 3 times :} (+):frankenstein )) ", make_events_vec (
+        run_and_expect_inf (L") al coda:foo ))) {: ] (+):foo ]] :: 3 times :} (+):frankenstein )) ", make_events_vec (
             dur, 1.0, X,
             dur, 0.25, X,
             dur, 0.5, X,
@@ -691,7 +586,7 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda - coda in skoarpion - 1") {
-        run_and_expect (L") al coda:socrates ))) {! <foo:3, qux,2> !! ] (+):socrates ]] !} (+):frankenstein )) ", make_events_vec (
+        run_and_expect_inf (L") al coda:socrates ))) {! <foo:3, qux,2> !! ] (+):socrates ]] !} (+):frankenstein )) ", make_events_vec (
             dur, 1.0, X,
             dur, 0.25, foo, 3, qux, 2, X,
             dur, 2.0, X
@@ -699,7 +594,7 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda - coda in skoarpion - 2") {
-        run_and_expect (L") al coda:foo ))) {! <foo:3, qux,2> !! ] (+):foo ]] !} (+):frankenstein )) ", make_events_vec (
+        run_and_expect_inf (L") al coda:foo ))) {! <foo:3, qux,2> !! ] (+):foo ]] !} (+):frankenstein )) ", make_events_vec (
             dur, 1.0, X,
             dur, 0.25, foo, 3, qux, 2, X,
             dur, 2.0, X
@@ -707,7 +602,7 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda - coda in conditional - when true") {
-        run_and_expect (L") al coda:foo ))) {? true ?? ] (+):foo ]] ?} (+):frankenstein )) ", make_events_vec (
+        run_and_expect_inf (L") al coda:foo ))) {? true ?? ] (+):foo ]] ?} (+):frankenstein )) ", make_events_vec (
             dur, 1.0, X,
             dur, 0.25, foo, 3, qux, 2, X,
             dur, 2.0, X
@@ -715,69 +610,10 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda - coda in conditional - when false") {
-        run_and_expect (L") al coda:foo ))) {? false ?? ] (+):foo ]] ?} )) ", make_events_vec (
+        run_and_expect_inf (L") al coda:foo ))) {? false ?? ] (+):foo ]] ?} )) ", make_events_vec (
             dur, 1.0, X,
             dur, 0.25, foo, 3, qux, 2, X,
             dur, 2.0, X
-        ));
-    }
-
-}
-
-
-TEST_CASE ("Gotos - da capos", "[sanity]") {
-
-    SECTION ("Da Capo") {
-        run_and_expect_inf (L") )) Da Capo ))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            
-            dur, 1.0, X,
-            dur, 2.0, X,
-            
-            dur, 1.0, X,
-            dur, 2.0, X
-        ));
-    }
-
-    SECTION ("Da Capo al fine later") {
-        run_and_expect (L") )) Da Capo al fine ))) fine )))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 3.0, X
-        ));
-    }
-
-    SECTION ("Da Capo al fine sooner") {
-        run_and_expect (L") fine )) Da Capo al fine ))) )))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            
-            dur, 1.0, X
-        ));
-    }
-
-    SECTION ("Da Capo al fine in skoarpion") {
-        run_and_expect (L") fine )) {! derp !! ] Da Capo al fine ]]] !} ))) !derp )))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 3.0, X,
-            dur, 0.5, X,
-
-            dur, 1.0, X
-        ));
-    }
-
-    SECTION ("Da Capo al fine in loop") {
-        run_and_expect (L") fine )) {: ] Da Capo al fine ]]] :: 3 times :} ))) )))) ", make_events_vec (
-            dur, 1.0, X,
-            dur, 2.0, X,
-            dur, 0.5, X,
-            
-            dur, 1.0, X
         ));
     }
 

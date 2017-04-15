@@ -21,13 +21,11 @@ Voice*:         \\.(([a-zA-Z_][a-zA-Z0-9_]*)?|\\.+)
 
 Comment:        <[?](.|[\\n\\r])*?[?]>
 
-# careful not to match ottavas ending in (ma,mb,va,vb), or steal from floats
-Int*:           (-)?(0|[1-9][0-9]*)(?![0-9]*Hz|[mv][ab]|\\.[0-9]|:[0-9])
+# careful not to steal from floats
+Int*:           (-)?(0|[1-9][0-9]*)(?![0-9]*Hz|\\.[0-9]|:[0-9])
 Float*:         (-)?(0|[1-9][0-9]*)\\.[0-9]+(?!Hz|:[0-9])
 
 Freq*:          (0|[1-9][0-9]*)(\\.[0-9]+)?Hz
-
-#ArgSpec:        [a-zA-Z][A-Za-z0-9:@,_ \\t]*
 
 ListS:          <(?![=?])|<(?=[=]\\^\\.)
 ListE:          >(?![=])
@@ -101,7 +99,7 @@ MsgNameWithArgs*: [a-zA-Z_][a-zA-Z0-9_]*<
 
 Symbol*:          [\\\\@][a-zA-Z0-9_][a-zA-Z0-9_]*
 SymbolName*:      [a-zA-Z0-9_][a-zA-Z0-9_]*(?![[a-zA-Z0-9_fi \\t]*:)
-SymbolColon*:     ([sS](?!egno\\s*:)|[a-rt-zA-RT-Z_])[a-zA-Z0-9_]*[ \\t]*:(?![:|}])
+SymbolColon*:     [a-zA-Z_][a-zA-Z0-9_]*[ \\t]*:(?![:|}])
 
 
 SkoarpionStartWithSig:  [{]!(?=([^!](?!![}]))*!!)
@@ -112,15 +110,8 @@ SkoarpionSep:           !!
 Deref:            !(?![!}]|=)
 Nosey:            ,
 
-DaCapo:           D\\.C\\.|Da Capo
-DalSegno:         (D\\.S\\.|Dal Segno)(\\s*:\\s*[a-zA-Z0-9_]+)? 
-Fine:             [fF]ine
-Segno*:           [sS]egno(\\s*:\\s*[a-zA-Z0-9_]+)? 
-Coda:             (\\([+]\\)|[cC]oda)(\\s*:\\s*[a-zA-Z0-9_]+)?
-#Rep*:             %+
-AlCoda:           al(la)? [cC]oda(\\s*:\\s*[a-zA-Z0-9_]+)? 
-AlSegno:          al [sS]egno(\\s*:\\s*[a-zA-Z0-9_]+)? 
-AlFine:           al [fF]ine
+Coda:             \\([+]\\)(\\s*:\\s*[a-zA-Z0-9_]+)?
+AlCoda:           al [cC]oda(\\s*:\\s*[a-zA-Z0-9_]+)? 
 
 AUGen*:           a[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
 AUGenWithArgs*:   a[A-Z][a-zA-Z0-9_]*<
@@ -129,15 +120,7 @@ KUGenWithArgs*:   k[A-Z][a-zA-Z0-9_]*<
 DUGen*:           d[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
 DUGenWithArgs*:   d[A-Z][a-zA-Z0-9_]*<
 
-
 OctaveShift*:     ~+o|o~+
-
-OttavaA:          8va|ottava (alta|sopra)|all' ottava
-OttavaB:          8vb|ottava (bassa|sotto)
-
-QuindicesimaA:    15ma|alla quindicesima
-QuindicesimaB:    15mb
-Loco:             loco
 
 # TODO: deal with \"
 String*:          \'[^']*\'

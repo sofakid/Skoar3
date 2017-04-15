@@ -28,8 +28,6 @@ public:
 class SkoarNoad {
 public:
 
-
-
     SkoarNoadAddress address;     // a list code to find the noad quickly
     SkoarNoadPtr parent;          // the parent noad
 
@@ -120,6 +118,8 @@ public:
 	// expect skoarpuscle
     SkoarpusclePtr next_skoarpuscle();
 	SkoarToke* next_toke();
+
+    SkoarNoadPtr getNoadAtOffs (size_t at_offs);
 
 	// -------------------
 	// performing the tree

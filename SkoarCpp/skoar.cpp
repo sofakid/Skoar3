@@ -233,9 +233,36 @@ void Skoar::decorate() {
         else {
             Skoarmantics::instance()->decorate(this, noad);
         }
+        auto x = noad->skoarpuscle;
+        if (x != nullptr)
+        {
+            if (is_skoarpuscle<SkoarpuscleBars> (x))
+                registerMarker (skoarpuscle_ptr<SkoarpuscleBars> (x));
+            
+            else if (is_skoarpuscle<SkoarpuscleCoda> (x))
+                registerMarker (skoarpuscle_ptr<SkoarpuscleCoda> (x));
+
+        }
     };
 
 	SkoarNoad::depth_visit(tree, f);
+}
+
+// -------
+// markers
+// -------
+void Skoar::registerMarker (SkoarpuscleBars* bar) {
+    if (bar->post_repeat)
+    {
+        markers_colon.push_back (bar->offs);
+    }
+}
+
+void Skoar::registerMarker (SkoarpuscleCoda* coda) {
+
+    markers_coda.push_back (coda->offs);
+    if (coda->label != L"")
+        markers_coda_named[coda->label] = coda->offs;
 }
 
 // ----

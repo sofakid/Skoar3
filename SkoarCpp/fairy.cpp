@@ -5,16 +5,19 @@
 #include "minstrel.hpp"
 #include "make_skoarpuscle.hpp"
 
-SkoarFairy::SkoarFairy(SkoarString nom, SkoarMinstrelPtr m) :
-    name(nom),
-    minstrel(m),
-    magic(HarmlessMagic),
-    times_seen(nullptr)
+SkoarFairy::SkoarFairy (SkoarString nom, SkoarMinstrelPtr m) :
+    name (nom),
+    minstrel (m),
+    magic (HarmlessMagic),
+    times_seen (make_shared<FairyTimesMap> ()),
+    fly_to_dest (0),
+    last_segno_seen_at (0),
+    al_fine (false)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocFairy(name);
 #endif
-    push_times_seen();
+    //push_times_seen();
 }
 
 SkoarFairy::~SkoarFairy() {
@@ -26,6 +29,7 @@ SkoarFairy::~SkoarFairy() {
 
 void SkoarFairy::fly_away() {
     i = 0;
+    fly_to_dest = 0;
     impression = nullptr;
     listy_stack.empty();
     impression_stack.clear();
@@ -159,7 +163,15 @@ SkoarInt SkoarFairy::how_many_times_have_you_seen(ESkoarpuscle::Kind kind, size_
 
 void SkoarFairy::forget_that_you_have_seen(ESkoarpuscle::Kind kind) {
     for (auto times_map : times_seen_stack) {
-        (*times_map)[kind].clear();
+        if (times_map != nullptr)
+        {
+            (*times_map)[kind].clear ();
+        }
+        else
+        {
+            throw SkoarError (L"WTF times_map is nullptr");
+        }
+
     }
 }
 
@@ -173,6 +185,32 @@ void SkoarFairy::forget_that_you_have_seen(size_t offs) {
     }
 }
 
+void SkoarFairy::on_bar (SkoarpuscleBars *skoarpuscle) {
+    // :|
+    if (skoarpuscle->pre_repeat)
+        if (how_many_times_have_you_seen (ESkoarpuscle::Bars, skoarpuscle->offs) < 2)
+            fly_to_colon ();
+
+    // |:
+    // if (skoarpuscle->post_repeat)
+}
+
+void SkoarFairy::fly_to_colon () {
+    throw SkoarNav (SkoarNav::COLON);
+}
+
+void SkoarFairy::fly_to_coda (SkoarString label) {
+    if (label == SkoarString (L""))
+    {
+        fly_to_dest = minstrel->skoar->markers_coda.front();
+    }
+    else
+    {
+        fly_to_dest = minstrel->skoar->markers_coda_named[label];
+    }
+
+    throw SkoarNav (SkoarNav::CODA);
+}
 
 void SkoarFairy::push_compare() {
     compare_stack.push_back(l_value);
@@ -221,7 +259,8 @@ SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
 
 
     if (is_skoarpuscle<SkoarpusclePair>(x)) {
-        skoarpuscle_ptr<SkoarpusclePair>(x)->assign(minstrel);
+        auto p = skoarpuscle_ptr<SkoarpusclePair> (x);
+        return p->assign (minstrel);
     };
 
     if (is_skoarpuscle<SkoarpuscleDeref>(x)) {

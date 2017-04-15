@@ -11,6 +11,7 @@
 #include "make_skoarpuscle.hpp"
 #include "operators.hpp"
 #include "skoarpuscle_structors.h"
+#include <regex>
 
 
 // --- SkoarpuscleUnknown ---------------------------------------------------------
@@ -636,15 +637,14 @@ SkoarpuscleMsgNameWithArgs::~SkoarpuscleMsgNameWithArgs() {
 // --- SkoarpuscleBars ---------------------------------------------------------
 SkoarpuscleBars::SkoarpuscleBars(SkoarToke* toke, SkoarNoadPtr noad) :
     val(toke->lexeme),
-    address(noad->address)
+    address(noad->address),
+    pre_repeat(toke->lexeme.at (0) == L':'),
+    post_repeat(toke->lexeme.at (toke->lexeme.length () - 1) == L':'),
+    offs(toke->offs)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocSkoarpuscle(L"Bars");
 #endif
-
-    auto n = val.length() - 1;
-    pre_repeat = val.at(0) == L':';
-    post_repeat = val.at(n) == L':';
 }
 
 SkoarpuscleBars::~SkoarpuscleBars() {
@@ -653,86 +653,44 @@ SkoarpuscleBars::~SkoarpuscleBars() {
 #endif
 }
 
-// --- SkoarpuscleFine ---------------------------------------------------------
-SkoarpuscleFine::SkoarpuscleFine() {
+// --- SkoarpuscleCoda ---------------------------------------------------------
+SkoarpuscleCoda::SkoarpuscleCoda (SkoarNoadPtr /*noad*/, SkoarToke* toke) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Fine");
+    SkoarMemories::o ().allocSkoarpuscle (L"Coda");
 #endif
 
-    //on_enter = [](SkoarMinstrelPtr m) {
-    /*if (m->koar->state_at("al_fine")->val == true) {
-    //debug("fine");
-    throw new SkoarNav(SkoarNav::FINE);
-    }	 */
-    //};
+    offs = toke->offs;
+
+    wregex re (L":\\s*(.+)");
+    wsmatch matches;
+
+    label = regex_search (toke->lexeme, matches, re) ? matches.str (1) : SkoarString (L"");
+
 }
 
-SkoarpuscleFine::~SkoarpuscleFine() {
+SkoarpuscleCoda::~SkoarpuscleCoda () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Fine");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Coda");
 #endif
 }
-
-// --- SkoarpuscleSegno ---------------------------------------------------------
-SkoarpuscleSegno::SkoarpuscleSegno(SkoarNoadPtr nod, SkoarToke* /*toke*/) {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Segno");
-#endif
-
-    //auto s = &toke->lexeme;
-    //auto n = s->length();
-
-    noad = nod;
-
-    // ,segno`label`
-    /*if (n > 8) {
-    s[6..n - 2].asSymbol;
-    } {
-    \segno
-    };
-    val = s[1..n].asSymbol;	 */
-
-    //on_enter = [](SkoarMinstrelPtr m) {
-    //m->koar->state_put("segno_seen", noad);
-    //};
-}
-
-SkoarpuscleSegno::~SkoarpuscleSegno() {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Segno");
-#endif
-}
-
 // --- SkoarpuscleGoto ---------------------------------------------------------
 SkoarpuscleGoto::SkoarpuscleGoto(SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocSkoarpuscle(L"Goto");
 #endif
 
+    auto it = noad->children.cbegin ();
+    auto toke = (*it)->next_toke();
 
-    /*	auto toke = noad->children[0]->next_toke();
-    auto al_x = noad->children[1];
+    if (toke != nullptr)
+    {
+        nav_cmd = SkoarNav::CODA;
 
-    nav_cmd = case {toke.isKindOf(Toke_DaCapo)} {\nav_da_capo}
-    {toke.isKindOf(Toke_DalSegno)} {\nav_segno};
+        wregex re (L":\\s*(.+)");
+        wsmatch matches;
 
-    al_fine = false;
-    if (al_x.notNil) {
-    if (al_x.next_toke.isKindOf(Toke_AlFine)) {
-    al_fine = true;
-    };
-    };
-
-    on_enter = [this](SkoarMinstrelPtr m) {
-    if (this->al_fine == true) {
-    m->koar->state_put("al_fine", true);
-    };
-
-    m->reset_colons();
-    //"goto:".post; nav_cmd.postln;
-    //nav.(nav_cmd);
-    };
-    */
+        label = regex_search (toke->lexeme, matches, re) ? matches.str (1) : SkoarString (L"");
+    }
 }
 
 SkoarpuscleGoto::~SkoarpuscleGoto() {
@@ -834,14 +792,6 @@ inline const SkoarInt decode_skoar_octave_shift(SkoarToke *toke) {
     switch (toke->kind) {
     case ESkoarToke::OctaveShift:
         return f();
-    case ESkoarToke::OttavaA:
-        return 1;
-    case ESkoarToke::OttavaB:
-        return -1;
-    case ESkoarToke::QuindicesimaA:
-        return 2;
-    case ESkoarToke::QuindicesimaB:
-        return -2;
     };
     return 0;
 }

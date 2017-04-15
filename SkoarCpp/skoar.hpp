@@ -33,6 +33,12 @@ public:
 
     SkoarInt running;
 
+    list<size_t> markers_colon;
+
+    list<size_t> markers_coda;
+    map<SkoarString, size_t> markers_coda_named;
+
+
     bool parsedOk;
     bool decoratedOk;
 
@@ -40,6 +46,8 @@ public:
     ~Skoar();
 
 	void decorate();
+    void registerMarker (SkoarpuscleBars * bars);
+    void registerMarker (SkoarpuscleCoda * coda);
 	SkoarKoarPtr get_voice(const SkoarString &k);
 	void cthulhu(SkoarNoadPtr noad);
     void cthulhu (SkoarString s);

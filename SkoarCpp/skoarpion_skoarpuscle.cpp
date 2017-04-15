@@ -232,3 +232,33 @@ void SkoarpuscleArgList::asString(wostream &out) {
     for (auto x : args_names)
         out << " :: " << x ;
 }
+
+
+
+// --- SkoarpuscleProjections ----------------------------------------------
+SkoarpuscleProjections::SkoarpuscleProjections (ListOfSkoarpionProjectionsPtr lospp) {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().allocSkoarpuscle (L"Projections");
+#endif
+    if (lospp != nullptr && lospp->size() > 0)
+        for (auto x : *lospp)
+            if (x != nullptr)
+                // todo: there will be dups, what's up?
+                map[x->name] = x;
+}
+
+SkoarpuscleProjections::~SkoarpuscleProjections () {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().deallocSkoarpuscle (L"Projections");
+#endif
+    clear ();
+}
+
+void SkoarpuscleProjections::clear ()
+{
+    map.clear ();
+}
+
+void SkoarpuscleProjections::asString (wostream &out) {
+    out << "Projections";
+}

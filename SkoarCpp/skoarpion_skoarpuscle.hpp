@@ -60,3 +60,17 @@ public:
     void asString(wostream &out) override;
 };
 
+
+// for koar->state, we don't pass these around
+class SkoarpuscleProjections : public Skoarpuscle
+{
+public:
+    map<SkoarString, SkoarpionProjectionPtr> map;
+
+    SkoarpuscleProjections (ListOfSkoarpionProjectionsPtr);
+    ~SkoarpuscleProjections () override;
+    void clear () override;
+
+    void asString (wostream &out) override;
+};
+

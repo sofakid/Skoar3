@@ -160,7 +160,7 @@ Skoarmantics::Skoarmantics() : table({
         };
     }},
 
-    {ESkoarNoad::dal_goto, SpellOfSimpleSkoarmantics {
+    {ESkoarNoad::al_goto, SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleGoto>(noad);
     }},
 

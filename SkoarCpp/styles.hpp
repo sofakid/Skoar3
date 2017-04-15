@@ -44,7 +44,7 @@ namespace SkoarStyles {
         msg,
         cthulhu,
 
-        dal_goto,
+        al_goto,
         marker,
         deref,
         ottavas,
@@ -222,8 +222,8 @@ namespace SkoarStyles {
         }
 
         template <>
-        constexpr const EStyle style<ESkoarNoad::dal_goto> (void) {
-            return EStyle::dal_goto;
+        constexpr const EStyle style<ESkoarNoad::al_goto> (void) {
+            return EStyle::al_goto;
         }
 
         template <>

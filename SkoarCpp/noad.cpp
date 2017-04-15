@@ -366,6 +366,61 @@ SkoarToke* SkoarNoad::next_toke() {
 	return children.front()->next_toke();
 }
 
+SkoarNoadPtr SkoarNoad::getNoadAtOffs (size_t at_offs) {
+    
+    if (at_offs < offs)
+    {
+        return nullptr;
+    }
+
+    if (at_offs > (offs + size))
+    {
+        return nullptr;
+    }
+
+    SkoarNoadPtr out = nullptr;
+    bool searching = true;
+    for (auto x : children)
+    {
+        if (searching == false)
+            break;
+
+        if (x->offs < at_offs)
+        {
+            out = x;
+        }
+        else if (x->offs == at_offs)
+        {
+            out = x;
+            searching = false;
+            break;
+        }
+        else // x->offs > at_offs
+        {
+            searching = false;
+            break;
+        }
+
+        SkoarNoad::inorder (x, [&](SkoarNoadPtr p) {
+            if (searching)
+                if (p->offs < at_offs)
+                {
+                    out = p;
+                }
+                else if (p->offs == at_offs)
+                {
+                    out = p;
+                    searching = false;
+                }
+                else // p->offs > at_offs
+                {
+                    searching = false;
+                }
+        });
+    }
+    return out;
+}
+
 // -------------------
 // performing the tree
 // -------------------

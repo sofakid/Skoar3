@@ -13,10 +13,7 @@ public:
 	enum ECode {
 		DONE = 0,
 		CODA,
-		DA_CAPO,
-		SEGNO,
-		COLON,
-		FINE
+		COLON
 	} code;
 
 	SkoarNav(ECode code);
@@ -49,9 +46,11 @@ public:
 	void put(SkoarString k, SkoarpusclePtr v);
 	SkoarpusclePtr at(const SkoarString &k);
 
-	void state_put(SkoarString &k, SkoarpusclePtr v);
+    void state_put (SkoarString &k, SkoarpusclePtr v);
+    void state_put (const wchar_t* k, SkoarpusclePtr v);
 	
-	SkoarpusclePtr state_at(SkoarString &k);
+    SkoarpusclePtr state_at (const wchar_t* k);
+	SkoarpusclePtr state_at (SkoarString &k);
 	
 	SkoarEventPtr event(SkoarMinstrelPtr minstrel);
 	void set_args(SkoarMinstrelPtr minstrel, 

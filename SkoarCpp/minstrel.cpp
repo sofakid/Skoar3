@@ -4,7 +4,7 @@
 SkoarMinstrel::SkoarMinstrel(
     SkoarString minstrel_name, 
     SkoarKoarPtr koar, 
-    Skoar* skoar, 
+    Skoar* const skoar, 
     const SpellOfHappening& spell) 
     :
     name(minstrel_name),
@@ -41,13 +41,12 @@ SkoarMinstrel::~SkoarMinstrel() {
     fairy = nullptr;
     koar = nullptr;
     all_voice = nullptr;
-    skoar = nullptr;
 }
 
 SkoarMinstrelPtr SkoarMinstrel::New(
     SkoarString name, 
     SkoarKoarPtr koar, 
-    Skoar* skoar, 
+    Skoar* const skoar,
     const SpellOfHappening& spell) 
 {
     auto m = make_shared<SkoarMinstrel>(name, koar, skoar, spell);
@@ -60,7 +59,7 @@ SkoarMinstrelPtr SkoarMinstrel::New(
 SkoarMinstrelPtr SkoarMinstrel::NewDebugging(
     SkoarString name, 
     SkoarKoarPtr koar,
-    Skoar* skoar, 
+    Skoar* const skoar,
     const SpellOfHappening& spell, 
     const MinstrelDebugConfig& config) 
 {
@@ -107,21 +106,10 @@ void SkoarMinstrel::EventStream(SkoarMinstrelPtr m) {
                         throw SkoarError(L"Unhandled Coda");
                         break;
 
-                    case SkoarNav::DA_CAPO:
-                        // do nothing, will enter skoarpion again
-                        break;
-
-                    case SkoarNav::SEGNO:
-                        throw SkoarError(L"Unhandled Segno");
-                        break;
-
                     case SkoarNav::COLON:
                         // do nothing, will enter skoarpion again
                         break;
 
-                    case SkoarNav::FINE:
-                        running = false;
-                        break;
                     };
 
                 }

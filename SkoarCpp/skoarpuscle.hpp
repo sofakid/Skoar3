@@ -15,6 +15,8 @@
 
 #include "skoarpuscle_types.hpp"
 
+#include "koar.hpp"
+
 class Skoarpuscle {
 public:
 
@@ -301,9 +303,12 @@ public:
 };
 
 class SkoarpuscleBars : public Skoarpuscle {
-    bool pre_repeat;
-    bool post_repeat;
+
 public:
+    const bool pre_repeat;
+    const bool post_repeat;
+    const size_t offs;
+
     const SkoarNoadAddress& address;
     const SkoarString val;
     SkoarNoadPtr noad;
@@ -394,27 +399,20 @@ public:
 
 };
 
-class SkoarpuscleSegno : public Skoarpuscle {
+class SkoarpuscleCoda : public Skoarpuscle
+{
 public:
-    SkoarNoadPtr noad;
+    size_t offs;
+    SkoarString label;
 
-    SkoarpuscleSegno(SkoarNoadPtr, SkoarToke *);
-    ~SkoarpuscleSegno() override;
+    SkoarpuscleCoda (SkoarNoadPtr, SkoarToke *);
+    ~SkoarpuscleCoda () override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString (wostream &out) override;
+    void typeAsString (wostream &out) override;
+    void valAsString (wostream &out) override;
 
-};
-
-class SkoarpuscleFine : public Skoarpuscle {
-public:
-    SkoarpuscleFine();
-    ~SkoarpuscleFine() override;
-
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void on_enter (SkoarMinstrelPtr m) override;
 
 };
 
@@ -600,8 +598,8 @@ public:
 
 class SkoarpuscleGoto : public Skoarpuscle {
 public:
-    SkoarString nav_cmd;
-    bool al_fine;
+    SkoarNav::ECode nav_cmd;
+    SkoarString label;
 
     SkoarpuscleGoto(SkoarNoadPtr);
     ~SkoarpuscleGoto() override;
@@ -609,6 +607,8 @@ public:
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
+
+    void on_enter (SkoarMinstrelPtr m);
 
 };
 
@@ -689,7 +689,7 @@ public:
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
 
-    void assign(SkoarMinstrelPtr);
+    SkoarpusclePtr assign(SkoarMinstrelPtr);
 };
 
 class SkoarpuscleExpr : public Skoarpuscle {

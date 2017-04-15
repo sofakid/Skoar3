@@ -700,36 +700,33 @@ void SkoarpuscleMsgNameWithArgs::on_enter(SkoarMinstrelPtr m) {
 // -----------------------------
 
 // --- SkoarpuscleBars ---------------------------------------------------------
-
-// todo: this is badness.
 void SkoarpuscleBars::on_enter(SkoarMinstrelPtr m) {
+
+    m->fairy->on_bar (this);
+
 	// :|
-	if (pre_repeat == true) {
-		/*auto burned = m->koar->state_at("colons_burned");
-
-        if (m->fairy->how_many_times_have_you_seen(this) < 2) {
-            nav.(\nav_colon);
+	if (pre_repeat) {
+        if (m->fairy->how_many_times_have_you_seen(ESkoarpuscle::Bars, offs) < 2) {
+            throw SkoarNav(SkoarNav::COLON);
         }
-
-		if (burned.falseAt(noad)) {
-			burned[noad] = true;
-			throw SkoarNav(SkoarNav::COLON);
-		}
-		*/
 	}
 
 	// |:
-	if (post_repeat == true) {
-		//m->koar->state_put("colon_seen", noad);
+	if (post_repeat) {
+		//m->koar->state_put(L"colon_seen", make_skoarpuscle(static_cast<SkoarInt>(offs)));
 	}
-//};
 }
 
-// --- SkoarpuscleFine ---------------------------------------------------------
-
-// --- SkoarpuscleSegno ---------------------------------------------------------
+// --- SkoarpuscleCoda ---------------------------------------------------------
+void SkoarpuscleCoda::on_enter (SkoarMinstrelPtr m)
+{
+}
 
 // --- SkoarpuscleGoto ---------------------------------------------------------
+void SkoarpuscleGoto::on_enter (SkoarMinstrelPtr m)
+{
+    m->fairy->fly_to_coda (label);
+}
 
 // --- SkoarpuscleCarrots ---------------------------------------------------------
 
@@ -762,7 +759,7 @@ void SkoarpuscleOctaveShift::on_enter(SkoarMinstrelPtr m) {
 // --- SkoarpuscleHashLevel ---------------------------------------------------------
 
 // --- SkoarpusclePair ---------------------------------------------------------
-void SkoarpusclePair::assign(SkoarMinstrelPtr m) {
+SkoarpusclePtr SkoarpusclePair::assign(SkoarMinstrelPtr m) {
     m->fairy->push_noating();
 
     /*x = if (val.isKindOf(SkoarpuscleExpr)) {
@@ -776,9 +773,11 @@ void SkoarpusclePair::assign(SkoarMinstrelPtr m) {
         x = skoarpuscle_ptr<SkoarpuscleExpr>(x)->flatten(m);
     }
 
-    SkoarOps::getInstance()->assign(m, val.second, make_shared<SkoarpuscleSymbolColon>(val.first));
+    auto out = SkoarOps::getInstance()->assign(m, x, make_shared<SkoarpuscleSymbolColon>(val.first));
 
     m->fairy->pop_noating();
+
+    return out;
 }
 
 // --- SkoarpuscleExpr ---------------------------------------------------------

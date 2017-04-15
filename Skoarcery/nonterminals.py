@@ -18,9 +18,8 @@ branch             : opt_voiced_phrases Newline
 opt_voiced_phrases : Voice phrases | phrases
 +optional_voice    : Voice | <e>
 
-
 +phrases           : phrasey phrases | <e>
-+phrasey           : Comment | marker | expr | dal_goto | beat
++phrasey           : Comment | marker | expr | al_goto | beat
 
 skoarpion          : SkoarpionStartWithSig skrp_sig skrp_suffix | SkoarpionStart skrp_suffix
 
@@ -43,12 +42,8 @@ arg_listy              : ListS arg_listy_suffix
 +moar_arg_listy_entries: ListSep moar_arg_listy_entries | Newline moar_arg_listy_entries | arg_listy_entries | <e>
 arg_expr               : SymbolName | SymbolColon expr
 
-
-marker             : Segno | Fine | coda | Bars
-coda               : Coda optional_al_coda
-optional_al_coda   : AlCoda | <e>
-dal_goto           : DaCapo al_x | DalSegno al_x
-al_x               : AlCoda | AlSegno | AlFine | <e>
+marker             : Coda | Bars
+al_goto            : AlCoda 
 
 beat               : regular_beat | exact_beat | exact_rest 
 regular_beat       : Crotchets | Quavers | Quarters | Eighths
@@ -57,7 +52,7 @@ exact_rest         : ExactRest expr Crotchets
 
 musical_keyword      : dynamic | ottavas | musical_keyword_misc
 musical_keyword_misc : Carrot
-ottavas              : OctaveShift | OttavaA | OttavaB | QuindicesimaA | QuindicesimaB | Loco
+ottavas              : OctaveShift 
 dynamic              : DynPiano | DynForte | DynSFZ | DynFP
 
 nouny            : cthulhu | meditation | conditional | loop | nouny_literal | musical_keyword | listy | deref | skoarpion

@@ -60,14 +60,25 @@ SkoarpusclePtr SkoarKoar::at(const SkoarString &k) {
     return out;
 }
 
+
+void SkoarKoar::state_put (const wchar_t* k, SkoarpusclePtr v) {
+    SkoarString s (k);
+    state_put (s, v);
+}
+
 void SkoarKoar::state_put(SkoarString &k, SkoarpusclePtr v) {
 	state_stack.back()->put(k, v);
+}
+
+SkoarpusclePtr SkoarKoar::state_at (const wchar_t* k) {
+    SkoarString s (k);
+    return state_at (s);
 }
 
 SkoarpusclePtr SkoarKoar::state_at(SkoarString &k) {
 	SkoarpusclePtr out = nullptr;
 
-	for (auto rev_it = stack.rbegin(); rev_it != stack.rend(); rev_it++) {
+	for (auto rev_it = state_stack.rbegin(); rev_it != state_stack.rend(); rev_it++) {
 		out = (*rev_it)->at(k);
 		if (out != nullptr) {
 			return out;
@@ -184,7 +195,7 @@ void SkoarKoar::push_state() {
 
 	state->put(L"colons_burned", make_shared<SkoarpuscleList>());
 	state->put(L"al_fine",       make_skoarpuscle(false));
-	//state->put(L"projections",   make_shared<SkoarpuscleProjections>(projections));
+	state->put(L"projections",   make_shared<SkoarpuscleProjections>(projections));
 
 	stack.push_back(make_shared<SkoarDic>());
 	
@@ -203,7 +214,7 @@ void SkoarKoar::do_skoarpion(
 	
 	SkoarNoadPtr subtree;
 	SkoarpionProjectionPtr projection = nullptr;
-	map<SkoarString, SkoarpionProjectionPtr> projections;
+	
 	SkoarString msg_name;
 
 	if (exec_style != EExecStyle::INLINE) {
@@ -214,19 +225,29 @@ void SkoarKoar::do_skoarpion(
 	// load arg values into their names
 	set_args(minstrel, skoarpion->arg_list, args_provided);
 
-	//projections = state_at(wstring(L"projections"));
-	if (skoarpion->name.size() > 0) {
-		projection = projections[skoarpion->name];
+	/*auto x = state_at(L"projections");
+    if (is_skoarpuscle<SkoarpuscleProjections> (x))
+    {
+        auto& projections = skoarpuscle_ptr<SkoarpuscleProjections>(x)->map;
+        if (skoarpion->name.size () > 0)
+        {
+            projection = projections[skoarpion->name];
 
-		// start a new one if we haven't seen it
-		if (projection == nullptr) {
-			projection = Skoarpion::projection(skoarpion, name);
-			projections[skoarpion->name] = projection;
-		}
-	} 
-	else {
+            // start a new one if we haven't seen it
+            if (projection == nullptr)
+            {
+                projection = Skoarpion::projection (skoarpion, name);
+                projections[skoarpion->name] = projection;
+            }
+        }
+        else
+        {
+            projection = Skoarpion::projection (skoarpion, name);
+        }
+    }
+	else {*/
 		projection = Skoarpion::projection(skoarpion, name);
-	}
+	//}
 
 	subtree = projection->proj;
 
@@ -245,67 +266,62 @@ void SkoarKoar::do_skoarpion(
 	
 }
 
-void SkoarKoar::nav_loop(
-	SkoarNoadPtr dst,
-	SkoarpionProjectionPtr projection,
-	SkoarMinstrelPtr minstrel,
+void SkoarKoar::nav_loop (
+    SkoarNoadPtr dst,
+    SkoarpionProjectionPtr projection,
+    SkoarMinstrelPtr minstrel,
     SpellOfDecency cleanup) {
 
-	auto running = true;
-	auto subtree = dst;
+    auto running = true;
+    auto subtree = dst;
 
-	while (running) {
-		try {
-			// map dst to an address relative to the projection
-			auto here = projection->map_dst(dst);
+    while (running)
+    {
+        try
+        {
+            // map dst to an address relative to the projection
+            auto here = projection->map_dst (dst);
 
-			subtree->inorder_from_here(
-				here,
-				[&](SkoarNoad* x) {
-				    x->enter_noad(minstrel);
-			    }
+            subtree->inorder_from_here (
+                here,
+                [&](SkoarNoad* x) {
+                x->enter_noad (minstrel);
+            }
             );
 
-			throw SkoarNav(SkoarNav::DONE);
-		}
-		catch (SkoarNav &nav_result) {
-			switch (nav_result.code) {
+            throw SkoarNav (SkoarNav::DONE);
+        }
+        catch (SkoarNav &nav_result)
+        {
+            switch (nav_result.code)
+            {
 
-			case SkoarNav::DONE:
-				running = false;
-				break;
+            case SkoarNav::DONE:
+                running = false;
+                break;
 
-			case SkoarNav::CODA:
-				break;
+            case SkoarNav::CODA:
+            {
+                // try to land fairy
+                auto dst_offs = minstrel->fairy->fly_to_dest;
+                dst = subtree->getNoadAtOffs (dst_offs);
+                if (dst == nullptr || dst->skoap != subtree->skoap)
+                    bubble_up_nav (nav_result, cleanup);
 
-			case SkoarNav::DA_CAPO:
-				bubble_up_nav(nav_result, cleanup);
-				break;
+                break;
+            }
+            case SkoarNav::COLON:
+                //dst = state_at(L"colon_seen");
 
-			case SkoarNav::SEGNO:
-				/*dst = state_at(L"segno_seen");
+                //if ((dst !? (_->skoap)) != subtree->skoap) {
+                //   bubble_up_nav(nav_result, cleanup);
+                //};
+                break;
 
-				if ((dst !? (_->skoap)) != subtree->skoap) {
-					bubble_up_nav(nav_result, cleanup);
-				};*/
-				break;
-
-			case SkoarNav::COLON:
-				//dst = state_at(L"colon_seen");
-
-				//if ((dst !? (_->skoap)) != subtree->skoap) {
-				//   bubble_up_nav(nav_result, cleanup);
-				//};
-				break;
-
-			case SkoarNav::FINE:
-				bubble_up_nav(nav_result, cleanup);
-				break;
-			};
-
-		}
-	}
-    cleanup();
+            }
+        }
+    }
+    cleanup ();
 }
 
 void SkoarKoar::bubble_up_nav(SkoarNav &nav, SpellOfDecency cleanup) {

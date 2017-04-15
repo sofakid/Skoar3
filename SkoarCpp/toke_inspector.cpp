@@ -188,36 +188,11 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
         noad->toke = nullptr;
     } },
 
-    { ESkoarToke::OttavaA, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleOctaveShift>(toke);
+    { ESkoarToke::Coda, SpellOfToking {
+        noad->skoarpuscle = make_shared<SkoarpuscleCoda>(noad, toke);
         noad->toke = nullptr;
     } },
-
-    { ESkoarToke::OttavaB, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleOctaveShift>(toke);
-        noad->toke = nullptr;
-    } },
-
-    { ESkoarToke::QuindicesimaA, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleOctaveShift>(toke);
-        noad->toke = nullptr;
-    } },
-
-    { ESkoarToke::QuindicesimaB, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleOctaveShift>(toke);
-        noad->toke = nullptr;
-    } },
-
-    { ESkoarToke::Segno, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleSegno>(noad, toke);
-        noad->toke = nullptr;
-    } },
-
-    { ESkoarToke::Fine, SpellOfSimpleToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleFine>();
-        noad->toke = nullptr;
-    } },
-    
+ 
     // -----------------------------------------------------------------
     { ESkoarToke::BooleanOp, SpellOfToking {
         noad->skoarpuscle = make_shared<SkoarpuscleBooleanOp>(noad, toke);
