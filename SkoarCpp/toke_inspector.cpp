@@ -54,8 +54,19 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
 
     // -----------------------------------------------------------------
     { ESkoarToke::Freq, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleFreq>(toke->lexeme);
-    noad->toke = nullptr;
+        try
+        {
+            noad->skoarpuscle = make_shared<SkoarpuscleFreq> (toke->lexeme);
+            noad->toke = nullptr;
+        }
+        catch (const std::invalid_argument& /*ia*/)
+        {
+            throw SkoarDecoratingException (L"stod - invalid arg");
+        }
+        catch (const std::out_of_range& /*oor*/)
+        {
+            throw SkoarDecoratingException (L"stod - out of range");
+        }
     } },
 
     { ESkoarToke::Int, SpellOfToking {

@@ -20,7 +20,7 @@ bool check_skoarpuscle_float(SkoarpusclePtr p, SkoarFloat v) {
         return false;
 
     // don't compare float values with equality, check if it's close.
-    auto epsilon = v * 0.0001;
+    auto epsilon = (v == 0.0 ? 1 : v) * 0.0001;
     if ((ptr->val < (v + epsilon)) && (ptr->val >(v - epsilon)))
         return true;
 
@@ -40,7 +40,7 @@ bool check_skoarpuscle_freq(SkoarpusclePtr p, SkoarFloat v) {
         return false;
 
     // don't compare float values with equality, check if it's close.
-    auto epsilon = v * 0.0001;
+    auto epsilon = (v == 0.0 ? 1 : v) * 0.0001;
     if ((ptr->val < (v + epsilon)) && (ptr->val >(v - epsilon)))
         return true;
 

@@ -150,6 +150,22 @@ TEST_CASE("Assignments", "[sanity]") {
 
 }
 
+TEST_CASE ("Ints Floats and Freqs", "[sanity]") {
+
+    SECTION ("ints and floats") {
+        SkoarString point_one_hz (L"0.1Hz");
+        run_and_expect (L"a: 400 b: 401.02) a: 0.002 b: 702 ) a: 0.1Hz b: 420.5Hz c: 2600Hz )", make_events_vec (
+            a, 400, b, 401.02, X,
+            a, 0.002, b, 702, X,
+
+            a, make_shared<SkoarpuscleFreq> (point_one_hz),
+            b, make_shared<SkoarpuscleFreq> (420.5),
+            c, make_shared<SkoarpuscleFreq> (static_cast<SkoarInt> (2600)), X
+        ));
+    }
+}
+
+
 
 TEST_CASE("Derefs", "[sanity]") {
 

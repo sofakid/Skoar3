@@ -140,7 +140,7 @@ SkoarpuscleFreq::~SkoarpuscleFreq() {
 }
 
 SkoarpuscleFreq::SkoarpuscleFreq(SkoarString lexeme) :
-    SkoarpuscleFreq(stod(lexeme.substr(0, lexeme.length() - 3))) {
+    SkoarpuscleFreq(stod(lexeme.substr(0, lexeme.length() - 2))) {
 }
 
 SkoarpuscleFreq::SkoarpuscleFreq(SkoarInt v) :
