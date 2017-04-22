@@ -81,11 +81,13 @@ public:
 
 	SkoarString asString();
 
-	// -------------------
+    void decorate_voices (SkoarKoarPtr default_voice);
+
+    // -------------------
 	// decorating the tree
 	// -------------------
-	void decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i);
-	void decorate(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i);
+    void decorate_address_zero (SkoarNoadPtr s);
+    void decorate_address (SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i);
 
 	// ----------------
 	// growing the tree
@@ -124,7 +126,6 @@ public:
 	// -------------------
 	// performing the tree
 	// -------------------
-	void enter_noad(SkoarMinstrelPtr minstrel);
     void evaluate(SkoarMinstrelPtr minstrel);
 
 	// ------------------
@@ -144,6 +145,31 @@ public:
             << L", " << noad.name;
         return out;
     }
+};
+
+class SkoarNoadite
+{
+public:
+    const SkoarString name;       // name of the nonterminal
+    const ESkoarNoad::Kind kind;
+    const SkoarStyles::EStyle style;
+
+    SkoarpusclePtr skoarpuscle;   // skoarpuscle types go here, just one.
+
+    size_t offs;
+    size_t size;
+
+    bool breakpoint;
+
+    SpellOfMinstrels on_enter;
+
+    SkoarKoarPtr voice;       // what voice to use
+
+    SkoarNoadite (SkoarNoadPtr);
+    ~SkoarNoadite ();
+
+    void enter_noad (SkoarMinstrelPtr minstrel);
+
 };
 
 

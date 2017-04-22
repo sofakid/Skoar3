@@ -392,7 +392,7 @@ SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) 
 
         if_body = Skoarpion::NewFromSubtree(skoar, if_noad);
 
-        if (x->children.size() >= 4) {
+        if (x->children.size() > 4) {
             ++child;                     // children[3]
             auto else_noad = *(++child); // children[4]
             else_body = Skoarpion::NewFromSubtree(skoar, else_noad);

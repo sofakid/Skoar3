@@ -398,39 +398,6 @@ Skoarmantics::Skoarmantics() : table({
         }
     }},
 
-    {ESkoarNoad::assignment, SpellOfSimpleSkoarmantics {
-        auto child = noad->children.begin();
-        auto op = (*child++)->toke->lexeme;
-
-        auto settable = (*child)->next_skoarpuscle();
-
-        if (op == L"=>") {
-            noad->on_enter = [=](SkoarMinstrelPtr m) {
-                auto x = m->fairy->cast_arcane_magic();
-                SkoarOps::getInstance()->assign(m, x, settable);
-                m->fairy->impress(x);
-            };
-        }
-        else if (op == L"+>") {
-            noad->on_enter = [=](SkoarMinstrelPtr m) {
-                auto x = m->fairy->impression;
-                //skoar->ops->increment(m, x, settable);
-            };
-        }
-        else if (op == L"->") {
-            noad->on_enter = [=](SkoarMinstrelPtr m) {
-                auto x = m->fairy->impression;
-                //skoar->ops->decrement(m, x, settable);
-            };
-        }
-        else if (op == L"*>") {
-            noad->on_enter = [=](SkoarMinstrelPtr m) {
-                auto x = m->fairy->impression;
-                //skoar->ops->multr(m, x, settable);
-            };
-        }
-    }},
-
     {ESkoarNoad::math, SpellOfSimpleSkoarmantics {
         auto op = noad->children.front()->skoarpuscle;
 

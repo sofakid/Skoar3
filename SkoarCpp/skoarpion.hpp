@@ -48,32 +48,18 @@ public:
 
 class SkoarpionProjection {
 public:
-    SkoarNoadPtr proj;
     const SkoarString name;
+    const SkoarString voice_name;
+    std::vector<SkoarNoadite> noadites;
 
     SkoarpionProjection(SkoarpionPtr, SkoarString);
     ~SkoarpionProjection();
 
-    /*list<SkoarInt> get_skip_to();
-    SkoarString    get_name();
-    SkoarNoadPtr   block();
-    SkoarNoadPtr   in_line();
-    SkoarNoadPtr   meditation();
-    */
-    SkoarNoadAddress map_dst(SkoarNoadPtr);
+    //SkoarNoadAddress map_dst(SkoarNoadPtr);
 
     //void draw_tree(wostringstream &stream);
 
 private:
-    SkoarNoadPtr body;
-    
-
-    SkoarNoadAddress skip_to;
-
-    // do we need these? from SkoarIteratoar
-    //list<SkoarNoadPtr> arr;
-    //size_t i;
-    //size_t n;
-
+    //SkoarNoadAddress skip_to;
 
 };

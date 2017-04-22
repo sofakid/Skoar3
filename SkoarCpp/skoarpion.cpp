@@ -79,13 +79,10 @@ void Skoarpion::init_from_skoar(Skoar* skr) {
     skoar = skr;
     
     body = SkoarNoad::NewArtificial(L"section");
+    body->voice = skr->all_voice;
 
     for (auto line : skoar->tree->children) {
         auto v = line->next_skoarpuscle();
-
-        if (is_skoarpuscle<SkoarpuscleVoice>(v)) {
-            line->voice = skoar->get_voice(skoarpuscle_ptr<SkoarpuscleVoice>(v)->val);
-        }
 
         if (line->children.size() > 0) {
             body->add_noad(line);
@@ -93,7 +90,8 @@ void Skoarpion::init_from_skoar(Skoar* skr) {
     }
 
     SkoarNoadAddress address;
-    body->decorate_zero(skoar->all_voice, body, address, 0);
+    body->decorate_voices (skoar->all_voice);
+    body->decorate_address_zero (body);
 
     n = body->size;
 }
@@ -102,19 +100,10 @@ void Skoarpion::init_from_skoar(Skoar* skr) {
 void Skoarpion::init_from_subtree(Skoar* skr, SkoarNoadPtr subtree) {
     name = L"=^.^=";
     skoar = skr;
-
     body = subtree;
-
-    for (auto line : subtree->children) {
-        auto v = line->next_skoarpuscle();
-
-        if (is_skoarpuscle<SkoarpuscleVoice>(v)) {
-            line->voice = skoar->get_voice(skoarpuscle_ptr<SkoarpuscleVoice>(v)->val);
-        }
-    }
-
     SkoarNoadAddress address;
-    body->decorate_zero(skoar->all_voice, body, address, 0);
+    body->decorate_voices (skoar->all_voice);
+    body->decorate_address_zero (body);
     n = subtree->size;
 }
 
@@ -150,15 +139,8 @@ void Skoarpion::init_from_noad(Skoar* skr, SkoarNoadPtr noad) {
 
     for (auto x : suffix->children) {
         auto process_line = [&]() {
-            auto v = line->next_skoarpuscle();
-
-            if (is_skoarpuscle<SkoarpuscleVoice>(v)) {
-                line->voice = skoar->get_voice(skoarpuscle_ptr<SkoarpuscleVoice>(v)->val);
-            }
-
-            if (line->children.size() > 0) {
+            if (line->children.size() > 0)
                 section->add_noad(line);
-            }
         };
 
         auto toke = x->toke.get();
@@ -177,22 +159,20 @@ void Skoarpion::init_from_noad(Skoar* skr, SkoarNoadPtr noad) {
             process_line();
             sections.push_back(section);
         }
-        else {
+        else
             line->add_noad(x);
-        }
     }
     suffix->children.clear ();
 
-    for (auto sec : sections) {
-        auto i = 0;
-        SkoarNoadAddress parent_address;
-        sec->decorate_zero(skoar->all_voice, sec, parent_address, i);
-    }
+    for (auto sec : sections) 
+        sec->decorate_address_zero (sec);
 
     body = sections.front(); // we only support one skoarpion section for now
     
     sections.clear();
     n = body->size;
+    body->decorate_voices (skoar->all_voice);
+
 }
 
 // this is static, need a shared_ptr to the skoarpion.
@@ -221,61 +201,65 @@ void Skoarpion::draw_tree(wostringstream &out) {
 
         auto listy = skoarpuscle_ptr<SkoarpuscleArgList>(arg_list)->args_names;
 
-        for (auto x : listy ) {
+        for (auto x : listy )
             out << x << " ";
-        }
 
         out << "\n";
     }
 
-    if (body != nullptr) {
+    if (body != nullptr)
         body->draw_tree(out);
-    }
 }
 
 // --- SkoarpionProjection ------------------------------------------------
 SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koar_name) :
-    body(nullptr),
-    proj(SkoarNoad::NewAlias(L"projection")),
-    name(skoarpion->name + SkoarString(L":") + koar_name)
+    name(skoarpion->name + SkoarString(L":") + koar_name),
+    voice_name(koar_name)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocProjection(name);
 #endif
 
-    proj->voice = skoarpion->skoar->get_voice(koar_name);
+    //proj->voice = skoarpion->skoar->get_voice(koar_name);
     //auto kids = static_cast<const list<SkoarNoadPtr>&>();
-    size_t n = skoarpion->body->children.size();
-    skip_to.reserve(n);
+    //size_t n = skoarpion->body->children.size();
+    //skip_to.reserve(n);
+    //
+    //size_t i = 0;
+    //for (; i < n; ++i)
+    //    skip_to.push_back(0);
+    //i = 0;
     
-    size_t i = 0;
-    for (; i < n; ++i)
-        skip_to.push_back(0);
-    i = 0;
-    
-    for (const SkoarNoadPtr &x : skoarpion->body->children) {
+    SkoarNoad::inorder (skoarpion->body, [&](SkoarNoadPtr x) {
         auto voice = x->voice;
-        SkoarString s;
-        if (voice == nullptr) {
-            s = L"all";
-        }
-        else {
-            s = x->voice->name;
-        }
-        if ((s == koar_name) || (s == L"all")) {
-            auto addr = &x->address;
-            auto m = addr->size();
+        SkoarString s = x->voice->name;
 
-            if (m > 0) {
+        if ((s == koar_name) || (s == L"all"))
+            noadites.emplace_back (x);
+    });
+
+    //for (const SkoarNoadPtr &x : skoarpion->body->children) {
+        /*
+        auto voice = x->voice;
+        SkoarString s = x->voice->name;
+
+        if ((s == koar_name) || (s == L"all"))
+        {
+            auto addr = &x->address;
+            auto m = addr->size ();
+
+            if (m > 0)
+            {
                 skip_to[(*addr)[m - 1]] = i;
             }
             ++i;
-            
-            proj->add_noad(x);
+
+            proj->add_noad (x);
             proj->skoap = x->skoap;
         }
-    }
-
+        */
+    //}
+    //
     // need these?
     //arr = &(proj->children);
     //i = 0;
@@ -287,7 +271,6 @@ SkoarpionProjection::~SkoarpionProjection()
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocProjection(name);
 #endif
-    proj = nullptr;
 }
 
 /*list<SkoarInt> get_skip_to();
@@ -296,6 +279,7 @@ SkoarNoadPtr   block();
 SkoarNoadPtr   in_line();
 SkoarNoadPtr   meditation();
 */
+/*
 SkoarNoadAddress SkoarpionProjection::map_dst(SkoarNoadPtr dst) {
     auto addr = dst->address;
     
@@ -307,3 +291,4 @@ SkoarNoadAddress SkoarpionProjection::map_dst(SkoarNoadPtr dst) {
     addr.push_back(skip_to[j]);
     return addr;
 }
+*/

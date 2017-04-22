@@ -11,7 +11,7 @@ src = """
 <e>:            unused
 Eof:            unused
 Whitespace:     [ \\t]*
-Newline:        [\\n\\r][\\n\\r \\t]*
+Newline:        [ \\t]*[\\n\\r][\\n\\r \\t]*
 
 True:           yes|true
 False:          no|false
@@ -19,10 +19,10 @@ Cat:            =\\^\\.\\^=
 
 Voice*:         \\.(([a-zA-Z_][a-zA-Z0-9_]*)?|\\.+)
 
-Comment:        <[?](.|[\\n\\r])*?[?]>
+Comment:        ;.*
 
 # careful not to steal from floats
-Int*:           (-)?(0|[1-9][0-9]*)(?![0-9]*Hz|\\.[0-9]|:[0-9])
+Int*:           (-)?(0|[1-9][0-9]*)(?![0-9]*Hz|[0-9]*\\.[0-9]|:[0-9])
 Float*:         (-)?(0|[1-9][0-9]*)\\.[0-9]+(?!Hz|:[0-9])
 
 Freq*:          (0|[1-9][0-9]*)(\\.[0-9]+)?Hz
@@ -71,7 +71,6 @@ DynForte*:        m(ezzo)?f(orte)?|f+orte|ff+(?![a-oq-zA-Z0-9_])
 DynSFZ:           sfz(?![a-oq-zA-Z0-9_])
 DynFP:            fp(?![a-oq-zA-Z0-9_])
 
-AssOp:            =>|[+]>|->|[*]>
 MsgOp:            \\.(?![)\\]])
 MathOp:           [+*\\-/%](?!>) 
 
@@ -79,17 +78,17 @@ NamedNoat*:       (?:_?)(?:[a-g](?![ac-zA-Z_]))(#|b)?(?![ \\t]*:(?![}:|]))
 Choard*:          ~*[ABCDEFG](?![.ce-hj-ln-rt-zA-LN-Z]|a[l ])(#|b)?([Mm0-9]|sus|dim|aug|dom)*~*
 
 BooleanOp*:       ==|!=|<=|>=|and|or|xor
-CondS:            [{][?][\\n]*
+CondS:            [{][?]
 CondIf:           [?][?](?![}])
 CondE:            [?][}]
 Semicolon:        ;
 
-MeditationS:      [{]=[\\n]*
+MeditationS:      [{]=
 MeditationE:      =[}]
 
-LoopS:            [{]:[\\n]*
+LoopS:            [{]:
 LoopE:            :[}]
-LoopSep:          ::[\\n]*(?![|])
+LoopSep:          ::(?![|])
 
 Fairy:            [$]
 
@@ -97,7 +96,7 @@ Fairy:            [$]
 MsgName*:         [a-zA-Z_][a-zA-Z0-9_]*(?!<)
 MsgNameWithArgs*: [a-zA-Z_][a-zA-Z0-9_]*<
 
-Symbol*:          [\\\\@][a-zA-Z0-9_][a-zA-Z0-9_]*
+Symbol*:          @[a-zA-Z0-9_][a-zA-Z0-9_]*
 SymbolName*:      [a-zA-Z0-9_][a-zA-Z0-9_]*(?![[a-zA-Z0-9_fi \\t]*:)
 SymbolColon*:     [a-zA-Z_][a-zA-Z0-9_]*[ \\t]*:(?![:|}])
 

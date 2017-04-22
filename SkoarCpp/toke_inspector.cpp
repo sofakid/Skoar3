@@ -20,8 +20,9 @@ SkoarTokeInspector* SkoarTokeInspector::instance() {
     return inspector;
 }
 
-#define SpellOfToking [](SkoarToke* toke, SkoarNoadPtr noad)
-#define SpellOfSimpleToking [](SkoarToke* /*toke*/, SkoarNoadPtr noad)
+#define SpellOfSimpleToking [](Skoar*, SkoarNoadPtr noad, SkoarToke*)
+#define SpellOfToking [](Skoar*, SkoarNoadPtr noad, SkoarToke* toke)
+#define SpellOfTokingItAll [](Skoar* skoar, SkoarNoadPtr noad, SkoarToke* toke)
 
 // ==============
 // toke_inspector
@@ -199,9 +200,11 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
         noad->toke = nullptr;
     } },
 
-    { ESkoarToke::Voice, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleVoice>(toke);
+    { ESkoarToke::Voice, SpellOfTokingItAll {
+        shared_ptr<SkoarpuscleVoice> v = make_shared<SkoarpuscleVoice> (toke);
+        noad->skoarpuscle = v;
         noad->toke = nullptr;
+        noad->voice = skoar->get_voice (v->val);
     } },
 
     { ESkoarToke::MsgName, SpellOfToking {
@@ -292,9 +295,9 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
 }) {
 }
 
-void SkoarTokeInspector::decorate(SkoarToke* toke, SkoarNoadPtr noad) {
+void SkoarTokeInspector::decorate(Skoar* skoar, SkoarNoadPtr noad, SkoarToke* toke) {
     // it is a pair<key, value>
     auto it = table.find(toke->kind);
     if (it != table.end())
-        (it->second)(toke, noad);
+        (it->second)(skoar, noad, toke);
 }

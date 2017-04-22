@@ -21,7 +21,6 @@ namespace SkoarStyles {
         
         HashLevel,
         Bars,
-        AssOp,
         Carrot,
         
         Voice,
@@ -119,11 +118,6 @@ namespace SkoarStyles {
         template <>
         constexpr const EStyle style<ESkoarToke::Bars>(void) {
             return EStyle::Bars;
-        }
-
-        template <>
-        constexpr const EStyle style<ESkoarToke::AssOp>(void) {
-            return EStyle::AssOp;
         }
 
         template <>

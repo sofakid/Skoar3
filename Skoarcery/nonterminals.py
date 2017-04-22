@@ -15,11 +15,14 @@ skoar              : branches
 +branches          : branch branches | <e>
 branch             : opt_voiced_phrases Newline
 
-opt_voiced_phrases : Voice phrases | phrases
-+optional_voice    : Voice | <e>
+opt_voiced_phrases : optional_voice phrases
++optional_voice     : Voice | <e>
 
 +phrases           : phrasey phrases | <e>
 +phrasey           : Comment | marker | expr | al_goto | beat
+
++phrasishes        : phrasish phrasishes | <e>
++phrasish          : Comment | marker | expr | al_goto | beat | Newline optional_voice
 
 skoarpion          : SkoarpionStartWithSig skrp_sig skrp_suffix | SkoarpionStart skrp_suffix
 
@@ -64,14 +67,12 @@ deref            : Deref deref_prime
 +deref_prime     : MsgNameWithArgs listy_suffix | MsgName
 
 expr             : SymbolColon expr | msgable expr_prime
-expr_prime       : assignment expr_prime | math expr_prime | boolean | times | <e> 
+expr_prime       : math expr_prime | boolean | times | <e> 
 
 times            : Times
 boolean          : BooleanOp expr
 boolean_expr     : expr
 math*            : MathOp msgable
-assignment       : AssOp settable
-+settable        : Symbol | listy | Quarters | Eighths | Fairy
 
 msgable          : nouny msg_chain_node
 +msg_chain_node  : MsgOp msg msg_chain_node | <e>
@@ -89,7 +90,7 @@ cond_if          : optional_voice boolean_expr CondIf if_body cond_else
 if_body          : phrases
 
 loop             : LoopS loop_body loop_condition LoopE
-loop_body        : phrases
+loop_body        : phrasishes
 loop_condition   : LoopSep boolean_expr | <e>
 
 meditation       : MeditationS skrp_lines MeditationE

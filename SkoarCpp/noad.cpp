@@ -106,47 +106,48 @@ SkoarString SkoarNoad::asString() {
 // -------------------
 // decorating the tree
 // -------------------
-void SkoarNoad::decorate_zero(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &/*parent_address*/, SkoarInt i) {
+void SkoarNoad::decorate_voices (SkoarKoarPtr default_voice) {
+    SkoarKoarPtr current_voice = default_voice;
 
-	if (voice == nullptr) {
-		voice = v;
+    auto f = [&](SkoarNoad* noad) {
+        auto t = noad->toke.get ();
+        if (t != nullptr && t->kind == ESkoarToke::Newline)
+            current_voice = default_voice;
 
-	}
-	else {
-		// the voice has changed, this is what the children get
-		v = voice;
-	}
+        if (noad->voice != nullptr)
+            current_voice = noad->voice;
+        else
+            noad->voice = current_voice;
 
-    // decorate_zero starts with an empty address
+    };
+
+    inorder (f);
+}
+
+void SkoarNoad::decorate_address_zero (SkoarNoadPtr s) {
+
+    // decorate_address_zero starts with an empty address
 	address.clear();
 	skoap = s;
 
-	i = 0;
+	SkoarInt i = 0;
 	for (auto y : children) {
-		y->decorate(v, s, address, i);
+		y->decorate_address (s, address, i);
 		++i;
 	}
 
 }
 
-void SkoarNoad::decorate(SkoarKoarPtr v, SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i) {
+void SkoarNoad::decorate_address (SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i) {
 
-	if (voice == nullptr) {
-		voice = v;
-	}
-	else {
-		// the voice has changed, this is what the children get
-		v = voice;
-	}
-
-    // decorate starts with an existing address
+    // decorate_address starts with an existing address
     address = parent_address;
 	address.emplace(address.begin(), i);
 	skoap = s;
 
 	i = 0;
 	for (auto y : children) {
-		y->decorate(v, s, address, i);
+		y->decorate_address (s, address, i);
 		i = i + 1;
 	}
 
@@ -424,24 +425,10 @@ SkoarNoadPtr SkoarNoad::getNoadAtOffs (size_t at_offs) {
 // -------------------
 // performing the tree
 // -------------------
-void SkoarNoad::enter_noad(SkoarMinstrelPtr minstrel) {
-
-    if (on_enter) {
-        minstrel->before_entering_noad(minstrel, this);
-        on_enter(minstrel);
-        minstrel->after_entering_noad(minstrel, this);
-    }
-
-    if (skoarpuscle != nullptr) {
-        minstrel->before_entering_skoarpuscle(minstrel, skoarpuscle);
-        skoarpuscle->on_enter(minstrel);
-        minstrel->after_entering_skoarpuscle(minstrel, skoarpuscle);
-    }
-}
 
 void SkoarNoad::evaluate(SkoarMinstrelPtr minstrel) {
-    inorder([=](SkoarNoad* x) {
-        x->enter_noad(minstrel); 
+    inorder([=](SkoarNoad* /*x*/) {
+        //x->enter_noad(minstrel); 
     });
 }
 
@@ -507,4 +494,44 @@ ListOfSkoarpusclesPtr SkoarNoad::collect_skoarpuscles(int j) {
 }
 
 
+// --- SkoarNoadite --------------------------------------------------------------
 
+
+SkoarNoadite::SkoarNoadite (SkoarNoadPtr x) :
+    name(x->name),
+    kind(x->kind),
+    style(x->style),
+    skoarpuscle(x->skoarpuscle),
+    offs(x->offs),
+    size(x->size),
+    breakpoint(x->breakpoint),
+    on_enter(x->on_enter),
+    voice(x->voice)
+{
+}
+
+SkoarNoadite::~SkoarNoadite ()
+{
+    skoarpuscle = nullptr;
+    on_enter = nullptr;
+    offs = 0;
+    size = 0;
+    voice = nullptr;
+}
+
+void SkoarNoadite::enter_noad (SkoarMinstrelPtr minstrel) {
+
+    if (on_enter)
+    {
+        minstrel->before_entering_noad (minstrel, this);
+        on_enter (minstrel);
+        minstrel->after_entering_noad (minstrel, this);
+    }
+
+    if (skoarpuscle != nullptr)
+    {
+        minstrel->before_entering_skoarpuscle (minstrel, skoarpuscle);
+        skoarpuscle->on_enter (minstrel);
+        minstrel->after_entering_skoarpuscle (minstrel, skoarpuscle);
+    }
+}

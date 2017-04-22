@@ -13,9 +13,7 @@
 #include "styles.hpp"
 #include "toke_inspector.hpp"
 #include "minstrel.hpp"
-
 #include <ctime>
-
 #include "memories.hpp"
 
 
@@ -228,7 +226,7 @@ void Skoar::decorate() {
     auto f = [&](SkoarNoadPtr noad) {
         auto t = noad->toke.get();
         if (t != nullptr) {
-            SkoarTokeInspector::instance()->decorate(t, noad);
+            SkoarTokeInspector::instance()->decorate(this, noad, t);
         }
         else {
             Skoarmantics::instance()->decorate(this, noad);
@@ -247,6 +245,7 @@ void Skoar::decorate() {
 
 	SkoarNoad::depth_visit(tree, f);
 }
+
 
 // -------
 // markers
@@ -312,7 +311,7 @@ void Skoar::draw_skoarpions() {
 			auto koar_name = pairs.first;
 			auto projection = Skoarpion::projection(x, koar_name);
 
-            projection->proj->draw_tree(stream);
+            //projection->proj->draw_tree(stream);
             stream << "\n";
         }
 	}

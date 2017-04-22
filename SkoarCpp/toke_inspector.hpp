@@ -6,13 +6,11 @@
 
 class SkoarTokeInspector {
 public:
-    
     static void init();
     static SkoarTokeInspector* instance();
-
+    SkoarTokeInspector ();
+    
     const map<ESkoarToke::Kind, SpellOfTokeyDecoration> table;
 
-    SkoarTokeInspector();
-
-    void decorate(SkoarToke* toke, SkoarNoadPtr noad);
+    void decorate (Skoar* skoar, SkoarNoadPtr noad, SkoarToke* toke);
 };

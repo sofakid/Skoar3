@@ -135,10 +135,10 @@ void SkoarMinstrel::happen(SkoarEventPtr p) {
 }
 
 
-void SkoarMinstrel::before_entering_noad(SkoarMinstrelPtr, SkoarNoad*) {
+void SkoarMinstrel::before_entering_noad(SkoarMinstrelPtr, SkoarNoadite*) {
 }
 
-void SkoarMinstrel::after_entering_noad(SkoarMinstrelPtr, SkoarNoad*) {
+void SkoarMinstrel::after_entering_noad(SkoarMinstrelPtr, SkoarNoadite*) {
 }
 
 void SkoarMinstrel::before_entering_skoarpuscle(SkoarMinstrelPtr, SkoarpusclePtr) {
@@ -216,11 +216,11 @@ DebuggingMinstrel::~DebuggingMinstrel() {
 }
 
 
-void DebuggingMinstrel::before_entering_noad(SkoarMinstrelPtr m, SkoarNoad* noad) {
+void DebuggingMinstrel::before_entering_noad(SkoarMinstrelPtr m, SkoarNoadite* noad) {
     before_entering_noad_spell(m, noad);
 }
 
-void DebuggingMinstrel::after_entering_noad(SkoarMinstrelPtr m, SkoarNoad* noad) {
+void DebuggingMinstrel::after_entering_noad(SkoarMinstrelPtr m, SkoarNoadite* noad) {
     after_entering_noad_spell(m, noad);
 }
 

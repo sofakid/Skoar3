@@ -65,7 +65,6 @@ public:
 		SkoarpusclePtr args_provided);
 
 	void nav_loop(
-		SkoarNoadPtr dst, 
 		SkoarpionProjectionPtr projection, 
 		SkoarMinstrelPtr minstrel,
         SpellOfDecency cleanup);
