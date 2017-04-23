@@ -47,6 +47,8 @@ typedef shared_ptr<ListOfSkoarEvents> ListOfSkoarEventsPtr;
 typedef vector<SkoarEventPtr> VectorOfSkoarEvents;
 typedef shared_ptr<VectorOfSkoarEvents> VectorOfSkoarEventsPtr;
 
+typedef vector<SkoarNoadite> VectorOfNoadites;
+
 typedef list<SkoarpusclePtr> ListOfSkoarpuscles;
 typedef shared_ptr<ListOfSkoarpuscles> ListOfSkoarpusclesPtr;
 

@@ -35,7 +35,7 @@ public:
 
 	const SkoarString name;       // name of the nonterminal
 	const ESkoarNoad::Kind kind;
-    const SkoarStyles::EStyle style;
+    SkoarStyles::EStyle style;
 
 	SkoarpusclePtr skoarpuscle;   // skoarpuscle types go here, just one.
 
@@ -60,7 +60,7 @@ public:
     //    kind(ESkoarNoad::unknown),
     //    style(SkoarStyles::EStyle::nostyle);
 
-    SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg);
+    SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, SkoarStyles::EStyle styleArg);
     ~SkoarNoad();
 
     // can't figure out how to do this as a constructor..

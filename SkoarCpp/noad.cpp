@@ -16,7 +16,7 @@
 // The Parse Tree - SkoarNoad
 // ==========================
 
-SkoarNoad::SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, const SkoarStyles::EStyle styleArg) :
+SkoarNoad::SkoarNoad(const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESkoarNoad::Kind kindArg, SkoarStyles::EStyle styleArg) :
     parent(parentArg),
     name(nameArg),
     kind(kindArg),
@@ -69,14 +69,13 @@ SkoarNoad::~SkoarNoad() {
 }
 
 void SkoarNoad::clear() {
-    if (kind == ESkoarNoad::alias) {
+    if (kind == ESkoarNoad::alias)
         // this one just erases the children references
         children.clear();
-    } 
-    else {
+    else
         // this one erases the entire subtree
         clear_children();
-    }
+    
     clear_values();
 }
 
@@ -107,7 +106,7 @@ SkoarString SkoarNoad::asString() {
 // decorating the tree
 // -------------------
 void SkoarNoad::decorate_voices (SkoarKoarPtr default_voice) {
-    SkoarKoarPtr current_voice = default_voice;
+    SkoarKoarPtr current_voice (default_voice);
 
     auto f = [&](SkoarNoad* noad) {
         auto t = noad->toke.get ();
@@ -150,7 +149,6 @@ void SkoarNoad::decorate_address (SkoarNoadPtr s, SkoarNoadAddress &parent_addre
 		y->decorate_address (s, address, i);
 		i = i + 1;
 	}
-
 }
 
 // ----------------
@@ -169,17 +167,12 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
         return;
 
     wostringstream out;
-
 	SkoarString s = SkoarString(tab * 2, L' ');
 
-	//delete tabs;
-
-	if (voice != nullptr) {
+	if (voice != nullptr) 
 		out << voice->name + L":" << s;
-	}
-	else {
+	else 
 		out << L" novoice :" << s;
-	}
 
     out << name;
 	if (skoarpuscle != nullptr) {
@@ -189,66 +182,29 @@ void SkoarNoad::log_tree(ISkoarLog *log, int tab)	{
 
 	log->i(out.str());
 
-	for (auto x : children) {
+	for (auto x : children)
 		x->log_tree(log, tab + 1);
-	}
 
 }
 
 void SkoarNoad::draw_tree(wostringstream &out, int tab)	{
  
 	SkoarString s = SkoarString(tab * 2, L' ');
-	
-	//delete tabs;
 
-	if (voice != nullptr) {
+	if (voice != nullptr)
 		out << voice->name << L":" << s;
-	}
-	else {
+	else
         out << L" novoice :" << s;
-	}
 
     out << name;
 
-	if (skoarpuscle != nullptr) {
+	if (skoarpuscle != nullptr)
         out << " - " << *skoarpuscle;
-	}
+    
     out << L"\n";
 
-	for (auto x : children) {
+	for (auto x : children)
 		x->draw_tree(out, tab + 1);
-	}
-
-	//SkoarString sa = skoap->asString() + ":";
-	//stirng *sv;
-
-	/*address.reverseDo{
-	| x |
-	sa = sa ++ x.asString++ ";";
-	};
-
-	sv = if (voice.notNil) {
-	voice.name.asString.padLeft(n)++ ":"
-	} {
-	":".padLeft(n + 1)
-	};
-
-	s = sa.padRight(n) ++sv++ " ".padLeft(tab) ++name;
-
-	if (skoarpuscle.notNil) {
-	s = s++ ": " ++skoarpuscle.val;
-	};
-
-	s = s++ "\n";
-	children.do {
-	| x |
-	s = if (x.isKindOf(SkoarNoad)) {
-	s ++ x.draw_tree(tab + 1)
-	} {
-	s++ " ".padLeft(tab + 1) ++x.class.asString++ "\n"
-	};
-	};
-	*/
 }
 
 
@@ -348,9 +304,8 @@ SkoarpusclePtr SkoarNoad::next_skoarpuscle() {
 
 	for (auto child : children) {
 		auto x = child->next_skoarpuscle();
-		if (x != nullptr) {
+		if (x != nullptr)
 			return x;
-		}
 	}
 
 	return nullptr;
@@ -370,14 +325,10 @@ SkoarToke* SkoarNoad::next_toke() {
 SkoarNoadPtr SkoarNoad::getNoadAtOffs (size_t at_offs) {
     
     if (at_offs < offs)
-    {
         return nullptr;
-    }
 
     if (at_offs > (offs + size))
-    {
         return nullptr;
-    }
 
     SkoarNoadPtr out = nullptr;
     bool searching = true;
@@ -387,9 +338,7 @@ SkoarNoadPtr SkoarNoad::getNoadAtOffs (size_t at_offs) {
             break;
 
         if (x->offs < at_offs)
-        {
             out = x;
-        }
         else if (x->offs == at_offs)
         {
             out = x;
@@ -404,19 +353,18 @@ SkoarNoadPtr SkoarNoad::getNoadAtOffs (size_t at_offs) {
 
         SkoarNoad::inorder (x, [&](SkoarNoadPtr p) {
             if (searching)
+            {
                 if (p->offs < at_offs)
-                {
                     out = p;
-                }
+                
                 else if (p->offs == at_offs)
                 {
                     out = p;
                     searching = false;
                 }
                 else // p->offs > at_offs
-                {
                     searching = false;
-                }
+            }
         });
     }
     return out;
@@ -475,21 +423,20 @@ void SkoarNoad::match(SkoarNoadPtr p, list<ESkoarToke::Kind>& desires, SpellOfNo
 ListOfSkoarpusclesPtr SkoarNoad::collect_skoarpuscles(int j) {
     ListOfSkoarpusclesPtr results = make_shared<ListOfSkoarpuscles>();
 
-    if (j == 0) {
+    if (j == 0)
         if (skoarpuscle != nullptr)
             results->push_back(skoarpuscle);
-    }
 
     auto child = children.cbegin();
     for (int i = 0; i < j; ++i)
         ++child;
 
-    while (j++ < children.size()) {
+    while (j++ < children.size())
         (*(child++))->inorder([=](SkoarNoad *noad) {
             if (noad->skoarpuscle != nullptr)
                 results->push_back(noad->skoarpuscle);
         });
-    }
+
     return results;
 }
 

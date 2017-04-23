@@ -231,11 +231,11 @@ SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koa
     //i = 0;
     
     SkoarNoad::inorder (skoarpion->body, [&](SkoarNoadPtr x) {
-        auto voice = x->voice;
-        SkoarString s = x->voice->name;
+        SkoarString& s (x->voice->name);
 
-        if ((s == koar_name) || (s == L"all"))
-            noadites.emplace_back (x);
+        if (x->on_enter != nullptr || x->skoarpuscle != nullptr)
+            if ((s == koar_name) || (s == L"all"))
+                noadites.emplace_back (x);
     });
 
     //for (const SkoarNoadPtr &x : skoarpion->body->children) {
