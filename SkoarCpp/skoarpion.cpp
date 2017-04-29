@@ -230,6 +230,9 @@ SkoarpionProjection::SkoarpionProjection(SkoarpionPtr skoarpion, SkoarString koa
     //    skip_to.push_back(0);
     //i = 0;
     
+    if (skoarpion->body == nullptr)
+        return;
+
     SkoarNoad::inorder (skoarpion->body, [&](SkoarNoadPtr x) {
         SkoarString& s (x->voice->name);
 

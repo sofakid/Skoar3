@@ -51,7 +51,20 @@ SkoarMinstrelPtr SkoarMinstrel::New(
 {
     auto m = make_shared<SkoarMinstrel>(name, koar, skoar, spell);
     m->fairy = make_shared<SkoarFairy>(L"$" + name, m);
-    SkoarMinstrel::EventStream(m);
+    SkoarMinstrel::ready_stream (m);
+    return m;
+}
+
+SkoarMinstrelPtr SkoarMinstrel::NewForSkoarpion (
+    SkoarString name, 
+    SkoarKoarPtr koar, 
+    Skoar* const skoar, 
+    SkoarpionPtr skoarpion, 
+    const SpellOfHappening& spell)
+{
+    auto m = make_shared<SkoarMinstrel> (name, koar, skoar, spell);
+    m->fairy = make_shared<SkoarFairy> (L"$" + name, m);
+    SkoarMinstrel::ready_skoarpion (m, skoarpion);
     return m;
 }
 
@@ -65,15 +78,31 @@ SkoarMinstrelPtr SkoarMinstrel::NewDebugging(
 {
     auto m = make_shared<DebuggingMinstrel>(name, koar, skoar, spell, config);
     m->fairy = make_shared<SkoarFairy>(L"$" + name, m);
-    SkoarMinstrel::EventStream(m);
+    SkoarMinstrel::ready_stream (m);
     return m;
 }
+
+
+SkoarMinstrelPtr SkoarMinstrel::NewDebuggingForSkoarpion (
+    SkoarString name,
+    SkoarKoarPtr koar,
+    Skoar* const skoar,
+    SkoarpionPtr skoarpion,
+    const SpellOfHappening& spell,
+    const MinstrelDebugConfig& config)
+{
+    auto m = make_shared<DebuggingMinstrel> (name, koar, skoar, spell, config);
+    m->fairy = make_shared<SkoarFairy> (L"$" + name, m);
+    SkoarMinstrel::ready_skoarpion (m, skoarpion);
+    return m;
+}
+
 
 void SkoarMinstrel::start() {
     f();
 }
 
-void SkoarMinstrel::EventStream(SkoarMinstrelPtr m) {
+void SkoarMinstrel::ready_stream(SkoarMinstrelPtr m) {
     
     if (m->skoar == nullptr)
         return;
@@ -83,48 +112,57 @@ void SkoarMinstrel::EventStream(SkoarMinstrelPtr m) {
         return;
 
     auto x = tree->next_skoarpuscle();
-    if (is_skoarpuscle<SkoarpuscleSkoarpion>(x)) {
-        auto skoarpion = skoarpuscle_ptr<SkoarpuscleSkoarpion>(x)->val;
-
-        m->f = [=]() {
-            auto running = true;
-
-            while (running) {
-                try {
-                    m->koar->do_skoarpion(skoarpion, m, SkoarKoar::EExecStyle::NORMAL, nullptr);
-
-                    throw SkoarNav(SkoarNav::DONE);
-                }
-                catch (SkoarNav &nav_result) {
-                    switch (nav_result.code) {
-
-                    case SkoarNav::DONE:
-                        running = false;
-                        break;
-
-                    case SkoarNav::CODA:
-                        throw SkoarError(L"Unhandled Coda");
-                        break;
-
-                    case SkoarNav::COLON:
-                        // do nothing, will enter skoarpion again
-                        break;
-
-                    };
-
-                }
-            }
-
-            // todo: uncomment when lute exists
-            //if (m->fairy->lute != nullptr) {
-            //    m->fairy->lute->flush_everything();
-            //}
-
-            m->skoar->one_less_running();
-        };
-    }
+    if (is_skoarpuscle<SkoarpuscleSkoarpion>(x))
+        ready_skoarpion (m, skoarpuscle_ptr<SkoarpuscleSkoarpion> (x)->val);
 }
 
+
+void SkoarMinstrel::ready_skoarpion (SkoarMinstrelPtr m, SkoarpionPtr skoarpion) {
+    m->f = [=]() {
+        auto running = true;
+
+        while (running)
+        {
+            try
+            {
+                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, nullptr);
+                throw SkoarNav (SkoarNav::DONE);
+            }
+            catch (SkoarNav &nav_result)
+            {
+                switch (nav_result.code)
+                {
+
+                case SkoarNav::DONE:
+                    running = false;
+                    break;
+
+                case SkoarNav::CODA:
+                    throw SkoarError (L"Unhandled Coda");
+                    break;
+
+                case SkoarNav::COLON:
+                    // do nothing, will enter skoarpion again
+                    break;
+
+                };
+
+            }
+        }
+
+        // todo: uncomment when lute exists
+        //if (m->fairy->lute != nullptr) {
+        //    m->fairy->lute->flush_everything();
+        //}
+
+        m->done ();
+    };
+}
+
+void SkoarMinstrel::done () {
+    skoar->one_less_running ();
+    exiting ();
+}
 void SkoarMinstrel::reset_colons() {
     fairy->forget_that_you_have_seen(ESkoarpuscle::Bars);
     //koar->state_put(L"colons_burned", make_shared<SkoarDic>());
@@ -151,6 +189,9 @@ void SkoarMinstrel::before_entering_skoarpion(SkoarMinstrelPtr, SkoarpionPtr) {
 }
 
 void SkoarMinstrel::after_entering_skoarpion(SkoarMinstrelPtr, SkoarpionPtr) {
+}
+
+void SkoarMinstrel::exiting () {
 }
 
 
@@ -180,14 +221,16 @@ MinstrelDebugConfig::MinstrelDebugConfig(
     const SpellOfDebuggingSkoarpuscles& before_entering_skoarpuscle_spell,
     const SpellOfDebuggingSkoarpuscles& after_entering_skoarpuscle_spell,
     const SpellOfDebuggingSkoarpions& before_entering_skoarpion_spell,
-    const SpellOfDebuggingSkoarpions& after_entering_skoarpion_spell
+    const SpellOfDebuggingSkoarpions& after_entering_skoarpion_spell,
+    const SpellOfDebuggingExiting& exiting_spell
 ) :
     before_entering_noad(before_entering_noad_spell),
     after_entering_noad(after_entering_noad_spell),
     before_entering_skoarpuscle(before_entering_skoarpuscle_spell),
     after_entering_skoarpuscle(after_entering_skoarpuscle_spell),
     before_entering_skoarpion(before_entering_skoarpion_spell),
-    after_entering_skoarpion(after_entering_skoarpion_spell)
+    after_entering_skoarpion(after_entering_skoarpion_spell),
+    exiting(exiting_spell)
 {
 }
 
@@ -208,7 +251,9 @@ DebuggingMinstrel::DebuggingMinstrel(
     after_entering_skoarpuscle_spell(config.after_entering_skoarpuscle),
     
     before_entering_skoarpion_spell(config.before_entering_skoarpion),
-    after_entering_skoarpion_spell(config.after_entering_skoarpion)
+    after_entering_skoarpion_spell(config.after_entering_skoarpion),
+
+    exiting_spell(config.exiting)
 {
 }
 
@@ -238,4 +283,8 @@ void DebuggingMinstrel::before_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionP
 
 void DebuggingMinstrel::after_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionPtr skoarpion) {
     after_entering_skoarpion_spell(m, skoarpion);
+}
+
+void DebuggingMinstrel::exiting () {
+    exiting_spell ();
 }

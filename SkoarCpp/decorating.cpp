@@ -95,7 +95,7 @@ Skoarmantics::Skoarmantics() : table({
 
         noad->skoarpuscle = x;
 
-        end_noad->on_enter = [&](SkoarMinstrelPtr m) {
+        end_noad->on_enter = [=](SkoarMinstrelPtr m) {
             auto l_value = m->fairy->l_value;
             auto imp = m->fairy->impression;
 

@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-#include "skoarpuscle.hpp"
+#include "all_skoarpuscles.hpp"
 #include "exception.hpp"
 
 SkoarDic::SkoarDic() {
@@ -65,7 +65,17 @@ void SkoarEvent::from(SkoarDicPtr dic) {
 
 	for (auto pair : src) {
 		auto key = pair.first;
-		auto skoarpuscle = pair.second;
+        if (key == SkoarString (L"num_impression"))
+            continue;
+        if (key == SkoarString (L"dyn_impression"))
+            continue;
+        if (key == SkoarString (L"sym_impression"))
+            continue;
+
+        auto skoarpuscle = pair.second;
+        if (is_skoarpuscle<SkoarpuscleSkoarpion>(skoarpuscle))
+            continue;
+
 		table[key] = skoarpuscle;
 	}
 }

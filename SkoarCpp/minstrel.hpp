@@ -14,7 +14,8 @@ struct MinstrelDebugConfig {
         const SpellOfDebuggingSkoarpuscles& before_entering_skoarpuscle_spell,
         const SpellOfDebuggingSkoarpuscles& after_entering_skoarpuscle_spell,
         const SpellOfDebuggingSkoarpions& before_entering_skoarpion_spell,
-        const SpellOfDebuggingSkoarpions& after_entering_skoarpion_spell
+        const SpellOfDebuggingSkoarpions& after_entering_skoarpion_spell,
+        const SpellOfDebuggingExiting& exiting_spell
         );
 
     const SpellOfDebuggingNoads& before_entering_noad;
@@ -23,6 +24,8 @@ struct MinstrelDebugConfig {
     const SpellOfDebuggingSkoarpuscles& after_entering_skoarpuscle;
     const SpellOfDebuggingSkoarpions& before_entering_skoarpion;
     const SpellOfDebuggingSkoarpions& after_entering_skoarpion;
+    const SpellOfDebuggingExiting& exiting;
+
 
 };
 
@@ -50,11 +53,16 @@ public:
     virtual ~SkoarMinstrel();
 
     // create and initialize minstrel, return a shared_ptr
-    static SkoarMinstrelPtr New(SkoarString name, SkoarKoarPtr koar, Skoar* const skoar, const SpellOfHappening& happenSpell);
+    static SkoarMinstrelPtr New (SkoarString name, SkoarKoarPtr koar, Skoar* const skoar, const SpellOfHappening& happenSpell);
+    static SkoarMinstrelPtr NewForSkoarpion (SkoarString name, SkoarKoarPtr koar, Skoar* const skoar, SkoarpionPtr skoarpion, const SpellOfHappening& happenSpell);
     static SkoarMinstrelPtr NewDebugging(SkoarString name, SkoarKoarPtr koar, Skoar* const skoar, const SpellOfHappening& happenSpell, const MinstrelDebugConfig& config);
+    static SkoarMinstrelPtr NewDebuggingForSkoarpion (SkoarString name, SkoarKoarPtr koar, Skoar * const skoar, SkoarpionPtr skoarpion, const SpellOfHappening & spell, const MinstrelDebugConfig & config);
 
-    static void EventStream(SkoarMinstrelPtr m);
-    
+    static void ready_stream (SkoarMinstrelPtr m);
+    static void ready_skoarpion (SkoarMinstrelPtr m, SkoarpionPtr skoarpion);
+
+    void done ();
+
     void reset_colons();
 
     void start();
@@ -66,7 +74,8 @@ public:
     virtual void before_entering_skoarpuscle(SkoarMinstrelPtr m, SkoarpusclePtr skoarpuscle);
     virtual void after_entering_skoarpuscle(SkoarMinstrelPtr m, SkoarpusclePtr skoarpuscle);
     virtual void before_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionPtr skoarpion);
-    virtual void after_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionPtr skoarpion);
+    virtual void after_entering_skoarpion (SkoarMinstrelPtr m, SkoarpionPtr skoarpion);
+    virtual void exiting ();
 
 };
 
@@ -96,12 +105,14 @@ public:
     const SpellOfDebuggingSkoarpuscles& after_entering_skoarpuscle_spell;
     const SpellOfDebuggingSkoarpions& before_entering_skoarpion_spell;
     const SpellOfDebuggingSkoarpions& after_entering_skoarpion_spell;
+    const SpellOfDebuggingExiting& exiting_spell;
 
     void before_entering_noad(SkoarMinstrelPtr m, SkoarNoadite* noadite) override;
     void after_entering_noad(SkoarMinstrelPtr m, SkoarNoadite* noadite) override;
     void before_entering_skoarpuscle(SkoarMinstrelPtr m, SkoarpusclePtr skoarpuscle) override;
     void after_entering_skoarpuscle(SkoarMinstrelPtr m, SkoarpusclePtr skoarpuscle) override;
     void before_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionPtr skoarpion) override;
-    void after_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionPtr skoarpion) override;
+    void after_entering_skoarpion (SkoarMinstrelPtr m, SkoarpionPtr skoarpion) override;
+    void exiting() override;
 
 };

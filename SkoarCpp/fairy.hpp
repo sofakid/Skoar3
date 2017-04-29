@@ -19,9 +19,7 @@ public:
     SkoarpusclePtr boolean_impression;
     SkoarpusclePtr l_value;
 
-
     size_t fly_to_dest;
-    size_t last_segno_seen_at;
     bool al_fine;
 
     SkoarFairy (SkoarString, SkoarMinstrelPtr);

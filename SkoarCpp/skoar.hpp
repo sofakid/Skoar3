@@ -13,23 +13,24 @@
 #include "spells.hpp"
 #include "toker.hpp"
 
-class Skoar {
+class Skoar
+{
 public:
 
     // init everything.
-    static void init();
+    static void init ();
 
-	ISkoarLog *log;
+    ISkoarLog *log;
 
-	// todo: make this static
-	SkoarOps *ops;                         // operations tables object
+    // todo: make this static
+    SkoarOps *ops;                         // operations tables object
 
-	SkoarString skoarce;                   // the skoarce code
-	SkoarNoadPtr tree;                     // root of tree
-	SkoarToker toker;                      // toker
-	map<SkoarString, SkoarKoarPtr> voices; // all the voices
-	SkoarKoarPtr all_voice;                // the all voice
-	ListOfSkoarpions skoarpions;           // all the skoarpions
+    SkoarString skoarce;                   // the skoarce code
+    SkoarNoadPtr tree;                     // root of tree
+    SkoarToker toker;                      // toker
+    map<SkoarString, SkoarKoarPtr> voices; // all the voices
+    SkoarKoarPtr all_voice;                // the all voice
+    ListOfSkoarpions skoarpions;           // all the skoarpions
 
     SkoarInt running;
 
@@ -42,38 +43,40 @@ public:
     bool parsedOk;
     bool decoratedOk;
 
-	Skoar(SkoarString skoarce, ISkoarLog *log);
-    ~Skoar();
+    Skoar (SkoarString skoarce, ISkoarLog *log);
+    ~Skoar ();
 
+
+    void decorate ();
     void decorate_offs_size_style ();
-
-	void decorate();
     void registerMarker (SkoarpuscleBars * bars);
     void registerMarker (SkoarpuscleCoda * coda);
-	SkoarKoarPtr get_voice(const SkoarString &k);
-	void cthulhu(SkoarNoadPtr noad);
+    SkoarKoarPtr get_voice (const SkoarString &k);
+    void cthulhu (SkoarNoadPtr noad);
     void cthulhu (SkoarString s);
-    void draw_skoarpions();
+    void draw_skoarpions ();
 
-    ListOfSkoarpionProjectionsPtr get_all_projections();
-    ListOfSkoarpionProjectionsPtr get_projections(SkoarString koar_name);
-    ListOfSkoarStrings get_all_voices();
+    ListOfSkoarpionProjectionsPtr get_all_projections ();
+    ListOfSkoarpionProjectionsPtr get_projections (SkoarString koar_name);
+    ListOfSkoarStrings get_all_voices ();
 
-    void play(const SpellOfHappening& spell);
+    void play (const SpellOfHappening& spell);
 
-    void play_voice(SkoarString voice, const SpellOfHappening& spell);
+    void play_voice (SkoarString voice, const SpellOfHappening& spell);
+    void play_voice_skoarpion (SkoarString voice, SkoarpionPtr skoarpion, const SpellOfHappening & spell);
 
-    void debug_voice(SkoarString voice, const SpellOfHappening& spell, const MinstrelDebugConfig &config);
+    void debug_voice (SkoarString voice, const SpellOfHappening& spell, const MinstrelDebugConfig &config);
 
-    void one_more_running();
-    void one_less_running();
+    void one_more_running ();
+    void one_less_running ();
 
 };
 
-class SkoarLite {
+class SkoarLite
+{
 public:
-    SkoarLite(SkoarString skoarce, ISkoarLog *log);
-    ~SkoarLite();
+    SkoarLite (SkoarString skoarce, ISkoarLog *log);
+    ~SkoarLite ();
 
     ISkoarLog *log;
 
@@ -82,5 +85,8 @@ public:
     SkoarToker toker;          // toker
 
     bool parsedOk;
+
+    void decorate_offs_size_style ();
+
 };
 

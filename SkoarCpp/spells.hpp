@@ -67,8 +67,7 @@ typedef function<void(SkoarpusclePtr)> SpellOfSkoarpucles;
 typedef function<void(SkoarMinstrelPtr, SkoarNoadite*)> SpellOfDebuggingNoads;
 typedef function<void(SkoarMinstrelPtr, SkoarpusclePtr)> SpellOfDebuggingSkoarpuscles;
 typedef function<void(SkoarMinstrelPtr, SkoarpionPtr)> SpellOfDebuggingSkoarpions;
-
-
+typedef function<void()> SpellOfDebuggingExiting;
 
 typedef function<void(Skoar*, SkoarNoadPtr, SkoarToke*)> SpellOfTokeyDecoration;
 typedef function<void(Skoar*, SkoarNoadPtr)> SpellOfNoadyDecoration;

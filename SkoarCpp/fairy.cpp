@@ -11,8 +11,12 @@ SkoarFairy::SkoarFairy (SkoarString nom, SkoarMinstrelPtr m) :
     magic (HarmlessMagic),
     times_seen (make_shared<FairyTimesMap> ()),
     fly_to_dest (0),
-    last_segno_seen_at (0),
-    al_fine (false)
+    al_fine (false),
+    l_value (make_skoarpuscle (nullptr)),
+    noat (make_skoarpuscle (nullptr)),
+    impression (make_skoarpuscle (nullptr)),
+    boolean_impression (make_skoarpuscle(nullptr))
+
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocFairy(name);

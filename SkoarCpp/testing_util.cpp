@@ -116,6 +116,39 @@ VectorOfSkoarEventsPtr skoar_get_events_inf(Skoar* skoar, size_t num) {
     return events;
 }
 
+
+VectorOfSkoarEventsPtr skoar_get_events_for_voice (Skoar* skoar, SkoarString voice) {
+    auto events = make_shared<VectorOfSkoarEvents> ();
+    try
+    {
+        skoar->play_voice (voice, [&](SkoarEventPtr e) {
+            events->push_back (e);
+        });
+    }
+    catch (SkoarError &e)
+    {
+        FAIL (SkoarString_to_s (e.wwhat ()));
+    }
+    return events;
+}
+
+
+VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion (Skoar* skoar, SkoarString voice, SkoarpionPtr skoarpion) {
+    auto events = make_shared<VectorOfSkoarEvents> ();
+    try
+    {
+        skoar->play_voice_skoarpion (voice, skoarpion, [&](SkoarEventPtr e) {
+            events->push_back (e);
+        });
+    }
+    catch (SkoarError &e)
+    {
+        FAIL (SkoarString_to_s (e.wwhat ()));
+    }
+    return events;
+}
+
+
 void make_event_r(SkoarEventPtr)
 {
     // done
@@ -274,4 +307,46 @@ void run_and_expect_d(SkoarString skoarce, VectorOfSkoarEventsPtr desires) {
 
 void print_skoarce (SkoarString skoarce) {
     
+}
+
+void run_skoar_test (SkoarString skoarce)
+{
+    SkoarNullLogger SkoarLog;
+
+    INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
+    Skoar skoar (skoarce, &SkoarLog);
+
+    REQUIRE (skoar.parsedOk);
+
+    SkoarpionPtr run (nullptr), expect (nullptr);
+    for (auto x : skoar.skoarpions)
+        if (x->name == SkoarString (L"run"))
+            run = x;
+
+        else if (x->name == SkoarString (L"expect"))
+            expect = x;
+
+    REQUIRE (run != nullptr);
+    REQUIRE (expect != nullptr);
+
+    map<SkoarString, VectorOfSkoarEventsPtr> expectations;
+    map<SkoarString, VectorOfSkoarEventsPtr> runs;
+
+    auto voices (skoar.get_all_voices ());
+
+    for (auto voice : voices)
+    {
+        if (voices.size () > 1 && voice == SkoarString (L"all"))
+            continue;
+
+        string prefix ("Voice: ");
+        string s (prefix + SkoarString_to_s (voice));
+        INFO (s);
+        
+        auto desires = skoar_get_events_for_voice_skoarpion (&skoar, voice, expect);
+        auto reality = skoar_get_events_for_voice_skoarpion (&skoar, voice, run);
+
+        compare_desires_to_events (desires, reality);
+    }
+
 }

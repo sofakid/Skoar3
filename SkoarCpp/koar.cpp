@@ -289,6 +289,7 @@ void SkoarKoar::nav_loop (
         {
 
         case SkoarNav::DONE:
+            bubble_up_nav (nav_result, cleanup);
             break;
 
         case SkoarNav::CODA:

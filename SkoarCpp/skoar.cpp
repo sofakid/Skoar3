@@ -1,5 +1,4 @@
 #include "skoar.hpp"
-
 #include "exception.hpp"
 #include "decorating.hpp"
 #include "noad.hpp"
@@ -225,7 +224,6 @@ void Skoar::decorate_offs_size_style () {
             current_style = noad->style;
 
         auto toke = noad->toke.get ();
-
         if (toke != nullptr)
         {
             pos = toke->offs + toke->size;
@@ -233,7 +231,6 @@ void Skoar::decorate_offs_size_style () {
         }
         else
             noad->offs = pos;
-
     };
 
     auto after = [&](SkoarNoadPtr noad) {
@@ -278,7 +275,6 @@ void Skoar::registerMarker (SkoarpuscleBars* bar) {
 }
 
 void Skoar::registerMarker (SkoarpuscleCoda* coda) {
-
     markers_coda.push_back (coda->offs);
     if (coda->label != L"")
         markers_coda_named[coda->label] = coda->offs;
@@ -301,7 +297,6 @@ SkoarKoarPtr Skoar::get_voice (const SkoarString &k) {
 }
 
 void Skoar::cthulhu (SkoarNoadPtr noad) {
-
     // TODO more
     //"^^(;,;)^^".postln;
     //dump();
@@ -385,6 +380,12 @@ void Skoar::play_voice (SkoarString voice, const SpellOfHappening& spell) {
     for (auto m : x.minstrels)
         if (m->koar->name == voice)
             m->start ();
+}
+
+void Skoar::play_voice_skoarpion (SkoarString voice, SkoarpionPtr skoarpion, const SpellOfHappening& spell) {
+    auto koar (get_voice (voice));
+    auto m (SkoarMinstrel::NewForSkoarpion (L"testing", koar, this, skoarpion, spell));
+    m->start ();
 }
 
 void Skoar::debug_voice (SkoarString voice, const SpellOfHappening& spell, const MinstrelDebugConfig &config) {
@@ -480,37 +481,46 @@ SkoarLite::SkoarLite (SkoarString skoarce, ISkoarLog *log) :
     }
 
     if (parsedOk)
-    {
-        //log->i("parsing...", "noadites");
-        //auto iter = noadites.elements.cbegin();
-
-        size_t pos = 0;
-
-        tree->inorderBeforeAfter (
-
-            // Before
-            [&] (SkoarNoad* noad) {
-                auto toke = noad->toke.get ();
-
-                if (toke != nullptr)
-                {
-                    pos = toke->offs + toke->size;
-                    noad->offs = toke->offs;
-                }
-                else
-                    noad->offs = pos;
-            },
-
-            // After
-            [&] (SkoarNoad* noad) {
-                noad->size = pos - noad->offs;
-            }
-        );
-
-    }
+        decorate_offs_size_style ();
 
     //log->e("False style", SkoarStyles::style<ESkoarToke::False>());
 }
+
+void SkoarLite::decorate_offs_size_style() 
+{
+    SkoarStyles::EStyle current_style (SkoarStyles::EStyle::nostyle);
+    list<SkoarStyles::EStyle> style_stack { current_style };
+    size_t pos = 0;
+
+    auto before = [&](SkoarNoadPtr noad) {
+        style_stack.push_back (current_style);
+
+        if (noad->style == SkoarStyles::EStyle::nostyle)
+            noad->style = current_style;
+        else
+            current_style = noad->style;
+
+        auto toke = noad->toke.get ();
+
+        if (toke != nullptr)
+        {
+            pos = toke->offs + toke->size;
+            noad->offs = toke->offs;
+        }
+        else
+            noad->offs = pos;
+
+    };
+
+    auto after = [&](SkoarNoadPtr noad) {
+        current_style = style_stack.back ();
+        style_stack.pop_back ();
+        noad->size = pos - noad->offs;
+    };
+
+    SkoarNoad::inorderBeforeAfter (tree, before, after);
+}
+
 
 SkoarLite::~SkoarLite () {
     clock_t start_time;

@@ -170,9 +170,9 @@ TEST_CASE ("Ints Floats and Freqs", "[sanity]") {
 TEST_CASE("Derefs", "[sanity]") {
 
     SECTION("simple deref 0") {
-        run_and_expect(L"a: 4 7 ) !a )", make_events_vec(
-            a, 4, num_impression, 7, X,
-            a, 4, num_impression, 4, X
+        run_and_expect(L"a: 4 7 ) b: !a )", make_events_vec(
+            a, 4, X,
+            a, 4, b, 4, X
         ));
     }
     
@@ -211,6 +211,26 @@ TEST_CASE("Skoarpions", "[sanity]") {
     SECTION("skoarpion_sigless") {
         run_and_expect(L"foo: 3 {! foo: 2 ) !} )", make_events_vec(
             foo, 3, X
+        ));
+    }
+
+    SECTION ("skoarpion_simple no args") {
+        run_and_expect (L"] {! x !! ]] ]] !} ) !x )", make_events_vec (
+            dur, 0.5, X,
+            dur, 1.0, X,
+            dur, 0.25, X,
+            dur, 0.25, X,
+            dur, 1.0, X
+        ));
+    }
+
+    SECTION ("skoarpion_scope no args defined or supplied") {
+        run_and_expect (L"] {! x !! foo: 3 ]] ]] !} ) !x )", make_events_vec (
+            dur, 0.5, X,
+            dur, 1.0, X,
+            dur, 0.25, foo, 3, X,
+            dur, 0.25, foo, 3, X,
+            dur, 1.0, X
         ));
     }
 
@@ -706,7 +726,7 @@ TEST_CASE("Fairy", "[sanity]") {
 
 }
 
-TEST_CASE ("Dyanmics", "[sanity]") {
+TEST_CASE ("Dynamics", "[sanity]") {
 
     SECTION ("fortes") {
         run_and_expect (L"0 mf) fff) mforte) forte) ff) ffforte) fforte)", make_events_vec (

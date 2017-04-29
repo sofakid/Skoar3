@@ -21,6 +21,8 @@ typedef shared_ptr<vector<SkoarEventPtr>> EventsPtr;
 
 VectorOfSkoarEventsPtr skoar_get_events (Skoar* skoar);
 VectorOfSkoarEventsPtr skoar_get_events_inf (Skoar * skoar, size_t num);
+VectorOfSkoarEventsPtr skoar_get_events_for_voice (Skoar* skoar, SkoarString voice);
+VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion (Skoar* skoar, SkoarString voice, SkoarpionPtr skoarpion);
 
 
 // --- make_event ------------------------------------------------
@@ -110,3 +112,5 @@ void run_and_expect_inf (SkoarString skoarce, VectorOfSkoarEventsPtr desires);
 void run_and_expect_d(SkoarString skoarce, VectorOfSkoarEventsPtr desires); // verbose one
 
 void print_skoarce (SkoarString skoarce);
+
+void run_skoar_test (SkoarString skoarce);
