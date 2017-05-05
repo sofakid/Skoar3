@@ -1,12 +1,11 @@
 #include "operators.hpp"
 
-static SkoarOps* instance;
+static SkoarOps* instance (nullptr);
 
 void SkoarOps::init() {
-    static bool initialized = false;
-    if (initialized == false) {
+    static bool initialized (false);
+    if (initialized == false) 
         instance = new SkoarOps();
-    }
 }
 
 SkoarOps* SkoarOps::getInstance() {
@@ -19,7 +18,7 @@ SpellOfMath SkoarOps::lookup(XTable &xtable, SkoarpusclePtr x, SkoarpusclePtr y)
     });
 
     try {
-        auto ytable = xtable.at(x->kind);
+        auto ytable (xtable.at(x->kind));
 
         try {
             return ytable.at(y->kind);
@@ -34,27 +33,27 @@ SpellOfMath SkoarOps::lookup(XTable &xtable, SkoarpusclePtr x, SkoarpusclePtr y)
 }
 
 SkoarpusclePtr SkoarOps::assign(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
-    SpellOfMath f = lookup(assignment, y, x);
+    SpellOfMath f (lookup(assignment, y, x));
     return m->fairy->impress(f(y, x, m));
 }
 
 SkoarpusclePtr SkoarOps::add(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
-    const SpellOfMath &f = lookup(addition, x, y);
+    const SpellOfMath &f (lookup(addition, x, y));
     return m->fairy->impress(f(x, y, m));
 }
 
 SkoarpusclePtr SkoarOps::sub(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
-    const SpellOfMath &f = lookup(addition, x, y);
+    const SpellOfMath &f (lookup(addition, x, y));
     return m->fairy->impress(f(x, y, m));
 }
 
 SkoarpusclePtr SkoarOps::mul(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
-    const SpellOfMath &f = lookup(addition, x, y);
+    const SpellOfMath &f (lookup(addition, x, y));
     return m->fairy->impress(f(x, y, m));
 }
 
 SkoarpusclePtr SkoarOps::div(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
-    const SpellOfMath &f = lookup(addition, x, y);
+    const SpellOfMath &f (lookup(addition, x, y));
     return m->fairy->impress(f(x, y, m));
 }
 

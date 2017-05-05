@@ -55,8 +55,6 @@ HashLevel:      \\[#*[ ]*\\]
 Lute:           &(?!<)
 LuteWithArgs:   &<
 
-
-
 # we can't allow f for forte as f is a noat, so we allow
 #
 #  forte fforte ffforte ff fff, but not f
@@ -99,7 +97,6 @@ MsgNameWithArgs*: [a-zA-Z_][a-zA-Z0-9_]*<
 Symbol*:          @[a-zA-Z0-9_][a-zA-Z0-9_]*
 SymbolName*:      [a-zA-Z0-9_][a-zA-Z0-9_]*(?![[a-zA-Z0-9_fi \\t]*:)
 SymbolColon*:     [a-zA-Z_][a-zA-Z0-9_]*[ \\t]*:(?![:|}])
-
 
 SkoarpionStartWithSig:  [{]!(?=([^!](?!![}]))*!!)
 SkoarpionStart:         [{]!(?=([^!](?!!!))*![}])

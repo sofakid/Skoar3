@@ -255,7 +255,7 @@ class CppTongue(Tongue):
         return "this->" + attr.name
 
     def v_def_regex(self, regex):
-        return 'wregex(L"' + regex.replace('\\','\\\\') + '")'
+        return 'wregex(L"' + regex.replace('\\','\\\\') + '", regex_constants::optimize)'
 
     def v_match(self, match):
         return match

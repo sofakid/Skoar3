@@ -15,278 +15,282 @@
 
 
 // --- SkoarpuscleUnknown ---------------------------------------------------------
-SkoarpuscleUnknown::SkoarpuscleUnknown() {
+SkoarpuscleUnknown::SkoarpuscleUnknown () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Unknown");
+    SkoarMemories::o ().allocSkoarpuscle (L"Unknown");
 #endif
 }
 
-SkoarpuscleUnknown::~SkoarpuscleUnknown() {
+SkoarpuscleUnknown::~SkoarpuscleUnknown () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Unknown");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Unknown");
 #endif
 }
 
 // --- SkoarpuscleCat ---------------------------------------------------------
-SkoarpuscleCat::SkoarpuscleCat() : Skoarpuscle(ESkoarpuscle::Cat) {
+SkoarpuscleCat::SkoarpuscleCat () : Skoarpuscle (ESkoarpuscle::Cat) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Cat");
+    SkoarMemories::o ().allocSkoarpuscle (L"Cat");
 #endif
 
     impressionable = true;
 }
 
-SkoarpuscleCat::~SkoarpuscleCat() {
+SkoarpuscleCat::~SkoarpuscleCat () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Cat");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Cat");
 #endif
 }
 
-SkoarpuscleCat::SkoarpuscleCat(nullptr_t) : SkoarpuscleCat() {
+SkoarpuscleCat::SkoarpuscleCat (nullptr_t) : SkoarpuscleCat () {
 }
 
 
 // --- SkoarpuscleTrue ---------------------------------------------------------
-SkoarpuscleTrue::SkoarpuscleTrue() : Skoarpuscle(ESkoarpuscle::True) {
+SkoarpuscleTrue::SkoarpuscleTrue () : Skoarpuscle (ESkoarpuscle::True) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"True");
+    SkoarMemories::o ().allocSkoarpuscle (L"True");
 #endif
     impressionable = true;
 }
 
-SkoarpuscleTrue::~SkoarpuscleTrue() {
+SkoarpuscleTrue::~SkoarpuscleTrue () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"True");
+    SkoarMemories::o ().deallocSkoarpuscle (L"True");
 #endif
 }
 
-SkoarpuscleTrue::SkoarpuscleTrue(bool /*x*/) : SkoarpuscleTrue() {
+SkoarpuscleTrue::SkoarpuscleTrue (bool /*x*/) : SkoarpuscleTrue () {
     // assert x == true
 }
 
 // --- SkoarpuscleFalse ---------------------------------------------------------
-SkoarpuscleFalse::SkoarpuscleFalse() : 
-    Skoarpuscle(ESkoarpuscle::False) {
+SkoarpuscleFalse::SkoarpuscleFalse () :
+    Skoarpuscle (ESkoarpuscle::False) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"False");
+    SkoarMemories::o ().allocSkoarpuscle (L"False");
 #endif
     impressionable = true;
 }
 
-SkoarpuscleFalse::~SkoarpuscleFalse() {
+SkoarpuscleFalse::~SkoarpuscleFalse () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"False");
+    SkoarMemories::o ().deallocSkoarpuscle (L"False");
 #endif
 }
-SkoarpuscleFalse::SkoarpuscleFalse(bool /*x*/) : SkoarpuscleFalse() {
+SkoarpuscleFalse::SkoarpuscleFalse (bool /*x*/) : SkoarpuscleFalse () {
     // assert x == false
 }
 
 // --- SkoarpuscleInt ---------------------------------------------------------
-SkoarpuscleInt::SkoarpuscleInt(SkoarInt v) : 
-    Skoarpuscle(ESkoarpuscle::Int), 
-    val(v) {
+SkoarpuscleInt::SkoarpuscleInt (SkoarInt v) :
+    Skoarpuscle (ESkoarpuscle::Int),
+    val (v) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Int");
+    SkoarMemories::o ().allocSkoarpuscle (L"Int");
 #endif
     noatworthy = true;
     impressionable = true;
     county = true;
 }
 
-SkoarInt SkoarpuscleInt::asCount() {
+SkoarInt SkoarpuscleInt::asCount () {
     return val;
 }
 
-SkoarpuscleInt::~SkoarpuscleInt() {
+SkoarpuscleInt::~SkoarpuscleInt () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Int");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Int");
 #endif
 }
 
 // --- SkoarpuscleFloat ---------------------------------------------------------
-SkoarpuscleFloat::SkoarpuscleFloat(SkoarFloat v) : 
-    Skoarpuscle(ESkoarpuscle::Float), 
-    val(v) {
+SkoarpuscleFloat::SkoarpuscleFloat (SkoarFloat v) :
+    Skoarpuscle (ESkoarpuscle::Float),
+    val (v) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Float");
+    SkoarMemories::o ().allocSkoarpuscle (L"Float");
 #endif
     noatworthy = true;
     impressionable = true;
 }
 
-SkoarpuscleFloat::~SkoarpuscleFloat() {
+SkoarpuscleFloat::~SkoarpuscleFloat () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Float");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Float");
 #endif
 }
 
 // --- SkoarpuscleFreq ---------------------------------------------------------
-SkoarpuscleFreq::SkoarpuscleFreq(SkoarFloat v) : 
-    Skoarpuscle(ESkoarpuscle::Freq),
-    val(v)
+SkoarpuscleFreq::SkoarpuscleFreq (SkoarFloat v) :
+    Skoarpuscle (ESkoarpuscle::Freq),
+    val (v)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Freq");
+    SkoarMemories::o ().allocSkoarpuscle (L"Freq");
 #endif
     noatworthy = true;
     impressionable = true;
 }
 
-SkoarpuscleFreq::~SkoarpuscleFreq() {
+SkoarpuscleFreq::~SkoarpuscleFreq () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Freq");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Freq");
 #endif
 }
 
-SkoarpuscleFreq::SkoarpuscleFreq(SkoarString lexeme) :
-    SkoarpuscleFreq(stod(lexeme.substr(0, lexeme.length() - 2))) {
+SkoarpuscleFreq::SkoarpuscleFreq (SkoarString lexeme) :
+    SkoarpuscleFreq (stod (lexeme.substr (0, lexeme.length () - 2))) {
 }
 
-SkoarpuscleFreq::SkoarpuscleFreq(SkoarInt v) :
-    SkoarpuscleFreq(static_cast<SkoarFloat>(v)) {
+SkoarpuscleFreq::SkoarpuscleFreq (SkoarInt v) :
+    SkoarpuscleFreq (static_cast<SkoarFloat>(v)) {
 }
 
 // --- SkoarpuscleNoat ---------------------------------------------------------
-SkoarpuscleNoat::SkoarpuscleNoat(SkoarString&) : 
-    Skoarpuscle(ESkoarpuscle::Noat),
-    val(0) {
+SkoarpuscleNoat::SkoarpuscleNoat (SkoarString&) :
+    Skoarpuscle (ESkoarpuscle::Noat),
+    val (0) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Noat");
+    SkoarMemories::o ().allocSkoarpuscle (L"Noat");
 #endif
     noatworthy = true;
     impressionable = true;
 }
 
-SkoarpuscleNoat::~SkoarpuscleNoat() {
+SkoarpuscleNoat::~SkoarpuscleNoat () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Noat");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Noat");
 #endif
 }
 
 // --- SkoarpuscleChoard ---------------------------------------------------------
-SkoarpuscleChoard::SkoarpuscleChoard(SkoarString&) : 
-    Skoarpuscle(ESkoarpuscle::Choard), 
-    val(0) {
+SkoarpuscleChoard::SkoarpuscleChoard (SkoarString&) :
+    Skoarpuscle (ESkoarpuscle::Choard),
+    val (0) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Choard");
+    SkoarMemories::o ().allocSkoarpuscle (L"Choard");
 #endif
     noatworthy = true;
     impressionable = true;
 }
 
-SkoarpuscleChoard::~SkoarpuscleChoard() {
+SkoarpuscleChoard::~SkoarpuscleChoard () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Choard");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Choard");
 #endif
 }
 
 // --- SkoarpuscleString ---------------------------------------------------------
-SkoarpuscleString::SkoarpuscleString(SkoarString s) : 
-    Skoarpuscle(ESkoarpuscle::String),
-    val(s) {
+SkoarpuscleString::SkoarpuscleString (SkoarString s) :
+    Skoarpuscle (ESkoarpuscle::String),
+    val (s) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"String");
+    SkoarMemories::o ().allocSkoarpuscle (L"String");
 #endif
     impressionable = true;
 }
 
-SkoarpuscleString::~SkoarpuscleString() {
+SkoarpuscleString::~SkoarpuscleString () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"String");
+    SkoarMemories::o ().deallocSkoarpuscle (L"String");
 #endif
 }
 
 // --- SkoarpuscleSymbolName ---------------------------------------------------------
-SkoarpuscleSymbolName::SkoarpuscleSymbolName(SkoarString s) : val(s) {
+SkoarpuscleSymbolName::SkoarpuscleSymbolName (SkoarString s) : val (s) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"SymbolName");
+    SkoarMemories::o ().allocSkoarpuscle (L"SymbolName");
 #endif
 }
 
-SkoarpuscleSymbolName::~SkoarpuscleSymbolName() {
+SkoarpuscleSymbolName::~SkoarpuscleSymbolName () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"SymbolName");
+    SkoarMemories::o ().deallocSkoarpuscle (L"SymbolName");
 #endif
 }
 
 // --- SkoarpuscleSymbol ---------------------------------------------------------
-SkoarpuscleSymbol::SkoarpuscleSymbol(SkoarString s) : val(s) {
+SkoarpuscleSymbol::SkoarpuscleSymbol (SkoarString s) : val (s) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Symbol");
+    SkoarMemories::o ().allocSkoarpuscle (L"Symbol");
 #endif
     impressionable = true;
 }
 
-SkoarpuscleSymbol::~SkoarpuscleSymbol() {
+SkoarpuscleSymbol::~SkoarpuscleSymbol () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Symbol");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Symbol");
 #endif
 }
 
 // --- SkoarpuscleSymbolColon ---------------------------------------------------------
 
-inline SkoarString clean_symbol_colon(SkoarString &lex) {
+inline SkoarString clean_symbol_colon (SkoarString &lex) {
     // lexeme was matched by: [a-zA-Z0-9_][a-zA-Z0-9_]*[ \t]*:(?![:|}])
     // ... so we'll remove anything that's not [a-zA-Z0-9_]
-    std::wregex expr(L"([^a-zA-Z0-9_]+)");
-    return std::regex_replace(lex, expr, L"");
+    std::wregex expr (L"([^a-zA-Z0-9_]+)");
+    return std::regex_replace (lex, expr, L"");
 }
 
-SkoarpuscleSymbolColon::SkoarpuscleSymbolColon(SkoarString lex) : 
-    Skoarpuscle(ESkoarpuscle::SymbolColon),
-    val(clean_symbol_colon(lex)) {
+SkoarpuscleSymbolColon::SkoarpuscleSymbolColon (SkoarString lex) :
+    Skoarpuscle (ESkoarpuscle::SymbolColon),
+    val (clean_symbol_colon (lex)) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"SymbolColon");
+    SkoarMemories::o ().allocSkoarpuscle (L"SymbolColon");
 #endif
     impressionable = true;
 }
 
 
-SkoarpuscleSymbolColon::~SkoarpuscleSymbolColon() {
+SkoarpuscleSymbolColon::~SkoarpuscleSymbolColon () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"SymbolColon");
+    SkoarMemories::o ().deallocSkoarpuscle (L"SymbolColon");
 #endif
 }
 
 // --- SkoarpuscleDeref ---------------------------------------------------------
-SkoarpuscleDeref::SkoarpuscleDeref(SkoarString v, SkoarpusclePtr a) : val(v) {
+SkoarpuscleDeref::SkoarpuscleDeref (SkoarString v, SkoarpusclePtr a) : val (v) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Deref");
+    SkoarMemories::o ().allocSkoarpuscle (L"Deref");
 #endif
     args = a; // is actually shared_ptr<SkoarpuscleArgs>
 }
 
 
-SkoarpuscleDeref::~SkoarpuscleDeref() {
+SkoarpuscleDeref::~SkoarpuscleDeref () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Deref");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Deref");
 #endif
 }
 
 // --- SkoarpuscleMathOp ---------------------------------------------------------
-SkoarpuscleMathOp::SkoarpuscleMathOp(SkoarToke *toke) : val(toke->lexeme) {
+SkoarpuscleMathOp::SkoarpuscleMathOp (SkoarToke *toke) : val (toke->lexeme) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"MathOp");
+    SkoarMemories::o ().allocSkoarpuscle (L"MathOp");
 #endif
     auto s = toke->lexeme;
 
-    if (s == L"+") {
+    if (s == L"+")
+    {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            SkoarOps::getInstance()->add(m, a, b);
+            SkoarOps::getInstance ()->add (m, a, b);
         };
     }
-    else if (s == L"*") {
+    else if (s == L"*")
+    {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
             // SkoarOps::getInstance()->multiply(m, a, b);
         };
     }
-    else if (s == L"/") {
+    else if (s == L"/")
+    {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
             // SkoarOps::getInstance()->divide(m, a, b);
         };
     }
-    else if (s == L"-") {
+    else if (s == L"-")
+    {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
             // SkoarOps::getInstance()->sub(m, a, b);
         };
@@ -294,16 +298,16 @@ SkoarpuscleMathOp::SkoarpuscleMathOp(SkoarToke *toke) : val(toke->lexeme) {
 }
 
 
-SkoarpuscleMathOp::~SkoarpuscleMathOp() {
+SkoarpuscleMathOp::~SkoarpuscleMathOp () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"MathOp");
+    SkoarMemories::o ().deallocSkoarpuscle (L"MathOp");
 #endif
 }
 
 // --- SkoarpuscleBooleanOp ---------------------------------------------------------
-SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarNoadPtr /*noad*/, SkoarToke* /*toke*/) {
+SkoarpuscleBooleanOp::SkoarpuscleBooleanOp (SkoarNoadPtr /*noad*/, SkoarToke* /*toke*/) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"BooleanOp");
+    SkoarMemories::o ().allocSkoarpuscle (L"BooleanOp");
 #endif
     /*
     // todo: use the ops table.
@@ -344,64 +348,65 @@ SkoarpuscleBooleanOp::SkoarpuscleBooleanOp(SkoarNoadPtr /*noad*/, SkoarToke* /*t
     */
 }
 
-SkoarpuscleBooleanOp::~SkoarpuscleBooleanOp() {
+SkoarpuscleBooleanOp::~SkoarpuscleBooleanOp () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"BooleanOp");
+    SkoarMemories::o ().deallocSkoarpuscle (L"BooleanOp");
 #endif
 }
 
 // --- SkoarpuscleBoolean ---------------------------------------------------------
-SkoarpuscleBoolean::SkoarpuscleBoolean(SkoarNoadPtr noad) {
+SkoarpuscleBoolean::SkoarpuscleBoolean (SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Boolean");
+    SkoarMemories::o ().allocSkoarpuscle (L"Boolean");
 #endif
-    op = noad->children.front()->next_skoarpuscle();
+    op = noad->children.front ()->next_skoarpuscle ();
 }
 
 
-SkoarpuscleBoolean::~SkoarpuscleBoolean() {
+SkoarpuscleBoolean::~SkoarpuscleBoolean () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Boolean");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Boolean");
 #endif
 }
 
 // --- SkoarpuscleConditional ---------------------------------------------------------
-SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) {
+SkoarpuscleConditional::SkoarpuscleConditional (Skoar *skoar, SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Conditional");
+    SkoarMemories::o ().allocSkoarpuscle (L"Conditional");
 #endif
 
     list<ESkoarNoad::Kind> desires = { ESkoarNoad::cond_if };
 
-    for (auto x : SkoarNoad::collect(noad, desires)) {
+    for (auto x : SkoarNoad::collect (noad, desires))
+    {
         SkoarpionPtr condition;
         SkoarpionPtr if_body;
         SkoarpionPtr else_body;
 
-        auto boolean_expr = SkoarNoad::NewArtificial(L"cond_cond");
+        auto boolean_expr (SkoarNoad::NewArtificial (L"cond_cond"));
 
-        auto child = x->children.cbegin();
-        auto condition_skoarpuscle = (*child)->next_skoarpuscle();
+        auto child (x->children.cbegin ());
+        auto condition_skoarpuscle ((*child)->next_skoarpuscle ());
 
-        boolean_expr->add_noad(*child);
+        boolean_expr->add_noad (*child);
 
-        condition = Skoarpion::NewFromSubtree(skoar, boolean_expr);
+        condition = Skoarpion::NewFromSubtree (skoar, boolean_expr);
 
         ++child;                   // children[1]
-        auto if_noad = *(++child); // children[2]
+        auto if_noad (*(++child)); // children[2]
 
-        if_body = Skoarpion::NewFromSubtree(skoar, if_noad);
+        if_body = Skoarpion::NewFromSubtree (skoar, if_noad);
 
-        if (x->children.size() > 4) {
+        if (x->children.size () > 4)
+        {
             ++child;                     // children[3]
-            auto else_noad = *(++child); // children[4]
-            else_body = Skoarpion::NewFromSubtree(skoar, else_noad);
+            auto else_noad (*(++child)); // children[4]
+            else_body = Skoarpion::NewFromSubtree (skoar, else_noad);
         }
-        else {
+        else
             else_body = nullptr;
-        }
 
-        ifs.push_back(make_tuple(condition, if_body, else_body));
+        ifs.push_back (make_tuple (condition, if_body, else_body));
 
         x->children.clear ();
     }
@@ -409,9 +414,9 @@ SkoarpuscleConditional::SkoarpuscleConditional(Skoar *skoar, SkoarNoadPtr noad) 
     noad->children.clear ();
 }
 
-SkoarpuscleConditional::~SkoarpuscleConditional() {
+SkoarpuscleConditional::~SkoarpuscleConditional () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Conditional");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Conditional");
 #endif
     for (auto x : ifs)
     {
@@ -419,7 +424,7 @@ SkoarpuscleConditional::~SkoarpuscleConditional() {
         z = get<0> (x);
         if (z != nullptr)
             z->clear ();
-        
+
         z = get<1> (x);
         if (z != nullptr)
             z->clear ();
@@ -433,124 +438,118 @@ SkoarpuscleConditional::~SkoarpuscleConditional() {
 }
 
 // --- SkoarpuscleTimes ---------------------------------------------------------
-SkoarpuscleTimes::SkoarpuscleTimes(SkoarNoadPtr noad) :
-    offs(noad->offs)
+SkoarpuscleTimes::SkoarpuscleTimes (SkoarNoadPtr noad) :
+    offs (noad->offs)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Times");
+    SkoarMemories::o ().allocSkoarpuscle (L"Times");
 #endif
 }
 
-SkoarpuscleTimes::~SkoarpuscleTimes() {
+SkoarpuscleTimes::~SkoarpuscleTimes () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Times");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Times");
 #endif
 }
 
 // --- SkoarpuscleLoop ---------------------------------------------------------
-SkoarpuscleLoop::SkoarpuscleLoop(Skoar *skoar, SkoarNoadPtr noad) {
+SkoarpuscleLoop::SkoarpuscleLoop (Skoar *skoar, SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Loop");
+    SkoarMemories::o ().allocSkoarpuscle (L"Loop");
 #endif
-    {
-        list<ESkoarNoad::Kind> desires = { ESkoarNoad::loop_condition };
-        for (auto x : SkoarNoad::collect(noad, desires)) {
-            if (x->children.size() > 0) {
-                condition = Skoarpion::NewFromSubtree(skoar, x);
-            }
-        }
-    }
-    {
-        list<ESkoarNoad::Kind> desires = { ESkoarNoad::loop_body };
-        for (auto x : SkoarNoad::collect(noad, desires)) {
-            body = Skoarpion::NewFromSubtree(skoar, x);
-        }
-    }
+    list<ESkoarNoad::Kind> desires_cond = { ESkoarNoad::loop_condition };
+    for (auto x : SkoarNoad::collect (noad, desires_cond))
+        if (x->children.size () > 0)
+            condition = Skoarpion::NewFromSubtree (skoar, x);
+
+    list<ESkoarNoad::Kind> desires_body = { ESkoarNoad::loop_body };
+    for (auto x : SkoarNoad::collect (noad, desires_body))
+        body = Skoarpion::NewFromSubtree (skoar, x);
 
     each = nullptr;
 }
 
-SkoarpuscleLoop::~SkoarpuscleLoop() {
+SkoarpuscleLoop::~SkoarpuscleLoop () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Loop");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Loop");
 #endif
 }
 
 // --- SkoarpuscleLoopMsg ---------------------------------------------------------
-SkoarpuscleLoopMsg::SkoarpuscleLoopMsg(SkoarpusclePtr msg) : val(msg) {
+SkoarpuscleLoopMsg::SkoarpuscleLoopMsg (SkoarpusclePtr msg) : val (msg) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"LoopMsg");
+    SkoarMemories::o ().allocSkoarpuscle (L"LoopMsg");
 #endif
 }
 
-SkoarpuscleLoopMsg::~SkoarpuscleLoopMsg() {
+SkoarpuscleLoopMsg::~SkoarpuscleLoopMsg () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"LoopMsg");
+    SkoarMemories::o ().deallocSkoarpuscle (L"LoopMsg");
 #endif
 }
 
 // --- SkoarpuscleExprEnd ---------------------------------------------------------
-SkoarpuscleExprEnd::SkoarpuscleExprEnd() {
+SkoarpuscleExprEnd::SkoarpuscleExprEnd () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"ExprEnd");
+    SkoarMemories::o ().allocSkoarpuscle (L"ExprEnd");
 #endif
 }
 
-SkoarpuscleExprEnd::~SkoarpuscleExprEnd() {
+SkoarpuscleExprEnd::~SkoarpuscleExprEnd () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"ExprEnd");
+    SkoarMemories::o ().deallocSkoarpuscle (L"ExprEnd");
 #endif
 }
 
 // --- SkoarpuscleListSep ---------------------------------------------------------
-SkoarpuscleListSep::SkoarpuscleListSep() {
+SkoarpuscleListSep::SkoarpuscleListSep () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"ListSep");
+    SkoarMemories::o ().allocSkoarpuscle (L"ListSep");
 #endif
 }
 
-SkoarpuscleListSep::~SkoarpuscleListSep() {
+SkoarpuscleListSep::~SkoarpuscleListSep () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"ListSep");
+    SkoarMemories::o ().deallocSkoarpuscle (L"ListSep");
 #endif
 }
 
 // --- SkoarpuscleListEnd ---------------------------------------------------------
-SkoarpuscleListEnd::SkoarpuscleListEnd() {
+SkoarpuscleListEnd::SkoarpuscleListEnd () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"ListEnd");
+    SkoarMemories::o ().allocSkoarpuscle (L"ListEnd");
 #endif
 }
 
-SkoarpuscleListEnd::~SkoarpuscleListEnd() {
+SkoarpuscleListEnd::~SkoarpuscleListEnd () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"ListEnd");
+    SkoarMemories::o ().deallocSkoarpuscle (L"ListEnd");
 #endif
 }
 
 // --- SkoarpuscleList ---------------------------------------------------------
-SkoarpuscleList::SkoarpuscleList() : 
-    SkoarpuscleList(make_shared<ListOfSkoarpuscles>())
+SkoarpuscleList::SkoarpuscleList () :
+    SkoarpuscleList (make_shared<ListOfSkoarpuscles> ())
 {}
 
-SkoarpuscleList::SkoarpuscleList(ListOfSkoarpusclesPtr x) :
-    Skoarpuscle(ESkoarpuscle::List),
-    val(x)
+SkoarpuscleList::SkoarpuscleList (ListOfSkoarpusclesPtr x) :
+    Skoarpuscle (ESkoarpuscle::List),
+    val (x)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"List");
+    SkoarMemories::o ().allocSkoarpuscle (L"List");
 #endif
 
     noaty = true;
     impressionable = true;
 }
 
-SkoarpuscleList::~SkoarpuscleList() {
+SkoarpuscleList::~SkoarpuscleList () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"List");
+    SkoarMemories::o ().deallocSkoarpuscle (L"List");
 #endif
     clear ();
-        
+
 }
 
 void SkoarpuscleList::clear ()
@@ -565,32 +564,32 @@ void SkoarpuscleList::clear ()
 }
 
 // --- SkoarpuscleArgs ---------------------------------------------------------
-SkoarpuscleArgs::SkoarpuscleArgs() {
+SkoarpuscleArgs::SkoarpuscleArgs () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Args");
+    SkoarMemories::o ().allocSkoarpuscle (L"Args");
 #endif
 }
 
-SkoarpuscleArgs::~SkoarpuscleArgs() {
+SkoarpuscleArgs::~SkoarpuscleArgs () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Args");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Args");
 #endif
 }
 
 // --- SkoarpuscleMsg ---------------------------------------------------------
-SkoarpuscleMsg::SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a) :
-    val(v),
-    args(a),
-    dest(nullptr) {
+SkoarpuscleMsg::SkoarpuscleMsg (SkoarString v, shared_ptr<SkoarpuscleArgs> a) :
+    val (v),
+    args (a),
+    dest (nullptr) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Msg");
+    SkoarMemories::o ().allocSkoarpuscle (L"Msg");
 #endif
 
 }
 
-SkoarpuscleMsg::~SkoarpuscleMsg() {
+SkoarpuscleMsg::~SkoarpuscleMsg () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Msg");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Msg");
     clear ();
 #endif
 }
@@ -605,28 +604,28 @@ void SkoarpuscleMsg::clear ()
 }
 
 // --- SkoarpuscleMsgName ---------------------------------------------------------
-SkoarpuscleMsgName::SkoarpuscleMsgName(SkoarString s) : val(s) {
+SkoarpuscleMsgName::SkoarpuscleMsgName (SkoarString s) : val (s) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"MsgName");
+    SkoarMemories::o ().allocSkoarpuscle (L"MsgName");
 #endif
 }
 
-SkoarpuscleMsgName::~SkoarpuscleMsgName() {
+SkoarpuscleMsgName::~SkoarpuscleMsgName () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"MsgName");
+    SkoarMemories::o ().deallocSkoarpuscle (L"MsgName");
 #endif
 }
 
 // --- SkoarpuscleMsgNameWithArgs ---------------------------------------------------------
-SkoarpuscleMsgNameWithArgs::SkoarpuscleMsgNameWithArgs(SkoarString s) : val(s) {
+SkoarpuscleMsgNameWithArgs::SkoarpuscleMsgNameWithArgs (SkoarString s) : val (s) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"MsgNameWithArgs");
+    SkoarMemories::o ().allocSkoarpuscle (L"MsgNameWithArgs");
 #endif
 }
 
-SkoarpuscleMsgNameWithArgs::~SkoarpuscleMsgNameWithArgs() {
+SkoarpuscleMsgNameWithArgs::~SkoarpuscleMsgNameWithArgs () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"MsgNameWithArgs");
+    SkoarMemories::o ().deallocSkoarpuscle (L"MsgNameWithArgs");
 #endif
 }
 
@@ -635,21 +634,21 @@ SkoarpuscleMsgNameWithArgs::~SkoarpuscleMsgNameWithArgs() {
 // -----------------------------
 
 // --- SkoarpuscleBars ---------------------------------------------------------
-SkoarpuscleBars::SkoarpuscleBars(SkoarToke* toke, SkoarNoadPtr noad) :
-    val(toke->lexeme),
-    address(noad->address),
-    pre_repeat(toke->lexeme.at (0) == L':'),
-    post_repeat(toke->lexeme.at (toke->lexeme.length () - 1) == L':'),
-    offs(toke->offs)
+SkoarpuscleBars::SkoarpuscleBars (SkoarToke* toke, SkoarNoadPtr noad) :
+    val (toke->lexeme),
+    address (noad->address),
+    pre_repeat (toke->lexeme.at (0) == L':'),
+    post_repeat (toke->lexeme.at (toke->lexeme.length () - 1) == L':'),
+    offs (toke->offs)
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Bars");
+    SkoarMemories::o ().allocSkoarpuscle (L"Bars");
 #endif
 }
 
-SkoarpuscleBars::~SkoarpuscleBars() {
+SkoarpuscleBars::~SkoarpuscleBars () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Bars");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Bars");
 #endif
 }
 
@@ -674,13 +673,13 @@ SkoarpuscleCoda::~SkoarpuscleCoda () {
 #endif
 }
 // --- SkoarpuscleGoto ---------------------------------------------------------
-SkoarpuscleGoto::SkoarpuscleGoto(SkoarNoadPtr noad) {
+SkoarpuscleGoto::SkoarpuscleGoto (SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Goto");
+    SkoarMemories::o ().allocSkoarpuscle (L"Goto");
 #endif
 
-    auto it = noad->children.cbegin ();
-    auto toke = (*it)->next_toke();
+    auto it (noad->children.cbegin ());
+    auto toke ((*it)->next_toke ());
 
     if (toke != nullptr)
     {
@@ -693,47 +692,47 @@ SkoarpuscleGoto::SkoarpuscleGoto(SkoarNoadPtr noad) {
     }
 }
 
-SkoarpuscleGoto::~SkoarpuscleGoto() {
+SkoarpuscleGoto::~SkoarpuscleGoto () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Goto");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Goto");
 #endif
 }
 
 // --- SkoarpuscleCarrots ---------------------------------------------------------
-SkoarpuscleCarrots::SkoarpuscleCarrots(SkoarToke *toke) :
-    val(toke->lexeme.length())
+SkoarpuscleCarrots::SkoarpuscleCarrots (SkoarToke *toke) :
+    val (toke->lexeme.length ())
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Carrots");
+    SkoarMemories::o ().allocSkoarpuscle (L"Carrots");
 #endif
 
 }
 
-SkoarpuscleCarrots::~SkoarpuscleCarrots() {
+SkoarpuscleCarrots::~SkoarpuscleCarrots () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Carrots");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Carrots");
 #endif
 }
 
 // --- SkoarpuscleTuplet ---------------------------------------------------------
-SkoarpuscleTuplet::SkoarpuscleTuplet(SkoarToke *toke) :
-    val(toke->lexeme.length())
+SkoarpuscleTuplet::SkoarpuscleTuplet (SkoarToke *toke) :
+    val (toke->lexeme.length ())
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Tuplet");
+    SkoarMemories::o ().allocSkoarpuscle (L"Tuplet");
 #endif
 
 }
 
-SkoarpuscleTuplet::~SkoarpuscleTuplet() {
+SkoarpuscleTuplet::~SkoarpuscleTuplet () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Tuplet");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Tuplet");
 #endif
 }
 
 // --- SkoarpuscleDynamic ---------------------------------------------------------
 
-inline SkoarInt decode_skoar_dynamic(SkoarString &s) {
+inline SkoarInt decode_skoar_dynamic (SkoarString &s) {
     if (s == L"ppp")
         return 1;
     if (s == L"pppiano")
@@ -763,73 +762,72 @@ inline SkoarInt decode_skoar_dynamic(SkoarString &s) {
     return 8;
 }
 
-SkoarpuscleDynamic::SkoarpuscleDynamic(SkoarToke *toke) :
-    val(decode_skoar_dynamic(toke->lexeme))
+SkoarpuscleDynamic::SkoarpuscleDynamic (SkoarToke *toke) :
+    val (decode_skoar_dynamic (toke->lexeme))
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Dynamic");
+    SkoarMemories::o ().allocSkoarpuscle (L"Dynamic");
 #endif
 }
 
-SkoarpuscleDynamic::~SkoarpuscleDynamic() {
+SkoarpuscleDynamic::~SkoarpuscleDynamic () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Dynamic");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Dynamic");
 #endif
 }
 
 // --- SkoarpuscleOctaveShift ---------------------------------------------------------
-inline const SkoarInt decode_skoar_octave_shift(SkoarToke *toke) {
-    auto f = [&]() {
-        auto s = toke->lexeme;
-        auto n = s.length() - 1;
+inline const SkoarInt decode_skoar_octave_shift (SkoarToke *toke) {
 
-        if (s.at(0) == L'o') {
-            n = n * -1;
-        }
+    if (toke->kind == ESkoarToke::OctaveShift)
+    {
+        auto s (toke->lexeme);
+        auto n (s.length () - 1);
+
+        if (s.at (0) == L'o')
+            n *= -1;
+
         return n;
-    };
-
-    switch (toke->kind) {
-    case ESkoarToke::OctaveShift:
-        return f();
-    };
+    }
+    
     return 0;
 }
 
-SkoarpuscleOctaveShift::SkoarpuscleOctaveShift(SkoarToke *toke) :
-    val(decode_skoar_octave_shift(toke))
+SkoarpuscleOctaveShift::SkoarpuscleOctaveShift (SkoarToke *toke) :
+    val (decode_skoar_octave_shift (toke))
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"OctaveShift");
+    SkoarMemories::o ().allocSkoarpuscle (L"OctaveShift");
 #endif
 }
 
-SkoarpuscleOctaveShift::~SkoarpuscleOctaveShift() {
+SkoarpuscleOctaveShift::~SkoarpuscleOctaveShift () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Unknown");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Unknown");
 #endif
 }
 
 // --- SkoarpuscleVoice ---------------------------------------------------------
-SkoarpuscleVoice::SkoarpuscleVoice(SkoarToke *toke) :
-    val(toke->lexeme.substr(1))
+SkoarpuscleVoice::SkoarpuscleVoice (SkoarToke *toke) :
+    val (toke->lexeme.substr (1))
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Voice");
+    SkoarMemories::o ().allocSkoarpuscle (L"Voice");
 #endif
 }
 
-SkoarpuscleVoice::~SkoarpuscleVoice() {
+SkoarpuscleVoice::~SkoarpuscleVoice () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Voice");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Voice");
 #endif
 }
 
 // --- SkoarpuscleHashLevel ---------------------------------------------------------
-inline SkoarFloat decode_skoar_hashlevel(SkoarString &lex) {
+inline SkoarFloat decode_skoar_hashlevel (SkoarString &lex) {
     SkoarFloat n = -2.0;
     SkoarFloat i = 0;
-    for (auto c : lex) {
+    for (auto c : lex)
+    {
         n += 1.0;
         if (c == L'#')
             i += 1.0;
@@ -837,38 +835,39 @@ inline SkoarFloat decode_skoar_hashlevel(SkoarString &lex) {
 
     if (n <= 0.0)
         return 0.0;
+
     return i / n;
 }
 
-SkoarpuscleHashLevel::SkoarpuscleHashLevel(SkoarString lex) :
-    val(decode_skoar_hashlevel(lex))
+SkoarpuscleHashLevel::SkoarpuscleHashLevel (SkoarString lex) :
+    val (decode_skoar_hashlevel (lex))
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"HashLevel");
+    SkoarMemories::o ().allocSkoarpuscle (L"HashLevel");
 #endif
 
     impressionable = true;
     noatworthy = false;
 }
 
-SkoarpuscleHashLevel::~SkoarpuscleHashLevel() {
+SkoarpuscleHashLevel::~SkoarpuscleHashLevel () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"HashLevel");
+    SkoarMemories::o ().deallocSkoarpuscle (L"HashLevel");
 #endif
 }
 
 // --- SkoarpusclePair ---------------------------------------------------------
-SkoarpusclePair::SkoarpusclePair(SkoarString k, SkoarpusclePtr v) :
-    val(make_pair(k, v == nullptr ? make_skoarpuscle(nullptr) : v))
+SkoarpusclePair::SkoarpusclePair (SkoarString k, SkoarpusclePtr v) :
+    val (make_pair (k, v == nullptr ? make_skoarpuscle (nullptr) : v))
 {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Pair");
+    SkoarMemories::o ().allocSkoarpuscle (L"Pair");
 #endif
 }
 
-SkoarpusclePair::~SkoarpusclePair() {
+SkoarpusclePair::~SkoarpusclePair () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Pair");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Pair");
 #endif
 }
 
@@ -879,25 +878,25 @@ void SkoarpusclePair::clear ()
 }
 
 // --- SkoarpuscleExpr ---------------------------------------------------------
-SkoarpuscleExpr::SkoarpuscleExpr(SkoarNoadPtr noad) {
+SkoarpuscleExpr::SkoarpuscleExpr (SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"Expr");
+    SkoarMemories::o ().allocSkoarpuscle (L"Expr");
 #endif
 
     val = noad;
     result = nullptr;
 }
 
-SkoarpuscleExpr::~SkoarpuscleExpr() {
+SkoarpuscleExpr::~SkoarpuscleExpr () {
 #if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"Expr");
+    SkoarMemories::o ().deallocSkoarpuscle (L"Expr");
 #endif
     val = nullptr;
 }
 
 void SkoarpuscleExpr::clear ()
 {
-    
+
     if (result != nullptr)
         result->clear ();
 

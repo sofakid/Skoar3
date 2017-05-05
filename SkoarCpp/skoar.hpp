@@ -20,14 +20,13 @@ public:
     // init everything.
     static void init ();
 
-    ISkoarLog *log;
+    ISkoarLog* log;
 
     // todo: make this static
-    SkoarOps *ops;                         // operations tables object
+    SkoarOps* ops;                         // operations tables object
 
     SkoarString skoarce;                   // the skoarce code
     SkoarNoadPtr tree;                     // root of tree
-    SkoarToker toker;                      // toker
     map<SkoarString, SkoarKoarPtr> voices; // all the voices
     SkoarKoarPtr all_voice;                // the all voice
     ListOfSkoarpions skoarpions;           // all the skoarpions
@@ -35,23 +34,20 @@ public:
     SkoarInt running;
 
     list<size_t> markers_colon;
-
     list<size_t> markers_coda;
     map<SkoarString, size_t> markers_coda_named;
-
 
     bool parsedOk;
     bool decoratedOk;
 
-    Skoar (SkoarString skoarce, ISkoarLog *log);
+    Skoar (SkoarString skoarce, ISkoarLog* log);
     ~Skoar ();
-
 
     void decorate ();
     void decorate_offs_size_style ();
-    void registerMarker (SkoarpuscleBars * bars);
-    void registerMarker (SkoarpuscleCoda * coda);
-    SkoarKoarPtr get_voice (const SkoarString &k);
+    void registerMarker (SkoarpuscleBars* bars);
+    void registerMarker (SkoarpuscleCoda* coda);
+    SkoarKoarPtr get_voice (const SkoarString& k);
     void cthulhu (SkoarNoadPtr noad);
     void cthulhu (SkoarString s);
     void draw_skoarpions ();
@@ -63,9 +59,9 @@ public:
     void play (const SpellOfHappening& spell);
 
     void play_voice (SkoarString voice, const SpellOfHappening& spell);
-    void play_voice_skoarpion (SkoarString voice, SkoarpionPtr skoarpion, const SpellOfHappening & spell);
+    void play_voice_skoarpion (SkoarString voice, SkoarpionPtr skoarpion, const SpellOfHappening& spell);
 
-    void debug_voice (SkoarString voice, const SpellOfHappening& spell, const MinstrelDebugConfig &config);
+    void debug_voice (SkoarString voice, const SpellOfHappening& spell, const MinstrelDebugConfig& config);
 
     void one_more_running ();
     void one_less_running ();
@@ -75,17 +71,15 @@ public:
 class SkoarLite
 {
 public:
-    SkoarLite (SkoarString skoarce, ISkoarLog *log);
+    SkoarLite (SkoarString skoarce, ISkoarLog* log);
     ~SkoarLite ();
 
-    ISkoarLog *log;
+    ISkoarLog* log;
 
     SkoarString skoarce;      // the skoarce code
     SkoarNoadPtr tree;         // root of tree
-    SkoarToker toker;          // toker
 
     bool parsedOk;
-
     void decorate_offs_size_style ();
 
 };

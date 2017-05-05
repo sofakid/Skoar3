@@ -18,9 +18,8 @@
 // =====
 // Skoar
 // =====
-
 void Skoar::init () {
-    static bool isInitialized = false;
+    static bool isInitialized (false);
     if (isInitialized == false)
     {
         SkoarToker::init ();
@@ -33,12 +32,12 @@ void Skoar::init () {
     }
 }
 
-Skoar::Skoar (SkoarString skoarce, ISkoarLog *log) :
-    skoarce (skoarce + L"\n"), // i don't like this + L"\n" business.
+Skoar::Skoar (SkoarString src, ISkoarLog *log) :
+    skoarce (src + L"\n"), // i don't like this + L"\n" business.
     log (log),
-    toker (this->skoarce),
     parsedOk (false),
-    decoratedOk (false)
+    decoratedOk (false),
+    tree(nullptr)
 {
     Skoar::init ();
 
@@ -46,38 +45,28 @@ Skoar::Skoar (SkoarString skoarce, ISkoarLog *log) :
     SkoarMemories::o ().allocSkoar ();
 #endif
 
-    //this->skoarce = skoarce;
-    clock_t start_time;
-    clock_t parse_time;
-    clock_t decorate_time;
-
-    float f_parse_time;
-    float f_decorate_time;
-
-    tree = nullptr;
+    SkoarToker toker (skoarce);
     auto parser = SkoarParser (&toker);
 
     all_voice = make_shared<SkoarKoar> (this, SkoarString (L"all"));
     voices[L"all"] = all_voice;
 
-    //skoarpions = List[];
-
     log->d (">>> parsing skoar...");
-    start_time = clock ();
+    clock_t start_time (clock ());
     try
     {
         tree = parser.skoar (nullptr);
     }
     catch (SkoarTokerException &e)
     {
-        // someday we can like, underline the error or something.
+        // someday we can.. underline the error or something.
         log->e ("parse fail", e.wwhat ());
 
         // delete the unfinished tree
         auto x = e.noad;
         while (x->parent != nullptr)
         {
-            auto parent = x->parent;
+            auto parent (x->parent);
             x->clear ();
             x = parent;
         }
@@ -94,10 +83,10 @@ Skoar::Skoar (SkoarString skoarce, ISkoarLog *log) :
         log->e ("parse fail", e.wwhat ());
 
         // delete the unfinished tree
-        auto x = e.noad;
+        auto x (e.noad);
         while (x->parent != nullptr)
         {
-            auto parent = x->parent;
+            auto parent (x->parent);
             x->clear ();
             x = parent;
         }
@@ -125,7 +114,7 @@ Skoar::Skoar (SkoarString skoarce, ISkoarLog *log) :
         return;
     }
     parsedOk = true;
-    parse_time = clock () - start_time;
+    clock_t parse_time (clock () - start_time);
 
     //"---< Undecorated Skoar Tree >---".postln; tree.draw_tree.postln;
     //log->i("---< Undecorated Skoar Tree >---");
@@ -146,19 +135,18 @@ Skoar::Skoar (SkoarString skoarce, ISkoarLog *log) :
     }
 
     decoratedOk = true;
-    decorate_time = clock () - start_time - parse_time;
+    clock_t decorate_time (clock () - start_time - parse_time);
 
-    f_parse_time = static_cast<float>(parse_time) / CLOCKS_PER_SEC;
-    f_decorate_time = static_cast<float>(decorate_time) / CLOCKS_PER_SEC;
+    float f_parse_time (static_cast<float> (parse_time) / CLOCKS_PER_SEC);
+    float f_decorate_time (static_cast<float> (decorate_time) / CLOCKS_PER_SEC);
 
     log->d ("---< Decorated Skoar Tree >---");
     tree->log_tree (log);
 
     draw_skoarpions ();
 
-    log->d ("+++ Skoar Parsed +++");// +tree->draw_tree());
-
-    log->d ("seconds parsing", f_parse_time,
+    log->d ("+++ Skoar Parsed +++",
+        "seconds parsing", f_parse_time,
         "seconds decorating", f_decorate_time,
         "seconds total: ", f_parse_time + f_decorate_time);
 }
@@ -173,7 +161,7 @@ Skoar::~Skoar () {
 
         for (auto v_pair : voices)
         {
-            auto voice = v_pair.second;
+            auto voice (v_pair.second);
             if (voice != nullptr)
                 voice->clear ();
         }
@@ -192,7 +180,7 @@ Skoar::~Skoar () {
 
         for (auto v_pair : voices)
         {
-            auto voice = v_pair.second;
+            auto voice (v_pair.second);
             if (voice != nullptr)
                 voice->clear ();
         }
@@ -213,9 +201,9 @@ Skoar::~Skoar () {
 void Skoar::decorate_offs_size_style () {
     SkoarStyles::EStyle current_style (SkoarStyles::EStyle::nostyle);
     list<SkoarStyles::EStyle> style_stack { current_style };
-    size_t pos = 0;
+    size_t pos (0);
 
-    auto before = [&](SkoarNoadPtr noad) {
+    auto before ([&](SkoarNoadPtr noad) {
         style_stack.push_back (current_style);
 
         if (noad->style == SkoarStyles::EStyle::nostyle)
@@ -231,26 +219,26 @@ void Skoar::decorate_offs_size_style () {
         }
         else
             noad->offs = pos;
-    };
+    });
 
-    auto after = [&](SkoarNoadPtr noad) {
+    auto after ([&](SkoarNoadPtr noad) {
         current_style = style_stack.back ();
         style_stack.pop_back ();
         noad->size = pos - noad->offs;
-    };
+    });
 
     SkoarNoad::inorderBeforeAfter (tree, before, after);
 }
 
 void Skoar::decorate () {
-    auto f = [&](SkoarNoadPtr noad) {
-        auto t = noad->toke.get ();
+    auto f ([&](SkoarNoadPtr noad) {
+        auto t (noad->toke.get ());
         if (t != nullptr)
             SkoarTokeInspector::instance ()->decorate (this, noad, t);
         else
             Skoarmantics::instance ()->decorate (this, noad);
 
-        auto x = noad->skoarpuscle;
+        auto x (noad->skoarpuscle);
         if (x != nullptr)
         {
             if (is_skoarpuscle<SkoarpuscleBars> (x))
@@ -260,7 +248,7 @@ void Skoar::decorate () {
                 registerMarker (skoarpuscle_ptr<SkoarpuscleCoda> (x));
 
         }
-    };
+    });
 
     SkoarNoad::depth_visit (tree, f);
 }
@@ -286,7 +274,7 @@ void Skoar::registerMarker (SkoarpuscleCoda* coda) {
 
 // creates a new one if needed
 SkoarKoarPtr Skoar::get_voice (const SkoarString &k) {
-    SkoarKoarPtr voice = voices[k];
+    SkoarKoarPtr voice (voices[k]);
     if (voice != nullptr)
         return voice;
 
@@ -324,8 +312,8 @@ void Skoar::draw_skoarpions () {
         stream << "\nProjections:\n";
         for (auto pairs : voices)
         {
-            auto koar_name = pairs.first;
-            auto projection = Skoarpion::projection (x, koar_name);
+            auto koar_name (pairs.first);
+            auto projection (Skoarpion::projection (x, koar_name));
 
             //projection->proj->draw_tree(stream);
             stream << "\n";
@@ -336,13 +324,13 @@ void Skoar::draw_skoarpions () {
 }
 
 ListOfSkoarpionProjectionsPtr Skoar::get_all_projections () {
-    auto listy = make_shared<ListOfSkoarpionProjections> ();
+    auto listy (make_shared<ListOfSkoarpionProjections> ());
 
     for (auto x : skoarpions)
         for (auto pairs : voices)
         {
-            auto koar_name = pairs.first;
-            auto projection = Skoarpion::projection (x, koar_name);
+            auto koar_name (pairs.first);
+            auto projection (Skoarpion::projection (x, koar_name));
             listy->push_back (projection);
         }
 
@@ -350,11 +338,11 @@ ListOfSkoarpionProjectionsPtr Skoar::get_all_projections () {
 }
 
 ListOfSkoarpionProjectionsPtr Skoar::get_projections (SkoarString koar_name) {
-    auto listy = make_shared<ListOfSkoarpionProjections> ();
+    auto listy (make_shared<ListOfSkoarpionProjections> ());
 
     for (auto x : skoarpions)
     {
-        auto projection = Skoarpion::projection (x, koar_name);
+        auto projection (Skoarpion::projection (x, koar_name));
         listy->push_back (projection);
     }
 
@@ -389,8 +377,8 @@ void Skoar::play_voice_skoarpion (SkoarString voice, SkoarpionPtr skoarpion, con
 }
 
 void Skoar::debug_voice (SkoarString voice, const SpellOfHappening& spell, const MinstrelDebugConfig &config) {
-    auto v = voices[voice];
-    auto m = SkoarMinstrel::NewDebugging (voice, v, this, spell, config);
+    auto v (voices[voice]);
+    auto m (SkoarMinstrel::NewDebugging (voice, v, this, spell, config));
     one_more_running ();
     m->start ();
     one_less_running ();
@@ -411,15 +399,14 @@ void Skoar::one_less_running () {
 // --------------------------------------------------------------------------------
 // for highlighting
 
-SkoarLite::SkoarLite (SkoarString skoarce, ISkoarLog *log) :
-    skoarce (skoarce + L"\n"), // i don't like this + L"\n" business.
+SkoarLite::SkoarLite (SkoarString s, ISkoarLog *log) :
+    skoarce (s + L"\n"), // i don't like this + L"\n" business.
     log (log),
-    toker (this->skoarce),
     parsedOk (false)
 {
     Skoar::init ();
-
-    auto parser = SkoarParser (&toker);
+    SkoarToker toker (skoarce);
+    SkoarParser parser (&toker);
 
     try
     {
@@ -433,10 +420,10 @@ SkoarLite::SkoarLite (SkoarString skoarce, ISkoarLog *log) :
         log->d ("toker fail", e.wwhat ());
 
         // delete the unfinished tree
-        auto x = e.noad;
+        auto x (e.noad);
         while (x->parent != nullptr)
         {
-            auto parent = x->parent;
+            auto parent (x->parent);
             x->clear ();
             x = parent;
         }
@@ -451,10 +438,10 @@ SkoarLite::SkoarLite (SkoarString skoarce, ISkoarLog *log) :
         log->d ("parse fail", e.wwhat ());
 
         // delete the unfinished tree
-        auto x = e.noad;
+        auto x (e.noad);
         while (x->parent != nullptr)
         {
-            auto parent = x->parent;
+            auto parent (x->parent);
             x->clear ();
             x = parent;
         }
@@ -490,9 +477,9 @@ void SkoarLite::decorate_offs_size_style()
 {
     SkoarStyles::EStyle current_style (SkoarStyles::EStyle::nostyle);
     list<SkoarStyles::EStyle> style_stack { current_style };
-    size_t pos = 0;
+    size_t pos (0);
 
-    auto before = [&](SkoarNoadPtr noad) {
+    auto before ([&](SkoarNoadPtr noad) {
         style_stack.push_back (current_style);
 
         if (noad->style == SkoarStyles::EStyle::nostyle)
@@ -500,7 +487,7 @@ void SkoarLite::decorate_offs_size_style()
         else
             current_style = noad->style;
 
-        auto toke = noad->toke.get ();
+        auto toke (noad->toke.get ());
 
         if (toke != nullptr)
         {
@@ -510,40 +497,20 @@ void SkoarLite::decorate_offs_size_style()
         else
             noad->offs = pos;
 
-    };
+    });
 
-    auto after = [&](SkoarNoadPtr noad) {
+    auto after ([&](SkoarNoadPtr noad) {
         current_style = style_stack.back ();
         style_stack.pop_back ();
         noad->size = pos - noad->offs;
-    };
+    });
 
     SkoarNoad::inorderBeforeAfter (tree, before, after);
 }
 
 
 SkoarLite::~SkoarLite () {
-    clock_t start_time;
-    clock_t elapsed_time;
-
-    float f_elapsed_time;
-
-    start_time = clock ();
-
-    //log->i("\n\n");
-    //log->i("----------------------------------");
-    //log->i("Deleting SkoarLite...");
-    //log->w("Memories", SkoarMemories::o());
-
     if (parsedOk)
         tree->clear ();
     tree = nullptr;
-
-    elapsed_time = clock () - start_time;
-    f_elapsed_time = static_cast<float>(elapsed_time) / CLOCKS_PER_SEC;
-
-    //log->i("Deleted SkoarLite.", "elapsed_time", f_elapsed_time);
-    //log->w("Memories", SkoarMemories::o());
-    //log->i("----------------------------------\n\n");
-
 }

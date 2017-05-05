@@ -1,13 +1,11 @@
 #include "skoarcery.hpp"
 #include "koar.hpp"
-
 #include "skoar.hpp"
 #include "event.hpp"
 #include "minstrel.hpp"
 #include "skoarpion.hpp"
 #include "all_skoarpuscles.hpp"
 #include "fairy.hpp" 
-
 #include "noad.hpp"
 
 SkoarKoar::SkoarKoar (Skoar *skoar, const SkoarString &name) :
@@ -49,15 +47,13 @@ void SkoarKoar::put (SkoarString k, SkoarpusclePtr v) {
 
 SkoarpusclePtr SkoarKoar::at (const SkoarString &k) {
 
-    SkoarpusclePtr out = nullptr;
+    SkoarpusclePtr out (nullptr);
 
     for (auto rev_it = stack.rbegin (); rev_it != stack.rend (); rev_it++)
     {
         out = (*rev_it)->at (k);
         if (out != nullptr)
-        {
             return out;
-        }
     }
 
     return out;
@@ -85,9 +81,7 @@ SkoarpusclePtr SkoarKoar::state_at (SkoarString &k) {
     {
         out = (*rev_it)->at (k);
         if (out != nullptr)
-        {
             return out;
-        }
     }
 
     return out;
@@ -129,25 +123,21 @@ void SkoarKoar::set_args (
     SkoarpusclePtr args_spec,
     SkoarpusclePtr args_prov)
 {
-    auto vars = stack.back ();
+    auto vars (stack.back ());
 
     SkoarpuscleArgList *args_list;
     if (is_skoarpuscle<SkoarpuscleArgList> (args_spec))
-    {
         args_list = skoarpuscle_ptr<SkoarpuscleArgList> (args_spec);
-    }
     else
         return;
 
     ListOfSkoarpusclesPtr args_provided;
     if (is_skoarpuscle<SkoarpuscleArgs> (args_prov))
-    {
         args_provided = skoarpuscle_ptr<SkoarpuscleArgs> (args_prov)->val;
-    }
+    
     else if (is_skoarpuscle<SkoarpuscleList> (args_prov))
-    {
         args_provided = skoarpuscle_ptr<SkoarpuscleList> (args_prov)->val;
-    }
+    
     else if (is_skoarpuscle<SkoarpusclePair> (args_prov))
     {
         // this isn't right.
@@ -159,46 +149,36 @@ void SkoarKoar::set_args (
         args_provided = make_shared<ListOfSkoarpuscles> ();
         auto n = args_list->args_names.size ();
         for (int i = 0; i < n; ++i)
-        {
             args_provided->push_back (make_skoarpuscle (nullptr));
-        }
     }
 
     minstrel->fairy->push_noating ();
-    auto provided_iter = args_provided->cbegin ();
+    auto provided_iter (args_provided->cbegin ());
     for (auto arg_name : args_list->args_names)
     {
         SkoarpusclePtr x;
         if (provided_iter != args_provided->cend ())
-        {
             x = *(provided_iter++);
-        }
         else
-        {
             x = make_skoarpuscle (nullptr);
-        }
 
         if (is_skoarpuscle<SkoarpuscleCat> (x))
         {
             // not found, use default
-            auto y = args_list->args_dict.at (arg_name);
+            auto y (args_list->args_dict.at (arg_name));
 
             if (is_skoarpuscle<SkoarpuscleExpr> (y))
-            {
                 y = skoarpuscle_ptr<SkoarpuscleExpr> (y)->flatten (minstrel);
-            }
 
             vars->put (arg_name, y);
         }
         else if (is_skoarpuscle<SkoarpusclePair> (x))
         {
-            auto pair = skoarpuscle_ptr<SkoarpusclePair> (x);
-            vars->put (pair->val.first, pair->val.second);
+            auto p (skoarpuscle_ptr<SkoarpusclePair> (x));
+            vars->put (p->val.first, p->val.second);
         }
         else
-        {
             vars->put (arg_name, x);
-        }
     }
 
     minstrel->fairy->pop_noating ();

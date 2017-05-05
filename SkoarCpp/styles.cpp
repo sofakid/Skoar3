@@ -5,7 +5,7 @@ namespace SkoarStyles {
 
     std::wostream& operator << (std::wostream& out, const SkoarStyles::EStyle& obj)
     {
-        out << static_cast<std::underlying_type<SkoarStyles::EStyle>::type>(obj);
+        out << static_cast<std::underlying_type<SkoarStyles::EStyle>::type> (obj);
         return out;
     }
 

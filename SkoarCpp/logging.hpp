@@ -1,9 +1,11 @@
 #pragma once
 #include <sstream>
 
-class ISkoarLog {
+class ISkoarLog
+{
 public:
-    const enum Level {
+    const enum Level
+    {
         debug = 0,
         info,
         warning,
@@ -11,40 +13,39 @@ public:
     };
 
     template<typename... Args>
-    void d(const Args&... args) {
-        if (logLevel == Level::debug) {
-            log_d(build_msg(L"-- D", args...));
-        }
+    void d (const Args&... args) {
+        if (logLevel == Level::debug)
+            log_d (build_msg (L"-- D", args...));
     }
 
     template<typename... Args>
-    void i(const Args&... args) {
+    void i (const Args&... args) {
         if (logLevel <= Level::info)
-            log_i(build_msg(L"== I", args...));
+            log_i (build_msg (L"== I", args...));
     }
 
     template<typename... Args>
-    void w(const Args&... args) {
+    void w (const Args&... args) {
         if (logLevel <= Level::warning)
-            log_w(build_msg(L"?? W", args...));
+            log_w (build_msg (L"?? W", args...));
     }
 
     template<typename... Args>
-    void e(const Args&... args) {
+    void e (const Args&... args) {
         if (logLevel <= Level::error)
-            log_e(build_msg(L"!! E", args...));
+            log_e (build_msg (L"!! E", args...));
     }
 
-    virtual void log_d(const std::wstring &s) = 0;
-    virtual void log_i(const std::wstring &s) = 0;
-    virtual void log_w(const std::wstring &s) = 0;
-    virtual void log_e(const std::wstring &s) = 0;
+    virtual void log_d (const std::wstring &s) = 0;
+    virtual void log_i (const std::wstring &s) = 0;
+    virtual void log_w (const std::wstring &s) = 0;
+    virtual void log_e (const std::wstring &s) = 0;
 
-    void setLevel(Level level) {
+    void setLevel (Level level) {
         logLevel = level;
     }
 
-    Level getLevel() {
+    Level getLevel () {
         return logLevel;
     }
 
@@ -52,37 +53,39 @@ private:
     Level logLevel = Level::info;
 
     template<typename Type, typename... Args>
-    void build_msg_r(std::wostringstream& msg, Type value, const Args&... args)
+    void build_msg_r (std::wostringstream& msg, Type value, const Args&... args)
     {
         msg << L" :: " << value;
-        build_msg_r(msg, args...);
+        build_msg_r (msg, args...);
     }
 
-    void build_msg_r(std::wostringstream& msg)
+    void build_msg_r (std::wostringstream& msg)
     {
         msg << std::endl;
     }
 
     template<typename... Args>
-    const std::wstring build_msg(const std::wstring &prefix, const Args&... args) {
+    const std::wstring build_msg (const std::wstring &prefix, const Args&... args) {
         std::wostringstream msg;
         msg << prefix;
-        build_msg_r(msg, args...);
-        return msg.str();
+        build_msg_r (msg, args...);
+        return msg.str ();
     }
 };
 
 
-struct SkoarNullLogger : public ISkoarLog {
-    void log_d(const std::wstring &s) override;
-    void log_i(const std::wstring &s) override;
-    void log_w(const std::wstring &s) override;
-    void log_e(const std::wstring &s) override;
+struct SkoarNullLogger : public ISkoarLog
+{
+    void log_d (const std::wstring &s) override;
+    void log_i (const std::wstring &s) override;
+    void log_w (const std::wstring &s) override;
+    void log_e (const std::wstring &s) override;
 };
 
-struct SkoarConsoleLogger : public ISkoarLog {
-    void log_d(const std::wstring &s) override;
-    void log_i(const std::wstring &s) override;
-    void log_w(const std::wstring &s) override;
-    void log_e(const std::wstring &s) override;
+struct SkoarConsoleLogger : public ISkoarLog
+{
+    void log_d (const std::wstring &s) override;
+    void log_i (const std::wstring &s) override;
+    void log_w (const std::wstring &s) override;
+    void log_e (const std::wstring &s) override;
 };
