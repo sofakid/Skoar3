@@ -88,8 +88,6 @@ SkoarpusclePtr SkoarpuscleString::skoar_msg (SkoarpuscleMsg *msg, SkoarMinstrelP
     return make_shared<SkoarpuscleCat> ();
 }
 
-// --- SkoarpuscleSymbolName ---------------------------------------------------------
-
 // --- SkoarpuscleSymbol ---------------------------------------------------------
 void SkoarpuscleSymbol::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (make_shared<SkoarpuscleSymbol> (val));
@@ -142,7 +140,7 @@ void SkoarpuscleDeref::do_deref (SkoarMinstrelPtr m) {
 
     else if (is_skoarpuscle<SkoarpuscleExpr> (x))
     {
-        auto result = skoarpuscle_ptr<SkoarpuscleExpr> (x)->result;
+        auto result (skoarpuscle_ptr<SkoarpuscleExpr> (x)->result);
 
         m->fairy->push_noating ();
         if (result != nullptr)
@@ -307,7 +305,7 @@ void SkoarpuscleLoop::on_enter (SkoarMinstrelPtr m) {
             m->koar->do_skoarpion (condition, m, SkoarKoar::EExecStyle::INLINE, m->fairy->impression);
             m->fairy->pop_noating ();
 
-            auto x = m->fairy->boolean_impression;
+            auto x (m->fairy->boolean_impression);
             if (is_skoarpuscle<SkoarpuscleFalse> (x) ||
                 is_skoarpuscle<SkoarpuscleCat> (x))
                 looping = false;
@@ -375,7 +373,7 @@ bool SkoarpuscleList::isNoatworthy () {
 }
 
 shared_ptr<SkoarpuscleList> SkoarpuscleList::mul (SkoarMinstrelPtr m, SkoarpusclePtr y) {
-    auto out = make_shared<ListOfSkoarpuscles> ();
+    auto out (make_shared<ListOfSkoarpuscles> ());
 
     for (auto x : *val)
     {
@@ -386,7 +384,7 @@ shared_ptr<SkoarpuscleList> SkoarpuscleList::mul (SkoarMinstrelPtr m, Skoarpuscl
 }
 
 shared_ptr<SkoarpuscleList> SkoarpuscleList::div (SkoarMinstrelPtr, SkoarpusclePtr) {
-    auto out = make_shared<ListOfSkoarpuscles> ();
+    auto out (make_shared<ListOfSkoarpuscles> ());
 
     for (auto x : *val)
     {
@@ -397,7 +395,7 @@ shared_ptr<SkoarpuscleList> SkoarpuscleList::div (SkoarMinstrelPtr, SkoarpuscleP
 }
 
 shared_ptr<SkoarpuscleList> SkoarpuscleList::divBy (SkoarMinstrelPtr, SkoarpusclePtr) {
-    auto out = make_shared<ListOfSkoarpuscles> ();
+    auto out (make_shared<ListOfSkoarpuscles> ());
 
     for (auto x : *val)
     {
@@ -530,7 +528,7 @@ void SkoarpuscleMsg::on_enter (SkoarMinstrelPtr m) {
     if (dest == nullptr)
         throw SkoarRuntimeException (L"msg: dest is nullptr");
 
-    SkoarpusclePtr result = nullptr;
+    SkoarpusclePtr result (nullptr);
     if (is_skoarpuscle<SkoarpuscleList> (dest))
     {
         // why not this? : result = skoarpuscle_ptr<SkoarpuscleList>(dest)->skoar_msg(this, m);
@@ -563,7 +561,7 @@ void SkoarpuscleMsg::on_enter (SkoarMinstrelPtr m) {
 }
 
 SkoarpusclePtr SkoarpuscleMsg::skoar_msg (SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr m) {
-    SkoarpusclePtr result = m->fairy->impression;
+    SkoarpusclePtr result (m->fairy->impression);
     if (is_skoarpuscle<SkoarpuscleList> (result))
         result = skoarpuscle_ptr<SkoarpuscleList> (result)->skoar_msg (this, m);
     

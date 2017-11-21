@@ -66,8 +66,8 @@ void SkoarpuscleSkoarpion::clear ()
 
 
 void SkoarpuscleSkoarpion::on_enter(SkoarMinstrelPtr m) {
-    auto name = val->name;
-    auto skrpskrp = make_shared<SkoarpuscleSkoarpion>(this);
+    auto name (val->name);
+    auto skrpskrp (make_shared<SkoarpuscleSkoarpion>(this));
     if (name.size() > 0) {
         m->koar->put(name, skrpskrp);
     }
@@ -92,51 +92,13 @@ void SkoarpuscleSkoarpion::asString(wostream &out) {
     out << "Skoarpion" << " :: " << val->name;
 }
 
-// --- SkoarpuscleSkoarpionSig ----------------------------------------------
-SkoarpuscleSkoarpionSig::SkoarpuscleSkoarpionSig(SkoarNoadPtr noad) {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().allocSkoarpuscle(L"SkoarpionSig");
-#endif
-    auto kidderator = noad->children.cbegin();
-    auto x = (*kidderator)->skoarpuscle;
-
-    if (is_skoarpuscle<SkoarpuscleSymbolName>(x)) {
-        name = skoarpuscle_ptr<SkoarpuscleSymbolName>(x)->val;
-        x = (*(++kidderator))->skoarpuscle;
-    }
-
-    if (is_skoarpuscle<SkoarpuscleArgList>(x)) {
-        arg_list = x;
-    }
-}
-
-SkoarpuscleSkoarpionSig::~SkoarpuscleSkoarpionSig() {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o().deallocSkoarpuscle(L"SkoarpionSig");
-#endif
-    clear ();
-}
-
-void SkoarpuscleSkoarpionSig::clear ()
-{
-    arg_list = nullptr;
-}
-
-void SkoarpuscleSkoarpionSig::asString(wostream &out) {
-    out << "SkoarpionSig" << " :: " << name;
-    if (is_skoarpuscle<SkoarpuscleArgList>(arg_list)) {
-        out << " :: ";
-        skoarpuscle_ptr<SkoarpuscleArgList>(arg_list)->asString(out);
-    }
-}
-
 // --- SkoarpuscleArgExpr ----------------------------------------------
-/* arg_expr tree looks like:
+/* args_entries tree looks like:
 
-    arg_expr
+    args_entries
        Toke_SymbolName
 or 
-    arg_expr
+    args_entries
        Toke_SymbolColon
        expr
 */
@@ -146,13 +108,15 @@ SkoarpuscleArgExpr::SkoarpuscleArgExpr(SkoarNoadPtr noad) {
 #endif
     auto x = noad->next_skoarpuscle();
 
-    if (is_skoarpuscle<SkoarpuscleSymbolName>(x)) {
-        name = skoarpuscle_ptr<SkoarpuscleSymbolName>(x)->val;
-    } 
-    else if (is_skoarpuscle<SkoarpuscleSymbolColon>(x)) {
+    if (is_skoarpuscle<SkoarpuscleSymbolColon>(x)) {
         name = skoarpuscle_ptr<SkoarpuscleSymbolColon>(x)->val;
     }
     
+    if (is_skoarpuscle<SkoarpuscleSymbolName> (x))
+    {
+        name = skoarpuscle_ptr<SkoarpuscleSymbolName> (x)->val;
+    }
+
     if (noad->children.size() > 1) {
         auto kidderator = noad->children.begin();
         expr = make_shared<SkoarpuscleExpr>(*(++kidderator));
@@ -198,7 +162,7 @@ SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr noad) {
     SkoarMemories::o().allocSkoarpuscle(L"ArgList");
 #endif
     
-    auto skoarpuscles = noad->collect_skoarpuscles();
+    auto skoarpuscles (noad->collect_skoarpuscles());
     for (auto x : *skoarpuscles) {
         if (is_skoarpuscle<SkoarpuscleArgExpr>(x)) {
             auto p = skoarpuscle_ptr<SkoarpuscleArgExpr>(x);

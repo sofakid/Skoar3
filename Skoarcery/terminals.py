@@ -90,7 +90,7 @@ LoopSep:          ::(?![|])
 
 Fairy:            [$]
 
-# we do this, because skoaroids can follow skoaroids.
+# we do this, because listys can follow Msgs.
 MsgName*:         [a-zA-Z_][a-zA-Z0-9_]*(?!<)
 MsgNameWithArgs*: [a-zA-Z_][a-zA-Z0-9_]*<
 
@@ -98,10 +98,9 @@ Symbol*:          @[a-zA-Z0-9_][a-zA-Z0-9_]*
 SymbolName*:      [a-zA-Z0-9_][a-zA-Z0-9_]*(?![[a-zA-Z0-9_fi \\t]*:)
 SymbolColon*:     [a-zA-Z_][a-zA-Z0-9_]*[ \\t]*:(?![:|}])
 
-SkoarpionStartWithSig:  [{]!(?=([^!](?!![}]))*!!)
-SkoarpionStart:         [{]!(?=([^!](?!!!))*![}])
-SkoarpionEnd:           ![}]
-SkoarpionSep:           !!
+SkoarpionArgs:    !!
+SkoarpionStart:   [{]!
+SkoarpionEnd:     ![}]
 
 Deref:            !(?![!}]|=)
 Nosey:            ,
@@ -121,7 +120,7 @@ OctaveShift*:     ~+o|o~+
 # TODO: deal with \"
 String*:          \'[^']*\'
 
-Bars*:            :?\\|+:?
+Bars*:            :?\\|+(?![>]):?
 
 Times:            [Tt]imes
 """

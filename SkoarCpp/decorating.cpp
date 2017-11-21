@@ -213,19 +213,6 @@ Skoarmantics::Skoarmantics () : table ({
         noad->skoarpuscle = make_shared<SkoarpuscleList> ();
     }},
 
-    {ESkoarNoad::arg_listy, SpellOfSimpleSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleArgList> (noad);
-    }},
-
-    {ESkoarNoad::arg_expr, SpellOfSimpleSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleArgExpr> (noad);
-        noad->children.clear ();
-    }},
-
-    {ESkoarNoad::skrp_sig, SpellOfSimpleSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleSkoarpionSig> (noad);
-    }},
-
     {ESkoarNoad::msg, SpellOfSimpleSkoarmantics {
         SkoarpusclePtr msg (noad->next_skoarpuscle ());
 
@@ -306,6 +293,15 @@ Skoarmantics::Skoarmantics () : table ({
         }
     }},
 
+    {ESkoarNoad::opt_args , SpellOfSimpleSkoarmantics {
+        noad->skoarpuscle = make_shared<SkoarpuscleArgList> (noad);
+        noad->children.clear ();
+    }},
+
+    {ESkoarNoad::args_entries , SpellOfSimpleSkoarmantics {
+        noad->skoarpuscle = make_shared<SkoarpuscleArgExpr> (noad);
+    }},
+
     {ESkoarNoad::expr, SpellOfSimpleSkoarmantics {
         // we insert a node at the end of the expression
         // so we can impress the result
@@ -335,6 +331,21 @@ Skoarmantics::Skoarmantics () : table ({
 
                 m->fairy->pop_noating ();
             };
+
+            // name the named skoarpions
+            if (noad->children.size () > 1)
+            {
+                auto it (noad->children.begin ());
+                auto next_expr (*(++it));
+                auto next_skrp (next_expr->next_skoarpuscle ());
+
+                if (is_skoarpuscle <SkoarpuscleSkoarpion> (next_skrp))
+                {
+                    auto p (skoarpuscle_ptr <SkoarpuscleSkoarpion> (next_skrp));
+                    p->val->name = skoarpuscle_ptr<SkoarpuscleSymbolColon> (child)->val;
+                }
+
+            }
 
         }
         else 

@@ -31,6 +31,7 @@ SkoarpionPtr Skoarpion::NewFromSubtree (Skoar* skoar, SkoarNoadPtr subtree) {
 Skoarpion::Skoarpion (const SkoarString from) :
     skoar (nullptr),
     body (nullptr),
+    arg_list (nullptr),
     n (0),
     name (L"uninitialized"),
     made_from (from)
@@ -87,10 +88,8 @@ void Skoarpion::init_from_skoar (Skoar* skr) {
 
         if (line->children.size () > 0)
             body->add_noad (line);
-
     }
 
-    SkoarNoadAddress address;
     body->decorate_voices (skoar->all_voice);
     body->decorate_address_zero (body);
 
@@ -102,11 +101,41 @@ void Skoarpion::init_from_subtree (Skoar* skr, SkoarNoadPtr subtree) {
     name = L"=^.^=";
     skoar = skr;
     body = subtree;
-    SkoarNoadAddress address;
     body->decorate_voices (skoar->all_voice);
     body->decorate_address_zero (body);
     n = subtree->size;
 }
+
+
+/*
+== I ::  novoice :              skoarpion
+== I ::  novoice :                opt_args           - 0
+== I ::  novoice :                  Toke_SkoarpionArgs -- 0
+== I ::  novoice :                  args_entries       -- 1
+== I ::  novoice :                    Toke_SymbolName      --- 0
+== I ::  novoice :                    Toke_ListSep         --- 1
+== I ::  novoice :                    args_entries         --- 2
+== I ::  novoice :                      Toke_SymbolColon        ---- 0
+== I ::  novoice :                      expr                    ---- 1
+== I ::  novoice :                        msgable
+== I ::  novoice :                          nouny
+== I ::  novoice :                            Toke_Int
+== I ::  novoice :                        expr_prime
+== I ::  novoice :                      Toke_ListSep            ---- 2
+== I ::  novoice :                      args_entries            ---- 3
+== I ::  novoice :                        Toke_SymbolName
+
+== I ::  novoice :                Toke_SkoarpionStart - 1
+
+== I ::  novoice :                skrp_suffix         - 2
+== I ::  novoice :                  opt_voiced_phrases
+== I ::  novoice :                    beat
+== I ::  novoice :                      regular_beat
+== I ::  novoice :                        Toke_Quarters
+
+== I ::  novoice :                  Toke_SkoarpionEnd
+
+*/
 
 void Skoarpion::init_from_noad (Skoar* skr, SkoarNoadPtr noad) {
 
@@ -114,47 +143,37 @@ void Skoarpion::init_from_noad (Skoar* skr, SkoarNoadPtr noad) {
 
     auto kidderatoar (noad->children.cbegin ());
 
-    // kid 0 - start
-    // kid 1 - sig or suffix
-    // kid 2 - suffix if no sig
+    // With args:
+    // kid 0 - opt_args
+    // kid 1 - SkoarpionStart
+    // kid 2 - suffix
 
-    auto kid_1 (*(++kidderatoar));
-    auto kid_1_s (kid_1->skoarpuscle);
+    // without args:
+    // kid 0 - SkoarpionStart
+    // kid 1 - suffix
+    auto first (*kidderatoar);
 
-    SkoarNoadPtr suffix (nullptr);
-    if (is_skoarpuscle<SkoarpuscleSkoarpionSig> (kid_1_s))
+    if (first->kind == ESkoarNoad::opt_args)
     {
-        auto p (skoarpuscle_ptr<SkoarpuscleSkoarpionSig> (kid_1_s));
-        name = p->name;
-        arg_list = p->arg_list;
-        p->clear ();
-        kid_1->clear ();
-        suffix = (*(++kidderatoar));
+        arg_list = first->skoarpuscle;
+        ++kidderatoar;
     }
-    else
-        suffix = kid_1;
 
+    auto suffix (*(++kidderatoar));
+    
     auto line (SkoarNoad::NewArtificial (L"line"));
-    auto section (SkoarNoad::NewArtificial (L"section"));
-    list<SkoarNoadPtr> sections;
+    body = SkoarNoad::NewArtificial (L"section");
+    
 
     for (auto x : suffix->children)
     {
         auto process_line ([&]() {
             if (line->children.size () > 0)
-                section->add_noad (line);
+                body->add_noad (line);
         });
 
         auto toke (x->toke.get ());
-        if (is_toke<ESkoarToke::SkoarpionSep> (toke))
-        {
-            process_line ();
-            sections.push_back (section);
-
-            section = SkoarNoad::NewArtificial (L"section");
-            line = SkoarNoad::NewArtificial (L"line");
-        }
-        else if (is_toke<ESkoarToke::Newline> (toke))
+        if (is_toke<ESkoarToke::Newline> (toke))
         {
             process_line ();
             line = SkoarNoad::NewArtificial (L"line");
@@ -162,19 +181,14 @@ void Skoarpion::init_from_noad (Skoar* skr, SkoarNoadPtr noad) {
         else if (is_toke<ESkoarToke::SkoarpionEnd> (toke))
         {
             process_line ();
-            sections.push_back (section);
         }
         else
             line->add_noad (x);
     }
     suffix->children.clear ();
 
-    for (auto sec : sections)
-        sec->decorate_address_zero (sec);
+    body->decorate_address_zero (body);
 
-    body = sections.front (); // we only support one skoarpion section for now
-
-    sections.clear ();
     n = body->size;
     body->decorate_voices (skoar->all_voice);
 
@@ -185,7 +199,10 @@ SkoarpionProjectionPtr Skoarpion::projection (SkoarpionPtr skoarpion, SkoarStrin
     return make_shared<SkoarpionProjection> (skoarpion, koar_name);
 }
 
-ListOfSkoarpionProjectionsPtr Skoarpion::get_projections (SkoarpionPtr skoarpion, const ListOfSkoarStrings& voices) {
+ListOfSkoarpionProjectionsPtr Skoarpion::get_projections (
+    SkoarpionPtr skoarpion, 
+    const ListOfSkoarStrings& voices
+) {
     auto listy (make_shared<ListOfSkoarpionProjections> ());
 
     for (auto x : voices)
@@ -231,11 +248,11 @@ SkoarpionProjection::SkoarpionProjection (SkoarpionPtr skoarpion, SkoarString ko
         return;
 
     SkoarNoad::inorder (skoarpion->body, [&](SkoarNoadPtr x) {
-        SkoarString& s (x->voice->name);
+        const SkoarString& s (x->voice->name);
 
-        if (x->on_enter != nullptr || x->skoarpuscle != nullptr)
-            if ((s == koar_name) || (s == L"all"))
-                noadites.emplace_back (x);
+        if ((x->on_enter != nullptr || x->skoarpuscle != nullptr) && 
+            (s == koar_name || s == L"all"))
+            noadites.emplace_back (x);
     });
 
 }

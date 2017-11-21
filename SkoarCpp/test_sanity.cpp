@@ -12,6 +12,7 @@ SkoarString tony = L"tony";
 SkoarString socrates = L"socrates";
 SkoarString qux = L"qux";
 SkoarString foo = L"foo";
+SkoarString fee = L"fee";
 SkoarString yay = L"yay";
 SkoarString amp_ = L"amp";
 SkoarString octave = L"octave";
@@ -197,13 +198,13 @@ TEST_CASE("Derefs", "[sanity]") {
 TEST_CASE("Skoarpions", "[sanity]") {
     
     SECTION("define nice") {
-        run_and_expect(L"{! !} {! x !! !} {! x<a> !! !} {! x<a:2, b : 3> !! !} {! c# !} foo:2)", make_events_vec(
+        run_and_expect(L"{! !} x: {! !} a: !! a {! !} !! a:2, b : 3{! !} {! c# !} foo:2)", make_events_vec(
             foo, 2, X
         ));
     }
 
     SECTION("define with no whitespace") {
-        run_and_expect(L"{!!}{!x!!!}{!x<a>!!!}{!x<a:2,b:3>!!!}{!c#!}foo:2)", make_events_vec(
+        run_and_expect(L"{!!}x:{!!}a:!!a{!!}!!a:2,b:3{!!}{!c#!}foo:2)", make_events_vec(
             foo, 2, X
         ));
     }
@@ -215,7 +216,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_simple no args") {
-        run_and_expect (L"] {! x !! ]] ]] !} ) !x )", make_events_vec (
+        run_and_expect (L"] x: {! ]] ]] !} ) !x )", make_events_vec (
             dur, 0.5, X,
             dur, 1.0, X,
             dur, 0.25, X,
@@ -225,7 +226,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope no args defined or supplied") {
-        run_and_expect (L"] {! x !! foo: 3 ]] ]] !} ) !x )", make_events_vec (
+        run_and_expect (L"] f: {! foo: 3 ]] ]] !} !f ) )", make_events_vec (
             dur, 0.5, X,
             dur, 1.0, X,
             dur, 0.25, foo, 3, X,
@@ -235,7 +236,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION("skoarpion_scope with args") {
-        run_and_expect(L"foo: 3 {! x<foo:2> !! ) !} ) !x<7> )", make_events_vec(
+        run_and_expect(L"foo: 3 x:!! foo:2 {! ) !} ) !x<7> )", make_events_vec(
             foo, 3, X,
             foo, 7, X,
             foo, 3, X
@@ -243,7 +244,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
     
     SECTION("skoarpion_scope with named args") {
-        run_and_expect(L"foo: 3 {! x<foo:2> !! ) !} ) !x<foo:7> )", make_events_vec(
+        run_and_expect(L"foo: 3 f:!! foo:2 {! ) !} ) !f<foo:7> )", make_events_vec(
             foo, 3, X,
             foo, 7, X,
             foo, 3, X
@@ -252,16 +253,17 @@ TEST_CASE("Skoarpions", "[sanity]") {
 
     
     SECTION("skoarpion_scope with incorrectly named args") {
-        run_and_expect(L"foo: 3 {! x<foo:2> !! ) !} ) !x<fee:7> )", make_events_vec(
+        run_and_expect(L"foo: 3 f:!! foo:2 {! ) !} ) !f<fee:7> )", make_events_vec(
             foo, 3, X,
             foo, 2, X,
+            fee, 7, X,
             foo, 3, X
         ));
     }
 
     
     SECTION("skoarpion_scope without args") {
-        run_and_expect(L"foo: 3 {! x<foo:2> !! )) !} ) !x )).", make_events_vec(
+        run_and_expect(L"foo: 3 x:!! foo:2 {! )) !} ) !x )).", make_events_vec(
             foo, 3, X,
             foo, 2, X,
             foo, 3, X
@@ -269,7 +271,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope with two args") {
-        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<4,6> )).", make_events_vec (
+        run_and_expect (L"foo: 3 qux:9 x:!! foo:2, qux:3 {! )) !} ) !x<4,6> )).", make_events_vec (
             foo, 3, qux, 9, dur, 1.0, X,
             foo, 4, qux, 6, X,
             foo, 3, qux, 9, X
@@ -277,7 +279,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope with two args named") {
-        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<foo:4,qux:6> )).", make_events_vec (
+        run_and_expect (L"foo: 3 qux:9 x:!! foo:2, qux:3 {! )) !} ) !x<foo:4,qux:6> )).", make_events_vec (
             foo, 3, qux, 9, dur, 1.0, X,
             foo, 4, qux, 6, X,
             foo, 3, qux, 9, X
@@ -285,7 +287,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope with two args named backwards") {
-        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<qux:6,foo:4> )).", make_events_vec (
+        run_and_expect (L"foo: 3 qux:9 x:!! foo:2, qux:3 {! )) !} ) !x<qux:6,foo:4> )).", make_events_vec (
             foo, 3, qux, 9, dur, 1.0, X,
             foo, 4, qux, 6, X,
             foo, 3, qux, 9, X
@@ -293,7 +295,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope with two args named wack") {
-        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<qux:6,4> )).", make_events_vec (
+        run_and_expect (L"foo: 3 qux:9 x:!! foo:2, qux:3 {! )) !} ) !x<qux:6,4> )).", make_events_vec (
             foo, 3, qux, 9, dur, 1.0, X,
             foo, 4, qux, 6, X,
             foo, 3, qux, 9, X
@@ -301,7 +303,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope with two args named wiggity wack") {
-        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<6,foo:4> )).", make_events_vec (
+        run_and_expect (L"foo: 3 qux:9 x:!! foo:2, qux:3 {! )) !} ) !x<6,foo:4> )).", make_events_vec (
             foo, 3, qux, 9, dur, 1.0, X,
             foo, 4, qux, 6, X,
             foo, 3, qux, 9, X
@@ -309,7 +311,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope with two args two defaults") {
-        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x )).", make_events_vec (
+        run_and_expect (L"foo: 3 qux:9 x:!! foo:2, qux:3 {! )) !} ) !x )).", make_events_vec (
             foo, 3, qux, 9, dur, 1.0, X,
             foo, 2, qux, 3, X,
             foo, 3, qux, 9, X
@@ -317,7 +319,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope with two args first default") {
-        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<qux:5> )).", make_events_vec (
+        run_and_expect (L"foo: 3 qux:9 x:!! foo:2, qux:3 {! )) !} ) !x<qux:5> )).", make_events_vec (
             foo, 3, qux, 9, dur, 1.0, X,
             foo, 2, qux, 5, X,
             foo, 3, qux, 9, X
@@ -325,7 +327,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope with two args second default") {
-        run_and_expect (L"foo: 3 qux:9 {! x<foo:2, qux:3> !! )) !} ) !x<4> )).", make_events_vec (
+        run_and_expect (L"foo: 3 qux:9 x: !! foo:2, qux:3 {! )) !} ) !x<4> )).", make_events_vec (
             foo, 3, qux, 9, dur, 1.0, X,
             foo, 4, qux, 3, X,
             foo, 3, qux, 9, X
@@ -622,7 +624,7 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda - coda in skoarpion - 1") {
-        run_and_expect_inf (L") al coda:socrates ))) {! <foo:3, qux,2> !! ] (+):socrates ]] !} (+):frankenstein )) ", make_events_vec (
+        run_and_expect_inf (L") al coda:socrates ))) !! foo:3, qux:2 {! ] (+):socrates ]] !} (+):frankenstein )) ", make_events_vec (
             dur, 1.0, X,
             dur, 0.25, foo, 3, qux, 2, X,
             dur, 2.0, X
@@ -630,7 +632,7 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
     }
 
     SECTION ("coda - coda in skoarpion - 2") {
-        run_and_expect_inf (L") al coda:foo ))) {! <foo:3, qux,2> !! ] (+):foo ]] !} (+):frankenstein )) ", make_events_vec (
+        run_and_expect_inf (L") al coda:foo ))) !! foo:3, qux:2 {! ] (+):foo ]] !} (+):frankenstein )) ", make_events_vec (
             dur, 1.0, X,
             dur, 0.25, foo, 3, qux, 2, X,
             dur, 2.0, X
@@ -716,7 +718,7 @@ TEST_CASE ("Tempo", "[sanity]") {
 TEST_CASE("Fairy", "[sanity]") {
   
     SECTION("literal fairy with simple skoarpion") {
-        run_and_expect(L"foo: $ ) {! x !! foo: 2 )) 7 !} ). 3 !x foo: $ )))", make_events_vec(
+        run_and_expect(L"foo: $ ) x: {! foo: 2 )) 7 !} ). 3 !x foo: $ )))", make_events_vec(
             foo, cat, dur, 1.0, X,
             foo, cat, dur, 1.5, X,
             foo, 2, dur, 2.0, X,

@@ -46,7 +46,7 @@ Skoar::Skoar (SkoarString src, ISkoarLog *log) :
 #endif
 
     SkoarToker toker (skoarce);
-    auto parser = SkoarParser (&toker);
+    SkoarParser parser (&toker);
 
     all_voice = make_shared<SkoarKoar> (this, SkoarString (L"all"));
     voices[L"all"] = all_voice;
@@ -63,7 +63,7 @@ Skoar::Skoar (SkoarString src, ISkoarLog *log) :
         log->e ("parse fail", e.wwhat ());
 
         // delete the unfinished tree
-        auto x = e.noad;
+        auto x (e.noad);
         while (x->parent != nullptr)
         {
             auto parent (x->parent);
@@ -116,9 +116,11 @@ Skoar::Skoar (SkoarString src, ISkoarLog *log) :
     parsedOk = true;
     clock_t parse_time (clock () - start_time);
 
-    //"---< Undecorated Skoar Tree >---".postln; tree.draw_tree.postln;
-    //log->i("---< Undecorated Skoar Tree >---");
-    //tree->log_tree(log);
+    if (log->getLevel () == ISkoarLog::debug)
+    {
+        log->d ("---< Undecorated Skoar Tree >---");
+        tree->log_tree (log);
+    }
 
     decorate_offs_size_style ();
 
@@ -135,20 +137,22 @@ Skoar::Skoar (SkoarString src, ISkoarLog *log) :
     }
 
     decoratedOk = true;
-    clock_t decorate_time (clock () - start_time - parse_time);
 
-    float f_parse_time (static_cast<float> (parse_time) / CLOCKS_PER_SEC);
-    float f_decorate_time (static_cast<float> (decorate_time) / CLOCKS_PER_SEC);
+    if (log->getLevel () == ISkoarLog::debug)
+    {
+        clock_t decorate_time (clock () - start_time - parse_time);
 
-    log->d ("---< Decorated Skoar Tree >---");
-    tree->log_tree (log);
+        float f_parse_time (static_cast<float> (parse_time) / CLOCKS_PER_SEC);
+        float f_decorate_time (static_cast<float> (decorate_time) / CLOCKS_PER_SEC);
+        log->d ("---< Decorated Skoar Tree >---");
+        tree->log_tree (log);
 
-    draw_skoarpions ();
-
-    log->d ("+++ Skoar Parsed +++",
-        "seconds parsing", f_parse_time,
-        "seconds decorating", f_decorate_time,
-        "seconds total: ", f_parse_time + f_decorate_time);
+        draw_skoarpions ();
+        log->d ("+++ Skoar Parsed +++",
+            "seconds parsing", f_parse_time,
+            "seconds decorating", f_decorate_time,
+            "seconds total: ", f_parse_time + f_decorate_time);
+    }
 }
 
 Skoar::~Skoar () {

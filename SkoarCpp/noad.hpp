@@ -31,27 +31,27 @@ public:
     SkoarNoadAddress address;     // a list code to find the noad quickly
     SkoarNoadPtr parent;          // the parent noad
 
-	list<SkoarNoadPtr> children;  // a list of child noads
+    list<SkoarNoadPtr> children;  // a list of child noads
 
-	const SkoarString name;       // name of the nonterminal
-	const ESkoarNoad::Kind kind;
+    const SkoarString name;       // name of the nonterminal
+    const ESkoarNoad::Kind kind;
     SkoarStyles::EStyle style;
 
-	SkoarpusclePtr skoarpuscle;   // skoarpuscle types go here, just one.
+    SkoarpusclePtr skoarpuscle;   // skoarpuscle types go here, just one.
 
-	SkoarTokePtr toke;
+    SkoarTokePtr toke;
 
-	size_t offs;
-	size_t size;
+    size_t offs;
+    size_t size;
 
     bool breakpoint;
 
-	SpellOfMinstrels on_enter;
-	
-	SkoarKoarPtr voice;       // what voice to use
-	SkoarNoadPtr skoap;       // what skoap are we in
+    SpellOfMinstrels on_enter;
+    
+    SkoarKoarPtr voice;       // what voice to use
+    SkoarNoadPtr skoap;       // what skoap are we in
 
-	//SkoarNoad(SkoarString &nameArg, const ESkoarNoad::Kind kindArg, SkoarNoadPtr parentArg);
+    //SkoarNoad(SkoarString &nameArg, const ESkoarNoad::Kind kindArg, SkoarNoadPtr parentArg);
     
     //SkoarNoad() :
     //    parent(nullptr),
@@ -79,30 +79,30 @@ public:
     void clear_children();
     void clear_values();
 
-	SkoarString asString();
+    SkoarString asString();
 
     void decorate_voices (SkoarKoarPtr default_voice);
 
     // -------------------
-	// decorating the tree
-	// -------------------
+    // decorating the tree
+    // -------------------
     void decorate_address_zero (SkoarNoadPtr s);
     void decorate_address (SkoarNoadPtr s, SkoarNoadAddress &parent_address, SkoarInt i);
 
-	// ----------------
-	// growing the tree
-	// ----------------
-	void add_noad(SkoarNoadPtr noad);
-	
-	// ----------------
-	// showing the tree
-	// ----------------
-	void log_tree(ISkoarLog *log, int tab = 1);
-	void draw_tree(wostringstream &out, int tab = 1);
-	
-	// -----------------
-	// climbing the Tree
-	// -----------------
+    // ----------------
+    // growing the tree
+    // ----------------
+    void add_noad(SkoarNoadPtr noad);
+    
+    // ----------------
+    // showing the tree
+    // ----------------
+    void log_tree(ISkoarLog *log, int tab = 1);
+    void draw_tree(wostringstream &out, int tab = 1);
+    
+    // -----------------
+    // climbing the Tree
+    // -----------------
 
     // static versions for use with shared_ptrs
     static void SkoarNoad::depth_visit(SkoarNoadPtr p, SpellOfNoadPtrs f);
@@ -111,26 +111,26 @@ public:
 
 
     void depth_visit(SpellOfNoads f);
-	void inorder(SpellOfNoads f);
+    void inorder(SpellOfNoads f);
     void inorderBeforeAfter(SpellOfNoads f, SpellOfNoads g);
 
-	// debug here if it's crashing while performing the skoar
-	void inorder_from_here(SkoarNoadAddress &here, SpellOfNoads f);
-	
-	// expect skoarpuscle
+    // debug here if it's crashing while performing the skoar
+    void inorder_from_here(SkoarNoadAddress &here, SpellOfNoads f);
+    
+    // expect skoarpuscle
     SkoarpusclePtr next_skoarpuscle();
-	SkoarToke* next_toke();
+    SkoarToke* next_toke();
 
     SkoarNoadPtr getNoadAtOffs (size_t at_offs);
 
-	// -------------------
-	// performing the tree
-	// -------------------
+    // -------------------
+    // performing the tree
+    // -------------------
     void evaluate(SkoarMinstrelPtr minstrel);
 
-	// ------------------
-	// searching the tree
-	// ------------------
+    // ------------------
+    // searching the tree
+    // ------------------
 
     static list<SkoarNoadPtr> collect(SkoarNoadPtr, list<ESkoarNoad::Kind>&);
     static list<SkoarNoadPtr> collect(SkoarNoadPtr, list<ESkoarToke::Kind>&);

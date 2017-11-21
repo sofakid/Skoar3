@@ -15,7 +15,6 @@ class SkoarpuscleChoard;
 
 class SkoarpuscleString;
 class SkoarpuscleSymbol;
-class SkoarpuscleSymbolName;
 class SkoarpuscleSymbolColon;
 
 class SkoarpuscleBars;

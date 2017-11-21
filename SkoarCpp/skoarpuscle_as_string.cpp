@@ -143,18 +143,6 @@ void SkoarpuscleSymbol::valAsString (wostream &out) {
 
 
 
-void SkoarpuscleSymbolName::asString (wostream &out) {
-    out << "SymbolName" << " :: " << val;
-}
-void SkoarpuscleSymbolName::typeAsString (wostream &out) {
-    out << "SymbolName";
-}
-void SkoarpuscleSymbolName::valAsString (wostream &out) {
-    out << val;
-}
-
-
-
 void SkoarpuscleSymbolColon::asString (wostream &out) {
     out << "SymbolColon" << " :: " << val;
 }
@@ -162,6 +150,18 @@ void SkoarpuscleSymbolColon::typeAsString (wostream &out) {
     out << "SymbolColon";
 }
 void SkoarpuscleSymbolColon::valAsString (wostream &out) {
+    out << val;
+}
+
+
+
+void SkoarpuscleSymbolName::asString (wostream &out) {
+    out << "SymbolName" << " :: " << val;
+}
+void SkoarpuscleSymbolName::typeAsString (wostream &out) {
+    out << "SymbolName";
+}
+void SkoarpuscleSymbolName::valAsString (wostream &out) {
     out << val;
 }
 

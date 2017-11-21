@@ -16,7 +16,7 @@ skoar              : branches
 branch             : opt_voiced_phrases Newline
 
 opt_voiced_phrases : optional_voice phrases
-+optional_voice     : Voice | <e>
++optional_voice    : Voice | <e>
 
 +phrases           : phrasey phrases | <e>
 +phrasey           : Comment | marker | expr | al_goto | beat
@@ -24,11 +24,14 @@ opt_voiced_phrases : optional_voice phrases
 +phrasishes        : phrasish phrasishes | <e>
 +phrasish          : Comment | marker | expr | al_goto | beat | Newline optional_voice
 
-skoarpion          : SkoarpionStartWithSig skrp_sig skrp_suffix | SkoarpionStart skrp_suffix
+opt_args           : SkoarpionArgs args | <e>
++args              : opt_newline args_entries
+args_entries       : SymbolColon expr moar_args_entries | SymbolName moar_args_entries
++moar_args_entries       : opt_newline moar_args_entries_prime
++moar_args_entries_prime : ListSep opt_newline args_entries | <e>
++opt_newline             : Newline | <e>
 
-skrp_sig           : SymbolName skrp_sig_prime | arg_listy SkoarpionSep
-+skrp_sig_prime    : SkoarpionSep | arg_listy SkoarpionSep
-
+skoarpion          : opt_args SkoarpionStart skrp_suffix
 skrp_suffix        : skrp_lines SkoarpionEnd
 
 +skrp_lines        : opt_voiced_phrases skrp_moar_lines
@@ -38,12 +41,6 @@ listy              : ListS listy_suffix
 +listy_suffix      : Newline listy_entries ListE | listy_entries ListE | ListE
 +listy_entries     : expr moar_listy_entries
 +moar_listy_entries: ListSep moar_listy_entries | Newline moar_listy_entries | listy_entries | <e>
-
-arg_listy              : ListS arg_listy_suffix
-+arg_listy_suffix      : Newline arg_listy_entries ListE | arg_listy_entries ListE | ListE
-+arg_listy_entries     : arg_expr moar_arg_listy_entries
-+moar_arg_listy_entries: ListSep moar_arg_listy_entries | Newline moar_arg_listy_entries | arg_listy_entries | <e>
-arg_expr               : SymbolName | SymbolColon expr
 
 marker             : Coda | Bars
 al_goto            : AlCoda 

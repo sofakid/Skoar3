@@ -121,13 +121,13 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
         noad->toke = nullptr;
     } },
 
-    { ESkoarToke::SymbolName, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleSymbolName> (toke->lexeme);
+    { ESkoarToke::SymbolColon, SpellOfToking {
+        noad->skoarpuscle = make_shared<SkoarpuscleSymbolColon> (toke->lexeme);
         noad->toke = nullptr;
     } },
 
-    { ESkoarToke::SymbolColon, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleSymbolColon> (toke->lexeme);
+    { ESkoarToke::SymbolName, SpellOfToking {
+        noad->skoarpuscle = make_shared<SkoarpuscleSymbolName> (toke->lexeme);
         noad->toke = nullptr;
     } },
 

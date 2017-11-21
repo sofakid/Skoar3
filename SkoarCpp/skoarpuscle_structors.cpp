@@ -197,18 +197,6 @@ SkoarpuscleString::~SkoarpuscleString () {
 #endif
 }
 
-// --- SkoarpuscleSymbolName ---------------------------------------------------------
-SkoarpuscleSymbolName::SkoarpuscleSymbolName (SkoarString s) : val (s) {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().allocSkoarpuscle (L"SymbolName");
-#endif
-}
-
-SkoarpuscleSymbolName::~SkoarpuscleSymbolName () {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().deallocSkoarpuscle (L"SymbolName");
-#endif
-}
 
 // --- SkoarpuscleSymbol ---------------------------------------------------------
 SkoarpuscleSymbol::SkoarpuscleSymbol (SkoarString s) : val (s) {
@@ -246,6 +234,24 @@ SkoarpuscleSymbolColon::SkoarpuscleSymbolColon (SkoarString lex) :
 SkoarpuscleSymbolColon::~SkoarpuscleSymbolColon () {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().deallocSkoarpuscle (L"SymbolColon");
+#endif
+}
+
+
+// --- SkoarpuscleSymbolName ---------------------------------------------------------
+
+SkoarpuscleSymbolName::SkoarpuscleSymbolName (SkoarString lex) :
+    Skoarpuscle (ESkoarpuscle::SymbolName),
+    val (clean_symbol_colon (lex)) {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().allocSkoarpuscle (L"SymbolName");
+#endif
+    impressionable = true;
+}
+
+SkoarpuscleSymbolName::~SkoarpuscleSymbolName () {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().deallocSkoarpuscle (L"SymbolName");
 #endif
 }
 

@@ -60,19 +60,30 @@ TEST_CASE ("SkoarLite Memories", "[memory]") {
     require_fresh_memory_tables ();
 
     SECTION ("valid skoar") {
-        createSkoarLite (L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food {!dorp<s:6> !!@worp !s )) !} {: )) :: 3 times :}");
+        createSkoarLite (L"a) ]] derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {! @worp !s )) !} {: )) :: 3 times :}");
+    }
+
+    SECTION ("unending loop") {
+        createSkoarLite (L"a) ]] derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {! @worp !s )) !} {: )) :: 3 times }");
+    }
+
+    SECTION ("unending loop2") {
+        createSkoarLite (L"a) ]] derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {! @worp !s )) !} {: )) :: 3 times ");
+    }
+    SECTION ("unending loop3") {
+        createSkoarLite (L"a) ]] derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {! @worp !s )) !} {: ))  ");
     }
 
     SECTION ("malformed skoarpion start") {
-        createSkoarLite (L"a) ]]{ ! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food {!dorp<s:6> !!@worp !s )) !} {: )) :: 3 times :}");
+        createSkoarLite (L"a) ]]derp:!! x { !!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {!@worp !s )) !} {: )) :: 3 times :}");
     }
 
     SECTION ("unending skoarpion") {
-        createSkoarLite (L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food {!dorp<s:6> !!@worp !s )) !} {: )) :: 3 times }");
+        createSkoarLite (L"a) ]]derp:!! x {!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {!@worp !s )) {: )) :: 3 times :}");
     }
 
     SECTION ("unexpected end of skoarpion") {
-        createSkoarLite (L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp<s:6> !!@worp !s )) !} {: )) :: 3 times !}");
+        createSkoarLite (L"a) ]]derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food !} dorp: !! s:6 {! @worp !s )) !} {: )) :: 3 times !}");
     }
 
     SECTION ("huge int") {
@@ -203,19 +214,19 @@ TEST_CASE ("Memories - Skoarpions", "[memory]") {
     require_fresh_memory_tables ();
 
     SECTION ("skoarpion - no args") {
-        createSkoar (L"{! derp !! ) !}");
+        createSkoar (L"derp: {! ) !}");
     }
 
     SECTION ("skoarpion - simple args") {
-        createSkoar (L"{! derp<x> !! ) !}");
+        createSkoar (L"derp: !! x {! ) !}");
     }
 
     SECTION ("skoarpion - default args") {
-        createSkoar (L"{! derp<x:7> !! ) !}");
+        createSkoar (L"derp: !! x:7 {! ) !}");
     }
 
     SECTION ("skoarpion - default args expr") {
-        createSkoar (L"{! derp<x:7 + 5> !! ) !}");
+        createSkoar (L"derp: !! x:7+5 {! ) !}");
     }
 }
 
@@ -251,16 +262,27 @@ TEST_CASE ("Memories - Invalid Skoars", "[memory]") {
     SkoarString hz (L"Hz");
     SkoarString huge_freq_string (huge_float_string + hz);
 
+    SECTION ("unending loop") {
+        createSkoar (L"a) ]] derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {! @worp !s )) !} {: )) :: 3 times }");
+    }
+
+    SECTION ("unending loop2") {
+        createSkoar (L"a) ]] derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {! @worp !s )) !} {: )) :: 3 times ");
+    }
+    SECTION ("unending loop3") {
+        createSkoar (L"a) ]] derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {! @worp !s )) !} {: ))  ");
+    }
+
     SECTION ("malformed skoarpion start") {
-        createSkoar (L"a) ]]{ ! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food {!dorp<s:6> !!@worp !s )) !} {: )) :: 3 times :}");
+        createSkoar (L"a) ]]derp:!! x { !!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {!@worp !s )) !} {: )) :: 3 times :}");
     }
 
     SECTION ("unending skoarpion") {
-        createSkoar (L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food {!dorp<s:6> !!@worp !s )) !} {: )) :: 3 times }");
+        createSkoar (L"a) ]]derp:!! x {!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {!@worp !s )) {: )) :: 3 times :}");
     }
 
     SECTION ("unexpected end of skoarpion") {
-        createSkoar (L"a) ]]{! derp<x> !!!x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp<s:6> !!@worp !s )) !} {: )) :: 3 times !}");
+        createSkoar (L"a) ]]derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food !} dorp: !! s:6 {! @worp !s )) !} {: )) :: 3 times !}");
     }
 
     SECTION ("huge int") {

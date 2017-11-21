@@ -13,7 +13,7 @@
 class Skoarpion {
 public:
 
-	static SkoarpionPtr NewFromSkoar(Skoar *skoar);
+    static SkoarpionPtr NewFromSkoar(Skoar *skoar);
     static SkoarpionPtr NewFromSkoarNoad(Skoar *skoar, SkoarNoadPtr noad);
     static SkoarpionPtr NewFromSubtree(Skoar*, SkoarNoadPtr);
 
@@ -25,7 +25,7 @@ public:
 
     const SkoarString made_from;
 
-	Skoarpion(const SkoarString);
+    Skoarpion(const SkoarString);
     Skoarpion(const Skoarpion *);
     ~Skoarpion();
 
@@ -37,7 +37,7 @@ public:
     void init_from_subtree(Skoar*, SkoarNoadPtr); // chunks of the tree sucked into skoarpions
                                                   // i.e. conditions, if bodies, else bodies
 
-	static SkoarpionProjectionPtr projection(SkoarpionPtr skoarpion, SkoarString);
+    static SkoarpionProjectionPtr projection(SkoarpionPtr skoarpion, SkoarString);
 
     static ListOfSkoarpionProjectionsPtr get_projections(SkoarpionPtr skoarpion, const ListOfSkoarStrings&);
 

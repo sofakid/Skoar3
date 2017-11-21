@@ -265,18 +265,6 @@ public:
     SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
 };
 
-class SkoarpuscleSymbolName : public Skoarpuscle {
-public:
-    const SkoarString val;
-
-    SkoarpuscleSymbolName(SkoarString);
-    ~SkoarpuscleSymbolName() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
-
-};
-
 class SkoarpuscleSymbolColon : public Skoarpuscle {
 public:
     const SkoarString val;
@@ -286,6 +274,20 @@ public:
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
+
+};
+
+
+class SkoarpuscleSymbolName : public Skoarpuscle
+{
+public:
+    const SkoarString val;
+
+    SkoarpuscleSymbolName (SkoarString);
+    ~SkoarpuscleSymbolName () override;
+    void asString (wostream &out) override;
+    void typeAsString (wostream &out) override;
+    void valAsString (wostream &out) override;
 
 };
 

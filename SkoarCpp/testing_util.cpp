@@ -99,7 +99,7 @@ VectorOfSkoarEventsPtr skoar_get_events_inf (Skoar* skoar, size_t num) {
     auto events (make_shared<VectorOfSkoarEvents> ());
     try
     {
-        size_t i = 0;
+        size_t i (0);
         skoar->play ([&](SkoarEventPtr e) {
             events->push_back (e);
 

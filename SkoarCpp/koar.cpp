@@ -147,7 +147,7 @@ void SkoarKoar::set_args (
     else
     {
         args_provided = make_shared<ListOfSkoarpuscles> ();
-        auto n = args_list->args_names.size ();
+        const auto n (args_list->args_names.size ());
         for (int i = 0; i < n; ++i)
             args_provided->push_back (make_skoarpuscle (nullptr));
     }
@@ -186,8 +186,8 @@ void SkoarKoar::set_args (
 
 void SkoarKoar::push_state () {
 
-    auto state = make_shared<SkoarDic> ();
-    auto projections = make_shared<ListOfSkoarpionProjections> ();
+    auto state (make_shared<SkoarDic> ());
+    auto projections (make_shared<ListOfSkoarpionProjections> ());
 
     state_stack.push_back (state);
 
@@ -305,6 +305,6 @@ void SkoarKoar::bubble_up_nav (SkoarNav &nav, SpellOfDecency cleanup) {
 
 }
 
-SkoarNav::SkoarNav (ECode code) {
-    this->code = code;
+SkoarNav::SkoarNav (ECode c) {
+    code = c;
 }

@@ -27,6 +27,7 @@ namespace ESkoarpuscle {
         Rest,
 
         SymbolColon,
+        SymbolName,
 
         Other,
         Any,
