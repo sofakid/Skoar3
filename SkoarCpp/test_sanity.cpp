@@ -226,12 +226,14 @@ TEST_CASE("Skoarpions", "[sanity]") {
     }
 
     SECTION ("skoarpion_scope no args defined or supplied") {
-        run_and_expect (L"] f: {! foo: 3 ]] ]] !} !f ) )", make_events_vec (
+        run_and_expect (L"] f: {! foo: 3 ]] ]] !} )) !f ) )", make_events_vec (
             dur, 0.5, X,
+            dur, 2.0, X,
+            dur, 0.25, foo, 3, X,
+            dur, 0.25, foo, 3, X,
             dur, 1.0, X,
-            dur, 0.25, foo, 3, X,
-            dur, 0.25, foo, 3, X,
             dur, 1.0, X
+
         ));
     }
 

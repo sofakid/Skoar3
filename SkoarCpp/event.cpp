@@ -27,13 +27,13 @@ SkoarpusclePtr SkoarDic::at (const SkoarString &k) {
 }
 
 void SkoarDic::clear () {
-    for (auto kv : table)
+    /*for (auto kv : table)
     {
         auto v (kv.second);
         if (v != nullptr)
             v->clear ();
 
-    }
+    }*/
     table.clear ();
 }
 

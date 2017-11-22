@@ -113,13 +113,13 @@ SkoarpusclePtr SkoarpuscleDeref::lookup (SkoarMinstrelPtr minstrel) {
 //}
 
 void SkoarpuscleDeref::on_enter (SkoarMinstrelPtr m) {
-    if (args != nullptr)
-        skoarpuscle_ptr<SkoarpuscleArgs> (args)->on_enter (m);
+    //if (args != nullptr)
+    //    skoarpuscle_ptr<SkoarpuscleArgs> (args)->on_enter (m);
 }
 
 void SkoarpuscleDeref::on_exit (SkoarMinstrelPtr m) {
-    if (args != nullptr)
-        skoarpuscle_ptr<SkoarpuscleArgs> (args)->on_deref_exit (m);
+    //if (args != nullptr)
+    //    skoarpuscle_ptr<SkoarpuscleArgs> (args)->on_deref_exit (m);
     do_deref (m);
 }
 

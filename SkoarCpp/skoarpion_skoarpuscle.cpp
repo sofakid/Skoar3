@@ -66,14 +66,8 @@ void SkoarpuscleSkoarpion::clear ()
 
 
 void SkoarpuscleSkoarpion::on_enter(SkoarMinstrelPtr m) {
-    auto name (val->name);
     auto skrpskrp (make_shared<SkoarpuscleSkoarpion>(this));
-    if (name.size() > 0) {
-        m->koar->put(name, skrpskrp);
-    }
-    else {
-        m->fairy->impress(skrpskrp);
-    }
+    m->fairy->impress (skrpskrp);
 }
 
 void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
@@ -176,8 +170,7 @@ SkoarpuscleArgList::~SkoarpuscleArgList() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"ArgList");
 #endif
-    args_dict.clear();
-    args_names.clear();
+    clear();
 }
 
 void SkoarpuscleArgList::clear ()

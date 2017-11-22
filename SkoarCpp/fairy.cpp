@@ -350,13 +350,13 @@ void SkoarFairy::consider(SkoarEventPtr e) {
     
     auto xs = e->at(L"tempo");
     /*auto x = 
-	if (x <= 0) {
-		x = 1;
-	};
-	e[\dur_by_tempo] = e[\dur] / x;
-		
-	//(name++".consider :: " ++ e).postln;
-	e.yield;
+    if (x <= 0) {
+        x = 1;
+    };
+    e[\dur_by_tempo] = e[\dur] / x;
+        
+    //(name++".consider :: " ++ e).postln;
+    e.yield;
     */
     minstrel->happen(e);
 }
@@ -364,15 +364,15 @@ void SkoarFairy::consider(SkoarEventPtr e) {
 void SkoarFairy::consider_amp(SkoarEventPtr, SkoarMinstrelPtr) {
     /*
     if (worries.isNil) {
-		if (noating == true) {
-			var a = skrpe.amp;
-			var offs = a - m.koar[\amp];
-			m.controls.amp_bus.set(a);
-			m.koar[\amp] = a;
-		};
-	} {
-		dyn_impression = skrpe;
-	};
+        if (noating == true) {
+            var a = skrpe.amp;
+            var offs = a - m.koar[\amp];
+            m.controls.amp_bus.set(a);
+            m.koar[\amp] = a;
+        };
+    } {
+        dyn_impression = skrpe;
+    };
     */
 }
 

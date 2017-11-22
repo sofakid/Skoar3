@@ -5,11 +5,11 @@
 
 class SkoarDic {
 public:
-	map<SkoarString, SkoarpusclePtr> table;
+    map<SkoarString, SkoarpusclePtr> table;
 
-	//Skoarpuscle *not_found;
+    //Skoarpuscle *not_found;
 
-	SkoarDic();
+    SkoarDic();
     virtual ~SkoarDic();
 
     void put(SkoarString k, SkoarpusclePtr v);
@@ -25,7 +25,7 @@ public:
     SkoarEvent();
     ~SkoarEvent() override;
 
-	void from(SkoarDicPtr);
+    void from(SkoarDicPtr);
 };
 
 class SkoarEventStream {
