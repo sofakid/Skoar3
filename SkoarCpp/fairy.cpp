@@ -264,7 +264,7 @@ SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
 
     if (is_skoarpuscle<SkoarpusclePair>(x)) {
         auto p = skoarpuscle_ptr<SkoarpusclePair> (x);
-        return p->assign (minstrel);
+        p->assign (minstrel);
     };
 
     if (is_skoarpuscle<SkoarpuscleDeref>(x)) {

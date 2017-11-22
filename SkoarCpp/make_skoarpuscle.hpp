@@ -32,6 +32,10 @@ inline SkoarpusclePtr make_skoarpuscle(SkoarString x) {
     return make_shared<SkoarpuscleString>(x);
 }
 
+inline SkoarpusclePtr make_skoarpuscle (SkoarString x, SkoarpusclePtr p) {
+    return make_shared<SkoarpusclePair> (x, p);
+}
+
 inline SkoarpusclePtr make_skoarpuscle(bool x) {
     if (x)
         return make_shared<SkoarpuscleTrue>();

@@ -376,8 +376,22 @@ SkoarNoadPtr SkoarNoad::getNoadAtOffs (size_t at_offs) {
 // -------------------
 
 void SkoarNoad::evaluate (SkoarMinstrelPtr minstrel) {
-    inorder ([=](SkoarNoad* /*x*/) {
-        //x->enter_noad(minstrel); 
+    inorder ([=](SkoarNoad* x) {
+
+        if (x->on_enter)
+        {
+            //minstrel->before_entering_noad (minstrel, x);
+            x->on_enter (minstrel);
+            //minstrel->after_entering_noad (minstrel, x);
+        }
+
+        if (x->skoarpuscle != nullptr)
+        {
+            minstrel->before_entering_skoarpuscle (minstrel, x->skoarpuscle);
+            x->skoarpuscle->on_enter (minstrel);
+            minstrel->after_entering_skoarpuscle (minstrel, x->skoarpuscle);
+        }
+
     });
 }
 

@@ -12,12 +12,27 @@ SkoarpuscleDuration::SkoarpuscleDuration(SkoarToke *toke) {
     SkoarMemories::o().allocSkoarpuscle(L"Duration");
 #endif
     //val = toke->lexeme.length();
-    auto s = toke->lexeme;
-    auto n = s.length();
-    auto i = s.find_first_of(L':', 0);
+    try
+    {
+        auto s = toke->lexeme;
+        auto n = s.length();
+        auto i = s.find_first_of(L':', 0);
 
-    minutes = stoi(s.substr(0, i));
-    seconds = stod(s.substr(i, n - i));
+        minutes = stoi(s.substr(0, i));
+        seconds = stod(s.substr(i, n - i));
+    }
+    catch (const std::invalid_argument& /*ia*/)
+    {
+        //throw SkoarDecoratingException (L"stod/i - invalid arg");
+        minutes = 0;
+        seconds = 0;
+    }
+    catch (const std::out_of_range& /*oor*/)
+    {
+        minutes = 0;
+        seconds = 0;
+        //throw SkoarDecoratingException (L"stod/i - out of range");
+    }
 }
 
 SkoarpuscleDuration::SkoarpuscleDuration(SkoarInt min, SkoarFloat sec) :

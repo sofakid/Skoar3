@@ -118,6 +118,44 @@ SkoarEventPtr SkoarKoar::event (SkoarMinstrelPtr minstrel) {
     return e;
 }
 
+// new plan:
+// make list of provided named args (1)
+// make list of provided unnamed args (2)
+// make list of arg spec with named provided args removed (3)
+// line up (2) and (3) for positional args. 
+
+#include <iostream>
+ListOfSkoarpusclesPtr make_list_of_provided_named_args (SkoarpuscleList* p) {
+    auto provided_named_args = make_shared<ListOfSkoarpuscles> ();
+    auto provided_unnamed_args = make_shared<ListOfSkoarpuscles> ();
+
+    auto &listy = p->val;
+
+    for (auto& li : *listy)
+    {
+        if (is_skoarpuscle<SkoarpusclePair> (li))
+        {
+            provided_named_args->push_back (li);
+        }
+        else
+        {
+            provided_unnamed_args->push_back (li);
+        }
+
+    }
+
+    return provided_named_args;
+}
+
+ListOfSkoarpionsPtr make_list_of_provided_unnamed_args () {
+    return nullptr;
+}
+
+ListOfSkoarpionsPtr make_args_spec_for_remaining_positional_args () {
+    return nullptr;
+}
+
+
 void SkoarKoar::set_args (
     SkoarMinstrelPtr minstrel,
     SkoarpusclePtr args_spec,
@@ -125,35 +163,109 @@ void SkoarKoar::set_args (
 {
     auto vars (stack.back ());
 
-    SkoarpuscleArgList *args_list;
-    if (is_skoarpuscle<SkoarpuscleArgList> (args_spec))
-        args_list = skoarpuscle_ptr<SkoarpuscleArgList> (args_spec);
-    else
+    if (is_skoarpuscle<SkoarpuscleArgList> (args_spec) == false)
         return;
 
+    SkoarpuscleArgList *args_list = skoarpuscle_ptr<SkoarpuscleArgList> (args_spec);
+
     ListOfSkoarpusclesPtr args_provided;
-    if (is_skoarpuscle<SkoarpuscleArgs> (args_prov))
+    /*if (is_skoarpuscle<SkoarpuscleArgs> (args_prov))
         args_provided = skoarpuscle_ptr<SkoarpuscleArgs> (args_prov)->val;
-    
-    else if (is_skoarpuscle<SkoarpuscleList> (args_prov))
+    else*/ 
+        
+    if (is_skoarpuscle<SkoarpuscleList> (args_prov))
+    {
         args_provided = skoarpuscle_ptr<SkoarpuscleList> (args_prov)->val;
+        //make_list_of_provided_named_args (skoarpuscle_ptr<SkoarpuscleList> (args_prov));
+    }
     
-    else if (is_skoarpuscle<SkoarpusclePair> (args_prov))
+    /*else if (is_skoarpuscle<SkoarpusclePair> (args_prov))
     {
         // this isn't right.
         args_provided = make_shared<ListOfSkoarpuscles> ();
         args_provided->push_back (skoarpuscle_ptr<SkoarpusclePair> (args_prov)->val.second);
-    }
+    }*/
     else
     {
         args_provided = make_shared<ListOfSkoarpuscles> ();
-        const auto n (args_list->args_names.size ());
-        for (int i = 0; i < n; ++i)
-            args_provided->push_back (make_skoarpuscle (nullptr));
+        if (args_prov != nullptr)
+            args_provided->push_back (args_prov);
+
+        //const auto n (args_list->args_names.size ());
+        //for (int i = 0; i < n; ++i)
+        //    args_provided->push_back (make_skoarpuscle (nullptr));
     }
+    
+   
 
     minstrel->fairy->push_noating ();
-    auto provided_iter (args_provided->cbegin ());
+    // make list of provided named args (1)
+    // make list of provided unnamed args (2)
+    ListOfSkoarpuscles provided_named_args;
+    ListOfSkoarpuscles provided_unnamed_args;
+
+    for (auto& x : *args_provided)
+        if (is_skoarpuscle<SkoarpusclePair> (x))
+            provided_named_args.push_back (x);
+        else
+            provided_unnamed_args.push_back (x);
+
+    std::list<SkoarString> list_args_spec_minus_names_provided;
+    // make list of arg spec with named provided args removed (3)
+    for (auto& arg_name : args_list->args_names)
+    {
+        bool include_this = true;
+
+        for (auto& x : provided_named_args)
+            if (arg_name == skoarpuscle_ptr<SkoarpusclePair> (x)->val.first)
+            {
+                include_this = false;
+                break;
+            }
+
+        if (include_this)
+            list_args_spec_minus_names_provided.push_back (arg_name);
+    }
+
+    // set defaults
+    //
+    // - todo 
+    auto src (args_list->args_dict.table);
+    for (auto pair : src)
+    {
+        auto arg_name (pair.first);
+        auto y = pair.second;
+
+        if (is_skoarpuscle<SkoarpuscleExpr> (y))
+            y = skoarpuscle_ptr<SkoarpuscleExpr> (y)->flatten (minstrel);
+        //SkoarpusclePair sp (pair.first, pair.second);
+        //sp.assign (minstrel);
+        vars->put (arg_name, y);
+    }
+
+    // set named args
+    for (auto& named_arg : provided_named_args)
+    {
+        auto p (skoarpuscle_ptr<SkoarpusclePair> (named_arg));
+        p->assign (minstrel);
+        //vars->put (p->val.first, p->val.second);
+    }
+
+    // set positionals
+    auto positional_iter (provided_unnamed_args.cbegin ());
+    for (auto& arg_name : list_args_spec_minus_names_provided)
+    {
+        SkoarpusclePtr x;
+        if (positional_iter == provided_unnamed_args.cend ())
+            break;
+
+        x = *(positional_iter++);
+        vars->put (arg_name, x);
+    }
+
+
+    // old way:
+    /*auto provided_iter (args_provided->cbegin ());
     for (auto arg_name : args_list->args_names)
     {
         SkoarpusclePtr x;
@@ -179,7 +291,7 @@ void SkoarKoar::set_args (
         }
         else
             vars->put (arg_name, x);
-    }
+    }*/
 
     minstrel->fairy->pop_noating ();
 }

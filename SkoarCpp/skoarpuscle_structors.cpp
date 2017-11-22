@@ -869,6 +869,7 @@ SkoarpusclePair::SkoarpusclePair (SkoarString k, SkoarpusclePtr v) :
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"Pair");
 #endif
+    impressionable = true;
 }
 
 SkoarpusclePair::~SkoarpusclePair () {

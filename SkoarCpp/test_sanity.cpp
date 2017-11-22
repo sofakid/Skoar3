@@ -257,8 +257,7 @@ TEST_CASE("Skoarpions", "[sanity]") {
     SECTION("skoarpion_scope with incorrectly named args") {
         run_and_expect(L"foo: 3 f:!! foo:2 {! ) !} ) !f<fee:7> )", make_events_vec(
             foo, 3, X,
-            foo, 2, X,
-            fee, 7, X,
+            foo, 2, X, // should expect a cthulu here probably..
             foo, 3, X
         ));
     }

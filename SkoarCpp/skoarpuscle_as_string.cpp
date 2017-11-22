@@ -307,13 +307,21 @@ void SkoarpuscleMathOp::valAsString (wostream &out) {
 
 
 void SkoarpuscleList::asString (wostream &out) {
-    out << "List";
+    valAsString(out);
 }
 void SkoarpuscleList::typeAsString (wostream &out) {
     out << "List";
 }
 void SkoarpuscleList::valAsString (wostream &out) {
-    out << "List";
+    out << "List <";
+    wstring comma (L"");
+    for (auto v : *val)
+    {
+        out << comma;
+        v->valAsString (out);
+        comma = L", ";
+    }
+    out << ">";
 }
 
 
