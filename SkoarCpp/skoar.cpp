@@ -158,12 +158,12 @@ Skoar::Skoar (SkoarString src, ISkoarLog *log) :
 Skoar::~Skoar () {
     if (decoratedOk)
     {
-        for (auto skoarpion : skoarpions)
+        for (auto& skoarpion : skoarpions)
             skoarpion->clear ();
 
         skoarpions.clear ();
 
-        for (auto v_pair : voices)
+        for (auto& v_pair : voices)
         {
             auto voice (v_pair.second);
             if (voice != nullptr)
@@ -177,12 +177,12 @@ Skoar::~Skoar () {
     }
     else if (parsedOk)
     {
-        for (auto skoarpion : skoarpions)
+        for (auto& skoarpion : skoarpions)
             skoarpion->clear ();
 
         skoarpions.clear ();
 
-        for (auto v_pair : voices)
+        for (auto& v_pair : voices)
         {
             auto voice (v_pair.second);
             if (voice != nullptr)

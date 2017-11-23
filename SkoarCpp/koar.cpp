@@ -230,16 +230,18 @@ void SkoarKoar::set_args (
     // set defaults
     //
     // - todo 
-    auto src (args_list->args_dict.table);
+    auto src (args_list->args_dict);
     for (auto pair : src)
     {
         auto arg_name (pair.first);
-        auto y = pair.second;
+        auto &sp = pair.second;
+        
+        SkoarpusclePtr y;
+        if (is_skoarpuscle<SkoarpuscleArgExpr>(sp))
+            y = skoarpuscle_ptr<SkoarpuscleArgExpr>(sp)->flatten (minstrel);
+        else
+            y = make_skoarpuscle (nullptr);
 
-        if (is_skoarpuscle<SkoarpuscleExpr> (y))
-            y = skoarpuscle_ptr<SkoarpuscleExpr> (y)->flatten (minstrel);
-        //SkoarpusclePair sp (pair.first, pair.second);
-        //sp.assign (minstrel);
         vars->put (arg_name, y);
     }
 
@@ -247,8 +249,8 @@ void SkoarKoar::set_args (
     for (auto& named_arg : provided_named_args)
     {
         auto p (skoarpuscle_ptr<SkoarpusclePair> (named_arg));
-        p->assign (minstrel);
-        //vars->put (p->val.first, p->val.second);
+        //p->assign (minstrel);
+        vars->put (p->val.first, p->val.second);
     }
 
     // set positionals
@@ -361,7 +363,7 @@ void SkoarKoar::nav_loop (
 
     try
     {
-        for (auto x : projection->noadites)
+        for (auto& x : projection->noadites)
             x.enter_noad (minstrel);
         // map dst to an address relative to the projection
 

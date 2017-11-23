@@ -24,33 +24,27 @@ public:
 
 };
 
-class SkoarpuscleSkoarpionSig : public Skoarpuscle {
-public:
-    SkoarString name;
-    SkoarpusclePtr arg_list; // is a SkoarpuscleArgList
-    SkoarpuscleSkoarpionSig(SkoarNoadPtr);
-    ~SkoarpuscleSkoarpionSig() override;
-    void clear () override;
-
-    void asString(wostream &out) override;
-};
-
 class SkoarpuscleArgExpr : public Skoarpuscle {
 public:
     SkoarString name;
-    SkoarpusclePtr expr; // is a SkoarpuscleExpr
+
+    std::vector<SkoarNoadite> expr;
+
     SkoarpuscleArgExpr(SkoarNoadPtr);
     ~SkoarpuscleArgExpr() override;
     void clear () override;
 
     void asString(wostream &out) override;
 
+    SkoarpusclePtr flatten (SkoarMinstrelPtr);
+
 };
 
 class SkoarpuscleArgList : public Skoarpuscle {
 public:
-    SkoarDic args_dict;
+    map<SkoarString, SkoarpusclePtr> args_dict;
     list<SkoarString> args_names;
+    SkoarNoadPtr noad;
 
     SkoarpuscleArgList(SkoarNoadPtr);
     ~SkoarpuscleArgList() override;

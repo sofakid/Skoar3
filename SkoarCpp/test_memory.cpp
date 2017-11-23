@@ -217,8 +217,20 @@ TEST_CASE ("Memories - Skoarpions", "[memory]") {
         createSkoar (L"derp: {! ) !}");
     }
 
+    SECTION ("skoarpion - no args with skoarpion inside - no args") {
+        createSkoar (L"derp: {! ) yeez: {! ))) !} !}");
+    }
+
     SECTION ("skoarpion - simple args") {
         createSkoar (L"derp: !! x {! ) !}");
+    }
+
+    SECTION ("skoarpion - simple args with skoarpion inside - simple args") {
+        createSkoar (L"derp: !! x {! )  yeez: !! y {! ))) !} !}");
+    }
+
+    SECTION ("skoarpion - simple two args") {
+        createSkoar (L"derp: !! x, y {! ) !}");
     }
 
     SECTION ("skoarpion - default args") {
@@ -228,6 +240,19 @@ TEST_CASE ("Memories - Skoarpions", "[memory]") {
     SECTION ("skoarpion - default args expr") {
         createSkoar (L"derp: !! x:7+5 {! ) !}");
     }
+
+    SECTION ("skoarpion - default args skoarpion no args") {
+        createSkoar (L"derp: !! x:{! 8 !} {! ) !}");
+    }
+
+    SECTION ("skoarpion - default args skoarpion simple args") {
+        createSkoar (L"derp: !! x:!! y {! 8 !} {! ) !}");
+    }
+
+    SECTION ("skoarpion - default args skoarpion default args") {
+        createSkoar (L"derp: !! x:!! y:3 {! 8 !} {! ) !}");
+    }
+
 }
 
 

@@ -15,7 +15,7 @@ SkoarDic::~SkoarDic () {
     SkoarMemories::o ().deallocSkoarDic (L"dic");
 #endif
     //not_found = nullptr;
-    table.clear ();
+    clear ();
 }
 
 void SkoarDic::put (SkoarString k, SkoarpusclePtr v) {
@@ -27,13 +27,12 @@ SkoarpusclePtr SkoarDic::at (const SkoarString &k) {
 }
 
 void SkoarDic::clear () {
-    /*for (auto kv : table)
+    for (auto& kv : table)
     {
-        auto v (kv.second);
+        auto& v (kv.second);
         if (v != nullptr)
             v->clear ();
-
-    }*/
+    }
     table.clear ();
 }
 

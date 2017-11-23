@@ -295,7 +295,8 @@ Skoarmantics::Skoarmantics () : table ({
 
     {ESkoarNoad::opt_args , SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleArgList> (noad);
-        noad->children.clear ();
+        //noad->clear_children ();
+        //noad->children.clear ();
     }},
 
     {ESkoarNoad::args_entries , SpellOfSimpleSkoarmantics {

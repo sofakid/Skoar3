@@ -47,21 +47,19 @@ SkoarpuscleSkoarpion::~SkoarpuscleSkoarpion(){
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocSkoarpuscle(L"Skoarpion");
 #endif
-    
-    if (args != nullptr)
-        args->clear ();
-
-    args = nullptr;
-    val = nullptr;
+    clear ();
 }
 
 void SkoarpuscleSkoarpion::clear ()
 {
     if (val != nullptr)
         val->clear ();
+    val = nullptr;
 
     if (args != nullptr)
         args->clear ();
+    args = nullptr;
+
 }
 
 
@@ -75,7 +73,6 @@ void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
     //("SKRP_Skoarpion :: msg_arr :: " ++ msg_arr ++ " :: impression :: " ++  impression).postln;													
     m->koar->do_skoarpion(val, m, SkoarKoar::EExecStyle::NORMAL, impression);
 }
-
 
 SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr minstrel) {
     //args = msg->get_msg_arr(minstrel);
@@ -102,21 +99,20 @@ SkoarpuscleArgExpr::SkoarpuscleArgExpr(SkoarNoadPtr noad) {
 #endif
     auto x = noad->next_skoarpuscle();
 
-    if (is_skoarpuscle<SkoarpuscleSymbolColon>(x)) {
+    if (is_skoarpuscle<SkoarpuscleSymbolColon>(x)) 
         name = skoarpuscle_ptr<SkoarpuscleSymbolColon>(x)->val;
-    }
     
     if (is_skoarpuscle<SkoarpuscleSymbolName> (x))
-    {
         name = skoarpuscle_ptr<SkoarpuscleSymbolName> (x)->val;
-    }
 
     if (noad->children.size() > 1) {
         auto kidderator = noad->children.begin();
-        expr = make_shared<SkoarpuscleExpr>(*(++kidderator));
+        auto next (*(++kidderator));
+        SkoarNoad::inorder (next, [&](SkoarNoadPtr x) {
+            if (x->on_enter != nullptr || x->skoarpuscle != nullptr)
+                expr.emplace_back (x);
+        });
     }
-    else
-        expr = nullptr;
 }
 
 SkoarpuscleArgExpr::~SkoarpuscleArgExpr() {
@@ -128,19 +124,33 @@ SkoarpuscleArgExpr::~SkoarpuscleArgExpr() {
 
 void SkoarpuscleArgExpr::clear ()
 {
-    if (expr != nullptr)
-    {
-        expr->clear ();
-        expr = nullptr;
-    }
+    expr.clear ();
+    name = L"";
 }
 
 void SkoarpuscleArgExpr::asString(wostream &out) {
     out << "ArgExpr" << " :: " << name;
-    if (is_skoarpuscle<SkoarpuscleExpr>(expr)) {
-        out << " :: ";
-        skoarpuscle_ptr<SkoarpuscleExpr>(expr)->asString(out);
-    }
+    //if (is_skoarpuscle<SkoarpuscleExpr>(expr)) {
+    //    out << " :: ";
+    //    skoarpuscle_ptr<SkoarpuscleExpr>(expr)->asString(out);
+    //}
+}
+
+SkoarpusclePtr SkoarpuscleArgExpr::flatten (SkoarMinstrelPtr m)
+{
+
+    m->fairy->push ();
+        
+    for (auto &noadite : expr)
+        noadite.enter_noad (m);
+
+    auto result = m->fairy->impression;
+
+    if (is_skoarpuscle<SkoarpusclePair> (result))
+        result = skoarpuscle_ptr<SkoarpusclePair> (result)->val.second;
+
+    m->fairy->pop ();
+    return result;
 }
 
 // --- SkoarpuscleArgList ----------------------------------------------
@@ -151,7 +161,9 @@ void SkoarpuscleArgExpr::asString(wostream &out) {
        Toke_ListSep
        arg_expr
 */
-SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr noad) {
+SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr noad) :
+    noad(noad)
+{
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocSkoarpuscle(L"ArgList");
 #endif
@@ -160,7 +172,7 @@ SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr noad) {
     for (auto x : *skoarpuscles) {
         if (is_skoarpuscle<SkoarpuscleArgExpr>(x)) {
             auto p = skoarpuscle_ptr<SkoarpuscleArgExpr>(x);
-            args_dict.put(p->name, p->expr);
+            args_dict[p->name] = x;
             args_names.push_back(p->name);
         }
     }
@@ -175,8 +187,23 @@ SkoarpuscleArgList::~SkoarpuscleArgList() {
 
 void SkoarpuscleArgList::clear ()
 {
+    for (auto& entry : args_dict)
+    {
+        auto &x = entry.second;
+        if (is_skoarpuscle<SkoarpuscleArgExpr> (x))
+            skoarpuscle_ptr<SkoarpuscleArgExpr> (x)->clear ();
+
+    }
+    
     args_dict.clear ();
     args_names.clear ();
+
+    if (noad != nullptr)
+    {
+        auto p = noad;
+        noad = nullptr;
+        p->clear ();
+    }
 }
 
 void SkoarpuscleArgList::on_enter(SkoarMinstrelPtr m) {

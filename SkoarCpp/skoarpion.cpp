@@ -62,16 +62,17 @@ Skoarpion::~Skoarpion () {
 }
 
 void Skoarpion::clear () {
+    if (arg_list != nullptr)
+        arg_list->clear ();
+    arg_list = nullptr;
+
     if (body != nullptr)
     {
         body->clear ();
         body = nullptr;
     }
     n = 0;
-    if (arg_list != nullptr)
-        arg_list->clear ();
-
-    arg_list = nullptr;
+    
     skoar = nullptr;
 }
 

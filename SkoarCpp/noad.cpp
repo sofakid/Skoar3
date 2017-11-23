@@ -82,10 +82,11 @@ void SkoarNoad::clear () {
 void SkoarNoad::clear_children () {
     // visit the noads depth-first, clear children and unset all shared_ptrs. 
     // should then trigger destruction.
-    depth_visit ([](SkoarNoad *noad) {
-        noad->children.clear ();
-        noad->clear_values ();
-    });
+    for (auto& child: children)
+        SkoarNoad::depth_visit(child, [](SkoarNoadPtr noad) {
+            noad->children.clear ();
+            noad->clear_values ();
+        });
     children.clear ();
 }
 void SkoarNoad::clear_values () {
@@ -93,6 +94,10 @@ void SkoarNoad::clear_values () {
     skoap = nullptr;
     toke = nullptr;
     voice = nullptr;
+    if (skoarpuscle != nullptr)
+    {
+        skoarpuscle->clear ();
+    }
     skoarpuscle = nullptr;
     size = 0;
     offs = 0;

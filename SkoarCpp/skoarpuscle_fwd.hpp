@@ -70,7 +70,6 @@ class SkoarpuscleExactRest;
 
 // skoarpion.cpp
 class SkoarpuscleSkoarpion;
-class SkoarpuscleSkoarpionSig;
 class SkoarpuscleArgExpr;
 class SkoarpuscleArgList;
 class SkoarpuscleProjection;
