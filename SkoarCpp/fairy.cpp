@@ -95,14 +95,16 @@ void SkoarFairy::push() {
 }
 
 SkoarpusclePtr SkoarFairy::pop() {
-    if (magic_stack.empty()) {
+    if (magic_stack.empty())
         throw SkoarError(L"Magic Stack Underflow");
-    }
 
     magic = magic_stack.back();
     magic_stack.pop_back();
 
     minstrel->koar->pop_state();
+
+    if (listy_stack.empty ())
+        throw SkoarError (L"Listy Stack Underflow");
 
     auto listy = listy_stack.back();
     listy_stack.pop_back();
@@ -325,17 +327,13 @@ SkoarpusclePtr SkoarFairy::exact_duration() {
 }
 
 void SkoarFairy::charge_arcane_magic(ArcaneMagic spell) {
-    ArcaneMagic f = magic;
+    AncientArcaneMagic f (magic);
 
     magic = [=]() {
-        //                "ARCANE-alpha".postln;
-        f();
-        //            "ARCANE-omega".postln;
-        SkoarpusclePtr x = spell();
-        if (x != nullptr) {
-            impress(x);
-        }
-        return make_skoarpuscle(nullptr);
+        f ();
+        SkoarpusclePtr x (spell ());
+        if (x != nullptr) 
+            impress (x);
     };
 }
 

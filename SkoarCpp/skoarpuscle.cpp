@@ -24,9 +24,19 @@ void SkoarpuscleCat::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (nullptr);
 }
 
+SkoarpusclePtr SkoarpuscleCat::duplicate ()
+{
+    return make_skoarpuscle(nullptr);
+}
+
 // --- SkoarpuscleTrue ---------------------------------------------------------
 void SkoarpuscleTrue::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (true);
+}
+
+SkoarpusclePtr SkoarpuscleTrue::duplicate ()
+{
+    return make_skoarpuscle (true);
 }
 
 // --- SkoarpuscleFalse ---------------------------------------------------------
@@ -35,9 +45,19 @@ void SkoarpuscleFalse::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (false);
 }
 
+SkoarpusclePtr SkoarpuscleFalse::duplicate ()
+{
+    return make_skoarpuscle (false);
+}
+
 // --- SkoarpuscleInt ---------------------------------------------------------
 void SkoarpuscleInt::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (val);
+}
+
+SkoarpusclePtr SkoarpuscleInt::duplicate ()
+{
+    return make_shared<SkoarpuscleInt> (val);
 }
 
 void *SkoarpuscleInt::asNoat () { return nullptr; }
@@ -46,13 +66,22 @@ void *SkoarpuscleInt::asNoat () { return nullptr; }
 void SkoarpuscleFloat::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (val);
 }
+SkoarpusclePtr SkoarpuscleFloat::duplicate ()
+{
+    return make_shared<SkoarpuscleFloat> (val);
+}
 void *SkoarpuscleFloat::asNoat () {
     return nullptr;
 }
 
 // --- SkoarpuscleFreq ---------------------------------------------------------
 void SkoarpuscleFreq::on_enter (SkoarMinstrelPtr m) {
-    m->fairy->impress (make_shared<SkoarpuscleFreq> (val));
+    m->fairy->impress (duplicate());
+}
+
+SkoarpusclePtr SkoarpuscleFreq::duplicate ()
+{
+    return make_shared<SkoarpuscleFreq> (val);
 }
 
 void *SkoarpuscleFreq::asNoat () {
@@ -67,11 +96,21 @@ void SkoarpuscleNoat::on_enter (SkoarMinstrelPtr) {
 
 }
 
+SkoarpusclePtr SkoarpuscleNoat::duplicate ()
+{
+    return nullptr;
+}
+
 // --- SkoarpuscleChoard ---------------------------------------------------------
 void* SkoarpuscleChoard::asNoat () { return nullptr; }
 
 void SkoarpuscleChoard::on_enter (SkoarMinstrelPtr) {
 
+}
+
+SkoarpusclePtr SkoarpuscleChoard::duplicate ()
+{
+    return nullptr;
 }
 
 // --- SkoarpuscleString ---------------------------------------------------------
@@ -88,6 +127,11 @@ SkoarpusclePtr SkoarpuscleString::skoar_msg (SkoarpuscleMsg *msg, SkoarMinstrelP
     return make_shared<SkoarpuscleCat> ();
 }
 
+SkoarpusclePtr SkoarpuscleString::duplicate ()
+{
+    return make_shared<SkoarpuscleString> (val);
+}
+
 // --- SkoarpuscleSymbol ---------------------------------------------------------
 void SkoarpuscleSymbol::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (make_shared<SkoarpuscleSymbol> (val));
@@ -101,7 +145,24 @@ SkoarpusclePtr SkoarpuscleSymbol::skoar_msg (SkoarpuscleMsg* /*msg*/, SkoarMinst
     return make_shared<SkoarpuscleCat> ();
 }
 
+SkoarpusclePtr SkoarpuscleSymbol::duplicate ()
+{
+    return  make_shared<SkoarpuscleSymbol> (val);
+}
+
 // --- SkoarpuscleSymbolColon ---------------------------------------------------------
+
+
+SkoarpusclePtr SkoarpuscleSymbolColon::duplicate ()
+{
+    return make_shared<SkoarpuscleSymbolColon> (val);
+}
+
+
+SkoarpusclePtr SkoarpuscleSymbolName::duplicate ()
+{
+    return make_shared<SkoarpuscleSymbolName> (val);
+}
 
 // --- SkoarpuscleDeref ---------------------------------------------------------
 SkoarpusclePtr SkoarpuscleDeref::lookup (SkoarMinstrelPtr minstrel) {
@@ -352,16 +413,31 @@ void SkoarpuscleListSep::on_enter (SkoarMinstrelPtr m) {
 // --- SkoarpuscleListEnd ---------------------------------------------------------
 void SkoarpuscleListEnd::on_enter (SkoarMinstrelPtr m) {
     m->fairy->next_listy ();
+    auto x = m->fairy->impression;
+
     m->fairy->pop ();
+    x = m->fairy->impression;
+    
     m->fairy->pop_noating ();
+    x = m->fairy->impression;
 
 }
-
 
 // --- SkoarpuscleList ---------------------------------------------------------
 void SkoarpuscleList::on_enter (SkoarMinstrelPtr m) {
     m->fairy->push_noating (noaty);
     m->fairy->push ();
+}
+
+SkoarpusclePtr SkoarpuscleList::duplicate ()
+{
+    auto listy (make_shared<SkoarpuscleList> ());
+    auto& newval (listy->val);
+
+    for (auto& x : *val)
+        newval->push_back (x->duplicate ());
+
+    return listy;
 }
 
 bool SkoarpuscleList::isNoatworthy () {
@@ -749,6 +825,12 @@ void SkoarpuscleOctaveShift::on_enter (SkoarMinstrelPtr m) {
 // --- SkoarpuscleVoice ---------------------------------------------------------
 
 // --- SkoarpuscleHashLevel ---------------------------------------------------------
+
+SkoarpusclePtr SkoarpuscleHashLevel::duplicate ()
+{
+    return make_shared<SkoarpuscleHashLevel>(val);
+}
+
 
 // --- SkoarpusclePair ---------------------------------------------------------
 SkoarpusclePtr SkoarpusclePair::assign (SkoarMinstrelPtr m) {

@@ -85,7 +85,7 @@ VectorOfSkoarEventsPtr skoar_get_events (Skoar* skoar) {
     try
     {
         skoar->play ([&](SkoarEventPtr e) {
-            events->push_back (e);
+            events->push_back (e->duplicate());
         });
     }
     catch (SkoarError &e)

@@ -846,7 +846,12 @@ inline SkoarFloat decode_skoar_hashlevel (SkoarString &lex) {
 }
 
 SkoarpuscleHashLevel::SkoarpuscleHashLevel (SkoarString lex) :
-    val (decode_skoar_hashlevel (lex))
+    SkoarpuscleHashLevel (decode_skoar_hashlevel (lex))
+{
+}
+
+SkoarpuscleHashLevel::SkoarpuscleHashLevel (const SkoarFloat x) :
+    val (x)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"HashLevel");

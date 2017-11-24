@@ -68,7 +68,7 @@ public:
 
     SkoarString asString() {
         wostringstream out;
-        this->asString(out);
+        asString(out);
         return out.str();
     }
 
@@ -78,7 +78,7 @@ public:
 
     SkoarString typeAsString() {
         wostringstream out;
-        this->typeAsString(out);
+        typeAsString(out);
         return out.str();
     }
 
@@ -87,7 +87,7 @@ public:
 
     SkoarString valAsString() {
         wostringstream out;
-        this->valAsString(out);
+        valAsString(out);
         return out.str();
     }
 
@@ -104,6 +104,8 @@ public:
     bool isImpressionable() {
         return impressionable;
     }
+
+    virtual SkoarpusclePtr duplicate () { return nullptr; };
 
 protected:
     bool impressionable;
@@ -132,6 +134,8 @@ public:
     void valAsString(wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr duplicate () override;
+
 };
 
 class SkoarpuscleTrue : public Skoarpuscle {
@@ -146,6 +150,8 @@ public:
     void valAsString(wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr duplicate () override;
+
 };
 
 class SkoarpuscleFalse : public Skoarpuscle {
@@ -160,6 +166,8 @@ public:
     void valAsString(wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr duplicate () override;
+
 };
 
 class SkoarpuscleFreq : public Skoarpuscle {
@@ -176,6 +184,8 @@ public:
 
     void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr duplicate () override;
+
 };
 
 class SkoarpuscleInt : public Skoarpuscle {
@@ -193,6 +203,8 @@ public:
     SkoarInt asCount() override;
 
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr duplicate () override;
+
 };
 
 class SkoarpuscleFloat : public Skoarpuscle {
@@ -207,6 +219,8 @@ public:
 
     void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr duplicate () override;
+
 };
 
 class SkoarpuscleNoat : public Skoarpuscle {
@@ -221,6 +235,8 @@ public:
 
     void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr duplicate () override;
+
 };
 
 class SkoarpuscleChoard : public Skoarpuscle {
@@ -235,6 +251,8 @@ public:
 
     void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr duplicate () override;
+
 };
 
 class SkoarpuscleString : public Skoarpuscle {
@@ -249,6 +267,7 @@ public:
 
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
+    SkoarpusclePtr duplicate () override;
 };
 
 class SkoarpuscleSymbol : public Skoarpuscle {
@@ -263,6 +282,7 @@ public:
 
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
+    SkoarpusclePtr duplicate () override;
 };
 
 class SkoarpuscleSymbolColon : public Skoarpuscle {
@@ -274,7 +294,7 @@ public:
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
-
+    SkoarpusclePtr duplicate () override;
 };
 
 
@@ -288,6 +308,7 @@ public:
     void asString (wostream &out) override;
     void typeAsString (wostream &out) override;
     void valAsString (wostream &out) override;
+    SkoarpusclePtr duplicate () override;
 
 };
 
@@ -321,6 +342,7 @@ public:
     void valAsString(wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr m) override;
+
 };
 
 class SkoarpuscleCarrots : public Skoarpuscle {
@@ -477,6 +499,8 @@ public:
     void *asNoat() override;
     SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
     void on_enter(SkoarMinstrelPtr) override;
+    SkoarpusclePtr duplicate () override;
+
 
     shared_ptr<SkoarpuscleList> mul(SkoarMinstrelPtr, SkoarpusclePtr);
     shared_ptr<SkoarpuscleList> div(SkoarMinstrelPtr, SkoarpusclePtr);
@@ -670,11 +694,15 @@ public:
     const SkoarFloat val;
 
     SkoarpuscleHashLevel(SkoarString);
+    SkoarpuscleHashLevel (const SkoarFloat);
+
     ~SkoarpuscleHashLevel() override;
 
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
+    SkoarpusclePtr duplicate () override;
+
 
 };
 

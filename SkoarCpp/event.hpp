@@ -26,6 +26,8 @@ public:
     ~SkoarEvent() override;
 
     void from(SkoarDicPtr);
+
+    shared_ptr<SkoarEvent> duplicate ();
 };
 
 class SkoarEventStream {

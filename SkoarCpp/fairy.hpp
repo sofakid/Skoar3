@@ -86,10 +86,10 @@ public:
 
 
 private:
-    ArcaneMagic magic;
+    AncientArcaneMagic magic;
 
     list<ListOfSkoarpusclesPtr> listy_stack;
-    list<ArcaneMagic> magic_stack;
+    list<AncientArcaneMagic> magic_stack;
     list<SkoarInt> i_stack;
 
     ListOfSkoarpuscles compare_stack;

@@ -27,12 +27,18 @@ SkoarpusclePtr SkoarDic::at (const SkoarString &k) {
 }
 
 void SkoarDic::clear () {
+    /*
+    
+    Oh how tempting this is. Do not.
+    There are stacks of these SkoarDics, when one is popped off, you don't want to go erasing everything.
+    Lists in particular. 
+
     for (auto& kv : table)
     {
         auto& v (kv.second);
         if (v != nullptr)
             v->clear ();
-    }
+    }*/
     table.clear ();
 }
 
@@ -72,12 +78,24 @@ void SkoarEvent::from (SkoarDicPtr dic) {
         if (key == SkoarString (L"sym_impression"))
             continue;
 
-        auto skoarpuscle = pair.second;
+        auto skoarpuscle (pair.second);
         if (is_skoarpuscle<SkoarpuscleSkoarpion> (skoarpuscle))
             continue;
 
         table[key] = skoarpuscle;
     }
+}
+
+shared_ptr<SkoarEvent> SkoarEvent::duplicate ()
+{
+    auto ev (make_shared<SkoarEvent> ());
+
+    for (auto& kv : table)
+    {
+        ev->table[kv.first] = kv.second->duplicate ();
+    }
+
+    return ev;
 }
 
 // --- SkoarEventStream --------------------------------------------
