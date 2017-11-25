@@ -376,6 +376,18 @@ SkoarpuscleBoolean::~SkoarpuscleBoolean () {
 }
 
 // --- SkoarpuscleConditional ---------------------------------------------------------
+
+const size_t SkoarpuscleConditional::id (bool reset)
+{
+    static size_t cond_id (0);
+
+    if (reset)
+        return cond_id = 0;
+
+    return ++cond_id;
+}
+
+
 SkoarpuscleConditional::SkoarpuscleConditional (Skoar *skoar, SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"Conditional");
@@ -385,34 +397,53 @@ SkoarpuscleConditional::SkoarpuscleConditional (Skoar *skoar, SkoarNoadPtr noad)
 
     for (auto x : SkoarNoad::collect (noad, desires))
     {
+        auto cond_id (id ());
+
+        const SkoarString cond_id_str (std::to_wstring (++cond_id));
+        const SkoarString cond_ (L"conditional ");
+        const SkoarString _condition (L" condition");
+        const SkoarString _if (L" if");
+        const SkoarString _else (L" else");
+
+        const SkoarString cond_condition_name (cond_ + cond_id_str + _condition);
+        const SkoarString cond_if_name (cond_ + cond_id_str + _if);
+        const SkoarString cond_else_name (cond_ + cond_id_str + _else);
+
+
         SkoarpionPtr condition;
         SkoarpionPtr if_body;
         SkoarpionPtr else_body;
 
-        auto boolean_expr (SkoarNoad::NewArtificial (L"cond_cond"));
-
-        auto child (x->children.cbegin ());
-        auto condition_skoarpuscle ((*child)->next_skoarpuscle ());
-
-        boolean_expr->add_noad (*child);
-
-        condition = Skoarpion::NewFromSubtree (skoar, boolean_expr);
-
-        ++child;                   // children[1]
-        auto if_noad (*(++child)); // children[2]
-
-        if_body = Skoarpion::NewFromSubtree (skoar, if_noad);
-
-        if (x->children.size () > 4)
+        for (auto &kid : x->children)
         {
-            ++child;                     // children[3]
-            auto else_noad (*(++child)); // children[4]
-            else_body = Skoarpion::NewFromSubtree (skoar, else_noad);
+            if (kid->kind == ESkoarNoad::boolean_expr)
+            {
+                auto condition_skoarpuscle (kid->next_skoarpuscle ());
+                auto boolean_expr (SkoarNoad::NewArtificial (L"cond_cond"));
+                boolean_expr->add_noad (kid);
+
+                condition = Skoarpion::NewFromSubtree (skoar, boolean_expr);
+            }
+
+            if (kid->kind == ESkoarNoad::if_body)
+                if_body = Skoarpion::NewFromSubtree (skoar, kid);
+
+            if (kid->kind == ESkoarNoad::cond_else)
+                else_body = Skoarpion::NewFromSubtree (skoar, kid);
         }
-        else
-            else_body = nullptr;
+        
 
         ifs.push_back (make_tuple (condition, if_body, else_body));
+
+        if (condition != nullptr)
+            condition->name = cond_condition_name;
+
+        if (if_body != nullptr)
+            if_body->name = cond_if_name;
+
+        if (else_body != nullptr)
+            else_body->name = cond_else_name;
+
 
         x->children.clear ();
     }
@@ -458,6 +489,16 @@ SkoarpuscleTimes::~SkoarpuscleTimes () {
 #endif
 }
 
+const size_t SkoarpuscleLoop::id (bool reset)
+{
+    static size_t loop_id (0);
+
+    if (reset)
+        return loop_id = 0;
+
+    return ++loop_id;
+}
+
 // --- SkoarpuscleLoop ---------------------------------------------------------
 SkoarpuscleLoop::SkoarpuscleLoop (Skoar *skoar, SkoarNoadPtr noad) :
     condition (nullptr),
@@ -467,7 +508,7 @@ SkoarpuscleLoop::SkoarpuscleLoop (Skoar *skoar, SkoarNoadPtr noad) :
     SkoarMemories::o ().allocSkoarpuscle (L"Loop");
 #endif
 
-    static size_t loop_id (0);
+    auto loop_id (id());
 
     const SkoarString loop_id_str (std::to_wstring (++loop_id));
     const SkoarString loop_ (L"loop ");

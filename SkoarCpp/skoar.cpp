@@ -30,6 +30,10 @@ void Skoar::init () {
 
         isInitialized = true;
     }
+
+    // reset the counters
+    SkoarpuscleLoop::id (true);
+    SkoarpuscleConditional::id (true);
 }
 
 Skoar::Skoar (SkoarString src, ISkoarLog *log) :

@@ -78,13 +78,16 @@ msg              : MsgNameWithArgs listy_suffix | MsgName | listy | loop
 cthulhu          : LWing Semicolon cthulhu_prime
 +cthulhu_prime   : boolean_expr Semicolon RWing | Nosey Semicolon RWing
 
-conditional      : CondS cond_ifs CondE
-+cond_ifs        : cond_if cond_ifs_suffix
-+cond_ifs_suffix : Newline cond_ifs | <e>
-cond_if          : optional_voice boolean_expr CondIf if_body cond_else
-+cond_else       : CondIf if_body | <e>
+conditional      : CondS cond_if CondE
+cond_if          : opt_newline boolean_expr opt_newline CondIf if_body cond_else
+cond_else        : CondIf if_body | <e>
 
-if_body          : phrases
+# +cond_ifs        : cond_if cond_ifs_suffix
+# +cond_ifs_suffix : Newline cond_ifs | <e>
+# cond_if          : optional_voice boolean_expr CondIf if_body cond_else
+# +cond_else       : CondIf if_body | <e>
+
+if_body          : phrasishes
 
 loop             : LoopS loop_body loop_condition LoopE
 loop_body        : phrasishes
