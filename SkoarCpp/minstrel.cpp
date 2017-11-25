@@ -37,10 +37,16 @@ SkoarMinstrel::~SkoarMinstrel() {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().deallocMinstrel(name);
 #endif
-    fairy->fly_away();
+    clear ();
+}
+
+void SkoarMinstrel::clear () {
+    if (fairy != nullptr)
+        fairy->fly_away ();
     fairy = nullptr;
     koar = nullptr;
     all_voice = nullptr;
+    f = nullptr;
 }
 
 SkoarMinstrelPtr SkoarMinstrel::New(
@@ -99,6 +105,7 @@ SkoarMinstrelPtr SkoarMinstrel::NewDebuggingForSkoarpion (
 
 
 void SkoarMinstrel::start() {
+    skoar->one_more_running ();
     f();
 }
 
@@ -192,6 +199,7 @@ void SkoarMinstrel::after_entering_skoarpion(SkoarMinstrelPtr, SkoarpionPtr) {
 }
 
 void SkoarMinstrel::exiting () {
+    clear ();
 }
 
 
@@ -210,7 +218,7 @@ Skoarchestra::Skoarchestra(Skoar* skoar, const SpellOfHappening& spell) :
     }
     
     //minstrels.push_back(skoar->skoarsfjord->troll);
-    skoar->running = minstrels.size();
+    //skoar->running = minstrels.size();
 }
 
 

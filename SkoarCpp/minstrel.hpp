@@ -35,7 +35,7 @@ public:
     const SkoarString name;
     Skoar* const skoar;
 
-	SkoarFairyPtr fairy;
+    SkoarFairyPtr fairy;
 
     SkoarKoarPtr koar;
     SkoarKoarPtr all_voice;
@@ -51,6 +51,7 @@ public:
     SkoarMinstrel(SkoarString, SkoarKoarPtr, Skoar* const, const SpellOfHappening& happenSpell);
 
     virtual ~SkoarMinstrel();
+    void clear ();
 
     // create and initialize minstrel, return a shared_ptr
     static SkoarMinstrelPtr New (SkoarString name, SkoarKoarPtr koar, Skoar* const skoar, const SpellOfHappening& happenSpell);

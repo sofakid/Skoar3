@@ -43,6 +43,8 @@ public:
     Skoar (SkoarString skoarce, ISkoarLog* log);
     ~Skoar ();
 
+    void clear ();
+
     void decorate ();
     void decorate_offs_size_style ();
     void registerMarker (SkoarpuscleBars* bars);

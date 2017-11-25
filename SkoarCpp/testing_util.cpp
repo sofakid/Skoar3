@@ -379,6 +379,11 @@ void run_skoar_test (SkoarString skoarce)
 
     auto voices (skoar.get_all_voices ());
 
+    // We running the voices one at a time.
+    // When there are no minstrels running anymore,
+    // the skoar erases itself.
+    skoar.one_more_running ();
+
     for (auto voice : voices)
     {
         if (voices.size () > 1 && voice == SkoarString (L"all"))
@@ -393,6 +398,11 @@ void run_skoar_test (SkoarString skoarce)
 
         compare_desires_to_events (desires, reality);
     }
+
+    run = nullptr;
+    expect = nullptr;
+    // skoar can erase itself now.
+    skoar.one_less_running ();
 
 }
 

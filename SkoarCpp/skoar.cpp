@@ -41,7 +41,8 @@ Skoar::Skoar (SkoarString src, ISkoarLog *log) :
     log (log),
     parsedOk (false),
     decoratedOk (false),
-    tree(nullptr)
+    tree(nullptr),
+    running(0)
 {
     Skoar::init ();
 
@@ -160,6 +161,14 @@ Skoar::Skoar (SkoarString src, ISkoarLog *log) :
 }
 
 Skoar::~Skoar () {
+    clear ();
+
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().deallocSkoar ();
+#endif
+}
+
+void Skoar::clear () {
     if (decoratedOk)
     {
         for (auto& skoarpion : skoarpions)
@@ -177,7 +186,8 @@ Skoar::~Skoar () {
         voices.clear ();
         all_voice = nullptr;
 
-        tree->clear ();
+        if (tree != nullptr)
+            tree->clear ();
     }
     else if (parsedOk)
     {
@@ -196,14 +206,11 @@ Skoar::~Skoar () {
         voices.clear ();
         all_voice = nullptr;
 
-        tree->clear ();
+        if (tree != nullptr)
+            tree->clear ();
     }
 
     tree = nullptr;
-
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().deallocSkoar ();
-#endif
 }
 
 void Skoar::decorate_offs_size_style () {
@@ -382,6 +389,7 @@ void Skoar::play_voice_skoarpion (SkoarString voice, SkoarpionPtr skoarpion, con
     auto koar (get_voice (voice));
     auto m (SkoarMinstrel::NewForSkoarpion (L"testing", koar, this, skoarpion, spell));
     m->start ();
+    //m->clear ();
 }
 
 void Skoar::debug_voice (SkoarString voice, const SpellOfHappening& spell, const MinstrelDebugConfig &config) {
@@ -402,6 +410,11 @@ void Skoar::one_less_running () {
     // todo: lock a mutex
     --running;
     // todo: unlock the mutex
+
+    if (running == 0)
+    {
+        //clear ();
+    }
 }
 
 // --------------------------------------------------------------------------------
