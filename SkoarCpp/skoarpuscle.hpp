@@ -561,7 +561,7 @@ public:
 
 class SkoarpuscleConditional : public Skoarpuscle {
 public:
-    static const size_t id (bool reset = false);
+    static const SkoarString id (bool reset = false);
 
     list<tuple<SkoarpionPtr, SkoarpionPtr, SkoarpionPtr>> ifs;
 
@@ -596,7 +596,7 @@ private:
 class SkoarpuscleLoop : public Skoarpuscle {
 public:
 
-    static const size_t id (bool reset = false);
+    static const SkoarString id (bool reset = false);
 
     SkoarpionPtr condition;
     SkoarpionPtr body;

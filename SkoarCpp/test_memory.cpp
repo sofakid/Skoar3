@@ -3,34 +3,6 @@
 #if SKOAR_DEBUG_MEMORY
 #include "testing_util.hpp"
 
-void require_no_memory_consumed () {
-    INFO (SkoarMemories::o ());
-    REQUIRE (SkoarMemories::o ().Tokes == 0);
-    REQUIRE (SkoarMemories::o ().Noads == 0);
-    REQUIRE (SkoarMemories::o ().Skoars == 0);
-    REQUIRE (SkoarMemories::o ().Skoarpuscles == 0);
-    REQUIRE (SkoarMemories::o ().Skoarpions == 0);
-    REQUIRE (SkoarMemories::o ().Projections == 0);
-    REQUIRE (SkoarMemories::o ().Koars == 0);
-    REQUIRE (SkoarMemories::o ().Fairies == 0);
-    REQUIRE (SkoarMemories::o ().Minstrels == 0);
-    REQUIRE (SkoarMemories::o ().SkoarDics == 0);
-    REQUIRE (SkoarMemories::o ().Events == 0);
-}
-
-void require_fresh_memory_tables () {
-    INFO (SkoarMemories::o ());
-    REQUIRE (SkoarMemories::o ().TokesMap.size () == 0);
-    REQUIRE (SkoarMemories::o ().NoadsMap.size () == 0);
-    REQUIRE (SkoarMemories::o ().SkoarpusclesMap.size () == 0);
-    REQUIRE (SkoarMemories::o ().SkoarpionsMap.size () == 0);
-    REQUIRE (SkoarMemories::o ().ProjectionsMap.size () == 0);
-    REQUIRE (SkoarMemories::o ().KoarsMap.size () == 0);
-    REQUIRE (SkoarMemories::o ().FairiesMap.size () == 0);
-    REQUIRE (SkoarMemories::o ().MinstrelsMap.size () == 0);
-    REQUIRE (SkoarMemories::o ().SkoarDicsMap.size () == 0);
-    REQUIRE (SkoarMemories::o ().EventsMap.size () == 0);
-}
 
 void createSkoarLite (wstring skoarce) {
     SkoarNullLogger SkoarLog;
@@ -50,7 +22,7 @@ void createSkoar (wstring skoarce) {
 // ----------------------------------------------------------------------------------------------------------------------------------------
 // Test Creating SkoarLites - these don't decorate the tree or try to play it.. just creates tokes and noads..
 // ----------------------------------------------------------------------------------------------------------------------------------------
-TEST_CASE ("SkoarLite Memories", "[memory]") {
+TEST_CASE ("Memories - Compiled - SkoarLite", "[memory]") {
 
     SkoarNullLogger SkoarLog;
 
@@ -97,7 +69,7 @@ TEST_CASE ("SkoarLite Memories", "[memory]") {
 // Test Creating Skoars
 // ----------------------------------------------------------------------------------------------------------------------------------------
 
-TEST_CASE ("Memories - Simple Skoars", "[memory]") {
+TEST_CASE ("Memories - Compiled - Simple Skoars", "[memory]") {
 
     SkoarMemories::o ().reset ();
 
@@ -178,7 +150,7 @@ TEST_CASE ("Memories - Simple Skoars", "[memory]") {
 }
 
 
-TEST_CASE ("Memories - Musical keywords", "[memory]") {
+TEST_CASE ("Memories - Compiled - Musical keywords", "[memory]") {
 
     SkoarMemories::o ().reset ();
 
@@ -206,7 +178,7 @@ TEST_CASE ("Memories - Musical keywords", "[memory]") {
 
 }
 
-TEST_CASE ("Memories - Skoarpions", "[memory]") {
+TEST_CASE ("Memories - Compiled - Skoarpions", "[memory]") {
 
     SkoarMemories::o ().reset ();
 
@@ -256,7 +228,7 @@ TEST_CASE ("Memories - Skoarpions", "[memory]") {
 }
 
 
-TEST_CASE ("Memories - Conditionals", "[memory]") {
+TEST_CASE ("Memories - Compiled - Conditionals", "[memory]") {
 
     SkoarMemories::o ().reset ();
 
@@ -273,7 +245,7 @@ TEST_CASE ("Memories - Conditionals", "[memory]") {
 }
 
 
-TEST_CASE ("Memories - Invalid Skoars", "[memory]") {
+TEST_CASE ("Memories - Compiled - Invalid Skoars", "[memory]") {
 
     SkoarMemories::o ().reset ();
 

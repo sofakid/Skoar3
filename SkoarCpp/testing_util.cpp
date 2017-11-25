@@ -345,6 +345,15 @@ void print_skoarce (SkoarString skoarce) {
 
 }
 
+void compile_skoar_test (SkoarString skoarce) {
+    SkoarNullLogger SkoarLog;
+
+    INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
+    Skoar skoar (skoarce, &SkoarLog);
+
+    REQUIRE (skoar.parsedOk);
+}
+
 void run_skoar_test (SkoarString skoarce)
 {
     SkoarNullLogger SkoarLog;
@@ -386,3 +395,46 @@ void run_skoar_test (SkoarString skoarce)
     }
 
 }
+
+#if SKOAR_DEBUG_MEMORY
+
+
+void reset_memories ()
+{
+    SkoarMemories::o ().reset ();
+
+    require_no_memory_consumed ();
+    require_fresh_memory_tables ();
+}
+
+void require_no_memory_consumed ()
+{
+    INFO (SkoarMemories::o ());
+    REQUIRE (SkoarMemories::o ().Tokes == 0);
+    REQUIRE (SkoarMemories::o ().Noads == 0);
+    REQUIRE (SkoarMemories::o ().Skoars == 0);
+    REQUIRE (SkoarMemories::o ().Skoarpuscles == 0);
+    REQUIRE (SkoarMemories::o ().Skoarpions == 0);
+    REQUIRE (SkoarMemories::o ().Projections == 0);
+    REQUIRE (SkoarMemories::o ().Koars == 0);
+    REQUIRE (SkoarMemories::o ().Fairies == 0);
+    REQUIRE (SkoarMemories::o ().Minstrels == 0);
+    REQUIRE (SkoarMemories::o ().SkoarDics == 0);
+    REQUIRE (SkoarMemories::o ().Events == 0);
+}
+
+void require_fresh_memory_tables ()
+{
+    INFO (SkoarMemories::o ());
+    REQUIRE (SkoarMemories::o ().TokesMap.size () == 0);
+    REQUIRE (SkoarMemories::o ().NoadsMap.size () == 0);
+    REQUIRE (SkoarMemories::o ().SkoarpusclesMap.size () == 0);
+    REQUIRE (SkoarMemories::o ().SkoarpionsMap.size () == 0);
+    REQUIRE (SkoarMemories::o ().ProjectionsMap.size () == 0);
+    REQUIRE (SkoarMemories::o ().KoarsMap.size () == 0);
+    REQUIRE (SkoarMemories::o ().FairiesMap.size () == 0);
+    REQUIRE (SkoarMemories::o ().MinstrelsMap.size () == 0);
+    REQUIRE (SkoarMemories::o ().SkoarDicsMap.size () == 0);
+    REQUIRE (SkoarMemories::o ().EventsMap.size () == 0);
+}
+#endif

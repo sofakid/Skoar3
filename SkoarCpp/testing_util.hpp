@@ -115,3 +115,12 @@ void run_and_expect_d(SkoarString skoarce, VectorOfSkoarEventsPtr desires); // v
 void print_skoarce (SkoarString skoarce);
 
 void run_skoar_test (SkoarString skoarce);
+void compile_skoar_test (SkoarString skoarce);
+
+#if SKOAR_DEBUG_MEMORY
+
+void reset_memories ();
+void require_no_memory_consumed ();
+void require_fresh_memory_tables ();
+
+#endif

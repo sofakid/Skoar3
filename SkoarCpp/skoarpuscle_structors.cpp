@@ -377,14 +377,14 @@ SkoarpuscleBoolean::~SkoarpuscleBoolean () {
 
 // --- SkoarpuscleConditional ---------------------------------------------------------
 
-const size_t SkoarpuscleConditional::id (bool reset)
+const SkoarString SkoarpuscleConditional::id (bool reset)
 {
     static size_t cond_id (0);
 
     if (reset)
-        return cond_id = 0;
+        return std::to_wstring (cond_id = 0);
 
-    return ++cond_id;
+    return std::to_wstring (++cond_id);
 }
 
 
@@ -392,22 +392,21 @@ SkoarpuscleConditional::SkoarpuscleConditional (Skoar *skoar, SkoarNoadPtr noad)
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"Conditional");
 #endif
+    static const SkoarString cond_ (L"conditional ");
+    static const SkoarString _condition (L" condition");
+    static const SkoarString _if (L" if");
+    static const SkoarString _else (L" else");
 
     list<ESkoarNoad::Kind> desires = { ESkoarNoad::cond_if };
 
     for (auto x : SkoarNoad::collect (noad, desires))
     {
-        auto cond_id (id ());
+        
+        const SkoarString cond_id (id ());
 
-        const SkoarString cond_id_str (std::to_wstring (++cond_id));
-        const SkoarString cond_ (L"conditional ");
-        const SkoarString _condition (L" condition");
-        const SkoarString _if (L" if");
-        const SkoarString _else (L" else");
-
-        const SkoarString cond_condition_name (cond_ + cond_id_str + _condition);
-        const SkoarString cond_if_name (cond_ + cond_id_str + _if);
-        const SkoarString cond_else_name (cond_ + cond_id_str + _else);
+        const SkoarString cond_condition_name (cond_ + cond_id + _condition);
+        const SkoarString cond_if_name (cond_ + cond_id + _if);
+        const SkoarString cond_else_name (cond_ + cond_id + _else);
 
 
         SkoarpionPtr condition;
@@ -416,20 +415,24 @@ SkoarpuscleConditional::SkoarpuscleConditional (Skoar *skoar, SkoarNoadPtr noad)
 
         for (auto &kid : x->children)
         {
-            if (kid->kind == ESkoarNoad::boolean_expr)
+            switch (kid->kind)
             {
-                auto condition_skoarpuscle (kid->next_skoarpuscle ());
+            case ESkoarNoad::boolean_expr:
+            {
                 auto boolean_expr (SkoarNoad::NewArtificial (L"cond_cond"));
                 boolean_expr->add_noad (kid);
 
                 condition = Skoarpion::NewFromSubtree (skoar, boolean_expr);
+                break;
             }
 
-            if (kid->kind == ESkoarNoad::if_body)
+            case ESkoarNoad::if_body:
                 if_body = Skoarpion::NewFromSubtree (skoar, kid);
+                break;
 
-            if (kid->kind == ESkoarNoad::cond_else)
+            case ESkoarNoad::cond_else:
                 else_body = Skoarpion::NewFromSubtree (skoar, kid);
+            }
         }
         
 
@@ -446,6 +449,10 @@ SkoarpuscleConditional::SkoarpuscleConditional (Skoar *skoar, SkoarNoadPtr noad)
 
 
         x->children.clear ();
+
+        // this is a loop because in the olden days we had a bunch of ifs in a condition section, 
+        // like one-on-each-line sort of thing. TODO, make this not a loop like this. 
+        break;
     }
 
     noad->children.clear ();
@@ -489,14 +496,14 @@ SkoarpuscleTimes::~SkoarpuscleTimes () {
 #endif
 }
 
-const size_t SkoarpuscleLoop::id (bool reset)
+const SkoarString SkoarpuscleLoop::id (bool reset)
 {
     static size_t loop_id (0);
 
     if (reset)
-        return loop_id = 0;
+        return std::to_wstring (loop_id = 0);
 
-    return ++loop_id;
+    return std::to_wstring (++loop_id);
 }
 
 // --- SkoarpuscleLoop ---------------------------------------------------------
@@ -508,15 +515,13 @@ SkoarpuscleLoop::SkoarpuscleLoop (Skoar *skoar, SkoarNoadPtr noad) :
     SkoarMemories::o ().allocSkoarpuscle (L"Loop");
 #endif
 
-    auto loop_id (id());
-
-    const SkoarString loop_id_str (std::to_wstring (++loop_id));
+    const SkoarString loop_id (id ());
     const SkoarString loop_ (L"loop ");
     const SkoarString _condition (L" condition");
     const SkoarString _body (L" body");
 
-    const SkoarString loop_condition_name (loop_ + loop_id_str + _condition);
-    const SkoarString loop_body_name (loop_ + loop_id_str + _body);
+    const SkoarString loop_condition_name (loop_ + loop_id + _condition);
+    const SkoarString loop_body_name (loop_ + loop_id + _body);
 
     list<ESkoarNoad::Kind> desires_cond = { ESkoarNoad::loop_condition };
     for (auto x : SkoarNoad::collect (noad, desires_cond))
