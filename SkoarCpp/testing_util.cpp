@@ -138,7 +138,7 @@ VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion (Skoar* skoar, Skoar
     try
     {
         skoar->play_voice_skoarpion (voice, skoarpion, [&](SkoarEventPtr e) {
-            events->push_back (e);
+            events->push_back (e->duplicate());
         });
     }
     catch (SkoarError &e)
@@ -147,6 +147,33 @@ VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion (Skoar* skoar, Skoar
     }
     return events;
 }
+
+
+VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (Skoar* skoar, SkoarString voice, SkoarpionPtr skoarpion) {
+    auto events (make_shared<VectorOfSkoarEvents> ());
+    try
+    {
+        skoar->play_voice_skoarpion (voice, skoarpion, [&](SkoarEventPtr e) {
+            events->push_back (e->duplicate ());
+        });
+    }
+    catch (SkoarRuntimeException &e)
+    {
+        SkoarEvent ev;
+
+        ev.put (L"Cthulhu", make_skoarpuscle (true));
+        ev.put (L"CthulhuString", make_skoarpuscle(e.sWhat));
+        ev.put (L"CthulhuArgument", e.skoarpuscle);
+
+        events->push_back (ev.duplicate ());
+    }
+    catch (SkoarError &e)
+    {
+        FAIL (SkoarString_to_s (e.wwhat ()));
+    }
+    return events;
+}
+
 
 
 void make_event_r (SkoarEventPtr)
@@ -352,8 +379,8 @@ void run_skoar_test (SkoarString skoarce)
         string s (prefix + SkoarString_to_s (voice));
         INFO (s);
 
-        auto desires (skoar_get_events_for_voice_skoarpion (&skoar, voice, expect));
-        auto reality (skoar_get_events_for_voice_skoarpion (&skoar, voice, run));
+        auto desires (skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (&skoar, voice, expect));
+        auto reality (skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (&skoar, voice, run));
 
         compare_desires_to_events (desires, reality);
     }

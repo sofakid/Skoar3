@@ -292,13 +292,13 @@ void Skoar::cthulhu (SkoarNoadPtr noad) {
     // TODO more
     //"^^(;,;)^^".postln;
     //dump();
-    throw SkoarError (L"^^(;,;)^^");
+    throw SkoarRuntimeException (L"^^(;,;)^^");
 
 }
 
 
 void Skoar::cthulhu (SkoarString s) {
-    throw SkoarError (s);
+    throw SkoarRuntimeException (s);
 }
 
 void Skoar::draw_skoarpions () {
@@ -319,7 +319,7 @@ void Skoar::draw_skoarpions () {
             auto koar_name (pairs.first);
             auto projection (Skoarpion::projection (x, koar_name));
 
-            //projection->proj->draw_tree(stream);
+            projection->draw (stream);
             stream << "\n";
         }
     }

@@ -92,7 +92,11 @@ shared_ptr<SkoarEvent> SkoarEvent::duplicate ()
 
     for (auto& kv : table)
     {
-        ev->table[kv.first] = kv.second->duplicate ();
+        auto val (kv.second);
+        if (val == nullptr)
+            val = make_skoarpuscle (nullptr);
+
+        ev->table[kv.first] = val->duplicate ();
     }
 
     return ev;

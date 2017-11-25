@@ -250,9 +250,10 @@ SkoarpionProjection::SkoarpionProjection (SkoarpionPtr skoarpion, SkoarString ko
 
     SkoarNoad::inorder (skoarpion->body, [&](SkoarNoadPtr x) {
         const SkoarString& s (x->voice->name);
+        const SkoarString all (L"all");
 
         if ((x->on_enter != nullptr || x->skoarpuscle != nullptr) && 
-            (s == koar_name || s == L"all"))
+            (s == koar_name || s == all))
             noadites.emplace_back (x);
     });
 
@@ -263,4 +264,15 @@ SkoarpionProjection::~SkoarpionProjection ()
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().deallocProjection (name);
 #endif
+}
+
+
+void SkoarpionProjection::draw (wostringstream &out) {
+    out << "--< Projection " << name << " >---\n";
+
+    for (auto& x : noadites)
+    {
+        out << L"   " << x.voice->name << L": " << x.name << L"\n";
+    }
+    
 }

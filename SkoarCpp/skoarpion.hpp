@@ -57,7 +57,7 @@ public:
 
     //SkoarNoadAddress map_dst(SkoarNoadPtr);
 
-    //void draw_tree(wostringstream &stream);
+    void draw(wostringstream &stream);
 
 private:
     //SkoarNoadAddress skip_to;

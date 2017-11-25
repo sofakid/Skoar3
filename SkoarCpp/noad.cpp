@@ -95,9 +95,7 @@ void SkoarNoad::clear_values () {
     toke = nullptr;
     voice = nullptr;
     if (skoarpuscle != nullptr)
-    {
         skoarpuscle->clear ();
-    }
     skoarpuscle = nullptr;
     size = 0;
     offs = 0;
@@ -114,8 +112,8 @@ void SkoarNoad::decorate_voices (SkoarKoarPtr default_voice) {
     SkoarKoarPtr current_voice (default_voice);
 
     auto f ([&](SkoarNoad* noad) {
-        auto t (noad->toke.get ());
-        if (t != nullptr && t->kind == ESkoarToke::Newline)
+        
+        if (noad->kind == ESkoarNoad::opt_voiced_phrases)
             current_voice = default_voice;
 
         if (noad->voice != nullptr)

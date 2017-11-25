@@ -23,6 +23,7 @@ VectorOfSkoarEventsPtr skoar_get_events (Skoar* skoar);
 VectorOfSkoarEventsPtr skoar_get_events_inf (Skoar * skoar, size_t num);
 VectorOfSkoarEventsPtr skoar_get_events_for_voice (Skoar* skoar, SkoarString voice);
 VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion (Skoar* skoar, SkoarString voice, SkoarpionPtr skoarpion);
+VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (Skoar* skoar, SkoarString voice, SkoarpionPtr skoarpion);
 
 
 // --- make_event ------------------------------------------------

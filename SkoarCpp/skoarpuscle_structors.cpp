@@ -459,10 +459,24 @@ SkoarpuscleTimes::~SkoarpuscleTimes () {
 }
 
 // --- SkoarpuscleLoop ---------------------------------------------------------
-SkoarpuscleLoop::SkoarpuscleLoop (Skoar *skoar, SkoarNoadPtr noad) {
+SkoarpuscleLoop::SkoarpuscleLoop (Skoar *skoar, SkoarNoadPtr noad) :
+    condition (nullptr),
+    body (nullptr)
+{
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"Loop");
 #endif
+
+    static size_t loop_id (0);
+
+    const SkoarString loop_id_str (std::to_wstring (++loop_id));
+    const SkoarString loop_ (L"loop ");
+    const SkoarString _condition (L" condition");
+    const SkoarString _body (L" body");
+
+    const SkoarString loop_condition_name (loop_ + loop_id_str + _condition);
+    const SkoarString loop_body_name (loop_ + loop_id_str + _body);
+
     list<ESkoarNoad::Kind> desires_cond = { ESkoarNoad::loop_condition };
     for (auto x : SkoarNoad::collect (noad, desires_cond))
         if (x->children.size () > 0)
@@ -471,6 +485,12 @@ SkoarpuscleLoop::SkoarpuscleLoop (Skoar *skoar, SkoarNoadPtr noad) {
     list<ESkoarNoad::Kind> desires_body = { ESkoarNoad::loop_body };
     for (auto x : SkoarNoad::collect (noad, desires_body))
         body = Skoarpion::NewFromSubtree (skoar, x);
+
+    if (condition != nullptr)
+        condition->name = loop_condition_name;
+
+    if (body != nullptr)
+        body->name = loop_body_name;
 
     each = nullptr;
 }
