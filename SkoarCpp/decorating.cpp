@@ -99,7 +99,11 @@ Skoarmantics::Skoarmantics () : table ({
             auto l_value = m->fairy->l_value;
             auto imp = m->fairy->impression;
 
-            m->fairy->impress ((x->evaluate (m, l_value, imp)));
+            if (l_value == nullptr)
+                l_value = make_skoarpuscle (0);
+            //m->fairy->impress ((
+            x->evaluate (m, l_value, imp);
+            //));
             
             m->fairy->pop_compare ();
         };

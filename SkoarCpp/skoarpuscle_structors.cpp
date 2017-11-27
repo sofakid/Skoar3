@@ -316,47 +316,55 @@ SkoarpuscleMathOp::~SkoarpuscleMathOp () {
 }
 
 // --- SkoarpuscleBooleanOp ---------------------------------------------------------
-SkoarpuscleBooleanOp::SkoarpuscleBooleanOp (SkoarNoadPtr /*noad*/, SkoarToke* /*toke*/) {
+SkoarpuscleBooleanOp::SkoarpuscleBooleanOp (SkoarNoadPtr /*noad*/, SkoarToke* toke) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"BooleanOp");
 #endif
-    /*
-    // todo: use the ops table.
-    //#define InsaneMagic [=](Poco::DynamicAny a, Poco::DynamicAny b)
-    #define InsaneMagic [=](int a, int b)
+    
+    auto s (toke->lexeme);
 
-    if (val == SkoarString(L"=="))
-    f = InsaneMagic { return a == b; };
-
-    else if (val == SkoarString(L"!="))
-    f = InsaneMagic { return a != b; };
-
-    else if (val == SkoarString(L"!="))
-    f = InsaneMagic { return a == b; };
-
-    else if (val == SkoarString(L"<="))
-    f = InsaneMagic { return a <= b; };
-
-    else if (val == SkoarString(L">="))
-    f = InsaneMagic { return a >= b; };
-
-    else if (val == SkoarString(L">"))
-    f = InsaneMagic { return a > b; };
-
-    else if (val == SkoarString(L"<"))
-    f = InsaneMagic { return a < b; };
-
-    else if (val == SkoarString(L"and"))
-    f = InsaneMagic { return a && b; };
-
-    else if (val == SkoarString(L"or"))
-    f = InsaneMagic { return a || b; };
-
-    else if (val == SkoarString(L"xor"))
-    f = InsaneMagic{ return !a != !b; };
-
-    #undef InsaneMagic
-    */
+    if (s == L"==")
+    {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            return SkoarOps::getInstance ()->eq (m, a, b);
+        };
+    }
+    else if (s == L"!=")
+    {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            return SkoarOps::getInstance ()->neq (m, a, b);
+        };
+    }
+    else if (s == L">")
+    {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            return SkoarOps::getInstance ()->gt (m, a, b);
+        };
+    }
+    else if (s == L">=")
+    {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            return SkoarOps::getInstance ()->gte (m, a, b);
+        };
+    }
+    else if (s == L"<")
+    {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            return SkoarOps::getInstance ()->lt (m, a, b);
+        };
+    }
+    else if (s == L"<=")
+    {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            return SkoarOps::getInstance ()->lte (m, a, b);
+        };
+    }
+    else
+    {
+        f = [](SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr) {
+            return make_shared<SkoarpuscleCat> ();
+        };
+    }
 }
 
 SkoarpuscleBooleanOp::~SkoarpuscleBooleanOp () {

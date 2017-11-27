@@ -534,7 +534,7 @@ public:
                     denom
                 );
             } },
-            
+
             { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
             { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
 
@@ -577,7 +577,7 @@ public:
                     denom
                 );
             } },
-           
+
             { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
             { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
 
@@ -619,7 +619,7 @@ public:
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (x)->val / denom
                     ));
             } },
-            
+
 
             { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
             { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
@@ -634,15 +634,153 @@ public:
             { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
             { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
         } }
+    };
 
+    // --- cmp -----------------------------------------------------------------------------
+    XCmpTable cmp = {
+        { EMath::Cat, { 
+            { EMath::Cat,       MathMagic { return 0.0; } },
+            { EMath::Int,       MathMagic { return 1.0; } },
+            { EMath::Float,     MathMagic { return 1.0; } },
+            { EMath::HashLevel, MathMagic { return 1.0; } },
+            { EMath::Noat,      MathMagic { return 1.0; } },
+            { EMath::Choard,    MathMagic { return 1.0; } },
+            { EMath::False,     MathMagic { return 1.0; } },
+            { EMath::True,      MathMagic { return 1.0; } },
+            { EMath::Symbol,    MathMagic { return 1.0; } },
+            { EMath::String,    MathMagic { return 1.0; } },
+            { EMath::List,      MathMagic { return 1.0; } },
+            { EMath::UGen,      MathMagic { return 1.0; } },
+            { EMath::Envelope,  MathMagic { return 1.0; } }
+        } },
+        { EMath::False, { 
+            { EMath::Cat,       MathMagic { return 1.0; } },
+            { EMath::Int,       MathMagic { return 1.0; } },
+            { EMath::Float,     MathMagic { return 1.0; } },
+            { EMath::HashLevel, MathMagic { return 1.0; } },
+            { EMath::Noat,      MathMagic { return 1.0; } },
+            { EMath::Choard,    MathMagic { return 1.0; } },
+            { EMath::False,     MathMagic { return 0.0; } },
+            { EMath::True,      MathMagic { return 1.0; } },
+            { EMath::Symbol,    MathMagic { return 1.0; } },
+            { EMath::String,    MathMagic { return 1.0; } },
+            { EMath::List,      MathMagic { return 1.0; } },
+            { EMath::UGen,      MathMagic { return 1.0; } },
+            { EMath::Envelope,  MathMagic { return 1.0; } }
+        } },
+        { EMath::True, { 
+            { EMath::Cat,       MathMagic { return 1.0; } },
+            { EMath::Int,       MathMagic { return 1.0; } },
+            { EMath::Float,     MathMagic { return 1.0; } },
+            { EMath::HashLevel, MathMagic { return 1.0; } },
+            { EMath::Noat,      MathMagic { return 1.0; } },
+            { EMath::Choard,    MathMagic { return 1.0; } },
+            { EMath::False,     MathMagic { return 1.0; } },
+            { EMath::True,      MathMagic { return 0.0; } },
+            { EMath::Symbol,    MathMagic { return 1.0; } },
+            { EMath::String,    MathMagic { return 1.0; } },
+            { EMath::List,      MathMagic { return 1.0; } },
+            { EMath::UGen,      MathMagic { return 1.0; } },
+            { EMath::Envelope,  MathMagic { return 1.0; } }
+        } },
+
+        { EMath::Envelope, { { EMath::Any, MathMagic { return 1.0; } } } },
+        { EMath::UGen,     { { EMath::Any, MathMagic { return 1.0; } } } },
+        
+        { EMath::Int, {
+            { EMath::Int,       MathMagic {
+                return static_cast<SkoarFloat>(
+                    skoarpuscle_ptr<SkoarpuscleInt> (x)->val -
+                    skoarpuscle_ptr<SkoarpuscleInt> (y)->val
+                );
+            } },
+            { EMath::Float,     MathMagic {
+                return
+                    static_cast<SkoarFloat>(skoarpuscle_ptr<SkoarpuscleInt> (x)->val) -
+                    skoarpuscle_ptr<SkoarpuscleFloat> (y)->val;
+            } },
+
+            { EMath::HashLevel, MathMagic {
+                return
+                    static_cast<SkoarFloat>(skoarpuscle_ptr<SkoarpuscleInt> (x)->val) -
+                    skoarpuscle_ptr<SkoarpuscleHashLevel> (y)->val;
+            } },
+
+            { EMath::Noat,      MathMagic { return 1.0; } },
+            { EMath::Choard,    MathMagic { return 1.0; } },
+            { EMath::False,     MathMagic { return 1.0; } },
+            { EMath::True,      MathMagic { return 1.0; } },
+            { EMath::Symbol,    MathMagic { return 1.0; } },
+            { EMath::String,    MathMagic { return 1.0; } },
+            { EMath::List,      MathMagic { return 1.0; } },
+            { EMath::UGen,      MathMagic { return 1.0; } },
+            { EMath::Envelope,  MathMagic { return 1.0; } }
+        } },
+
+        { EMath::Float, {
+            { EMath::Int, MathMagic {
+                return
+                    skoarpuscle_ptr<SkoarpuscleFloat> (x)->val -
+                    static_cast<SkoarFloat> (skoarpuscle_ptr<SkoarpuscleInt> (y)->val);
+            } },
+            { EMath::Float, MathMagic {
+                return
+                    skoarpuscle_ptr<SkoarpuscleFloat> (x)->val -
+                    skoarpuscle_ptr<SkoarpuscleFloat> (y)->val;
+            } },
+            { EMath::HashLevel, MathMagic {
+                return
+                    skoarpuscle_ptr<SkoarpuscleFloat> (x)->val -
+                    skoarpuscle_ptr<SkoarpuscleHashLevel> (y)->val;
+            } },
+
+            { EMath::Noat,      MathMagic { return 1.0; } },
+            { EMath::Choard,    MathMagic { return 1.0; } },
+            { EMath::False,     MathMagic { return 1.0; } },
+            { EMath::True,      MathMagic { return 1.0; } },
+            { EMath::Symbol,    MathMagic { return 1.0; } },
+            { EMath::String,    MathMagic { return 1.0; } },
+            { EMath::List,      MathMagic { return 1.0; } },
+            { EMath::UGen,      MathMagic { return 1.0; } },
+            { EMath::Envelope,  MathMagic { return 1.0; } }
+        } },
+
+        { EMath::HashLevel, {
+            { EMath::Int, MathMagic {
+                return
+                    skoarpuscle_ptr<SkoarpuscleHashLevel> (x)->val -
+                    static_cast<SkoarFloat> (skoarpuscle_ptr<SkoarpuscleInt> (y)->val);
+            } },
+            { EMath::Float, MathMagic {
+                return
+                    skoarpuscle_ptr<SkoarpuscleHashLevel> (x)->val -
+                    skoarpuscle_ptr<SkoarpuscleFloat> (y)->val;
+            } },
+            { EMath::HashLevel, MathMagic {
+                return
+                    skoarpuscle_ptr<SkoarpuscleHashLevel> (x)->val -
+                    skoarpuscle_ptr<SkoarpuscleHashLevel> (y)->val;
+            } },
+
+            { EMath::Noat,      MathMagic { return 1.0; } },
+            { EMath::Choard,    MathMagic { return 1.0; } },
+            { EMath::False,     MathMagic { return 1.0; } },
+            { EMath::True,      MathMagic { return 1.0; } },
+            { EMath::Symbol,    MathMagic { return 1.0; } },
+            { EMath::String,    MathMagic { return 1.0; } },
+            { EMath::List,      MathMagic { return 1.0; } },
+            { EMath::UGen,      MathMagic { return 1.0; } },
+            { EMath::Envelope,  MathMagic { return 1.0; } }
+        } }
 
     };
+
+
 
 };
 
 #undef MathMagic
 #undef EMath
-
 
 
 
@@ -669,7 +807,7 @@ SpellOfMath SkoarOps::lookup(XTable &xtable, SkoarpusclePtr x, SkoarpusclePtr y)
     });
 
     try {
-        auto ytable (xtable.at(x->kind));
+        auto& ytable (xtable.at(x->kind));
 
         try {
             return ytable.at(y->kind);
@@ -681,6 +819,31 @@ SpellOfMath SkoarOps::lookup(XTable &xtable, SkoarpusclePtr x, SkoarpusclePtr y)
     catch (const std::out_of_range&) {
     }
     return cat;
+}
+
+SpellOfCmp SkoarOps::lookup (XCmpTable & xtable, SkoarpusclePtr x, SkoarpusclePtr y)
+{
+    static const SpellOfCmp gt ([](SkoarpusclePtr, SkoarpusclePtr, SkoarMinstrelPtr) {
+        return 1.0;
+    });
+
+    try
+    {
+        auto& ytable (xtable.at (x->kind));
+
+        try
+        {
+            return ytable.at (y->kind);
+        }
+        catch (const std::out_of_range&)
+        {
+            return ytable.at (ESkoarpuscle::Any);
+        }
+    }
+    catch (const std::out_of_range&)
+    {
+    }
+    return gt;
 }
 
 SkoarpusclePtr SkoarOps::assign(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
@@ -707,4 +870,39 @@ SkoarpusclePtr SkoarOps::div(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePt
     const SpellOfMath &f (lookup(ops_tables->division, x, y));
     return m->fairy->impress(f(x, y, m));
 }
+
+SkoarpusclePtr SkoarOps::neq(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+    const SpellOfCmp &f (lookup(ops_tables->cmp, x, y));
+    return m->fairy->impress(f (x, y, m) != 0.0);
+}
+
+SkoarpusclePtr SkoarOps::eq (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+    const SpellOfCmp &f (lookup (ops_tables->cmp, x, y));
+    return m->fairy->impress (f (x, y, m) == 0.0);
+}
+
+SkoarpusclePtr SkoarOps::gt (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
+{
+    const SpellOfCmp &f (lookup (ops_tables->cmp, x, y));
+    return m->fairy->impress (f (x, y, m) > 0.0);
+}
+
+SkoarpusclePtr SkoarOps::gte (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
+{
+    const SpellOfCmp &f (lookup (ops_tables->cmp, x, y));
+    return m->fairy->impress (f (x, y, m) >= 0.0);
+}
+
+SkoarpusclePtr SkoarOps::lt (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
+{
+    const SpellOfCmp &f (lookup (ops_tables->cmp, x, y));
+    return m->fairy->impress (f (x, y, m) < 0.0);
+}
+
+SkoarpusclePtr SkoarOps::lte (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
+{
+    const SpellOfCmp &f (lookup (ops_tables->cmp, x, y));
+    return m->fairy->impress (f (x, y, m) <= 0.0);
+}
+
 

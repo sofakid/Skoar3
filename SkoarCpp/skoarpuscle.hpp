@@ -401,7 +401,7 @@ public:
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
-    //function<bool(Poco::DynamicAny, Poco::DynamicAny)> f;
+    function<SkoarpusclePtr(SkoarMinstrelPtr m, SkoarpusclePtr, SkoarpusclePtr)> f;
 
     SkoarpuscleBooleanOp(SkoarNoadPtr, SkoarToke *);
     ~SkoarpuscleBooleanOp() override;

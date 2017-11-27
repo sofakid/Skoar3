@@ -265,11 +265,12 @@ void SkoarpuscleMathOp::calculate (SkoarMinstrelPtr m, SkoarpusclePtr left, Skoa
 // --- SkoarpuscleBooleanOp ---------------------------------------------------------
 bool SkoarpuscleBooleanOp::compare (SkoarpusclePtr a, SkoarpusclePtr b, SkoarMinstrelPtr m) {
 
-    // todo: when using ops table, don't do these two lines
-    /*auto x = a->flatten(m).extract<SkoarInt>();
-    auto y = b->flatten(m).extract<SkoarInt>();
+    // the result is also impressed by the operation
+    SkoarpusclePtr result (f (m, a, b));
 
-    return f(x, y);*/
+    if (is_skoarpuscle<SkoarpuscleTrue> (result))
+        return true;
+
     return false;
 }
 
