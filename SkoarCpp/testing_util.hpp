@@ -114,8 +114,9 @@ void run_and_expect_d(SkoarString skoarce, VectorOfSkoarEventsPtr desires); // v
 
 void print_skoarce (SkoarString skoarce);
 
-void run_skoar_test (SkoarString skoarce);
 void compile_skoar_test (SkoarString skoarce);
+void run_skoar_test (SkoarString skoarce);
+void run_skoar_multi_test (SkoarString skoarce, std::string filename);
 
 #if SKOAR_DEBUG_MEMORY
 

@@ -20,7 +20,10 @@ bool check_skoarpuscle_float (SkoarpusclePtr p, SkoarFloat v) {
         return false;
 
     // don't compare float values with equality, check if it's close.
-    auto epsilon ((v == 0.0 ? 1 : v) * 0.0001);
+    auto epsilon ((v == 0.0 ? 1 : v) * 0.001);
+    if (epsilon < 0.0)
+        epsilon *= -1.0;
+
     if ((ptr->val < (v + epsilon)) && (ptr->val > (v - epsilon)))
         return true;
 
@@ -257,6 +260,9 @@ void require_subset_of_event (SkoarEventPtr desire, SkoarEventPtr ev) {
         SkoarString k (kv.first);
         SkoarpusclePtr v (kv.second);
 
+        if (v == nullptr)
+            continue;
+
         wostringstream stream;
         stream << "desire :: " << k << " : " << *v;
         INFO (SkoarString_to_s (stream.str ()));
@@ -405,6 +411,99 @@ void run_skoar_test (SkoarString skoarce)
     skoar.one_less_running ();
 
 }
+
+
+void run_skoar_multi_test (SkoarString skoarce, string filename)
+{
+    SkoarNullLogger SkoarLog;
+
+    //INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
+    Skoar skoar (skoarce, &SkoarLog);
+
+    REQUIRE (skoar.parsedOk);
+
+
+    // get all top level skoarpions
+
+    const SkoarString sSkoar (L"skoar");
+    const SkoarString sRun (L"run");
+    const SkoarString sExpect (L"expect");
+
+    std::list<SkoarpionPtr> top_level_skoarpions;
+    for (auto x : skoar.skoarpions)
+    {
+        auto &name (x->name);
+        if (name != sSkoar && name != sRun && name != sExpect)
+            top_level_skoarpions.push_back (x);
+
+    }
+
+    // We running the voices one at a time.
+    // When there are no minstrels running anymore,
+    // the skoar erases itself.
+    skoar.one_more_running ();
+
+    for (auto test_skoarpion : top_level_skoarpions)
+    {
+        const string section_name (SkoarString_to_s (test_skoarpion->name));
+        SECTION (section_name) {
+
+            SkoarpionPtr run (nullptr), expect (nullptr);
+
+            auto skoarpuscles = test_skoarpion->body->collect_skoarpuscles ();
+
+            if (skoarpuscles != nullptr)
+                for (auto x : *(skoarpuscles))
+                    if (is_skoarpuscle<SkoarpuscleSkoarpion> (x))
+                    {
+                        auto p = skoarpuscle_ptr<SkoarpuscleSkoarpion> (x)->val;
+
+                        if (p->name == sRun)
+                            run = p;
+
+                        if (p->name == sExpect)
+                            expect = p;
+
+                    }
+
+            REQUIRE (run != nullptr);
+            REQUIRE (expect != nullptr);
+
+            map<SkoarString, VectorOfSkoarEventsPtr> expectations;
+            map<SkoarString, VectorOfSkoarEventsPtr> runs;
+
+            auto voices (skoar.get_all_voices ());
+
+            
+
+            for (auto voice : voices)
+            {
+                if (voices.size () > 1 && voice == SkoarString (L"all"))
+                    continue;
+
+                string prefix ("Voice: ");
+                string s (prefix + SkoarString_to_s (voice));
+                //INFO (s);
+
+                auto desires (skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (&skoar, voice, expect));
+                auto reality (skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (&skoar, voice, run));
+
+                compare_desires_to_events (desires, reality);
+            }
+
+            run = nullptr;
+            expect = nullptr;
+           
+
+        }
+
+    }
+
+    // skoar can erase itself now.
+    skoar.one_less_running ();
+
+}
+
 
 #if SKOAR_DEBUG_MEMORY
 

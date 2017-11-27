@@ -139,8 +139,13 @@ SkoarpuscleFreq::~SkoarpuscleFreq () {
 #endif
 }
 
+SkoarFloat decode_freq_lexeme (SkoarString& lexeme) {
+    SkoarString s (lexeme.substr (0, lexeme.length () - 2));
+    return stod (s);
+}
+
 SkoarpuscleFreq::SkoarpuscleFreq (SkoarString lexeme) :
-    SkoarpuscleFreq (stod (lexeme.substr (0, lexeme.length () - 2))) {
+    SkoarpuscleFreq (decode_freq_lexeme(lexeme)) {
 }
 
 SkoarpuscleFreq::SkoarpuscleFreq (SkoarInt v) :
@@ -286,19 +291,19 @@ SkoarpuscleMathOp::SkoarpuscleMathOp (SkoarToke *toke) : val (toke->lexeme) {
     else if (s == L"*")
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            // SkoarOps::getInstance()->multiply(m, a, b);
+            SkoarOps::getInstance()->mul(m, a, b);
         };
     }
     else if (s == L"/")
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            // SkoarOps::getInstance()->divide(m, a, b);
+            SkoarOps::getInstance()->div(m, a, b);
         };
     }
     else if (s == L"-")
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            // SkoarOps::getInstance()->sub(m, a, b);
+            SkoarOps::getInstance()->sub(m, a, b);
         };
     }
 }
@@ -917,12 +922,12 @@ SkoarpuscleHashLevel::SkoarpuscleHashLevel (SkoarString lex) :
 }
 
 SkoarpuscleHashLevel::SkoarpuscleHashLevel (const SkoarFloat x) :
+    Skoarpuscle (ESkoarpuscle::HashLevel),
     val (x)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"HashLevel");
 #endif
-
     impressionable = true;
     noatworthy = false;
 }

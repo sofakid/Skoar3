@@ -825,6 +825,9 @@ void SkoarpuscleOctaveShift::on_enter (SkoarMinstrelPtr m) {
 // --- SkoarpuscleVoice ---------------------------------------------------------
 
 // --- SkoarpuscleHashLevel ---------------------------------------------------------
+void SkoarpuscleHashLevel::on_enter (SkoarMinstrelPtr m) {
+    m->fairy->impress (duplicate());
+}
 
 SkoarpusclePtr SkoarpuscleHashLevel::duplicate ()
 {

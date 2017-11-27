@@ -690,7 +690,7 @@ public:
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
-    void on_enter(SkoarMinstrelPtr) override;
+    void on_enter (SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleHashLevel : public Skoarpuscle {
@@ -705,6 +705,8 @@ public:
     void asString(wostream &out) override;
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
+
+    void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
 
 
