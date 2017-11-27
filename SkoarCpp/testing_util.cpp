@@ -446,28 +446,29 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
     for (auto test_skoarpion : top_level_skoarpions)
     {
         const string section_name (SkoarString_to_s (test_skoarpion->name));
+
+        SkoarpionPtr run (nullptr), expect (nullptr);
+
+        auto skoarpuscles = test_skoarpion->body->collect_skoarpuscles ();
+
+        if (skoarpuscles != nullptr)
+            for (auto x : *(skoarpuscles))
+                if (is_skoarpuscle<SkoarpuscleSkoarpion> (x))
+                {
+                    auto p = skoarpuscle_ptr<SkoarpuscleSkoarpion> (x)->val;
+
+                    if (p->name == sRun)
+                        run = p;
+
+                    if (p->name == sExpect)
+                        expect = p;
+
+                }
+
+        if (run == nullptr || expect == nullptr)
+            continue;
+
         SECTION (section_name) {
-
-            SkoarpionPtr run (nullptr), expect (nullptr);
-
-            auto skoarpuscles = test_skoarpion->body->collect_skoarpuscles ();
-
-            if (skoarpuscles != nullptr)
-                for (auto x : *(skoarpuscles))
-                    if (is_skoarpuscle<SkoarpuscleSkoarpion> (x))
-                    {
-                        auto p = skoarpuscle_ptr<SkoarpuscleSkoarpion> (x)->val;
-
-                        if (p->name == sRun)
-                            run = p;
-
-                        if (p->name == sExpect)
-                            expect = p;
-
-                    }
-
-            REQUIRE (run != nullptr);
-            REQUIRE (expect != nullptr);
 
             map<SkoarString, VectorOfSkoarEventsPtr> expectations;
             map<SkoarString, VectorOfSkoarEventsPtr> runs;
@@ -483,7 +484,7 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
 
                 string prefix ("Voice: ");
                 string s (prefix + SkoarString_to_s (voice));
-                //INFO (s);
+                INFO (s);
 
                 auto desires (skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (&skoar, voice, expect));
                 auto reality (skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (&skoar, voice, run));

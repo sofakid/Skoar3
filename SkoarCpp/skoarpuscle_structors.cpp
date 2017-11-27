@@ -335,7 +335,7 @@ SkoarpuscleBooleanOp::SkoarpuscleBooleanOp (SkoarNoadPtr /*noad*/, SkoarToke* to
             return SkoarOps::getInstance ()->neq (m, a, b);
         };
     }
-    else if (s == L">")
+    else if (s == L"_>")
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
             return SkoarOps::getInstance ()->gt (m, a, b);
@@ -347,7 +347,7 @@ SkoarpuscleBooleanOp::SkoarpuscleBooleanOp (SkoarNoadPtr /*noad*/, SkoarToke* to
             return SkoarOps::getInstance ()->gte (m, a, b);
         };
     }
-    else if (s == L"<")
+    else if (s == L"_<")
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
             return SkoarOps::getInstance ()->lt (m, a, b);

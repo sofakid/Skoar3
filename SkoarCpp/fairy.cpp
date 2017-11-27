@@ -229,6 +229,9 @@ void SkoarFairy::pop_compare() {
 }
 
 void SkoarFairy::compare_impress(SkoarMinstrelPtr m) {
+    l_value = impression;
+
+    // wha???? original comment: we want the impression now.
     if (is_skoarpuscle<SkoarpuscleFairy>(l_value)) {
         l_value = m->fairy->impression;
     }
