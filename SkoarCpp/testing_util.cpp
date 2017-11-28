@@ -433,7 +433,7 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
     for (auto x : skoar.skoarpions)
     {
         auto &name (x->name);
-        if (name != sSkoar && name != sRun && name != sExpect)
+        if (name != sRun && name != sExpect)
             top_level_skoarpions.push_back (x);
 
     }
@@ -445,7 +445,8 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
 
     for (auto test_skoarpion : top_level_skoarpions)
     {
-        const string section_name (SkoarString_to_s (test_skoarpion->name));
+        const string section_name (test_skoarpion->name == sSkoar ? 
+            filename : SkoarString_to_s (test_skoarpion->name));
 
         SkoarpionPtr run (nullptr), expect (nullptr);
 
