@@ -1,6 +1,5 @@
 #include "operators.hpp"
-
-
+#include "magic_words.hpp"
 
 #define MathMagic [](SkoarpusclePtr x, SkoarpusclePtr y, SkoarMinstrelPtr m)
 #define EMath ESkoarpuscle
@@ -13,12 +12,16 @@ public:
         { EMath::Symbol, { {
             EMath::Any, MathMagic {
                 auto str (skoarpuscle_ptr<SkoarpuscleSymbol> (x)->val);
+                if (handle_magic_words (str, y, m))
+                    return y;
                 m->koar->put (str, y); return y; }
             } } },
 
         { EMath::SymbolColon, { {
             EMath::Any, MathMagic {
             auto str (skoarpuscle_ptr<SkoarpuscleSymbolColon> (x)->val);
+            if (handle_magic_words (str, y, m))
+                return y;
             m->koar->put (str, y); return y; }
         } } }
 

@@ -50,7 +50,7 @@ void execute_noat (SkoarpusclePtr s, SkoarMinstrelPtr m) {
         m->koar->put (L"note", nullptr);
         m->koar->put (L"choard", nullptr);
     }
-    
+
     else if (is_skoarpuscle<SkoarpuscleInt> (s))
     {
         m->koar->put (L"freq", nullptr);
@@ -79,9 +79,7 @@ void execute_noat (SkoarpusclePtr s, SkoarMinstrelPtr m) {
         m->koar->put (L"note", nullptr);
         m->koar->put (L"choard", flatten_list (s));
     }
-
 }
-
 
 // --- SkoarpuscleDuration ------------------------------------------------
 SkoarpuscleDuration::SkoarpuscleDuration(SkoarToke *toke) {

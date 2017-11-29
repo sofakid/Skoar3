@@ -20,15 +20,16 @@ SkoarMinstrel::SkoarMinstrel(
 #endif
 
     // some defaults
-    koar->put(L"octave", make_skoarpuscle(5));
-    koar->put(L"tempo", make_skoarpuscle(1.0));
-    koar->put(L"amp", make_skoarpuscle(0.2));
-    koar->put(L"legato", make_skoarpuscle(1.0));
-    koar->put(L"stretch", make_skoarpuscle(1.0));
+    koar->put (L"octave", make_skoarpuscle(5));
+    koar->put (L"bps", make_skoarpuscle (2.0));
+    koar->put (L"bpm", make_skoarpuscle(120.0));
+    koar->put (L"amp", make_skoarpuscle(0.2));
+    koar->put (L"legato", make_skoarpuscle(1.0));
+    koar->put (L"stretch", make_skoarpuscle(1.0));
 
-    koar->put(L"num_impression", make_skoarpuscle(0.0));
-    koar->put(L"sym_impression", make_skoarpuscle(SkoarString(L"lin")));
-    koar->put(L"dyn_impression", make_skoarpuscle(nullptr));
+    koar->put (L"num_impression", make_skoarpuscle(0.0));
+    koar->put (L"sym_impression", make_skoarpuscle(SkoarString(L"lin")));
+    koar->put (L"dyn_impression", make_skoarpuscle(nullptr));
 
     //controls = make_shared<SkoarControls>(name);
 }
