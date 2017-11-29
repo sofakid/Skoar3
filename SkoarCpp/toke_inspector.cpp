@@ -5,6 +5,7 @@
 #include "minstrel.hpp"
 #include "beaty.hpp"
 #include "skoarpion_skoarpuscle.hpp"
+#include "pitchy.hpp"
 #include "dsp.hpp"
 #include "lute.hpp"
 #include "meditation.hpp"

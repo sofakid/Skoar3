@@ -8,6 +8,7 @@
 #include "noad.hpp"
 #include "skoarpion.hpp"
 #include "skoarpion_skoarpuscle.hpp"
+#include "pitchy.hpp"
 #include "make_skoarpuscle.hpp"
 
 
@@ -94,27 +95,36 @@ void SkoarpuscleFloat::valAsString (wostream &out) {
 }
 
 
+void SkoarpuscleKey::asString (wostream & out)
+{
+    out << L"Key :: root :: ";
+    skoarpuscle_ptr<SkoarpuscleInt> (root)->valAsString (out);
+    out << L" :: scale_name :: ";
+    skoarpuscle_ptr<SkoarpuscleString> (scale_name)->valAsString (out);
+}
+
+
 
 void SkoarpuscleNoat::asString (wostream &out) {
-    out << "Noat" << " :: " << val;
+    out << "Noat" << " :: " << lexeme;
 }
 void SkoarpuscleNoat::typeAsString (wostream &out) {
     out << "Noat";
 }
 void SkoarpuscleNoat::valAsString (wostream &out) {
-    out << val;
+    out << lexeme;
 }
 
 
 
 void SkoarpuscleChoard::asString (wostream &out) {
-    out << "Choard" << " :: " << val;
+    out << "Choard" << " :: " << lexeme;
 }
 void SkoarpuscleChoard::typeAsString (wostream &out) {
     out << "Choard";
 }
 void SkoarpuscleChoard::valAsString (wostream &out) {
-    out << val;
+    out << lexeme;
 }
 
 

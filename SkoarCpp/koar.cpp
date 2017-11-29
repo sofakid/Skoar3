@@ -188,8 +188,8 @@ void SkoarKoar::set_args (
     else
     {
         args_provided = make_shared<ListOfSkoarpuscles> ();
-        if (args_prov != nullptr)
-            args_provided->push_back (args_prov);
+        //if (args_prov != nullptr)
+        //    args_provided->push_back (args_prov);
 
         //const auto n (args_list->args_names.size ());
         //for (int i = 0; i < n; ++i)

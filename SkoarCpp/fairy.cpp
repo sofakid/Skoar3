@@ -207,13 +207,9 @@ void SkoarFairy::fly_to_colon () {
 
 void SkoarFairy::fly_to_coda (SkoarString label) {
     if (label == SkoarString (L""))
-    {
         fly_to_dest = minstrel->skoar->markers_coda.front();
-    }
     else
-    {
         fly_to_dest = minstrel->skoar->markers_coda_named[label];
-    }
 
     throw SkoarNav (SkoarNav::CODA);
 }
@@ -232,9 +228,8 @@ void SkoarFairy::compare_impress(SkoarMinstrelPtr m) {
     l_value = impression;
 
     // wha???? original comment: we want the impression now.
-    if (is_skoarpuscle<SkoarpuscleFairy>(l_value)) {
+    if (is_skoarpuscle<SkoarpuscleFairy>(l_value)) 
         l_value = m->fairy->impression;
-    }
 }
 
 void SkoarFairy::push_boolean() {
@@ -303,7 +298,9 @@ SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
     else if (is_skoarpuscle<SkoarpuscleInt>(x) || is_skoarpuscle<SkoarpuscleFloat>(x)) {
         minstrel->koar->put(L"num_impression", impression);
         //num_impression = impression;
-        minstrel->koar->put(L"exact_dur", impression);
+        
+        // this inserts it all over the place whenever numbers are used.. why?
+        //minstrel->koar->put(L"exact_dur", impression);
     }
     else if (is_skoarpuscle<SkoarpuscleSymbol>(x)) {
         minstrel->koar->put(L"sym_impression", impression);

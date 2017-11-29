@@ -12,6 +12,7 @@
 #include "operators.hpp"
 #include "skoarpuscle_structors.h"
 #include <regex>
+#include "pitchy.hpp"
 
 
 // --- SkoarpuscleUnknown ---------------------------------------------------------
@@ -150,40 +151,6 @@ SkoarpuscleFreq::SkoarpuscleFreq (SkoarString lexeme) :
 
 SkoarpuscleFreq::SkoarpuscleFreq (SkoarInt v) :
     SkoarpuscleFreq (static_cast<SkoarFloat>(v)) {
-}
-
-// --- SkoarpuscleNoat ---------------------------------------------------------
-SkoarpuscleNoat::SkoarpuscleNoat (SkoarString&) :
-    Skoarpuscle (ESkoarpuscle::Noat),
-    val (0) {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().allocSkoarpuscle (L"Noat");
-#endif
-    noatworthy = true;
-    impressionable = true;
-}
-
-SkoarpuscleNoat::~SkoarpuscleNoat () {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().deallocSkoarpuscle (L"Noat");
-#endif
-}
-
-// --- SkoarpuscleChoard ---------------------------------------------------------
-SkoarpuscleChoard::SkoarpuscleChoard (SkoarString&) :
-    Skoarpuscle (ESkoarpuscle::Choard),
-    val (0) {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().allocSkoarpuscle (L"Choard");
-#endif
-    noatworthy = true;
-    impressionable = true;
-}
-
-SkoarpuscleChoard::~SkoarpuscleChoard () {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().deallocSkoarpuscle (L"Choard");
-#endif
 }
 
 // --- SkoarpuscleString ---------------------------------------------------------

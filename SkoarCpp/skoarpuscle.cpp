@@ -89,29 +89,6 @@ void *SkoarpuscleFreq::asNoat () {
     //return new SkoarNoat_Freq(val.asFloat);
 }
 
-// --- SkoarpuscleNoat ---------------------------------------------------------
-void *SkoarpuscleNoat::asNoat () { return nullptr; }
-
-void SkoarpuscleNoat::on_enter (SkoarMinstrelPtr) {
-
-}
-
-SkoarpusclePtr SkoarpuscleNoat::duplicate ()
-{
-    return nullptr;
-}
-
-// --- SkoarpuscleChoard ---------------------------------------------------------
-void* SkoarpuscleChoard::asNoat () { return nullptr; }
-
-void SkoarpuscleChoard::on_enter (SkoarMinstrelPtr) {
-
-}
-
-SkoarpusclePtr SkoarpuscleChoard::duplicate ()
-{
-    return nullptr;
-}
 
 // --- SkoarpuscleString ---------------------------------------------------------
 void SkoarpuscleString::on_enter (SkoarMinstrelPtr m) {
@@ -197,7 +174,12 @@ void SkoarpuscleDeref::do_deref (SkoarMinstrelPtr m) {
         x = skoarpuscle_ptr<SkoarpusclePair> (x)->val.second;
 
     if (is_skoarpuscle<SkoarpuscleSkoarpion> (x))
+    {
+        if (args == nullptr)
+            m->fairy->impress (nullptr);
+
         skoarpuscle_ptr<SkoarpuscleSkoarpion> (x)->run (m);
+    }
 
     else if (is_skoarpuscle<SkoarpuscleExpr> (x))
     {

@@ -4,6 +4,83 @@
 #include "minstrel.hpp"
 #include "fairy.hpp"
 #include <regex>
+#include "make_skoarpuscle.hpp"
+#include "pitchy.hpp"
+
+void flatten_list_r (ListOfSkoarpuscles* listy, SkoarpusclePtr p) {
+    
+    if (is_skoarpuscle<SkoarpuscleInt> (p))
+    {
+        listy->push_back (p);
+    }
+
+    if (is_skoarpuscle<SkoarpuscleNoat> (p))
+    {
+        auto x = skoarpuscle_ptr<SkoarpuscleNoat> (p);
+        listy->push_back (make_skoarpuscle (x->val));
+    }
+
+    else if (is_skoarpuscle<SkoarpuscleChoard> (p))
+    {
+        auto x = skoarpuscle_ptr<SkoarpuscleChoard> (p)->val;
+        for (auto& y : *x)
+            flatten_list_r (listy, y);
+    }
+
+    else if (is_skoarpuscle<SkoarpuscleList> (p))
+    {
+        auto x = skoarpuscle_ptr<SkoarpuscleList> (p)->val;
+        for (auto& y : *x)
+            flatten_list_r (listy, y);
+    }
+
+}
+
+SkoarpusclePtr flatten_list (SkoarpusclePtr p) {
+    auto listy = make_shared<ListOfSkoarpuscles> ();
+    flatten_list_r (listy.get (), p);
+    return make_skoarpuscle (listy);
+}
+
+void execute_noat (SkoarpusclePtr s, SkoarMinstrelPtr m) {
+
+    if (is_skoarpuscle<SkoarpuscleFloat> (s))
+    {
+        m->koar->put (L"freq", s);
+        m->koar->put (L"note", nullptr);
+        m->koar->put (L"choard", nullptr);
+    }
+    
+    else if (is_skoarpuscle<SkoarpuscleInt> (s))
+    {
+        m->koar->put (L"freq", nullptr);
+        m->koar->put (L"note", s);
+        m->koar->put (L"choard", nullptr);
+    }
+
+    else if (is_skoarpuscle<SkoarpuscleNoat> (s))
+    {
+        auto p = skoarpuscle_ptr<SkoarpuscleNoat> (s);
+        m->koar->put (L"freq", nullptr);
+        m->koar->put (L"note", make_skoarpuscle (p->val));
+        m->koar->put (L"choard", nullptr);
+    }
+
+    else if (is_skoarpuscle<SkoarpuscleChoard> (s))
+    {
+        m->koar->put (L"freq", nullptr);
+        m->koar->put (L"note", nullptr);
+        m->koar->put (L"choard", flatten_list (s));
+    }
+
+    else if (is_skoarpuscle<SkoarpuscleList> (s))
+    {
+        m->koar->put (L"freq", nullptr);
+        m->koar->put (L"note", nullptr);
+        m->koar->put (L"choard", flatten_list (s));
+    }
+
+}
 
 
 // --- SkoarpuscleDuration ------------------------------------------------
@@ -80,6 +157,7 @@ void SkoarpuscleExactBeat::after(SkoarMinstrelPtr m) {
     m->fairy->pop();
     m->fairy->pop_noating();
 
+    execute_noat (m->fairy->noat, m);
     //auto noat = m->fairy->noat->asNoat();
 
     //noat->execute(m);
@@ -118,8 +196,9 @@ void SkoarpuscleExactRest::after(SkoarMinstrelPtr m) {
     m->fairy->pop_noating();
 
     //auto noat = m->fairy->noat->asNoat();
-
     //noat->execute(m);
+
+    execute_noat (m->fairy->noat, m);
 
     // create an event with everything we've collected up until now
     auto e = m->koar->event(m);
@@ -218,8 +297,9 @@ void SkoarpuscleBeat::on_enter_sometimes(SkoarMinstrelPtr m) {
     SkoarFloat dur = val;
 
     //auto noat = m->fairy->noat->asNoat();
-
     //noat->execute(m);
+
+    execute_noat (m->fairy->noat, m);
 
     // create an event with everything we've collected up until now
     auto e = m->koar->event(m);
@@ -259,6 +339,7 @@ void SkoarpuscleRest::on_enter_sometimes(SkoarMinstrelPtr m) {
     //auto noat = m->fairy->noat->asNoat();
 
     //noat->execute(m);
+    execute_noat (m->fairy->noat, m);
 
     // create an event with everything we've collected up until now
     auto e = m->koar->event(m);

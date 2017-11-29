@@ -63,7 +63,6 @@ TEST_CASE("Beats and Rests", "[sanity]") {
         ));
     }
     
-    // todo: port more from sanity.sc
 }
 
 
@@ -675,66 +674,6 @@ TEST_CASE ("Gotos - Coda", "[sanity]") {
 }
 */
 
-/* Deal with tempo later. Don't even have a sound engine yet. Unimplemented feature shoudln't break sanity. 
-TEST_CASE ("Tempo", "[sanity]") {
-
-    SECTION ("no tempo") {
-        run_and_expect (L")", make_events_vec (
-            L"bpm", 120.0, dur, 1.0, X
-        ));
-    }
-
-    SECTION ("simple tempo int") {
-        run_and_expect (L"): 200 ))", make_events_vec (
-            L"bpm", 200.0, dur, 2.0, X
-        ));
-    }
-
-    SECTION ("simple tempo float") {
-        run_and_expect (L"): 200.4 ))", make_events_vec (
-            L"bpm", 200.4, dur, 2.0, X
-        ));
-    }
-
-    SECTION ("expr tempo") {
-        run_and_expect (L"): 200 + 7 ))", make_events_vec (
-            L"bpm", 207.0, dur, 2.0, X
-        ));
-    }
-
-    SECTION ("increased tempo") {
-        run_and_expect (L"): !bpm + 7 ))", make_events_vec (
-            L"bpm", 127.0, dur, 2.0, X
-        ));
-    }
-
-    SECTION ("literal bpm int") {
-        run_and_expect (L"bpm: 70 ))", make_events_vec (
-            L"bpm", 70.0, dur, 2.0, X
-        ));
-    }
-
-    SECTION ("literal bpm float") {
-        run_and_expect (L"bpm: 70.3 ))", make_events_vec (
-            L"bpm", 70.3, dur, 2.0, X
-        ));
-    }
-
-    SECTION ("literal bps float") {
-        run_and_expect (L"bps: 1.0 ))", make_events_vec (
-            L"bpm", 60.0, L"bps", 1.0, dur, 2.0, X
-        ));
-    }
-
-    SECTION ("literal bps int") {
-        run_and_expect (L"bps: 3 ))", make_events_vec (
-            L"bpm", 180.0, L"bps", 3.0, dur, 2.0, X
-        ));
-    }
-
-}*/
-
-
 TEST_CASE("Fairy", "[sanity]") {
   
     SECTION("literal fairy with simple skoarpion") {
@@ -836,4 +775,44 @@ TEST_CASE("conditionals", "[sanity]") {
         ));
     }
 
+}
+
+TEST_CASE ("cats", "[sanity]") {
+
+    SECTION ("list_of_cats") {
+        run_and_expect (L"foo: <=^.^=,=^.^=> )", make_events_vec (
+            foo, make_listy (nullptr, nullptr), X
+        ));
+    }
+
+    SECTION ("cats_are_cats") {
+        run_and_expect (L"foo: {? =^.^= == =^.^= ?? 3 ?? 2 ?} )", make_events_vec (
+            foo, 3, X
+        ));
+    }
+
+    SECTION ("cats_are_false") {
+        run_and_expect (L"foo: {? =^.^= ?? 3 ?? 2 ?} )", make_events_vec (
+            foo, 2, X
+        ));
+    }
+
+    SECTION ("cats_nonexistant_variable") {
+        run_and_expect (L"foo: {? !x == =^.^= ?? 3 ?? 2 ?} )", make_events_vec (
+            foo, 3, X
+        ));
+    }
+
+    SECTION ("cats_nonexistant_variable_two") {
+        run_and_expect (L"foo: {? !x ?? 3 ?? 2 ?} )", make_events_vec (
+            foo, 2, X
+        ));
+    }
+
+    SECTION ("cats_missing_args") {
+        run_and_expect (L"bar: !! x {! {? !x ?? 3 ?? 2 ?} !} foo: !bar )", make_events_vec (
+            foo, 2, X
+        ));
+    }
+                                                                                             
 }

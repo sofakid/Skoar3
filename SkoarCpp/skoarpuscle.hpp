@@ -223,37 +223,6 @@ public:
 
 };
 
-class SkoarpuscleNoat : public Skoarpuscle {
-public:
-    const SkoarInt val;
-
-    SkoarpuscleNoat(SkoarString&);
-    ~SkoarpuscleNoat() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
-
-    void *asNoat() override;
-    void on_enter(SkoarMinstrelPtr) override;
-    SkoarpusclePtr duplicate () override;
-
-};
-
-class SkoarpuscleChoard : public Skoarpuscle {
-public:
-    const SkoarInt val;
-
-    SkoarpuscleChoard(SkoarString&);
-    ~SkoarpuscleChoard() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
-
-    void *asNoat() override;
-    void on_enter(SkoarMinstrelPtr) override;
-    SkoarpusclePtr duplicate () override;
-
-};
 
 class SkoarpuscleString : public Skoarpuscle {
 public:

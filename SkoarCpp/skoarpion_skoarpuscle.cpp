@@ -52,14 +52,8 @@ SkoarpuscleSkoarpion::~SkoarpuscleSkoarpion(){
 
 void SkoarpuscleSkoarpion::clear ()
 {
-    if (val != nullptr)
-        val->clear ();
     val = nullptr;
-
-    if (args != nullptr)
-        args->clear ();
     args = nullptr;
-
 }
 
 
@@ -70,17 +64,16 @@ void SkoarpuscleSkoarpion::on_enter(SkoarMinstrelPtr m) {
 
 void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
     auto impression = m->fairy->impression;
-    //("SKRP_Skoarpion :: msg_arr :: " ++ msg_arr ++ " :: impression :: " ++  impression).postln;													
     m->koar->do_skoarpion(val, m, SkoarKoar::EExecStyle::NORMAL, impression);
 }
 
-SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr minstrel) {
+SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr /*minstrel*/) {
     //args = msg->get_msg_arr(minstrel);
     return nullptr;
 }
 
 void SkoarpuscleSkoarpion::asString(wostream &out) { 
-    out << "Skoarpion" << " :: " << val->name;
+    out << L"Skoarpion :: " << val->name;
 }
 
 // --- SkoarpuscleArgExpr ----------------------------------------------
@@ -138,7 +131,6 @@ void SkoarpuscleArgExpr::asString(wostream &out) {
 
 SkoarpusclePtr SkoarpuscleArgExpr::flatten (SkoarMinstrelPtr m)
 {
-
     m->fairy->push ();
         
     for (auto &noadite : expr)
