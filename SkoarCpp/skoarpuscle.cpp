@@ -323,7 +323,7 @@ void SkoarpuscleConditional::on_enter (SkoarMinstrelPtr m) {
 // --- SkoarpuscleTimes ---------------------------------------------------------
 void SkoarpuscleTimes::on_enter (SkoarMinstrelPtr m) {
 
-    auto desired_times (m->fairy->cast_arcane_magic ());
+    auto desired_times (m->fairy->impression);
 
     if (desired_times->isCounty ())
     {

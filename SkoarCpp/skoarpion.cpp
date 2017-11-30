@@ -163,6 +163,8 @@ void Skoarpion::init_from_noad (Skoar* skr, SkoarNoadPtr noad) {
     auto suffix (*(++kidderatoar));
     
     auto line (SkoarNoad::NewArtificial (L"line"));
+    line->voice = skoar->all_voice;
+
     body = SkoarNoad::NewArtificial (L"section");
     
 
@@ -178,6 +180,7 @@ void Skoarpion::init_from_noad (Skoar* skr, SkoarNoadPtr noad) {
         {
             process_line ();
             line = SkoarNoad::NewArtificial (L"line");
+            line->voice = skoar->all_voice;
         }
         else if (is_toke<ESkoarToke::SkoarpionEnd> (toke))
         {
