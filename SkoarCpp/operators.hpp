@@ -30,6 +30,7 @@ public:
 
     SkoarpusclePtr mul (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
     SkoarpusclePtr div (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
+    SkoarpusclePtr mod (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
 
     SkoarpusclePtr neq (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
     SkoarpusclePtr eq (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
@@ -39,5 +40,8 @@ public:
 
     SkoarpusclePtr lt (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
     SkoarpusclePtr lte (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
+
+    SkoarpusclePtr and (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
+    SkoarpusclePtr or (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
 
 };

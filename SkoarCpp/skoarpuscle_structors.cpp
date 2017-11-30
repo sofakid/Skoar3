@@ -255,6 +255,12 @@ SkoarpuscleMathOp::SkoarpuscleMathOp (SkoarToke *toke) : val (toke->lexeme) {
             SkoarOps::getInstance ()->add (m, a, b);
         };
     }
+    else if (s == L"-")
+    {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            SkoarOps::getInstance()->sub(m, a, b);
+        };
+    }
     else if (s == L"*")
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
@@ -267,10 +273,10 @@ SkoarpuscleMathOp::SkoarpuscleMathOp (SkoarToke *toke) : val (toke->lexeme) {
             SkoarOps::getInstance()->div(m, a, b);
         };
     }
-    else if (s == L"-")
+    else if (s == L"%")
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            SkoarOps::getInstance()->sub(m, a, b);
+            SkoarOps::getInstance ()->mod (m, a, b);
         };
     }
 }
@@ -324,6 +330,18 @@ SkoarpuscleBooleanOp::SkoarpuscleBooleanOp (SkoarNoadPtr /*noad*/, SkoarToke* to
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
             return SkoarOps::getInstance ()->lte (m, a, b);
+        };
+    }
+    else if (s == L"and")
+    {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            return SkoarOps::getInstance ()->and (m, a, b);
+        };
+    }
+    else if (s == L"or")
+    {
+        f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
+            return SkoarOps::getInstance ()->or (m, a, b);
         };
     }
     else

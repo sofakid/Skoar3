@@ -44,26 +44,6 @@ Skoarmantics* Skoarmantics::instance () {
 #define SpellOfSkoarmantics [](Skoar *skoar, SkoarNoadPtr noad)
 #define SpellOfSimpleSkoarmantics [](Skoar* /*skoar*/, SkoarNoadPtr noad)
 
-
-auto boolean_spell ([](Skoar* /*skoar*/, SkoarNoadPtr noad) {
-
-    if (noad->children.size () <= 1)
-        return;
-
-    noad->on_enter = [=](SkoarMinstrelPtr m) {
-        auto& fairy (*m->fairy);
-        fairy.push_magic ();
-    };
-    auto end_noad (SkoarNoad::NewArtificial (L"boolean_end", noad));
-    end_noad->on_enter = [=](SkoarMinstrelPtr m) {
-        auto& fairy (*m->fairy);
-        fairy.cast_arcane_magic ();
-        fairy.pop_magic ();
-    };
-
-    noad->add_noad (end_noad);
-});
-
 auto expr_spell (SpellOfSimpleSkoarmantics {
     // expr_b could be <e>
     if (noad->children.size () == 0)
@@ -126,7 +106,7 @@ auto expr_spell (SpellOfSimpleSkoarmantics {
     noad->add_noad (end_noad);
 });
 
-auto math_spell ([](Skoar* /*skoar*/, SkoarNoadPtr noad) {
+auto math_spell (SpellOfSimpleSkoarmantics {
     if (noad->children.size () <= 1)
         return;
     
@@ -165,10 +145,12 @@ Skoarmantics::Skoarmantics () : table ({
         noad->skoarpuscle = make_shared<SkoarpuscleConditional> (skoar, noad);
     }},
 
-    {ESkoarNoad::boolean_or,  boolean_spell},
-    {ESkoarNoad::boolean_and, boolean_spell},
-    {ESkoarNoad::cmp_eq_neq,  boolean_spell},
-    {ESkoarNoad::cmp_gt_lt,   boolean_spell},
+    {ESkoarNoad::boolean_or,  math_spell },
+    {ESkoarNoad::boolean_and, math_spell },
+    {ESkoarNoad::cmp_eq_neq,  math_spell },
+    {ESkoarNoad::cmp_gt_lt,   math_spell },
+    {ESkoarNoad::math_add_sub, math_spell },
+    {ESkoarNoad::math_mul_div_mod, math_spell },
 
     {ESkoarNoad::regular_beat, SpellOfSimpleSkoarmantics {
         auto xp (noad->next_skoarpuscle ());
@@ -413,10 +395,7 @@ Skoarmantics::Skoarmantics () : table ({
 
         if (has_messages && is_skoarpuscle<SkoarpuscleList>(skoarpuscle))
             skoarpuscle_ptr<SkoarpuscleList> (skoarpuscle)->noaty = false;
-    }},
-
-    {ESkoarNoad::math_add_sub, math_spell},
-    {ESkoarNoad::math_mul_div_mod, math_spell}
+    }}
 
 }) {
 }

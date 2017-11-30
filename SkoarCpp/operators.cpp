@@ -639,6 +639,115 @@ public:
         } }
     };
 
+    XTable modulo = {
+        { EMath::Cat, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+        { EMath::False, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+        { EMath::True, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+
+        { EMath::Envelope, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+
+        { EMath::UGen, {
+            { EMath::Int,       MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->divBy (y); } },
+            { EMath::Float,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->divBy (y); } },
+            { EMath::HashLevel, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->divBy (y); } },
+            { EMath::Freq,      MathMagic { return make_skoarpuscle (nullptr); } },
+
+            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+
+            { EMath::False, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
+            { EMath::True,  MathMagic { return x; } },
+
+            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+
+            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::UGen,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (y)->divBy (x); } },
+            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+        } },
+
+        { EMath::Int, {
+            { EMath::Int,       MathMagic {
+                auto& denom (skoarpuscle_ptr<SkoarpuscleInt> (y)->val);
+                if (denom == 0)
+                    return make_skoarpuscle (nullptr);
+                return make_skoarpuscle (
+                    skoarpuscle_ptr<SkoarpuscleInt> (x)->val %
+                    denom
+                );
+            } },
+            { EMath::Float,     MathMagic {
+                auto& denom (skoarpuscle_ptr<SkoarpuscleFloat> (y)->val);
+                if (denom == 0.0)
+                    return make_skoarpuscle (nullptr);
+                return make_skoarpuscle (
+                    static_cast<SkoarFloat>(
+                        skoarpuscle_ptr<SkoarpuscleInt> (x)->val %
+                        static_cast<SkoarInt>(denom)
+                    )
+                );
+            } },
+
+            { EMath::HashLevel, MathMagic { return make_skoarpuscle (nullptr); } },
+
+            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+
+            { EMath::False, MathMagic { return y; } },
+            { EMath::True,  MathMagic { return x; } },
+
+            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+
+            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::UGen,     MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+        } },
+
+        { EMath::Float, {
+            { EMath::Int, MathMagic {
+                auto& denom (skoarpuscle_ptr<SkoarpuscleInt> (y)->val);
+                if (denom == 0)
+                    return make_skoarpuscle (nullptr);
+                return make_skoarpuscle (
+                    static_cast<SkoarFloat>(
+                        static_cast<SkoarInt>(skoarpuscle_ptr<SkoarpuscleFloat> (x)->val) %
+                        denom
+                    )
+                );
+            } },
+            { EMath::Float, MathMagic {
+                auto& denom (skoarpuscle_ptr<SkoarpuscleFloat> (y)->val);
+                if (denom == 0.0)
+                    return make_skoarpuscle (nullptr);
+                return make_skoarpuscle (
+                    static_cast<SkoarFloat>(
+                        static_cast<SkoarInt>(skoarpuscle_ptr<SkoarpuscleFloat> (x)->val) %
+                        static_cast<SkoarInt>(denom)
+                    )
+                );
+            } },
+            { EMath::HashLevel, MathMagic { return make_skoarpuscle (nullptr); } },
+
+            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+
+            { EMath::False, MathMagic { return y; } },
+            { EMath::True,  MathMagic { return x; } },
+
+            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+
+            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+        } },
+
+        { EMath::HashLevel, {
+            { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } }
+        } }
+    };
+
     // --- cmp -----------------------------------------------------------------------------
     XCmpTable cmp = {
         { EMath::Cat, { 
@@ -874,6 +983,11 @@ SkoarpusclePtr SkoarOps::div(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePt
     return m->fairy->impress(f(x, y, m));
 }
 
+SkoarpusclePtr SkoarOps::mod(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+    const SpellOfMath &f (lookup(ops_tables->modulo, x, y));
+    return m->fairy->impress(f(x, y, m));
+}
+
 SkoarpusclePtr SkoarOps::neq(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
     const SpellOfCmp &f (lookup(ops_tables->cmp, x, y));
     return m->fairy->impress(f (x, y, m) != 0.0);
@@ -906,6 +1020,21 @@ SkoarpusclePtr SkoarOps::lte (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpuscleP
 {
     const SpellOfCmp &f (lookup (ops_tables->cmp, x, y));
     return m->fairy->impress (f (x, y, m) <= 0.0);
+}
+
+// -- might want a table for these at some point (ugens?)
+SkoarpusclePtr SkoarOps::and (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
+{
+    if (is_skoarpuscle<SkoarpuscleTrue>(x) && is_skoarpuscle<SkoarpuscleTrue>(y) )
+        return m->fairy->impress (x);
+    return m->fairy->impress(make_skoarpuscle(false));
+}
+
+SkoarpusclePtr SkoarOps::or (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
+{
+    if (is_skoarpuscle<SkoarpuscleTrue>(x) || is_skoarpuscle<SkoarpuscleTrue>(y) )
+        return m->fairy->impress (make_skoarpuscle(true));
+    return m->fairy->impress(make_skoarpuscle(false));
 }
 
 
