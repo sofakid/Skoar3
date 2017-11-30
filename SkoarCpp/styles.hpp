@@ -103,12 +103,42 @@ namespace SkoarStyles
         }
 
         template <>
-        constexpr const EStyle style<ESkoarToke::MathOp> (void) {
+        constexpr const EStyle style<ESkoarToke::BracketS> (void) {
             return EStyle::MathOp;
         }
 
         template <>
-        constexpr const EStyle style<ESkoarToke::BooleanOp> (void) {
+        constexpr const EStyle style<ESkoarToke::BracketE> (void) {
+            return EStyle::MathOp;
+        }
+
+        template <>
+        constexpr const EStyle style<ESkoarToke::MathOpAddSub> (void) {
+            return EStyle::MathOp;
+        }
+
+        template <>
+        constexpr const EStyle style<ESkoarToke::MathOpMulDivMod> (void) {
+            return EStyle::MathOp;
+        }
+
+        template <>
+        constexpr const EStyle style<ESkoarToke::BooleanOr> (void) {
+            return EStyle::BooleanOp;
+        }
+
+        template <>
+        constexpr const EStyle style<ESkoarToke::BooleanAnd> (void) {
+            return EStyle::BooleanOp;
+        }
+
+        template <>
+        constexpr const EStyle style<ESkoarToke::CmpEqNeq> (void) {
+            return EStyle::BooleanOp;
+        }
+
+        template <>
+        constexpr const EStyle style<ESkoarToke::CmpGtLt> (void) {
             return EStyle::BooleanOp;
         }
 
@@ -198,10 +228,10 @@ namespace SkoarStyles
         }
 
         // --- specific noads -------------------------------------------------
-        template <>
-        constexpr const EStyle style<ESkoarNoad::dynamic> (void) {
-            return EStyle::dynamic;
-        }
+        //template <>
+        //constexpr const EStyle style<ESkoarNoad::dynamic> (void) {
+        //    return EStyle::dynamic;
+        //}
 
         template <>
         constexpr const EStyle style<ESkoarNoad::msg> (void) {

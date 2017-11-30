@@ -186,16 +186,6 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
         noad->toke = nullptr;
     } },
 
-    { ESkoarToke::DynPiano, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleDynamic> (toke);
-        noad->toke = nullptr;
-    } },
-
-    { ESkoarToke::DynForte, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleDynamic> (toke);
-        noad->toke = nullptr;
-    } },
-
     { ESkoarToke::OctaveShift, SpellOfToking {
         noad->skoarpuscle = make_shared<SkoarpuscleOctaveShift> (toke);
         noad->toke = nullptr;
@@ -207,7 +197,22 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
     } },
  
     // -----------------------------------------------------------------
-    { ESkoarToke::BooleanOp, SpellOfToking {
+    { ESkoarToke::BooleanOr, SpellOfToking {
+        noad->skoarpuscle = make_shared<SkoarpuscleBooleanOp> (noad, toke);
+        noad->toke = nullptr;
+    } },
+
+    { ESkoarToke::BooleanAnd, SpellOfToking {
+        noad->skoarpuscle = make_shared<SkoarpuscleBooleanOp> (noad, toke);
+        noad->toke = nullptr;
+    } },
+
+    { ESkoarToke::CmpEqNeq, SpellOfToking {
+        noad->skoarpuscle = make_shared<SkoarpuscleBooleanOp> (noad, toke);
+        noad->toke = nullptr;
+    } },
+
+    { ESkoarToke::CmpGtLt, SpellOfToking {
         noad->skoarpuscle = make_shared<SkoarpuscleBooleanOp> (noad, toke);
         noad->toke = nullptr;
     } },
@@ -231,7 +236,12 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
         noad->toke = nullptr;
     } },
 
-    { ESkoarToke::MathOp, SpellOfToking {
+    { ESkoarToke::MathOpAddSub, SpellOfToking {
+        noad->skoarpuscle = make_shared<SkoarpuscleMathOp> (toke);
+        noad->toke = nullptr;
+    } },
+
+    { ESkoarToke::MathOpMulDivMod, SpellOfToking {
         noad->skoarpuscle = make_shared<SkoarpuscleMathOp> (toke);
         noad->toke = nullptr;
     } },

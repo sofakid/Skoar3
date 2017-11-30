@@ -12,10 +12,8 @@ SkoarFairy::SkoarFairy (SkoarString nom, SkoarMinstrelPtr m) :
     times_seen (make_shared<FairyTimesMap> ()),
     fly_to_dest (0),
     al_fine (false),
-    l_value (make_skoarpuscle (nullptr)),
     noat (make_skoarpuscle (nullptr)),
-    impression (make_skoarpuscle (nullptr)),
-    boolean_impression (make_skoarpuscle(nullptr))
+    impression (make_skoarpuscle (nullptr))
 
 {
 #if SKOAR_DEBUG_MEMORY
@@ -84,9 +82,22 @@ void SkoarFairy::pop_impression() {
 }
 
 
-void SkoarFairy::push() {
-    magic_stack.push_back(magic);
+void SkoarFairy::push_magic () {
+    magic_stack.push_back (magic);
     magic = HarmlessMagic;
+}
+
+void SkoarFairy::pop_magic () {
+    if (magic_stack.empty ())
+        throw SkoarError (L"Magic Stack Underflow");
+
+    magic = magic_stack.back ();
+    magic_stack.pop_back ();
+}
+
+
+void SkoarFairy::push() {
+    push_magic ();
 
     listy_stack.push_back(make_shared<ListOfSkoarpuscles>());
     //"$.push;".postln;
@@ -95,11 +106,7 @@ void SkoarFairy::push() {
 }
 
 SkoarpusclePtr SkoarFairy::pop() {
-    if (magic_stack.empty())
-        throw SkoarError(L"Magic Stack Underflow");
-
-    magic = magic_stack.back();
-    magic_stack.pop_back();
+    pop_magic ();
 
     minstrel->koar->pop_state();
 
@@ -212,37 +219,6 @@ void SkoarFairy::fly_to_coda (SkoarString label) {
         fly_to_dest = minstrel->skoar->markers_coda_named[label];
 
     throw SkoarNav (SkoarNav::CODA);
-}
-
-void SkoarFairy::push_compare() {
-    compare_stack.push_back(l_value);
-    l_value = nullptr;
-}
-
-void SkoarFairy::pop_compare() {
-    l_value = compare_stack.back();
-    compare_stack.pop_back();
-}
-
-void SkoarFairy::compare_impress(SkoarMinstrelPtr m) {
-    l_value = impression;
-
-    // wha???? original comment: we want the impression now.
-    if (is_skoarpuscle<SkoarpuscleFairy>(l_value)) 
-        l_value = m->fairy->impression;
-}
-
-void SkoarFairy::push_boolean() {
-    boolean_stack.push_back(impression);
-    push_noating();
-}
-
-void SkoarFairy::pop_boolean() {
-    boolean_impression = impression;
-    auto x = boolean_stack.back();
-    boolean_stack.pop_back();
-    impress(x);
-    pop_noating();
 }
 
 SkoarpusclePtr SkoarFairy::impress_i() {

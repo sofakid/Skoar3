@@ -447,6 +447,7 @@ public:
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
 
+    void on_enter (SkoarMinstrelPtr) override;
     void calculate(SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b);
 };
 

@@ -50,10 +50,11 @@ regular_beat       : Crotchets | Quavers | Quarters | Eighths
 exact_beat         : ExactBeat expr Quarters
 exact_rest         : ExactRest expr Crotchets
 
-musical_keyword      : dynamic | ottavas | musical_keyword_misc
+# dynamic | 
+musical_keyword      : ottavas | musical_keyword_misc
 musical_keyword_misc : Carrot
 ottavas              : OctaveShift 
-dynamic              : DynPiano | DynForte | DynSFZ | DynFP
+#dynamic              : DynPiano | DynForte | DynSFZ | DynFP
 
 nouny            : cthulhu | meditation | conditional | loop | nouny_literal | musical_keyword | listy | deref | skoarpion
 +nouny_literal   : Duration | ugen | Tuplet | Freq | Int | Float | String | Choard | NamedNoat | Symbol | Fairy | HashLevel | False | True | Cat | lute
@@ -63,13 +64,8 @@ lute             : Lute | LuteWithArgs listy_suffix
 deref            : Deref deref_prime
 +deref_prime     : MsgNameWithArgs listy_suffix | MsgName
 
-expr             : SymbolColon expr | msgable expr_prime
-expr_prime       : math expr_prime | boolean | times | <e> 
 
-times            : Times
-boolean          : BooleanOp expr
-boolean_expr     : expr
-math*            : MathOp msgable
+
 
 msgable          : nouny msg_chain_node
 +msg_chain_node  : MsgOp msg msg_chain_node | <e>
@@ -98,6 +94,75 @@ meditation       : MeditationS skrp_lines MeditationE
 ugen             : ugen_with_args | ugen_simple
 ugen_simple      : AUGen | KUGen | DUGen
 ugen_with_args   : AUGenWithArgs listy_suffix | KUGenWithArgs listy_suffix | DUGenWithArgs listy_suffix
+
+
+
+
+#expr             : SymbolColon expr | msgable expr_prime
+#expr_prime       : math expr_prime | boolean | times | <e> 
+times            : Times
+
+#boolean          : BooleanOp expr
+boolean_expr     : expr
+#math*            : MathOp msgable
+
+# a: lowest precedence, b: higher, c: even higher, etc..
+#expr             : expr_a 
+#+expr_a           : assignment | msgable expr_b 
+#+expr_b           : boolean_or | expr_c | times | <e>
+#+expr_c           : boolean_and | expr_d
+#+expr_d           : cmp_eq_neq | expr_e
+#+expr_e           : cmp_gt_lt | expr_f
+#+expr_f           : math_add_sub | expr_g
+#+expr_g           : math_mul_div_mod | BracketS expr BracketE expr
+
+# right recursive version:
+#expr             : expr_a 
+#expr_a           : SymbolColon expr_b | expr_b 
+#expr_b           : expr_b BooleanOr expr_c | expr_c
+#expr_c           : expr_c BooleanAnd expr_d | expr_d
+#expr_d           : expr_d CmpEqNeq expr_e | expr_e
+#expr_e           : expr_e CmpGtLt expr_f | expr_f
+#expr_f           : expr_f MathOpAddSub expr_g | expr_g
+#expr_g           : expr_g MathOpMulDivMod expr_h | expr_h
+#expr_h           : BracketS expr BracketE | msgable
+
+# after eliminating left recursion:
+expr             : assignment opt_times
+assignment       : SymbolColon boolean_or | boolean_or 
+
+boolean_or           : boolean_and boolean_or_prime
++boolean_or_prime    : BooleanOr boolean_and boolean_or_prime | <e>
+
+boolean_and           : cmp_eq_neq boolean_and_prime
++boolean_and_prime    : BooleanAnd cmp_eq_neq boolean_and_prime | <e>
+
+cmp_eq_neq           : cmp_gt_lt cmp_eq_neq_prime
++cmp_eq_neq_prime    : CmpEqNeq cmp_gt_lt cmp_eq_neq_prime | <e>
+
+cmp_gt_lt           : math_add_sub cmp_gt_lt_prime
++cmp_gt_lt_prime    : CmpGtLt math_add_sub cmp_gt_lt_prime | <e>
+
+math_add_sub           : math_mul_div_mod math_add_sub_prime
++math_add_sub_prime    : MathOpAddSub math_mul_div_mod math_add_sub_prime | <e>
+
+math_mul_div_mod           : expr_h math_mul_div_mod_prime
++math_mul_div_mod_prime    : MathOpMulDivMod expr_h math_mul_div_mod_prime | <e>
+
++expr_h           : BracketS expr BracketE | msgable
+
++opt_times        : times | <e>
+
+
+
+#assignment       : SymbolColon expr
+#boolean_or       : BooleanOr expr
+#boolean_and      : BooleanAnd expr
+#cmp_eq_neq       : CmpEqNeq expr
+#cmp_gt_lt        : CmpGtLt expr
+#math_add_sub     : MathOpAddSub expr
+#math_mul_div_mod : MathOpMulDivMod expr
+
 
 """
 

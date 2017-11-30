@@ -64,18 +64,26 @@ LuteWithArgs:   &<
 #  default velocity:
 #    ppp (16), pp (32), p (48), mp (64), mf (80), f (96), ff (112), fff (127)
 
-DynPiano*:        (m(ezzo)?p|p+)(iano)?(?![a-oq-zA-Z0-9_])
-DynForte*:        m(ezzo)?f(orte)?|f+orte|ff+(?![a-oq-zA-Z0-9_])
-DynSFZ:           sfz(?![a-oq-zA-Z0-9_])
-DynFP:            fp(?![a-oq-zA-Z0-9_])
+#DynPiano*:        (m(ezzo)?p|p+)(iano)?(?![a-oq-zA-Z0-9_])
+#DynForte*:        m(ezzo)?f(orte)?|f+orte|ff+(?![a-oq-zA-Z0-9_])
+#DynSFZ:           sfz(?![a-oq-zA-Z0-9_])
+#DynFP:            fp(?![a-oq-zA-Z0-9_])
 
 MsgOp:            \\.(?![)\\]])
-MathOp:           [+*\\-/%](?!>) 
+MathOpAddSub:     [+\\-](?!>) 
+MathOpMulDivMod:  [*/%](?!>) 
+
+BracketS:         _\\(
+BracketE:         _\\)
 
 NamedNoat*:       (?:_?)(?:[a-g](?![ac-zA-Z_]))(#|b)?(?![ \\t]*:(?![}:|]))
 Choard*:          ~*[ABCDEFG](?![.ce-hj-ln-rt-zA-LN-Z]|a[l ])(#|b)?([Mm0-9]|sus|dim|aug|dom)*~*
 
-BooleanOp*:       ==|!=|<=|>=|and|or|xor|_<|_>
+BooleanAnd*:       and
+BooleanOr*:        or
+CmpEqNeq*:         ==|!=
+CmpGtLt*:          <=|>=|_<|_>
+
 CondS:            [{][?]
 CondIf:           [?][?](?![}])
 CondE:            [?][}]

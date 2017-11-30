@@ -16,8 +16,6 @@ public:
     SkoarMinstrelPtr minstrel;
     SkoarpusclePtr noat;
     SkoarpusclePtr impression;
-    SkoarpusclePtr boolean_impression;
-    SkoarpusclePtr l_value;
 
     size_t fly_to_dest;
     bool al_fine;
@@ -32,6 +30,9 @@ public:
 
     void push ();
     SkoarpusclePtr pop ();
+
+    void push_magic ();
+    void pop_magic ();
 
     void push_impression ();
     void pop_impression ();
@@ -56,14 +57,6 @@ public:
     void fly_to_colon ();
     void fly_to_coda (SkoarString label);
     
-    void push_compare ();
-    void pop_compare ();
-
-    void compare_impress (SkoarMinstrelPtr);
-
-    void push_boolean ();
-    void pop_boolean ();
-
     SkoarpusclePtr impress_i ();
 
     template <typename T>

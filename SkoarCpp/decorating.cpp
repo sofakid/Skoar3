@@ -45,6 +45,105 @@ Skoarmantics* Skoarmantics::instance () {
 #define SpellOfSimpleSkoarmantics [](Skoar* /*skoar*/, SkoarNoadPtr noad)
 
 
+auto boolean_spell ([](Skoar* /*skoar*/, SkoarNoadPtr noad) {
+
+    if (noad->children.size () <= 1)
+        return;
+
+    noad->on_enter = [=](SkoarMinstrelPtr m) {
+        auto& fairy (*m->fairy);
+        fairy.push_magic ();
+    };
+    auto end_noad (SkoarNoad::NewArtificial (L"boolean_end", noad));
+    end_noad->on_enter = [=](SkoarMinstrelPtr m) {
+        auto& fairy (*m->fairy);
+        fairy.cast_arcane_magic ();
+        fairy.pop_magic ();
+    };
+
+    noad->add_noad (end_noad);
+});
+
+auto expr_spell (SpellOfSimpleSkoarmantics {
+    // expr_b could be <e>
+    if (noad->children.size () == 0)
+        return;
+
+    // we insert a node at the end of the expression
+    // so we can impress the result
+    auto end_noad (SkoarNoad::NewArtificial (L"expr_end", noad));
+    auto child (noad->children.front ()->skoarpuscle);
+    auto needs_compile (false);
+
+    auto listy (noad->collect_skoarpuscles ());
+    for (auto x : *listy)
+        if (is_skoarpuscle<SkoarpuscleUGen> (x))
+            needs_compile = true;
+
+    if (is_skoarpuscle<SkoarpuscleSymbolColon> (child))
+    {
+
+        noad->on_enter = [](SkoarMinstrelPtr m) {
+            m->fairy->push_noating ();
+        };
+
+        end_noad->on_enter = [=](SkoarMinstrelPtr m) {
+            auto x (m->fairy->cast_arcane_magic ());
+            SkoarpusclePtr p (make_shared<SkoarpusclePair> (
+                skoarpuscle_ptr<SkoarpuscleSymbolColon> (child)->val, x));
+
+            m->fairy->impress (p);
+
+            if (needs_compile)
+                m->fairy->compile_ugen ();
+
+            m->fairy->pop_noating ();
+        };
+
+        // name the named skoarpions
+        if (noad->children.size () > 1)
+        {
+            auto it (noad->children.begin ());
+            auto next_expr (*(++it));
+            auto next_skrp (next_expr->next_skoarpuscle ());
+
+            if (is_skoarpuscle <SkoarpuscleSkoarpion> (next_skrp))
+            {
+                auto p (skoarpuscle_ptr <SkoarpuscleSkoarpion> (next_skrp));
+                p->val->name = skoarpuscle_ptr<SkoarpuscleSymbolColon> (child)->val;
+            }
+
+        }
+
+    }
+    else
+    end_noad->on_enter = [=](SkoarMinstrelPtr m) {
+        m->fairy->cast_arcane_magic ();
+        if (needs_compile)
+            m->fairy->compile_ugen ();
+    };
+
+    noad->add_noad (end_noad);
+});
+
+auto math_spell ([](Skoar* /*skoar*/, SkoarNoadPtr noad) {
+    if (noad->children.size () <= 1)
+        return;
+    
+    noad->on_enter = [=](SkoarMinstrelPtr m) {
+        m->fairy->push_magic ();
+    };
+    auto end_noad (SkoarNoad::NewArtificial (L"math_end", noad));
+    end_noad->on_enter = [=](SkoarMinstrelPtr m) {
+        auto& fairy (*m->fairy);
+        fairy.cast_arcane_magic ();
+        fairy.pop_magic ();
+    };
+
+    noad->add_noad (end_noad);
+});
+
+
 Skoarmantics::Skoarmantics () : table ({
 
     {ESkoarNoad::skoar, SpellOfSkoarmantics {
@@ -66,51 +165,10 @@ Skoarmantics::Skoarmantics () : table ({
         noad->skoarpuscle = make_shared<SkoarpuscleConditional> (skoar, noad);
     }},
 
-    {ESkoarNoad::boolean_expr, SpellOfSimpleSkoarmantics {
-        
-        // we insert a node at the end of the boolean expression
-        // so we can restore the impression
-        auto end_noad (SkoarNoad::NewArtificial (L"boolean_expr_end", noad));
-
-        noad->on_enter = [](SkoarMinstrelPtr m) {
-            //("boolean_expr :: push_boolean").postln;
-            m->fairy->push_boolean ();
-        };
-
-        end_noad->on_enter = [](SkoarMinstrelPtr m) {
-            //("boolean_expr :: pop_boolean").postln;
-            m->fairy->pop_boolean ();
-        };
-
-        noad->add_noad (end_noad);
-        
-    }},
-
-    {ESkoarNoad::boolean, SpellOfSimpleSkoarmantics {
-        
-        // we insert a node at the end of the expression
-        // so we can evaluate the result
-        auto end_noad (SkoarNoad::NewArtificial (L"boolean_end", noad));
-        auto x (make_shared<SkoarpuscleBoolean> (noad));
-
-        noad->skoarpuscle = x;
-
-        end_noad->on_enter = [=](SkoarMinstrelPtr m) {
-            auto l_value = m->fairy->l_value;
-            auto imp = m->fairy->impression;
-
-            if (l_value == nullptr)
-                l_value = make_skoarpuscle (0);
-            //m->fairy->impress ((
-            x->evaluate (m, l_value, imp);
-            //));
-            
-            m->fairy->pop_compare ();
-        };
-
-        noad->add_noad (end_noad);
-        
-    }},
+    {ESkoarNoad::boolean_or,  boolean_spell},
+    {ESkoarNoad::boolean_and, boolean_spell},
+    {ESkoarNoad::cmp_eq_neq,  boolean_spell},
+    {ESkoarNoad::cmp_gt_lt,   boolean_spell},
 
     {ESkoarNoad::regular_beat, SpellOfSimpleSkoarmantics {
         auto xp (noad->next_skoarpuscle ());
@@ -159,7 +217,8 @@ Skoarmantics::Skoarmantics () : table ({
     }},
 
     {ESkoarNoad::cthulhu, SpellOfSkoarmantics {
-        noad->on_enter = [&](SkoarMinstrelPtr m) {
+        noad->on_enter = [=](SkoarMinstrelPtr m) {
+            noad->on_enter = nullptr;
             skoar->cthulhu (noad);
         };
     }},
@@ -307,61 +366,11 @@ Skoarmantics::Skoarmantics () : table ({
         noad->skoarpuscle = make_shared<SkoarpuscleArgExpr> (noad);
     }},
 
-    {ESkoarNoad::expr, SpellOfSimpleSkoarmantics {
-        // we insert a node at the end of the expression
-        // so we can impress the result
-        auto end_noad (SkoarNoad::NewArtificial(L"expr_end", noad));
-        auto child (noad->children.front ()->skoarpuscle);
-        auto needs_compile (false);
 
-        auto listy (noad->collect_skoarpuscles ());
-        for (auto x : *listy)
-            if (is_skoarpuscle<SkoarpuscleUGen> (x)) 
-                needs_compile = true;
+    {ESkoarNoad::assignment, expr_spell },
+    {ESkoarNoad::expr,   expr_spell},
 
-        if (is_skoarpuscle<SkoarpuscleSymbolColon> (child)) {
-            
-            noad->on_enter = [](SkoarMinstrelPtr m) {
-                m->fairy->push_noating();
-            };
-
-            end_noad->on_enter = [=](SkoarMinstrelPtr m) {
-                auto x (m->fairy->cast_arcane_magic ());
-                SkoarpusclePtr p (make_shared<SkoarpusclePair> (skoarpuscle_ptr<SkoarpuscleSymbolColon> (child)->val, x));
-
-                m->fairy->impress(p);
-
-                if (needs_compile)
-                    m->fairy->compile_ugen ();
-
-                m->fairy->pop_noating ();
-            };
-
-            // name the named skoarpions
-            if (noad->children.size () > 1)
-            {
-                auto it (noad->children.begin ());
-                auto next_expr (*(++it));
-                auto next_skrp (next_expr->next_skoarpuscle ());
-
-                if (is_skoarpuscle <SkoarpuscleSkoarpion> (next_skrp))
-                {
-                    auto p (skoarpuscle_ptr <SkoarpuscleSkoarpion> (next_skrp));
-                    p->val->name = skoarpuscle_ptr<SkoarpuscleSymbolColon> (child)->val;
-                }
-
-            }
-
-        }
-        else 
-            end_noad->on_enter = [=](SkoarMinstrelPtr m) {
-                m->fairy->cast_arcane_magic ();
-                if (needs_compile)
-                    m->fairy->compile_ugen ();
-            };
-
-        noad->add_noad(end_noad);
-    }},
+    //{ESkoarNoad::expr_h, expr_spell},
 
     {ESkoarNoad::msgable, SpellOfSimpleSkoarmantics {
         auto skoarpuscle (noad->next_skoarpuscle ());
@@ -406,21 +415,8 @@ Skoarmantics::Skoarmantics () : table ({
             skoarpuscle_ptr<SkoarpuscleList> (skoarpuscle)->noaty = false;
     }},
 
-    {ESkoarNoad::math, SpellOfSimpleSkoarmantics {
-        auto op (noad->children.front ()->skoarpuscle);
-
-        noad->on_enter = [=](SkoarMinstrelPtr m) {
-            auto left (m->fairy->cast_arcane_magic());
-
-            m->fairy->charge_arcane_magic(
-                [=]() {
-                    SkoarpusclePtr right (m->fairy->impression);
-                    skoarpuscle_ptr<SkoarpuscleMathOp> (op)->calculate (m, left, right);
-                    return m->fairy->impression;
-                }
-            );
-        };
-    }}
+    {ESkoarNoad::math_add_sub, math_spell},
+    {ESkoarNoad::math_mul_div_mod, math_spell}
 
 }) {
 }

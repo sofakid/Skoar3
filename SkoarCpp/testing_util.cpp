@@ -419,8 +419,14 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
 
     //INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
     Skoar skoar (skoarce, &SkoarLog);
-
-    REQUIRE (skoar.parsedOk);
+    
+    if (skoar.parsedOk == false)
+    {
+        SECTION (filename) {
+            REQUIRE (skoar.parsedOk);
+        }
+        return;
+    }
 
 
     // get all top level skoarpions

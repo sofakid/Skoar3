@@ -238,6 +238,19 @@ SkoarpusclePtr SkoarpuscleDeref::skoar_msg (SkoarpuscleMsg* /*msg*/, SkoarMinstr
 
 
 // --- SkoarpuscleMathOp ---------------------------------------------------------
+void SkoarpuscleMathOp::on_enter (SkoarMinstrelPtr m)
+{
+    auto left (m->fairy->cast_arcane_magic ());
+
+    m->fairy->charge_arcane_magic (
+        [=]() {
+            SkoarpusclePtr right (m->fairy->impression);
+            calculate (m, left, right);
+            return m->fairy->impression;
+        }
+    );
+}
+
 void SkoarpuscleMathOp::calculate (SkoarMinstrelPtr m, SkoarpusclePtr left, SkoarpusclePtr right) {
     // the result is impressed by the operation
     f (m, left, right);
@@ -257,14 +270,24 @@ bool SkoarpuscleBooleanOp::compare (SkoarpusclePtr a, SkoarpusclePtr b, SkoarMin
 }
 
 void SkoarpuscleBooleanOp::on_enter (SkoarMinstrelPtr m) {
-    m->fairy->cast_arcane_magic ();
-    m->fairy->compare_impress (m);
+    //m->fairy->cast_arcane_magic ();
+    //m->fairy->compare_impress (m);
+
+    auto left (m->fairy->cast_arcane_magic ());
+
+    m->fairy->charge_arcane_magic (
+        [=]() {
+            SkoarpusclePtr right (m->fairy->impression);
+            compare (left, right, m);
+            return m->fairy->impression;
+        }
+    );
 }
 
 
 // --- SkoarpuscleBoolean ---------------------------------------------------------
 void SkoarpuscleBoolean::on_enter (SkoarMinstrelPtr m) {
-    m->fairy->push_compare ();
+    //m->fairy->push_compare ();
 }
 
 bool SkoarpuscleBoolean::evaluate (SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
@@ -279,11 +302,13 @@ void SkoarpuscleConditional::on_enter (SkoarMinstrelPtr m) {
         auto if_body   (get<1> (x));
         auto else_body (get<2> (x));
 
-        m->fairy->push_noating ();
-        m->koar->do_skoarpion (condition, m, SkoarKoar::EExecStyle::INLINE, nullptr);
-        m->fairy->pop_noating ();
+        auto& fairy (*m->fairy);
 
-        auto impression (m->fairy->boolean_impression);
+        fairy.push_noating ();
+        m->koar->do_skoarpion (condition, m, SkoarKoar::EExecStyle::INLINE, nullptr);
+        fairy.pop_noating ();
+
+        auto& impression (fairy.impression);
 
         bool bad_impression (is_skoarpuscle<SkoarpuscleFalse> (impression) ||
                              is_skoarpuscle<SkoarpuscleCat> (impression));
@@ -330,26 +355,29 @@ void SkoarpuscleLoop::foreach (SkoarpusclePtr listy) {
 
 void SkoarpuscleLoop::on_enter (SkoarMinstrelPtr m) {
 
-    m->fairy->push_i ();
-    m->fairy->push_noating (true);
-    m->fairy->push_times_seen ();
+    auto& fairy (*m->fairy);
+    auto& koar (*m->koar);
+
+    fairy.push_i ();
+    fairy.push_noating (true);
+    fairy.push_times_seen ();
 
     bool looping (true);
 
     auto f ([&](SkoarpusclePtr element) {
         if (element != nullptr)
-            m->fairy->impress (element);
+            fairy.impress (element);
 
-        m->koar->do_skoarpion (body, m, SkoarKoar::EExecStyle::INLINE, m->fairy->impression);
-        m->fairy->incr_i ();
+        koar.do_skoarpion (body, m, SkoarKoar::EExecStyle::INLINE, fairy.impression);
+        fairy.incr_i ();
 
         if (condition != nullptr)
         {
-            m->fairy->push_noating ();
-            m->koar->do_skoarpion (condition, m, SkoarKoar::EExecStyle::INLINE, m->fairy->impression);
-            m->fairy->pop_noating ();
+            fairy.push_noating ();
+            koar.do_skoarpion (condition, m, SkoarKoar::EExecStyle::INLINE, fairy.impression);
+            fairy.pop_noating ();
 
-            auto x (m->fairy->boolean_impression);
+            auto x (fairy.impression);
             if (is_skoarpuscle<SkoarpuscleFalse> (x) ||
                 is_skoarpuscle<SkoarpuscleCat> (x))
                 looping = false;
@@ -374,9 +402,9 @@ void SkoarpuscleLoop::on_enter (SkoarMinstrelPtr m) {
             looping = false;
     }
 
-    m->fairy->pop_times_seen ();
-    m->fairy->pop_noating ();
-    m->fairy->pop_i ();
+    fairy.pop_times_seen ();
+    fairy.pop_noating ();
+    fairy.pop_i ();
 }
 
 

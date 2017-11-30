@@ -687,36 +687,6 @@ TEST_CASE("Fairy", "[sanity]") {
 
 }
 
-TEST_CASE ("Dynamics", "[sanity]") {
-
-    SECTION ("fortes") {
-        run_and_expect (L"0 mf) fff) mforte) forte) ff) ffforte) fforte)", make_events_vec (
-            amp_, 5.0 / 8.0, X,
-            amp_, 8.0 / 8.0, X,
-            amp_, 5.0 / 8.0, X,
-            amp_, 6.0 / 8.0, X,
-            amp_, 7.0 / 8.0, X,
-            amp_, 8.0 / 8.0, X,
-            amp_, 7.0 / 8.0, X
-        ));
-    }
-
-    SECTION ("pianos") {
-        run_and_expect (L"0 mp) ppp) mpiano) piano) ppiano) pppiano) pp) ppp) p)", make_events_vec (
-            amp_, 4.0 / 8.0, X,
-            amp_, 1.0 / 8.0, X,
-            amp_, 4.0 / 8.0, X,
-            amp_, 3.0 / 8.0, X,
-            amp_, 2.0 / 8.0, X,
-            amp_, 1.0 / 8.0, X,
-            amp_, 2.0 / 8.0, X,
-            amp_, 1.0 / 8.0, X,
-            amp_, 3.0 / 8.0, X
-        ));
-    }
-
-}
-
 TEST_CASE ("Octaves", "[sanity]") {
 
     SECTION ("octave tails") {
