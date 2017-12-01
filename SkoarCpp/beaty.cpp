@@ -43,41 +43,41 @@ SkoarpusclePtr flatten_list (SkoarpusclePtr p) {
 }
 
 void execute_noat (SkoarpusclePtr s, SkoarMinstrelPtr m) {
-
+    auto& koar (*m->koar);
     if (is_skoarpuscle<SkoarpuscleFloat> (s))
     {
-        m->koar->put (L"freq", s);
-        m->koar->put (L"note", nullptr);
-        m->koar->put (L"choard", nullptr);
+        koar.put (L"freq", s);
+        koar.put (L"note", nullptr);
+        koar.put (L"choard", nullptr);
     }
 
     else if (is_skoarpuscle<SkoarpuscleInt> (s))
     {
-        m->koar->put (L"freq", nullptr);
-        m->koar->put (L"note", s);
-        m->koar->put (L"choard", nullptr);
+        koar.put (L"freq", nullptr);
+        koar.put (L"note", s);
+        koar.put (L"choard", nullptr);
     }
 
     else if (is_skoarpuscle<SkoarpuscleNoat> (s))
     {
         auto p = skoarpuscle_ptr<SkoarpuscleNoat> (s);
-        m->koar->put (L"freq", nullptr);
-        m->koar->put (L"note", make_skoarpuscle (p->val));
-        m->koar->put (L"choard", nullptr);
+        koar.put (L"freq", nullptr);
+        koar.put (L"note", make_skoarpuscle (p->val));
+        koar.put (L"choard", nullptr);
     }
 
     else if (is_skoarpuscle<SkoarpuscleChoard> (s))
     {
-        m->koar->put (L"freq", nullptr);
-        m->koar->put (L"note", nullptr);
-        m->koar->put (L"choard", flatten_list (s));
+        koar.put (L"freq", nullptr);
+        koar.put (L"note", nullptr);
+        koar.put (L"choard", flatten_list (s));
     }
 
     else if (is_skoarpuscle<SkoarpuscleList> (s))
     {
-        m->koar->put (L"freq", nullptr);
-        m->koar->put (L"note", nullptr);
-        m->koar->put (L"choard", flatten_list (s));
+        koar.put (L"freq", nullptr);
+        koar.put (L"note", nullptr);
+        koar.put (L"choard", flatten_list (s));
     }
 }
 
@@ -145,18 +145,19 @@ SkoarpuscleExactBeat::~SkoarpuscleExactBeat() {
 }
 
 void SkoarpuscleExactBeat::on_enter(SkoarMinstrelPtr m) {
-    m->fairy->push_noating();
-    m->fairy->push();
+    auto& fairy (*m->fairy);
+    fairy.push_noating();
+    fairy.push();
 }
 
 void SkoarpuscleExactBeat::after(SkoarMinstrelPtr m) {
     //auto dur = m->fairy->impression->flatten(m);
+    auto& fairy (*m->fairy);
+    fairy.pop();
+    fairy.pop_noating();
 
-    m->fairy->pop();
-    m->fairy->pop_noating();
-
-    execute_noat (m->fairy->noat, m);
-    //auto noat = m->fairy->noat->asNoat();
+    execute_noat (fairy.noat, m);
+    //auto noat = fairy.noat->asNoat();
 
     //noat->execute(m);
 
@@ -164,7 +165,7 @@ void SkoarpuscleExactBeat::after(SkoarMinstrelPtr m) {
     //auto e = m->koar->event(m);
 
     //e[L"dur"] = dur * e[L"tempo"];
-    //m->fairy->consider(e);
+    //fairy.consider(e);
 }
 
 
@@ -183,20 +184,22 @@ SkoarpuscleExactRest::~SkoarpuscleExactRest() {
 }
 
 void SkoarpuscleExactRest::on_enter(SkoarMinstrelPtr m) {
-    m->fairy->push_noating();
-    m->fairy->push();
+    auto& fairy (*m->fairy);
+    fairy.push_noating();
+    fairy.push();
 }
 
 void SkoarpuscleExactRest::after(SkoarMinstrelPtr m) {
     //auto dur = m->fairy->impression->flatten(m);
 
-    m->fairy->pop();
-    m->fairy->pop_noating();
+    auto& fairy (*m->fairy);
+    fairy.pop();
+    fairy.pop_noating();
 
     //auto noat = m->fairy->noat->asNoat();
     //noat->execute(m);
 
-    execute_noat (m->fairy->noat, m);
+    execute_noat (fairy.noat, m);
 
     // create an event with everything we've collected up until now
     auto e = m->koar->event(m);
@@ -211,15 +214,13 @@ void SkoarpuscleExactRest::after(SkoarMinstrelPtr m) {
 SkoarFloat SkoarpuscleBeat::beat_short(SkoarString s, SkoarInt n) {
     auto is_dotted = s.back() == L'.';
     
-    if (is_dotted) {
-        n = n - 1;
-    }
+    if (is_dotted)
+        --n;
 
-    SkoarFloat x = pow(2.0, -1.0 * (SkoarFloat) n);
+    SkoarFloat x (pow(2.0, -1.0 * (SkoarFloat) n));
 
-    if (is_dotted) {
-        x = x * 1.5;
-    }
+    if (is_dotted)
+        x *= 1.5;
     
     return x;
 }
@@ -227,15 +228,14 @@ SkoarFloat SkoarpuscleBeat::beat_short(SkoarString s, SkoarInt n) {
 SkoarFloat SkoarpuscleBeat::beat_long(SkoarString s, SkoarInt n) {
     auto is_dotted = s.back() == L'.';
 
-    if (is_dotted) {
-        n = n - 1;
-    }
+    if (is_dotted)
+        --n;
 
-    SkoarFloat x = pow(2.0, (SkoarFloat) n - 1.0);
+    SkoarFloat x (pow(2.0, (SkoarFloat) n - 1.0));
 
-    if (is_dotted) {
-        x = x * 1.5;
-    }
+    if (is_dotted)
+        x *= 1.5;
+    
 
     return x;
 }
@@ -247,29 +247,28 @@ SkoarpuscleBeat::SkoarpuscleBeat(SkoarToke *toke) {
     impressionable = false;
     
     s = toke->lexeme;
-    auto n = s.length();
+    auto n (s.length());
 
     if (s.front() == L'.') {
         is_staccato = true;
         --n;
     }
-    else {
+    else 
         is_staccato = false;
-    }
     
-    auto tie_pos = s.find(SkoarString(L"__"), 0);
+    auto tie_pos (s.find(SkoarString(L"__"), 0));
 
     if (tie_pos != wstring::npos) {
         has_tie = true;
         is_grace = false;
-        n = n - 2;
+        n -= 2;
     }
     else {
         auto grace_pos = s.find(SkoarString(L"_"), 0);
         if (grace_pos != wstring::npos) {
             has_tie = true;
             is_grace = false;
-            n = n - 2;
+            n -= 2;
         }
         else {
             has_tie = false;
@@ -277,11 +276,10 @@ SkoarpuscleBeat::SkoarpuscleBeat(SkoarToke *toke) {
         }
     }
 
-    if (toke->kind == ESkoarToke::Eighths) {
+    if (toke->kind == ESkoarToke::Eighths) 
         val = SkoarpuscleBeat::beat_short(s, n);
-    } else {
+    else
         val = SkoarpuscleBeat::beat_long(s, n);
-    }
 }
 
 SkoarpuscleBeat::~SkoarpuscleBeat() {
@@ -297,13 +295,14 @@ void SkoarpuscleBeat::on_enter_sometimes(SkoarMinstrelPtr m) {
     //auto noat = m->fairy->noat->asNoat();
     //noat->execute(m);
 
-    execute_noat (m->fairy->noat, m);
+    auto& fairy (*m->fairy);
+    execute_noat (fairy.noat, m);
 
     // create an event with everything we've collected up until now
-    auto e = m->koar->event(m);
+    auto e (m->koar->event(m));
 
     e->put(L"dur", make_skoarpuscle(dur));
-    m->fairy->consider(e);
+    fairy.consider(e);
 }
 
 // --- SkoarpuscleRest -----------------------------------------------------
@@ -314,14 +313,13 @@ SkoarpuscleRest::SkoarpuscleRest(SkoarToke *toke) {
     impressionable = false;
 
     s = toke->lexeme;
-    auto n = s.length();
+    auto n (s.length());
 
-    if (toke->kind == ESkoarToke::Quavers) {
-        // size -1 for the / (we just count the o's)
+    // size -1 for the / (we just count the o's)
+    if (toke->kind == ESkoarToke::Quavers)
         val = SkoarpuscleBeat::beat_short(s, n - 1);
-    } else {
+    else 
         val = SkoarpuscleBeat::beat_long(s, n);
-    }
 }
 
 SkoarpuscleRest::~SkoarpuscleRest() {
@@ -334,16 +332,17 @@ SkoarpuscleRest::~SkoarpuscleRest() {
 void SkoarpuscleRest::on_enter_sometimes(SkoarMinstrelPtr m) {
     SkoarFloat dur = val;
 
+    auto& fairy (*m->fairy);
     //auto noat = m->fairy->noat->asNoat();
 
     //noat->execute(m);
-    execute_noat (m->fairy->noat, m);
+    execute_noat (fairy.noat, m);
 
     // create an event with everything we've collected up until now
-    auto e = m->koar->event(m);
+    auto e (m->koar->event(m));
 
     e->put(L"dur", make_skoarpuscle(dur));
     e->put(L"isRest", make_skoarpuscle(true));
 
-    m->fairy->consider(e);
+    fairy.consider(e);
 }

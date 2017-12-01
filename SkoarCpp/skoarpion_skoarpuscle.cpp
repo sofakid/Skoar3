@@ -131,17 +131,18 @@ void SkoarpuscleArgExpr::asString(wostream &out) {
 
 SkoarpusclePtr SkoarpuscleArgExpr::flatten (SkoarMinstrelPtr m)
 {
-    m->fairy->push ();
+    auto& fairy (*m->fairy);
+    fairy.push ();
         
     for (auto &noadite : expr)
         noadite.enter_noad (m);
 
-    auto result = m->fairy->impression;
+    auto result = fairy.impression;
 
     if (is_skoarpuscle<SkoarpusclePair> (result))
         result = skoarpuscle_ptr<SkoarpusclePair> (result)->val.second;
 
-    m->fairy->pop ();
+    fairy.pop ();
     return result;
 }
 
@@ -199,8 +200,9 @@ void SkoarpuscleArgList::clear ()
 }
 
 void SkoarpuscleArgList::on_enter(SkoarMinstrelPtr m) {
-    m->fairy->push_noating();
-    m->fairy->push();
+    auto& fairy (*m->fairy);
+    fairy.push_noating();
+    fairy.push();
 }
 
 void SkoarpuscleArgList::asString(wostream &out) {

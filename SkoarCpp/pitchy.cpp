@@ -193,7 +193,7 @@ SkoarpuscleNoat::~SkoarpuscleNoat () {
 // --- SkoarpuscleNoat ---------------------------------------------------------
 
 void SkoarpuscleNoat::on_enter (SkoarMinstrelPtr m) {
-    m->fairy->impress (duplicate());
+    m->fairy->impress (duplicate ());
 }
 
 SkoarpusclePtr SkoarpuscleNoat::duplicate ()
@@ -202,9 +202,10 @@ SkoarpusclePtr SkoarpuscleNoat::duplicate ()
 }
 
 void SkoarpuscleNoat::execute (SkoarMinstrelPtr m) {
-    m->koar->put (L"freq", nullptr);
-    m->koar->put (L"note", make_skoarpuscle (val));
-    m->koar->put (L"choard", nullptr);
+    auto& koar (*m->koar);
+    koar.put (L"freq", nullptr);
+    koar.put (L"note", make_skoarpuscle (val));
+    koar.put (L"choard", nullptr);
 }
 
 
@@ -352,9 +353,10 @@ SkoarpusclePtr SkoarpuscleChoard::duplicate ()
 }
 
 void SkoarpuscleChoard::execute (SkoarMinstrelPtr m) {
-    m->koar->put (L"freq", nullptr);
-    m->koar->put (L"note", nullptr);
-    m->koar->put (L"choard", make_skoarpuscle(val));
+    auto& koar (*m->koar);
+    koar.put (L"freq", nullptr);
+    koar.put (L"note", nullptr);
+    koar.put (L"choard", make_skoarpuscle(val));
 }
 
 

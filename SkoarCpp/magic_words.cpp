@@ -5,6 +5,8 @@
 
 bool handle_magic_words (SkoarString word, SkoarpusclePtr v, SkoarMinstrelPtr m)
 {
+    auto& koar (*m->koar);
+
     if (word == L"bpm")
     {
         auto& bpm (v);
@@ -26,8 +28,8 @@ bool handle_magic_words (SkoarString word, SkoarpusclePtr v, SkoarMinstrelPtr m)
         }
 
         auto bps = x / 60.0;
-        m->koar->put (L"bpm", bpm);
-        m->koar->put (L"bps", make_skoarpuscle (bps));
+        koar.put (L"bpm", bpm);
+        koar.put (L"bps", make_skoarpuscle (bps));
 
         return true;
 
@@ -54,8 +56,8 @@ bool handle_magic_words (SkoarString word, SkoarpusclePtr v, SkoarMinstrelPtr m)
         }
 
         auto bpm = x * 60.0;
-        m->koar->put (L"bpm", make_skoarpuscle (bpm));
-        m->koar->put (L"bps", bps);
+        koar.put (L"bpm", make_skoarpuscle (bpm));
+        koar.put (L"bps", bps);
 
         return true;
 

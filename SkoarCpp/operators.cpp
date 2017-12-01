@@ -958,42 +958,50 @@ SpellOfCmp SkoarOps::lookup (XCmpTable & xtable, SkoarpusclePtr x, SkoarpusclePt
     return gt;
 }
 
-SkoarpusclePtr SkoarOps::assign(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+SkoarpusclePtr SkoarOps::assign(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) 
+{
     SpellOfMath f (lookup(ops_tables->assignment, y, x));
     return m->fairy->impress(f(y, x, m));
 }
 
-SkoarpusclePtr SkoarOps::add(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+SkoarpusclePtr SkoarOps::add(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) 
+{
     const SpellOfMath &f (lookup(ops_tables->addition, x, y));
     return m->fairy->impress(f(x, y, m));
 }
 
-SkoarpusclePtr SkoarOps::sub(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+SkoarpusclePtr SkoarOps::sub(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) 
+{
     const SpellOfMath &f (lookup(ops_tables->subtraction, x, y));
     return m->fairy->impress(f(x, y, m));
 }
 
-SkoarpusclePtr SkoarOps::mul(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+SkoarpusclePtr SkoarOps::mul(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) 
+{
     const SpellOfMath &f (lookup(ops_tables->multiplication, x, y));
     return m->fairy->impress(f(x, y, m));
 }
 
-SkoarpusclePtr SkoarOps::div(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+SkoarpusclePtr SkoarOps::div(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) 
+{
     const SpellOfMath &f (lookup(ops_tables->division, x, y));
     return m->fairy->impress(f(x, y, m));
 }
 
-SkoarpusclePtr SkoarOps::mod(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+SkoarpusclePtr SkoarOps::mod(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) 
+{
     const SpellOfMath &f (lookup(ops_tables->modulo, x, y));
     return m->fairy->impress(f(x, y, m));
 }
 
-SkoarpusclePtr SkoarOps::neq(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+SkoarpusclePtr SkoarOps::neq(SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) 
+{
     const SpellOfCmp &f (lookup(ops_tables->cmp, x, y));
     return m->fairy->impress(f (x, y, m) != 0.0);
 }
 
-SkoarpusclePtr SkoarOps::eq (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) {
+SkoarpusclePtr SkoarOps::eq (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y) 
+{
     const SpellOfCmp &f (lookup (ops_tables->cmp, x, y));
     return m->fairy->impress (f (x, y, m) == 0.0);
 }

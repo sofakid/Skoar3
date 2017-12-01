@@ -68,16 +68,17 @@ auto expr_spell (SpellOfSimpleSkoarmantics {
         };
 
         end_noad->on_enter = [=](SkoarMinstrelPtr m) {
-            auto x (m->fairy->cast_arcane_magic ());
+            auto& fairy (*m->fairy);
+            auto x (fairy.cast_arcane_magic ());
             SkoarpusclePtr p (make_shared<SkoarpusclePair> (
                 skoarpuscle_ptr<SkoarpuscleSymbolColon> (child)->val, x));
 
-            m->fairy->impress (p);
+            fairy.impress (p);
 
             if (needs_compile)
-                m->fairy->compile_ugen ();
+                fairy.compile_ugen ();
 
-            m->fairy->pop_noating ();
+            fairy.pop_noating ();
         };
 
         // name the named skoarpions
@@ -98,9 +99,10 @@ auto expr_spell (SpellOfSimpleSkoarmantics {
     }
     else
     end_noad->on_enter = [=](SkoarMinstrelPtr m) {
-        m->fairy->cast_arcane_magic ();
+        auto& fairy (*m->fairy);
+        fairy.cast_arcane_magic ();
         if (needs_compile)
-            m->fairy->compile_ugen ();
+            fairy.compile_ugen ();
     };
 
     noad->add_noad (end_noad);
@@ -198,10 +200,10 @@ Skoarmantics::Skoarmantics () : table ({
         noad->children.clear ();
     }},
 
-    {ESkoarNoad::cthulhu, SpellOfSkoarmantics {
+    {ESkoarNoad::cthulhu, SpellOfSimpleSkoarmantics {
         noad->on_enter = [=](SkoarMinstrelPtr m) {
-            noad->on_enter = nullptr;
-            skoar->cthulhu (noad);
+        //    noad->on_enter = nullptr;
+        //    skoar->cthulhu (noad);
         };
     }},
 
