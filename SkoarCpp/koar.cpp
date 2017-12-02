@@ -169,9 +169,6 @@ void SkoarKoar::set_args (
     SkoarpuscleArgList *args_list = skoarpuscle_ptr<SkoarpuscleArgList> (args_spec);
 
     ListOfSkoarpusclesPtr args_provided;
-    /*if (is_skoarpuscle<SkoarpuscleArgs> (args_prov))
-        args_provided = skoarpuscle_ptr<SkoarpuscleArgs> (args_prov)->val;
-    else*/ 
         
     if (is_skoarpuscle<SkoarpuscleList> (args_prov))
     {

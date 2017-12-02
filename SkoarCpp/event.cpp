@@ -71,6 +71,8 @@ void SkoarEvent::from (SkoarDicPtr dic) {
     for (auto pair : src)
     {
         auto key (pair.first);
+        if (key == SkoarString (L"impression"))
+            continue;
         if (key == SkoarString (L"num_impression"))
             continue;
         if (key == SkoarString (L"dyn_impression"))

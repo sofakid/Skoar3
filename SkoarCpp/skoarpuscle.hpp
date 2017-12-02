@@ -54,7 +54,7 @@ public:
         throw SkoarpuscleException(L"asNoat() called on incompatible skoarpuscle.");
     }
 
-    virtual SkoarpusclePtr skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr /*minstrel*/) {
+    virtual SkoarpusclePtr skoar_msg(SkoarString /*selector*/, SkoarpusclePtr /*args*/, SkoarMinstrelPtr /*minstrel*/) {
         throw SkoarpuscleException(L"skoar_msg() called on incompatible skoarpuscle.");
     }
 
@@ -204,6 +204,7 @@ public:
 
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
+    SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
 
 };
 
@@ -221,6 +222,7 @@ public:
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
 
+    SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
 };
 
 
@@ -235,7 +237,7 @@ public:
     void valAsString(wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
-    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
+    SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
 };
 
@@ -250,7 +252,7 @@ public:
     void valAsString(wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
-    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
+    SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
 };
 
@@ -467,7 +469,7 @@ public:
 
     bool isNoatworthy() override;
     void *asNoat() override;
-    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
+    SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
 
@@ -524,7 +526,7 @@ public:
     void on_enter(SkoarMinstrelPtr) override;
     void on_exit(SkoarMinstrelPtr);
     void do_deref(SkoarMinstrelPtr);
-    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
+    SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
 
 
 };
@@ -625,30 +627,6 @@ public:
 
     void on_enter(SkoarMinstrelPtr) override;
     void on_deref_exit(SkoarMinstrelPtr);
-};
-
-
-class SkoarpuscleMsg : public Skoarpuscle {
-public:
-    const SkoarString val;
-
-    shared_ptr<SkoarpuscleArgs> args;
-    SkoarpusclePtr dest;
-
-    SkoarpuscleMsg(SkoarString v, shared_ptr<SkoarpuscleArgs> a);
-    ~SkoarpuscleMsg() override;
-    void clear () override;
-
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
-
-    void on_enter(SkoarMinstrelPtr) override;
-    SkoarpusclePtr skoar_msg(SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) override;
-
-    list<SkoarString> get_msg_arr(SkoarMinstrelPtr);
-    list<SkoarString> get_args_from_prototype(SkoarMinstrelPtr);
-
 };
 
 class SkoarpuscleExprEnd : public Skoarpuscle {

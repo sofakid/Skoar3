@@ -12,7 +12,6 @@
 #include "operators.hpp"
 
 
-
 // Skoarpuscles are the closest thing we have to "types".
 //
 // They represent value types, as well as most things that
@@ -95,15 +94,6 @@ void SkoarpuscleString::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (val);
 }
 
-SkoarpusclePtr SkoarpuscleString::skoar_msg (SkoarpuscleMsg *msg, SkoarMinstrelPtr minstrel) {
-    auto sel (msg->val);
-
-    //if (sel == L"sample") {
-    //    return make_shared<SkoarpuscleSample>(val);
-    //}
-    return make_shared<SkoarpuscleCat> ();
-}
-
 SkoarpusclePtr SkoarpuscleString::duplicate ()
 {
     return make_shared<SkoarpuscleString> (val);
@@ -112,14 +102,6 @@ SkoarpusclePtr SkoarpuscleString::duplicate ()
 // --- SkoarpuscleSymbol ---------------------------------------------------------
 void SkoarpuscleSymbol::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (make_shared<SkoarpuscleSymbol> (val));
-}
-
-SkoarpusclePtr SkoarpuscleSymbol::skoar_msg (SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr minstrel) {
-
-    /* this was how we called underlying SC class methods..
-       don't know what I want to do with this anymore. */
-
-    return make_shared<SkoarpuscleCat> ();
 }
 
 SkoarpusclePtr SkoarpuscleSymbol::duplicate ()
@@ -224,9 +206,9 @@ void SkoarpuscleDeref::do_deref (SkoarMinstrelPtr m) {
 }
 
 
-SkoarpusclePtr SkoarpuscleDeref::skoar_msg (SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr minstrel) {
+SkoarpusclePtr SkoarpuscleDeref::skoar_msg (SkoarString sel, SkoarpusclePtr /*args*/, SkoarMinstrelPtr m) {
     auto ret (val);
-    auto x (lookup (minstrel));
+    auto x (lookup (m));
 
     // we don't recognise that name.
     if (x == nullptr)
@@ -566,29 +548,6 @@ void *SkoarpuscleList::asNoat () {
     return nullptr;
 }
 
-SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr minstrel) {
-    // ready to port as commented
-    /*
-    var o = msg.get_msg_arr(minstrel);
-    var name = msg.val;
-    var ret;
-
-    // todo teach the fairy to next and last
-    case {name == \next} {
-        ret = val.performMsg(o);
-    } {name == \last} {
-        ret = val.performMsg(o);
-    } {name == \choose} {
-        ret = val.choose();
-    } {
-        ret = val.performMsg(o);
-    };
-
-    ^Skoarpuscle.wrap(ret);
-    */
-    return nullptr;
-}
-
 
 
 // --- SkoarpuscleArgs ---------------------------------------------------------
@@ -604,179 +563,6 @@ void SkoarpuscleArgs::on_deref_exit (SkoarMinstrelPtr m) {
 
     fairy.pop ();
     fairy.pop_noating ();
-}
-
-
-// --- SkoarpuscleMsg ---------------------------------------------------------
-void SkoarpuscleMsg::on_enter (SkoarMinstrelPtr m) {
-    // i don't want to go down this road.
-    /* if (args != nullptr) {
-        auto x = m->fairy->impression;
-        if (is_skoarpuscle<SkoarpuscleList>(x)) {
-            auto new_args = skoarpuscle_ptr<SkoarpuscleList>(x);
-            // original code:
-            // args = m.fairy.impression;
-        }
-    }*/
-
-    auto& fairy (*m->fairy);
-
-    if (dest == nullptr)
-        throw SkoarRuntimeException (L"msg: dest is nullptr");
-
-    SkoarpusclePtr result (nullptr);
-    if (is_skoarpuscle<SkoarpuscleList> (dest))
-    {
-        // why not this? : result = skoarpuscle_ptr<SkoarpuscleList>(dest)->skoar_msg(this, m);
-        result = fairy.impression;
-        result = skoarpuscle_ptr<SkoarpuscleList> (result)->skoar_msg (this, m);
-    }
-    else if (is_skoarpuscle<SkoarpuscleSkoarpion> (dest))
-        result = skoarpuscle_ptr<SkoarpuscleSkoarpion> (dest)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleString> (dest))
-        result = skoarpuscle_ptr<SkoarpuscleString> (dest)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleSymbol> (dest))
-        result = skoarpuscle_ptr<SkoarpuscleSymbol> (dest)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleDeref> (dest))
-        result = skoarpuscle_ptr<SkoarpuscleDeref> (dest)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleMsg> (dest))
-        result = skoarpuscle_ptr<SkoarpuscleMsg> (dest)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleList> (dest))
-        result = skoarpuscle_ptr<SkoarpuscleList> (dest)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleList> (dest))
-        result = skoarpuscle_ptr<SkoarpuscleList> (dest)->skoar_msg (this, m);
-
-    fairy.impress (result);
-
-}
-
-SkoarpusclePtr SkoarpuscleMsg::skoar_msg (SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr m) {
-    auto& fairy (*m->fairy);
-
-    SkoarpusclePtr result (fairy.impression);
-    if (is_skoarpuscle<SkoarpuscleList> (result))
-        result = skoarpuscle_ptr<SkoarpuscleList> (result)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleSkoarpion> (result))
-        result = skoarpuscle_ptr<SkoarpuscleSkoarpion> (result)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleString> (result))
-        result = skoarpuscle_ptr<SkoarpuscleString> (result)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleSymbol> (result))
-        result = skoarpuscle_ptr<SkoarpuscleSymbol> (result)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleDeref> (result))
-        result = skoarpuscle_ptr<SkoarpuscleDeref> (result)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleMsg> (result))
-        result = skoarpuscle_ptr<SkoarpuscleMsg> (result)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleList> (result))
-        result = skoarpuscle_ptr<SkoarpuscleList> (result)->skoar_msg (this, m);
-    
-    else if (is_skoarpuscle<SkoarpuscleList> (result))
-        result = skoarpuscle_ptr<SkoarpuscleList> (result)->skoar_msg (this, m);
-
-    return fairy.impress (result);
-}
-
-list<SkoarString> SkoarpuscleMsg::get_msg_arr (SkoarMinstrelPtr m) {
-    list<SkoarString> out;
-    /*
-    var x, z;
-    var i;
-
-    if (args.isNil) {
-        ^[val];
-    };
-
-    //("MSG::"++val++"::get_msg_arr::args:"++ args).postln;
-    //("Args exist, x will be " ++ (args.size + 1).asString).postln;
-    x = Array.newClear(args.size + 1);
-    i = 0;
-
-    //"args: ".post; args.postln;
-    //("SKRP_Msg.get_msg_arr :: pushing noating").postln;
-    m.fairy.push_noating;
-
-    x[0] = val;
-    args.val.do {
-        | y |
-        //"y: ".post; y.postln;
-        i = i + 1;
-        case {y.isKindOf(SkoarpusclePair)} {
-            x[i] = [y.key.val, y.val.flatten(m)];
-        } {y.isKindOf(Skoarpuscle)} {
-            x[i] = y.flatten(m);
-        } {
-            x[i] = y;
-        };
-    };
-    //("SKRP_Msg.get_msg_arr :: popping noating").postln;
-    m.fairy.pop_noating;
-
-    //("MSG::get_msg_arr::  x :"++ x).postln;
-    ^x;
-    */
-    return out;
-}
-
-list<SkoarString> SkoarpuscleMsg::get_args_from_prototype (SkoarMinstrelPtr m) {
-    list<SkoarString> out;
-    /*
-    var e = ();
-    var j = 0;
-    var ret = [];
-    var w;
-    var p = pref ++ " g_a_f_proto :: ";
-
-    //(p ++ "arg_prot :: " ++ arg_prot).postln;
-
-    if (args.notNil) {
-        args.val.do {
-            | x |
-            if (x.isKindOf(SkoarpusclePair)) {
-                e[x.key.val] = x.val.flatten(m);
-                //(p ++ "e[" ++ x.key.val ++ "] = e[x.key.val] =" ++ e[x.key.val] ++ ";").postln;
-            } {
-                e[j] = x.flatten(m);
-                //(p ++ "e[" ++ j ++ "] = e[j] =" ++ e[j] ++ ";").postln;
-
-            };
-            j = j + 1;
-        };
-    };
-
-    arg_spec.do {
-        | x, i |
-        var v = e[x];
-        var y;
-
-        if (v.notNil) {
-            arg_prot[i] = v;
-            //(p ++ "arg_prot[" ++ i ++ "] = v = " ++ v ++ ";").postln;
-        } {
-            y = e[i];
-            //(p ++ "arg_prot[" ++ i ++ "] = e[i] =" ++ e[i] ++ ";").postln;
-
-            if (y.notNil) {
-                arg_prot[i] = y;
-            };
-        };
-    };
-
-    //(p ++ "arg_prot :: "++ arg_prot).postln;
-
-    ^arg_prot;
-    */
-    return out;
 }
 
 // --- SkoarpuscleMsgName ---------------------------------------------------------

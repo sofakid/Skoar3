@@ -90,7 +90,7 @@ SkoarpuscleInt::SkoarpuscleInt (SkoarInt v) :
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"Int");
 #endif
-    noatworthy = true;
+    noatworthy = false;
     impressionable = true;
     county = true;
 }
@@ -112,7 +112,7 @@ SkoarpuscleFloat::SkoarpuscleFloat (SkoarFloat v) :
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"Float");
 #endif
-    noatworthy = true;
+    noatworthy = false;
     impressionable = true;
 }
 
@@ -130,7 +130,7 @@ SkoarpuscleFreq::SkoarpuscleFreq (SkoarFloat v) :
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"Freq");
 #endif
-    noatworthy = true;
+    noatworthy = false;
     impressionable = true;
 }
 
@@ -610,7 +610,7 @@ SkoarpuscleList::SkoarpuscleList (ListOfSkoarpusclesPtr x) :
     SkoarMemories::o ().allocSkoarpuscle (L"List");
 #endif
 
-    noaty = true;
+    noaty = false;
     impressionable = true;
 }
 
@@ -626,9 +626,9 @@ void SkoarpuscleList::clear ()
 {
     if (val != nullptr)
     {
-        for (auto x : *val)
-            if (x != nullptr)
-                x->clear ();
+        //for (auto x : *val)
+        //    if (x != nullptr)
+        //        x->clear ();
         val->clear ();
     }
 }
@@ -644,33 +644,6 @@ SkoarpuscleArgs::~SkoarpuscleArgs () {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().deallocSkoarpuscle (L"Args");
 #endif
-}
-
-// --- SkoarpuscleMsg ---------------------------------------------------------
-SkoarpuscleMsg::SkoarpuscleMsg (SkoarString v, shared_ptr<SkoarpuscleArgs> a) :
-    val (v),
-    args (a),
-    dest (nullptr) {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().allocSkoarpuscle (L"Msg");
-#endif
-
-}
-
-SkoarpuscleMsg::~SkoarpuscleMsg () {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().deallocSkoarpuscle (L"Msg");
-    clear ();
-#endif
-}
-
-void SkoarpuscleMsg::clear ()
-{
-    if (args != nullptr)
-        args->clear ();
-
-    if (dest != nullptr)
-        dest->clear ();
 }
 
 // --- SkoarpuscleMsgName ---------------------------------------------------------

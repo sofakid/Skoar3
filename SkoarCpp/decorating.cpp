@@ -261,6 +261,23 @@ Skoarmantics::Skoarmantics () : table ({
     }},
 
     {ESkoarNoad::msg, SpellOfSimpleSkoarmantics {
+        /*
+        msgable
+          0 -- nouny
+          1 -- MsgOp
+          2 -- msg
+                - charge arcane magic with impression (msg dest)
+                - push magic stack
+          2.0 -- MsgWArgs
+          2.1 -- listy_suffix
+          2.x -- insert noad to process msg
+                   - get impression: this is the args
+                   - pop magic stack
+                   - cast arcane magic to get msg dest
+                   - send msg to dest
+          3 -- MsgOp
+          4 -- msg
+        */
         SkoarpusclePtr msg (noad->next_skoarpuscle ());
 
         if (msg != nullptr) {
@@ -279,26 +296,49 @@ Skoarmantics::Skoarmantics () : table ({
                 noad->children.clear();
             }
             else if (is_skoarpuscle<SkoarpuscleMsgNameWithArgs> (msg)) {
-                // we need the tree to have the same
-                // structure as below. I don't want to
-                // treat these too differently (with args or without)
-                shared_ptr<SkoarpuscleArgs> args (make_shared<SkoarpuscleArgs> ());
-                auto val (skoarpuscle_ptr<SkoarpuscleMsgNameWithArgs> (msg)->val);
-                auto x (make_shared<SkoarpuscleMsg> (val, args));
+                
+                auto sel (skoarpuscle_ptr<SkoarpuscleMsgNameWithArgs> (msg)->val);
+                
+                noad->on_enter = [=](SkoarMinstrelPtr m) {
+                    auto& fairy (*m->fairy);
+                    auto dest (fairy.impression);
+                    fairy.charge_arcane_magic ([=]() {
+                        return dest;
+                    });
+                    fairy.push_magic ();
+                };
 
-                auto end_noad (SkoarNoad::NewArtificial(L"msg_end", noad));
-                end_noad->skoarpuscle = x;
+                auto end_noad (SkoarNoad::NewArtificial (L"msg_end", noad));
+                end_noad->on_enter = [=](SkoarMinstrelPtr m) {
+
+                    auto& fairy (*m->fairy);
+                    auto args (fairy.impression);
+                    fairy.pop_magic ();
+                    auto dest (fairy.cast_arcane_magic ());
+                    fairy.impress(dest->skoar_msg (sel, args, m));
+                };
                 noad->add_noad (end_noad);
+
             }
             else if (is_skoarpuscle<SkoarpuscleMsgName> (msg)) {
-                // we need the tree to have the same
-                // structure as above. I don't want to
-                // treat these too differently (with args or without)
-                auto val (skoarpuscle_ptr<SkoarpuscleMsgName> (msg)->val);
-                auto x (make_shared<SkoarpuscleMsg> (val, nullptr));
+                auto sel (skoarpuscle_ptr<SkoarpuscleMsgName> (msg)->val);
 
-                auto end_noad (SkoarNoad::NewArtificial(L"msg_end", noad));
-                end_noad->skoarpuscle = x;
+                noad->on_enter = [=](SkoarMinstrelPtr m) {
+                    auto& fairy (*m->fairy);
+                    auto dest (fairy.impression);
+                    fairy.charge_arcane_magic ([=]() {
+                        return dest;
+                    });
+                    fairy.push_magic ();
+                };
+
+                auto end_noad (SkoarNoad::NewArtificial (L"msg_end", noad));
+                end_noad->on_enter = [=](SkoarMinstrelPtr m) {
+                    auto& fairy (*m->fairy);
+                    fairy.pop_magic ();
+                    auto dest (fairy.cast_arcane_magic ());
+                    fairy.impress(dest->skoar_msg (sel, nullptr, m));
+                };
                 noad->add_noad (end_noad);
             }
         }
@@ -306,22 +346,22 @@ Skoarmantics::Skoarmantics () : table ({
 
     {ESkoarNoad::ugen_simple, SpellOfSimpleSkoarmantics {
         auto ugen (noad->next_skoarpuscle ());
-        auto msg (make_shared<SkoarpuscleMsg> (skoarpuscle_ptr<SkoarpuscleUGen> (ugen)->defaultMsg (), nullptr));
-        msg->dest = ugen;
+        //auto msg (make_shared<SkoarpuscleMsg> (skoarpuscle_ptr<SkoarpuscleUGen> (ugen)->defaultMsg (), nullptr));
+        //msg->dest = ugen;
 
         auto end_noad (SkoarNoad::NewArtificial(L"ugen_s_end", noad));
-        end_noad->skoarpuscle = msg;
+        //end_noad->skoarpuscle = msg;
         noad->add_noad(end_noad);
     }},
 
     {ESkoarNoad::ugen_with_args, SpellOfSimpleSkoarmantics {
         auto ugen (noad->next_skoarpuscle ());
         auto args (make_shared<SkoarpuscleArgs> ());
-        auto msg (make_shared<SkoarpuscleMsg>(skoarpuscle_ptr<SkoarpuscleUGen> (ugen)->defaultMsg (), args));
-        msg->dest = ugen;
+        //auto msg (make_shared<SkoarpuscleMsg>(skoarpuscle_ptr<SkoarpuscleUGen> (ugen)->defaultMsg (), args));
+        //msg->dest = ugen;
         
         auto end_noad (SkoarNoad::NewArtificial(L"ugen_wa_end", noad));
-        end_noad->skoarpuscle = msg;
+        //end_noad->skoarpuscle = msg;
         noad->add_noad (end_noad);
     }},
 
@@ -331,11 +371,11 @@ Skoarmantics::Skoarmantics () : table ({
         
         if (lute_ptr->has_messages) {
             auto args (make_shared<SkoarpuscleArgs> ());
-            auto msg (make_shared<SkoarpuscleMsg> (L"string", args));
-            msg->dest = lute;
+            //auto msg (make_shared<SkoarpuscleMsg> (L"string", args));
+            //msg->dest = lute;
 
             auto end_noad (SkoarNoad::NewArtificial(L"lute_string_end", noad));
-            end_noad->skoarpuscle = msg;
+            //end_noad->skoarpuscle = msg;
             noad->add_noad (end_noad);
         }
     }},
@@ -357,7 +397,13 @@ Skoarmantics::Skoarmantics () : table ({
     //{ESkoarNoad::expr_h, expr_spell},
 
     {ESkoarNoad::msgable, SpellOfSimpleSkoarmantics {
-        auto skoarpuscle (noad->next_skoarpuscle ());
+        /*
+        msgable          : nouny msg_chain_node
+        +msg_chain_node  : MsgOp msg msg_chain_node | <e>
+        msg              : MsgNameWithArgs listy_suffix | MsgName | listy | loop
+        */
+
+        /*auto skoarpuscle (noad->next_skoarpuscle ());
         
         if (is_skoarpuscle<SkoarpuscleUGen> (skoarpuscle)) {
 
@@ -397,6 +443,34 @@ Skoarmantics::Skoarmantics () : table ({
 
         if (has_messages && is_skoarpuscle<SkoarpuscleList>(skoarpuscle))
             skoarpuscle_ptr<SkoarpuscleList> (skoarpuscle)->noaty = false;
+        */
+
+        
+
+        /*
+        msgable
+          0 -- nouny
+          1 -- MsgOp
+          2 -- msg
+                - charge arcane magic with impression (msg dest)
+                - push magic stack
+          2.0 -- MsgWArgs
+          2.1 -- listy_suffix
+          2.x -- insert noad to process msg
+                   - get impression: this is the args
+                   - pop magic stack
+                   - cast arcane magic to get msg dest
+                   - send msg to dest
+          3 -- MsgOp
+          4 -- msg
+
+
+        */
+
+        //auto& children (noad->children);
+        //if (children.size () <= 1)
+        //    return;
+
     }}
 
 }) {

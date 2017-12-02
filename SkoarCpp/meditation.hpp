@@ -4,11 +4,24 @@
 class SkoarpuscleMeditation : public Skoarpuscle {
 public:
     void asString(wostream &out) override { out << "SkoarpuscleMeditation" << " :: " ; }
-    SkoarpuscleMeditation(Skoar *skoar, SkoarNoadPtr noad);
+    SkoarpuscleMeditation (Skoar*, SkoarNoadPtr);
+    SkoarpuscleMeditation (SkoarpionPtr);
+    ~SkoarpuscleMeditation () override;
+    void clear ();
+
+    SkoarpusclePtr duplicate () override;
+    void on_enter (SkoarMinstrelPtr) override;
+
+    void run (SkoarMinstrelPtr m);
+    SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
+
+
+private:
+    SkoarpionPtr skoarpion;
 };
 
 class SkoarpuscleMeditationMsg : public Skoarpuscle {
 public:
     void asString(wostream &out) override { out << "SkoarpuscleMeditationMsg" << " :: " ; }
-    SkoarpuscleMeditationMsg(Skoar *skoar, SkoarNoadPtr noad);
+    SkoarpuscleMeditationMsg(Skoar*, SkoarNoadPtr);
 };

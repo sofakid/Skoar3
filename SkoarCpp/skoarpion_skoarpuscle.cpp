@@ -67,11 +67,6 @@ void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
     m->koar->do_skoarpion(val, m, SkoarKoar::EExecStyle::NORMAL, impression);
 }
 
-SkoarpusclePtr SkoarpuscleSkoarpion::skoar_msg(SkoarpuscleMsg* /*msg*/, SkoarMinstrelPtr /*minstrel*/) {
-    //args = msg->get_msg_arr(minstrel);
-    return nullptr;
-}
-
 void SkoarpuscleSkoarpion::asString(wostream &out) { 
     out << L"Skoarpion :: " << val->name;
 }
@@ -134,6 +129,7 @@ SkoarpusclePtr SkoarpuscleArgExpr::flatten (SkoarMinstrelPtr m)
     auto& fairy (*m->fairy);
     fairy.push ();
         
+    fairy.impress (nullptr);
     for (auto &noadite : expr)
         noadite.enter_noad (m);
 

@@ -441,19 +441,6 @@ void SkoarpuscleArgs::valAsString (wostream &) {
 }
 
 
-
-void SkoarpuscleMsg::asString (wostream &out) {
-    out << "Msg" << " :: " << val;
-}
-void SkoarpuscleMsg::typeAsString (wostream &out) {
-    out << "Msg";
-}
-void SkoarpuscleMsg::valAsString (wostream &out) {
-    out << val;
-}
-
-
-
 void SkoarpuscleExprEnd::asString (wostream &out) {
     out << "ExprEnd";
 }

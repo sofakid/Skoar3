@@ -44,7 +44,7 @@ SkoarpusclePtr flatten_list (SkoarpusclePtr p) {
 
 void execute_noat (SkoarpusclePtr s, SkoarMinstrelPtr m) {
     auto& koar (*m->koar);
-    if (is_skoarpuscle<SkoarpuscleFloat> (s))
+    /*if (is_skoarpuscle<SkoarpuscleFloat> (s))
     {
         koar.put (L"freq", s);
         koar.put (L"note", nullptr);
@@ -58,7 +58,7 @@ void execute_noat (SkoarpusclePtr s, SkoarMinstrelPtr m) {
         koar.put (L"choard", nullptr);
     }
 
-    else if (is_skoarpuscle<SkoarpuscleNoat> (s))
+    else */if (is_skoarpuscle<SkoarpuscleNoat> (s))
     {
         auto p = skoarpuscle_ptr<SkoarpuscleNoat> (s);
         koar.put (L"freq", nullptr);
@@ -73,12 +73,12 @@ void execute_noat (SkoarpusclePtr s, SkoarMinstrelPtr m) {
         koar.put (L"choard", flatten_list (s));
     }
 
-    else if (is_skoarpuscle<SkoarpuscleList> (s))
+    /*else if (is_skoarpuscle<SkoarpuscleList> (s))
     {
         koar.put (L"freq", nullptr);
         koar.put (L"note", nullptr);
         koar.put (L"choard", flatten_list (s));
-    }
+    }*/
 }
 
 // --- SkoarpuscleDuration ------------------------------------------------
