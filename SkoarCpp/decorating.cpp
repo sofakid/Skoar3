@@ -380,29 +380,27 @@ Skoarmantics::Skoarmantics () : table ({
         }
     }},
 
-    {ESkoarNoad::opt_args , SpellOfSimpleSkoarmantics {
+    {ESkoarNoad::args , SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleArgList> (noad);
-        //noad->clear_children ();
-        //noad->children.clear ();
     }},
 
     {ESkoarNoad::args_entries , SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleArgExpr> (noad);
     }},
 
+    {ESkoarNoad::cloasures , SpellOfSimpleSkoarmantics {
+        noad->skoarpuscle = make_shared<SkoarpuscleCloasures> (noad);
+    }},
+
+    {ESkoarNoad::expoarts , SpellOfSimpleSkoarmantics {
+        noad->skoarpuscle = make_shared<SkoarpuscleExpoarts> (noad);
+    }},
 
     {ESkoarNoad::assignment, expr_spell },
     {ESkoarNoad::expr,   expr_spell},
 
-    //{ESkoarNoad::expr_h, expr_spell},
-
     {ESkoarNoad::msgable, SpellOfSimpleSkoarmantics {
-        /*
-        msgable          : nouny msg_chain_node
-        +msg_chain_node  : MsgOp msg msg_chain_node | <e>
-        msg              : MsgNameWithArgs listy_suffix | MsgName | listy | loop
-        */
-
+        
         /*auto skoarpuscle (noad->next_skoarpuscle ());
         
         if (is_skoarpuscle<SkoarpuscleUGen> (skoarpuscle)) {
@@ -444,32 +442,6 @@ Skoarmantics::Skoarmantics () : table ({
         if (has_messages && is_skoarpuscle<SkoarpuscleList>(skoarpuscle))
             skoarpuscle_ptr<SkoarpuscleList> (skoarpuscle)->noaty = false;
         */
-
-        
-
-        /*
-        msgable
-          0 -- nouny
-          1 -- MsgOp
-          2 -- msg
-                - charge arcane magic with impression (msg dest)
-                - push magic stack
-          2.0 -- MsgWArgs
-          2.1 -- listy_suffix
-          2.x -- insert noad to process msg
-                   - get impression: this is the args
-                   - pop magic stack
-                   - cast arcane magic to get msg dest
-                   - send msg to dest
-          3 -- MsgOp
-          4 -- msg
-
-
-        */
-
-        //auto& children (noad->children);
-        //if (children.size () <= 1)
-        //    return;
 
     }}
 

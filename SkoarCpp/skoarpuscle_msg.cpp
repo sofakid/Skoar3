@@ -151,6 +151,91 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
 
     if (sel == L"size")
         return make_skoarpuscle (static_cast<SkoarInt>(val->size()));
+    else if (sel == L"at")
+    {
+        if (args->val->size () == 1)
+        {
+            auto arg (args->val->front ());
+            if (is_skoarpuscle<SkoarpuscleInt> (arg))
+            {
+                SkoarInt n (static_cast<SkoarInt>(val->size ()));
+                SkoarInt i (abs (skoarpuscle_ptr<SkoarpuscleInt>(arg)->val) % n);
+
+                auto x ((*val)[i]);
+                return make_skoarpuscle(x);
+            }
+        }
+        return make_skoarpuscle (nullptr);
+
+    }
+
+    else if (sel == L"random")
+    {
+        SkoarInt n (static_cast<SkoarInt>(val->size ()));
+        if (n == 0)
+            return make_skoarpuscle (nullptr);
+        if (n == 1)
+        {
+            auto x (val->front ());
+            return make_skoarpuscle (x);
+        }
+        --n;
+
+        auto& generator (get_generator ());
+        uniform_int_distribution<SkoarInt> distribution (0, n);
+        SkoarInt i (distribution (generator));
+        auto x ((*val)[i]);
+        return make_skoarpuscle (x);
+    }
+    else if (sel == L"shuffle")
+    {
+        auto& generator (get_generator ());
+        auto x (duplicate ());
+        auto& vec (skoarpuscle_ptr<SkoarpuscleList> (x)->val);
+        shuffle (vec->begin (), vec->end (), generator);
+        return make_skoarpuscle (x);
+    }
+
+    else if (sel == L"fill")
+    {
+        if (args == nullptr)
+            return make_skoarpuscle (nullptr);
+
+        auto& argsval (args->val);
+        if (argsval->size () != 2)
+            return make_skoarpuscle (nullptr);
+
+        auto& arg0 ((*argsval)[0]);
+        auto& arg1 ((*argsval)[1]);
+        if (is_skoarpuscle<SkoarpuscleInt> (arg0) && is_skoarpuscle<SkoarpuscleSkoarpion> (arg1))
+        {
+            const auto& n (skoarpuscle_ptr<SkoarpuscleInt> (arg0)->val);
+            auto skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg1)->val);
+            auto new_list (make_shared<ListOfSkoarpuscles> ());
+
+            for (SkoarInt i (0); i < n; ++i)
+            {
+                auto el_i (make_skoarpuscle(i));
+                auto args_list = make_shared<ListOfSkoarpuscles> ();
+                args_list->push_back (el_i);
+                auto args_prov = make_shared<SkoarpuscleList> (args_list);
+
+                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, args_prov);
+                new_list->push_back (fairy.impression);
+            }
+            return make_skoarpuscle (new_list);
+
+        }
+        return make_skoarpuscle (nullptr);
+    }
+    else if (sel == L"generate")
+    {
+        auto& generator (get_generator ());
+        auto x (duplicate ());
+        auto& vec (skoarpuscle_ptr<SkoarpuscleList> (x)->val);
+        shuffle (vec->begin (), vec->end (), generator);
+        return make_skoarpuscle (x);
+    }
 
     else if (sel == L"map")
     {

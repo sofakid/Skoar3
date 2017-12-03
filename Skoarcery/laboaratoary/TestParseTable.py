@@ -56,7 +56,7 @@ class Verify_LL_1(unittest.TestCase):
                             #print("X = {}\nP = {}\nA = {}\na = {}".format(str(X), str(P), str(A), str(a)))
                             duplicates += 1
 
-                        print("        M[A,a] = M[{}, {}] = P".format(A.name, a.name))
+                        #print("        M[A,a] = M[{}, {}] = P".format(A.name, a.name))
                         M[A, a] = P
 
                     # (3)
@@ -80,7 +80,7 @@ class Verify_LL_1(unittest.TestCase):
                                 #raise AssertionError("3) Grammar is not LL(1). Fuck.")
                                 duplicates += 1
 
-                            print("            M[A,b] = M[{}, {}] = P".format(A.name, b.name))
+                            #print("            M[A,b] = M[{}, {}] = P".format(A.name, b.name))
                             M[A, b] = P
 
         self.assertTrue(duplicates is 0, str(duplicates) + " duplicate entries: Grammar is not LL(1).")

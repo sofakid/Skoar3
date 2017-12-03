@@ -41,7 +41,7 @@ public:
 class SkoarpuscleArgList : public Skoarpuscle {
 public:
     map<SkoarString, SkoarpusclePtr> args_dict;
-    list<SkoarString> args_names;
+    ListOfSkoarStrings args_names;
     SkoarNoadPtr noad;
 
     SkoarpuscleArgList(SkoarNoadPtr);
@@ -50,6 +50,28 @@ public:
 
     void on_enter(SkoarMinstrelPtr) override;
     void asString(wostream &out) override;
+};
+
+
+class SkoarpuscleCloasures : public Skoarpuscle
+{
+public:
+    ListOfSkoarStrings cloasure_names;
+
+    SkoarpuscleCloasures (SkoarNoadPtr);
+    ~SkoarpuscleCloasures () override;
+    void asString (wostream &out) override;
+};
+
+
+class SkoarpuscleExpoarts : public Skoarpuscle
+{
+public:
+    ListOfSkoarStrings expoart_names;
+
+    SkoarpuscleExpoarts (SkoarNoadPtr);
+    ~SkoarpuscleExpoarts () override;
+    void asString (wostream &out) override;
 };
 
 

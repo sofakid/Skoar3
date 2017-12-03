@@ -142,60 +142,59 @@ void Skoarpion::init_from_noad (Skoar* skr, SkoarNoadPtr noad) {
 
     skoar = skr;
 
-    auto kidderatoar (noad->children.cbegin ());
-
-    // With args:
-    // kid 0 - opt_args
-    // kid 1 - SkoarpionStart
-    // kid 2 - suffix
-
-    // without args:
-    // kid 0 - SkoarpionStart
-    // kid 1 - suffix
-    auto first (*kidderatoar);
-
-    if (first->kind == ESkoarNoad::opt_args)
+    for (auto& child : noad->children)
     {
-        arg_list = first->skoarpuscle;
-        ++kidderatoar;
-    }
-
-    auto suffix (*(++kidderatoar));
-    
-    auto line (SkoarNoad::NewArtificial (L"line"));
-    line->voice = skoar->all_voice;
-
-    body = SkoarNoad::NewArtificial (L"section");
-    
-
-    for (auto x : suffix->children)
-    {
-        auto process_line ([&]() {
-            if (line->children.size () > 0)
-                body->add_noad (line);
-        });
-
-        auto toke (x->toke.get ());
-        if (is_toke<ESkoarToke::Newline> (toke))
+        switch (child->kind)
         {
-            process_line ();
-            line = SkoarNoad::NewArtificial (L"line");
-            line->voice = skoar->all_voice;
+        case ESkoarNoad::args:
+            arg_list = child->skoarpuscle;
+            break;
+
+        case ESkoarNoad::cloasures:
+            cloasure_list = child->skoarpuscle;
+            break;
+        
+        case ESkoarNoad::expoarts:
+            expoart_list = child->skoarpuscle;
+            break;
+        
+        case ESkoarNoad::skrp_suffix:
+            {
+                auto line (SkoarNoad::NewArtificial (L"line"));
+                line->voice = skoar->all_voice;
+
+                body = SkoarNoad::NewArtificial (L"section");
+
+                for (auto& x : child->children)
+                {
+                    auto process_line ([&]() {
+                        if (line->children.size () > 0)
+                            body->add_noad (line);
+                    });
+
+                    auto toke (x->toke.get ());
+                    if (is_toke<ESkoarToke::Newline> (toke))
+                    {
+                        process_line ();
+                        line = SkoarNoad::NewArtificial (L"line");
+                        line->voice = skoar->all_voice;
+                    }
+                    else if (is_toke<ESkoarToke::SkoarpionEnd> (toke))
+                    {
+                        process_line ();
+                    }
+                    else
+                        line->add_noad (x);
+                }
+                child->children.clear ();
+                break;
+            }
         }
-        else if (is_toke<ESkoarToke::SkoarpionEnd> (toke))
-        {
-            process_line ();
-        }
-        else
-            line->add_noad (x);
     }
-    suffix->children.clear ();
 
     body->decorate_address_zero (body);
-
     n = body->size;
     body->decorate_voices (skoar->all_voice);
-
 }
 
 // this is static, need a shared_ptr to the skoarpion.

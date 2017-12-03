@@ -72,15 +72,6 @@ void SkoarpuscleSkoarpion::asString(wostream &out) {
 }
 
 // --- SkoarpuscleArgExpr ----------------------------------------------
-/* args_entries tree looks like:
-
-    args_entries
-       Toke_SymbolName
-or 
-    args_entries
-       Toke_SymbolColon
-       expr
-*/
 SkoarpuscleArgExpr::SkoarpuscleArgExpr(SkoarNoadPtr noad) {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocSkoarpuscle(L"ArgExpr");
@@ -143,13 +134,6 @@ SkoarpusclePtr SkoarpuscleArgExpr::flatten (SkoarMinstrelPtr m)
 }
 
 // --- SkoarpuscleArgList ----------------------------------------------
-/*
-    arg_listy
-       Toke_ListS
-       arg_expr
-       Toke_ListSep
-       arg_expr
-*/
 SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr noad) :
     noad(noad)
 {
@@ -206,6 +190,64 @@ void SkoarpuscleArgList::asString(wostream &out) {
     for (auto x : args_names)
         out << " :: " << x ;
 }
+
+
+// --- SkoarpuscleCloasures ----------------------------------------------
+SkoarpuscleCloasures::SkoarpuscleCloasures (SkoarNoadPtr noad)
+{
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().allocSkoarpuscle (L"Cloasures");
+#endif
+
+    auto skoarpuscles (noad->collect_skoarpuscles ());
+    for (auto x : *skoarpuscles)
+        if (is_skoarpuscle<SkoarpuscleSymbolName> (x))
+            cloasure_names.push_back (skoarpuscle_ptr<SkoarpuscleSymbolName> (x)->val);
+
+    noad->children.clear ();
+}
+
+SkoarpuscleCloasures::~SkoarpuscleCloasures () {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().deallocSkoarpuscle (L"Cloasures");
+#endif
+}
+
+void SkoarpuscleCloasures::asString (wostream &out) {
+    out << "Cloasures";
+    for (auto& x : cloasure_names)
+        out << " :: " << x;
+}
+
+
+
+// --- SkoarpuscleExpoarts ----------------------------------------------
+SkoarpuscleExpoarts::SkoarpuscleExpoarts (SkoarNoadPtr noad)
+{
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().allocSkoarpuscle (L"Expoarts");
+#endif
+
+    auto skoarpuscles (noad->collect_skoarpuscles ());
+    for (auto x : *skoarpuscles)
+        if (is_skoarpuscle<SkoarpuscleSymbolName> (x))
+            expoart_names.push_back (skoarpuscle_ptr<SkoarpuscleSymbolName> (x)->val);
+    
+    noad->children.clear ();
+}
+
+SkoarpuscleExpoarts::~SkoarpuscleExpoarts () {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().deallocSkoarpuscle (L"Expoarts");
+#endif
+}
+
+void SkoarpuscleExpoarts::asString (wostream &out) {
+    out << "Expoarts";
+    for (auto x : expoart_names)
+        out << " :: " << x;
+}
+
 
 
 

@@ -55,7 +55,9 @@ public:
     }
 
     virtual SkoarpusclePtr skoar_msg(SkoarString /*selector*/, SkoarpusclePtr /*args*/, SkoarMinstrelPtr /*minstrel*/) {
-        throw SkoarpuscleException(L"skoar_msg() called on incompatible skoarpuscle.");
+        SkoarString msg (L"skoar_msg() called on incompatible skoarpuscle. -- ");
+        SkoarString details (asString ());
+        throw SkoarpuscleException(msg + details);
     }
 
     //virtual Poco::DynamicAny flatten(SkoarMinstrelPtr m) {

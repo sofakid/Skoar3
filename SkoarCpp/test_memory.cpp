@@ -35,6 +35,26 @@ TEST_CASE ("Memories - Compiled - SkoarLite", "[memory]") {
         createSkoarLite (L"a) ]] derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {! @worp !s )) !} {: )) :: 3 times :}");
     }
 
+    SECTION ("skoarpions_a") {
+        createSkoarLite (L"{! ))) !}");
+    }
+
+    SECTION ("skoarpions_b") {
+        createSkoarLite (L"!! {! ))) !}");
+    }
+
+    SECTION ("skoarpions_c") {
+        createSkoarLite (L"!! x {! ))) !}");
+    }
+
+    SECTION ("skoarpions_d") {
+        createSkoarLite (L"!! <x> {! ))) !}");
+    }
+
+    SECTION ("skoarpions_e") {
+        createSkoarLite (L"{! [x] ))) !}");
+    }
+
     SECTION ("unending loop") {
         createSkoarLite (L"a) ]] derp:!! x {! !x ) 0 a# !} !derp<2>  \n\n\n55 nine : 9 @food dorp: !! s:6 {! @worp !s )) !} {: )) :: 3 times }");
     }
@@ -224,6 +244,19 @@ TEST_CASE ("Memories - Compiled - Skoarpions", "[memory]") {
     SECTION ("skoarpion - default args skoarpion default args") {
         createSkoar (L"derp: !! x:!! y:3 {! 8 !} {! ) !}");
     }
+
+    SECTION ("skoarpions_empty_sig") {
+        createSkoar (L"!! {! ))) !}");
+    }
+
+    SECTION ("skoarpions_cloasure") {
+        createSkoar (L"!! <x> {! ))) !}");
+    }
+
+    SECTION ("skoarpions_expoarts") {
+        createSkoar (L"{! [x] ))) !}");
+    }
+
 
 }
 

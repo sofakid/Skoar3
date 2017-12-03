@@ -181,6 +181,26 @@ void SkoarpuscleDeref::do_deref (SkoarMinstrelPtr m) {
         fairy.pop_noating ();
 
     }
+    else if (is_skoarpuscle<SkoarpuscleList> (x))
+    {
+        if (args == nullptr)
+        {
+            fairy.impress (x);
+        }
+        else
+        {
+            // args when derefencing a list means send "at"
+            SkoarpusclePtr result (nullptr);
+            auto listy (skoarpuscle_ptr<SkoarpuscleList> (x));
+            auto arg_list = fairy.impression;
+            if (is_skoarpuscle<SkoarpuscleList> (arg_list))
+            {
+                const SkoarString sel (L"at");
+                result = listy->skoar_msg (sel, arg_list, m);
+            }
+            fairy.impress (result);
+        }
+    }
     // todo: uncomment when books exist
     /*
     else if (is_skoarpuscle<SkoarpuscleBook>(x)) {

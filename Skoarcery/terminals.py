@@ -110,6 +110,9 @@ SkoarpionArgs:    !!
 SkoarpionStart:   [{]!
 SkoarpionEnd:     ![}]
 
+ExpoartsS:        \\[
+ExpoartsE:        \\]
+    
 Deref:            !(?![!}]|=)
 Nosey:            ,
 
@@ -118,8 +121,8 @@ AlCoda:           al [cC]oda(\\s*:\\s*[a-zA-Z0-9_]+)?
 
 AUGen*:           a[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
 AUGenWithArgs*:   a[A-Z][a-zA-Z0-9_]*<
-KUGen*:           k[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
-KUGenWithArgs*:   k[A-Z][a-zA-Z0-9_]*<
+KUGen*:           c[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
+KUGenWithArgs*:   c[A-Z][a-zA-Z0-9_]*<
 DUGen*:           d[A-Z][a-zA-Z0-9_]*(?![a-zA-Z0-9_]*<)
 DUGenWithArgs*:   d[A-Z][a-zA-Z0-9_]*<
 
