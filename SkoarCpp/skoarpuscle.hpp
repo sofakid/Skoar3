@@ -461,7 +461,8 @@ public:
 
     bool noaty;
     SkoarpuscleList();
-    SkoarpuscleList(ListOfSkoarpusclesPtr listy);
+    SkoarpuscleList(ListOfSkoarpusclesPtr);
+    SkoarpuscleList (const ListOfSkoarpuscles&);
     ~SkoarpuscleList() ;
     void clear () override;
 
@@ -474,7 +475,7 @@ public:
     SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
-
+    SkoarpusclePtr duplicate_shallow ();
 
     shared_ptr<SkoarpuscleList> mul(SkoarMinstrelPtr, SkoarpusclePtr);
     shared_ptr<SkoarpuscleList> div(SkoarMinstrelPtr, SkoarpusclePtr);

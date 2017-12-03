@@ -447,13 +447,20 @@ void SkoarpuscleList::on_enter (SkoarMinstrelPtr m) {
 
 SkoarpusclePtr SkoarpuscleList::duplicate ()
 {
-    auto listy (make_shared<SkoarpuscleList> ());
-    auto& newval (listy->val);
+    ListOfSkoarpuscles listy (val->size ());
+    size_t i (0U);
 
     for (auto& x : *val)
-        newval->push_back (x->duplicate ());
+        listy[i++] = x->duplicate ();
 
-    return listy;
+    return make_shared<SkoarpuscleList>(listy);
+}
+
+
+SkoarpusclePtr SkoarpuscleList::duplicate_shallow ()
+{
+    auto& listy (*val);
+    return make_shared<SkoarpuscleList> (listy);
 }
 
 bool SkoarpuscleList::isNoatworthy () {

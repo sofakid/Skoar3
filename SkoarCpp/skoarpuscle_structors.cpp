@@ -614,6 +614,19 @@ SkoarpuscleList::SkoarpuscleList (ListOfSkoarpusclesPtr x) :
     impressionable = true;
 }
 
+
+SkoarpuscleList::SkoarpuscleList (const ListOfSkoarpuscles& x) :
+    Skoarpuscle (ESkoarpuscle::List),
+    val (make_shared<ListOfSkoarpuscles>(x))
+{
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().allocSkoarpuscle (L"List");
+#endif
+
+    noaty = false;
+    impressionable = true;
+}
+
 SkoarpuscleList::~SkoarpuscleList () {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().deallocSkoarpuscle (L"List");

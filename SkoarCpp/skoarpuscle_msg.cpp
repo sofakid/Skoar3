@@ -144,13 +144,17 @@ SkoarpusclePtr SkoarpuscleFloat::skoar_msg (SkoarString sel, SkoarpusclePtr args
 // --- SkoarpuscleList ---------------------------------------------------------
 
 SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_sp, SkoarMinstrelPtr m) {
+    auto& v (*val);
     auto& fairy (*m->fairy);
     SkoarpuscleList* args (nullptr);
+
     if (is_skoarpuscle<SkoarpuscleList> (args_sp))
         args = skoarpuscle_ptr<SkoarpuscleList> (args_sp);
 
     if (sel == L"size")
         return make_skoarpuscle (static_cast<SkoarInt>(val->size()));
+    
+    
     else if (sel == L"at")
     {
         if (args->val->size () == 1)
@@ -158,84 +162,73 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
             auto arg (args->val->front ());
             if (is_skoarpuscle<SkoarpuscleInt> (arg))
             {
-                SkoarInt n (static_cast<SkoarInt>(val->size ()));
+                SkoarInt n (static_cast<SkoarInt>(v.size ()));
                 SkoarInt i (abs (skoarpuscle_ptr<SkoarpuscleInt>(arg)->val) % n);
 
-                auto x ((*val)[i]);
-                return make_skoarpuscle(x);
+                return make_skoarpuscle(v[i]);
             }
         }
         return make_skoarpuscle (nullptr);
-
     }
+
 
     else if (sel == L"random")
     {
-        SkoarInt n (static_cast<SkoarInt>(val->size ()));
+        SkoarInt n (static_cast<SkoarInt>(v.size ()));
         if (n == 0)
             return make_skoarpuscle (nullptr);
         if (n == 1)
-        {
-            auto x (val->front ());
-            return make_skoarpuscle (x);
-        }
+            return make_skoarpuscle (v[0]);
         --n;
 
         auto& generator (get_generator ());
         uniform_int_distribution<SkoarInt> distribution (0, n);
         SkoarInt i (distribution (generator));
-        auto x ((*val)[i]);
-        return make_skoarpuscle (x);
+        return make_skoarpuscle (v[i]);
     }
+
+
     else if (sel == L"shuffle")
     {
         auto& generator (get_generator ());
-        auto x (duplicate ());
+        auto x (duplicate_shallow ());
         auto& vec (skoarpuscle_ptr<SkoarpuscleList> (x)->val);
         shuffle (vec->begin (), vec->end (), generator);
         return make_skoarpuscle (x);
     }
+
 
     else if (sel == L"fill")
     {
         if (args == nullptr)
             return make_skoarpuscle (nullptr);
 
-        auto& argsval (args->val);
-        if (argsval->size () != 2)
+        auto& argsval (*(args->val));
+        if (argsval.size () != 2)
             return make_skoarpuscle (nullptr);
 
-        auto& arg0 ((*argsval)[0]);
-        auto& arg1 ((*argsval)[1]);
+        auto& arg0 (argsval[0]);
+        auto& arg1 (argsval[1]);
         if (is_skoarpuscle<SkoarpuscleInt> (arg0) && is_skoarpuscle<SkoarpuscleSkoarpion> (arg1))
         {
             const auto& n (skoarpuscle_ptr<SkoarpuscleInt> (arg0)->val);
-            auto skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg1)->val);
-            auto new_list (make_shared<ListOfSkoarpuscles> ());
+            auto& skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg1)->val);
+            ListOfSkoarpuscles new_list (static_cast<size_t>(n));
 
             for (SkoarInt i (0); i < n; ++i)
             {
                 auto el_i (make_skoarpuscle(i));
-                auto args_list = make_shared<ListOfSkoarpuscles> ();
-                args_list->push_back (el_i);
-                auto args_prov = make_shared<SkoarpuscleList> (args_list);
+                ListOfSkoarpuscles args_list { el_i };
 
-                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, args_prov);
-                new_list->push_back (fairy.impression);
+                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, make_skoarpuscle (args_list));
+                new_list[i] = fairy.impression;
             }
             return make_skoarpuscle (new_list);
 
         }
         return make_skoarpuscle (nullptr);
     }
-    else if (sel == L"generate")
-    {
-        auto& generator (get_generator ());
-        auto x (duplicate ());
-        auto& vec (skoarpuscle_ptr<SkoarpuscleList> (x)->val);
-        shuffle (vec->begin (), vec->end (), generator);
-        return make_skoarpuscle (x);
-    }
+    
 
     else if (sel == L"map")
     {
@@ -249,23 +242,21 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
         auto& arg0 (argsval->front ());
         if (is_skoarpuscle<SkoarpuscleSkoarpion> (arg0))
         {
-            auto skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg0)->val);
-            auto new_list (make_shared<ListOfSkoarpuscles> ());
-            for (auto& el : *val)
+            auto& skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg0)->val);
+            ListOfSkoarpuscles new_list (v.size());
+            size_t i (0U);
+            for (auto& el : v)
             {
-                auto args_list = make_shared<ListOfSkoarpuscles> ();
-                args_list->push_back (el);
-                auto args_prov = make_shared<SkoarpuscleList>(args_list);
-
-                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, args_prov);
-                new_list->push_back (fairy.impression);
+                ListOfSkoarpuscles args_list { el };
+                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, make_skoarpuscle (args_list));
+                new_list[i++] = fairy.impression;
             }
             return make_skoarpuscle (new_list);
-
         }
         return make_skoarpuscle (nullptr);
-
     }
+
+
     else if (sel == L"filter")
     {
         if (args == nullptr)
@@ -278,25 +269,26 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
         auto& arg0 (argsval->front ());
         if (is_skoarpuscle<SkoarpuscleSkoarpion> (arg0))
         {
-            auto skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg0)->val);
-            auto new_list (make_shared<ListOfSkoarpuscles> ());
-            for (auto& el : *val)
+            auto& skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg0)->val);
+            ListOfSkoarpuscles new_list (v.size());
+            size_t i (0U);
+            for (auto& el : v)
             {
-                auto args_list = make_shared<ListOfSkoarpuscles> ();
-                args_list->push_back (el);
-                auto args_prov = make_shared<SkoarpuscleList> (args_list);
-
-                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, args_prov);
+                ListOfSkoarpuscles args_list { el };
+                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, make_skoarpuscle (args_list));
                 
                 auto result = fairy.impression;
                 if (result->kind == ESkoarpuscle::True)
-                    new_list->push_back (el);
+                    new_list[i++] = el;
             }
-            return make_skoarpuscle (new_list);
+            new_list.resize (i);
 
+            return make_skoarpuscle (new_list);
         }
         return make_skoarpuscle (nullptr);
     }
+
+
     else if (sel == L"reduce")
     {
         if (args == nullptr)
@@ -309,34 +301,29 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
         auto& arg0 (argsval->front ());
         if (is_skoarpuscle<SkoarpuscleSkoarpion> (arg0))
         {
-            auto skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg0)->val);
-            auto new_list (make_shared<ListOfSkoarpuscles> ());
+            auto& skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg0)->val);
 
-            if (val->size () == 0)
+            if (v.size () == 0)
                 return make_skoarpuscle (nullptr);
 
-            auto iter (val->cbegin ());
-            auto end (val->cend ());
+            auto iter (v.cbegin ());
+            auto end (v.cend ());
             auto x (*iter++);
             for (; iter != end; ++iter)
             {
-                auto args_list = make_shared<ListOfSkoarpuscles> ();
-                args_list->push_back (x);
-                args_list->push_back (*iter);
-
-                auto args_prov = make_shared<SkoarpuscleList> (args_list);
-
-                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, args_prov);
-
+                ListOfSkoarpuscles args_list { x, *iter };
+                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, make_skoarpuscle (args_list));
                 x = fairy.impression;
             }
             if (x == nullptr)
                 return make_skoarpuscle (nullptr);
-            return x;
 
+            return x;
         }
         return make_skoarpuscle (nullptr);
     }
+
+
     else if (sel == L"each")
     {
         if (args == nullptr)
@@ -349,15 +336,11 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
         auto& arg0 (argsval->front ());
         if (is_skoarpuscle<SkoarpuscleSkoarpion> (arg0))
         {
-            auto skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg0)->val);
-            auto new_list (make_shared<ListOfSkoarpuscles> ());
-            for (auto& el : *val)
+            auto& skoarpion (skoarpuscle_ptr<SkoarpuscleSkoarpion> (arg0)->val);
+            for (auto& el : v)
             {
-                auto args_list = make_shared<ListOfSkoarpuscles> ();
-                args_list->push_back (el);
-                auto args_prov = make_shared<SkoarpuscleList> (args_list);
-
-                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, args_prov);
+                ListOfSkoarpuscles args_list { el };
+                m->koar->do_skoarpion (skoarpion, m, SkoarKoar::EExecStyle::NORMAL, make_skoarpuscle (args_list));
             }
 
         }
@@ -367,7 +350,6 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
     return make_skoarpuscle (nullptr);
 
 }
-
 
 
 SkoarpusclePtr SkoarpuscleString::skoar_msg (SkoarString sel, SkoarpusclePtr args, SkoarMinstrelPtr m) {

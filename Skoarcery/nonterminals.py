@@ -80,13 +80,6 @@ lute             : Lute | LuteWithArgs listy_suffix
 deref            : Deref deref_prime
 +deref_prime     : MsgNameWithArgs listy_suffix | MsgName
 
-
-
-
-msgable          : nouny msg_chain_node
-+msg_chain_node  : MsgOp msg msg_chain_node | <e>
-msg              : MsgNameWithArgs listy_suffix | MsgName | listy | loop
-
 cthulhu          : LWing Semicolon cthulhu_prime
 +cthulhu_prime   : boolean_expr Semicolon RWing | Nosey Semicolon RWing
 
@@ -122,16 +115,6 @@ times            : Times
 boolean_expr     : expr
 #math*            : MathOp msgable
 
-# a: lowest precedence, b: higher, c: even higher, etc..
-#expr             : expr_a 
-#+expr_a           : assignment | msgable expr_b 
-#+expr_b           : boolean_or | expr_c | times | <e>
-#+expr_c           : boolean_and | expr_d
-#+expr_d           : cmp_eq_neq | expr_e
-#+expr_e           : cmp_gt_lt | expr_f
-#+expr_f           : math_add_sub | expr_g
-#+expr_g           : math_mul_div_mod | BracketS expr BracketE expr
-
 # right recursive version:
 #expr             : expr_a 
 #expr_a           : SymbolColon expr_b | expr_b 
@@ -162,23 +145,17 @@ cmp_gt_lt           : math_add_sub cmp_gt_lt_prime
 math_add_sub           : math_mul_div_mod math_add_sub_prime
 +math_add_sub_prime    : MathOpAddSub math_mul_div_mod math_add_sub_prime | <e>
 
-math_mul_div_mod           : expr_h math_mul_div_mod_prime
-+math_mul_div_mod_prime    : MathOpMulDivMod expr_h math_mul_div_mod_prime | <e>
+math_mul_div_mod           : msgable math_mul_div_mod_prime
++math_mul_div_mod_prime    : MathOpMulDivMod msgable math_mul_div_mod_prime | <e>
 
-+expr_h           : BracketS expr BracketE | msgable
+#+expr_h           : BracketS expr BracketE | msgable
+
+
+msgable          : nouny msg_chain_node | BracketS expr BracketE msg_chain_node
++msg_chain_node  : MsgOp msg msg_chain_node | <e>
+msg              : MsgNameWithArgs listy_suffix | MsgName | listy | loop
 
 +opt_times        : times | <e>
-
-
-
-#assignment       : SymbolColon expr
-#boolean_or       : BooleanOr expr
-#boolean_and      : BooleanAnd expr
-#cmp_eq_neq       : CmpEqNeq expr
-#cmp_gt_lt        : CmpGtLt expr
-#math_add_sub     : MathOpAddSub expr
-#math_mul_div_mod : MathOpMulDivMod expr
-
 
 """
 
