@@ -22,8 +22,13 @@ typedef shared_ptr<vector<SkoarInt>> ListOfSkoarIntsPtr;
 typedef shared_ptr<vector<SkoarFloat>> ListOfSkoarFloatsPtr;
 typedef shared_ptr<vector<SkoarString>> ListOfSkoarStringsPtr;
 
-typedef unique_ptr<SkoarToke> SkoarTokePtr;
 typedef shared_ptr<SkoarNoad> SkoarNoadPtr;
+typedef vector<SkoarNoadPtr> ListOfSkoarNoadPtrs;
+typedef vector<ESkoarNoad::Kind> ListOfSkoarNoadKinds;
+
+typedef unique_ptr<SkoarToke> SkoarTokePtr;
+typedef vector<ESkoarToke::Kind> ListOfSkoarTokeKinds;
+
 typedef shared_ptr<Skoarpuscle> SkoarpusclePtr;
 typedef shared_ptr<SkoarDic> SkoarDicPtr;
 typedef shared_ptr<SkoarMinstrel> SkoarMinstrelPtr;

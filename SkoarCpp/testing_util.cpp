@@ -435,7 +435,7 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
     const SkoarString sRun (L"run");
     const SkoarString sExpect (L"expect");
 
-    std::list<SkoarpionPtr> top_level_skoarpions;
+    ListOfSkoarpions top_level_skoarpions;
     for (auto x : skoar.skoarpions)
     {
         auto &name (x->name);

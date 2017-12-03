@@ -21,7 +21,6 @@ using namespace std;
 
 
 #include <string>
-#include <list>
 #include <regex>
 #include <map>
 #include <set>

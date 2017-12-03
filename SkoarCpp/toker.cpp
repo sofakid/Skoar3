@@ -33,7 +33,7 @@ SkoarToke* SkoarToker::see (ESkoarToke::Kind want) {
 
 }
 
-SkoarToke* SkoarToker::sees (std::list<ESkoarToke::Kind> *wants) {
+SkoarToke* SkoarToker::sees (ListOfSkoarTokeKinds *wants) {
 
     i_am_here += Toke_Whitespace::burn (skoarce, i_am_here);
 

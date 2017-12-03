@@ -395,7 +395,7 @@ SkoarpuscleConditional::SkoarpuscleConditional (Skoar *skoar, SkoarNoadPtr noad)
     static const SkoarString _if (L" if");
     static const SkoarString _else (L" else");
 
-    list<ESkoarNoad::Kind> desires = { ESkoarNoad::cond_if };
+    ListOfSkoarNoadKinds desires = { ESkoarNoad::cond_if };
 
     for (auto x : SkoarNoad::collect (noad, desires))
     {
@@ -521,12 +521,12 @@ SkoarpuscleLoop::SkoarpuscleLoop (Skoar *skoar, SkoarNoadPtr noad) :
     const SkoarString loop_condition_name (loop_ + loop_id + _condition);
     const SkoarString loop_body_name (loop_ + loop_id + _body);
 
-    list<ESkoarNoad::Kind> desires_cond = { ESkoarNoad::loop_condition };
+    ListOfSkoarNoadKinds desires_cond = { ESkoarNoad::loop_condition };
     for (auto x : SkoarNoad::collect (noad, desires_cond))
         if (x->children.size () > 0)
             condition = Skoarpion::NewFromSubtree (skoar, x);
 
-    list<ESkoarNoad::Kind> desires_body = { ESkoarNoad::loop_body };
+    ListOfSkoarNoadKinds desires_body = { ESkoarNoad::loop_body };
     for (auto x : SkoarNoad::collect (noad, desires_body))
         body = Skoarpion::NewFromSubtree (skoar, x);
 

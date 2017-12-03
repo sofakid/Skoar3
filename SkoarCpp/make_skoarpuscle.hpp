@@ -105,7 +105,7 @@ bool check_skoarpuscle_val(SkoarpusclePtr p, V val) {
 }
 
 template <class T, typename V>
-bool check_skoarpuscle_val_in(SkoarpusclePtr p, list<V> &in) {
+bool check_skoarpuscle_val_in(SkoarpusclePtr p, vector<V> &in) {
     auto x = is_skoarpuscle<T>(p);
     if (x == false)
         return false;

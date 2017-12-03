@@ -207,7 +207,7 @@ void SkoarKoar::set_args (
         else
             provided_unnamed_args.push_back (x);
 
-    std::list<SkoarString> list_args_spec_minus_names_provided;
+    ListOfSkoarStrings list_args_spec_minus_names_provided;
     // make list of arg spec with named provided args removed (3)
     for (auto& arg_name : args_list->args_names)
     {

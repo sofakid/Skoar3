@@ -501,70 +501,8 @@ SkoarInt SkoarpuscleList::size () {
     return val->size ();
 }
 
-//Poco::DynamicAny SkoarpuscleList::flatten(SkoarMinstrelPtr m) {
-//    auto listy = val.extract<ListOfSkoarpuscles>();
-
-//    list<Poco::DynamicAny> arr;
-
- //   for (auto x: listy) {
- //       auto y = x->flatten(m);
-
-        /*
-        ??? i don't know what to do here
-
-        if (y.type == typeid(shared_ptr<SkoarpusclePair>)) {
-            auto z = y.extract<shared_ptr<SkoarpusclePair>>()->flatten(m);
-            arr.push_back(z);
-        }
-        else
-
-        */
-        //          arr.push_back(y);
-          //}
-
-       //   Poco::DynamicAny out = arr;
-       //   return out;
-      //}
-
 
 void *SkoarpuscleList::asNoat () {
-    // ready to port as commented
-    /*
-    var n = val.size;
-    var noats = Array.newClear(n);
-    var i = -1;
-    var theseAreNoats = true;
-    var theseAreFreq = false;
-
-    val.do {
-        | x |
-        i = i + 1;
-
-        if (x.isKindOf(SkoarpuscleFreq)) {
-            theseAreNoats = false;
-            theseAreFreq = true;
-        };
-
-        if (x.isKindOf(SkoarpuscleInt)) {
-            theseAreNoats = false;
-        };
-
-        if (x.isKindOf(SkoarpuscleFloat)) {
-            theseAreNoats = false;
-        };
-        noats[i] = x.asNoat;
-    };
-
-    if (theseAreNoats == true) {
-        ^SkoarNoat_NoteList(noats);
-    };
-
-    if (theseAreFreq == true) {
-        ^SkoarNoat_FreqList(noats);
-    };
-
-    ^SkoarNoat_DegreeList(noats);
-    */
     return nullptr;
 }
 

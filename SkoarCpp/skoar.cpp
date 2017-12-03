@@ -215,7 +215,7 @@ void Skoar::clear () {
 
 void Skoar::decorate_offs_size_style () {
     SkoarStyles::EStyle current_style (SkoarStyles::EStyle::nostyle);
-    list<SkoarStyles::EStyle> style_stack { current_style };
+    vector<SkoarStyles::EStyle> style_stack { current_style };
     size_t pos (0);
 
     auto before ([&](SkoarNoadPtr noad) {
@@ -497,7 +497,7 @@ SkoarLite::SkoarLite (SkoarString s, ISkoarLog *log) :
 void SkoarLite::decorate_offs_size_style() 
 {
     SkoarStyles::EStyle current_style (SkoarStyles::EStyle::nostyle);
-    list<SkoarStyles::EStyle> style_stack { current_style };
+    vector<SkoarStyles::EStyle> style_stack { current_style };
     size_t pos (0);
 
     auto before ([&](SkoarNoadPtr noad) {

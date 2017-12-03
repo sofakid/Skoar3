@@ -402,8 +402,8 @@ void SkoarNoad::evaluate (SkoarMinstrelPtr minstrel) {
 // searching the tree
 // ------------------
 
-list<SkoarNoadPtr> SkoarNoad::collect (SkoarNoadPtr p, list<ESkoarNoad::Kind>& desires) {
-    list<SkoarNoadPtr> results;
+ListOfSkoarNoadPtrs SkoarNoad::collect (SkoarNoadPtr p, ListOfSkoarNoadKinds& desires) {
+    ListOfSkoarNoadPtrs results;
 
     SkoarNoad::depth_visit (p, [&](SkoarNoadPtr x) {
         SkoarNoad::match (x, desires, [&](SkoarNoadPtr y) {
@@ -414,8 +414,8 @@ list<SkoarNoadPtr> SkoarNoad::collect (SkoarNoadPtr p, list<ESkoarNoad::Kind>& d
     return results;
 }
 
-list<SkoarNoadPtr> SkoarNoad::collect (SkoarNoadPtr p, list<ESkoarToke::Kind>& desires) {
-    list<SkoarNoadPtr> results;
+ListOfSkoarNoadPtrs SkoarNoad::collect (SkoarNoadPtr p, ListOfSkoarTokeKinds& desires) {
+    ListOfSkoarNoadPtrs results;
 
     SkoarNoad::depth_visit (p, [&](SkoarNoadPtr x) {
         SkoarNoad::match (x, desires, [&](SkoarNoadPtr y) {
@@ -426,13 +426,13 @@ list<SkoarNoadPtr> SkoarNoad::collect (SkoarNoadPtr p, list<ESkoarToke::Kind>& d
     return results;
 }
 
-void SkoarNoad::match (SkoarNoadPtr p, list<ESkoarNoad::Kind>& desires, SpellOfNoadPtrs writer) {
+void SkoarNoad::match (SkoarNoadPtr p, ListOfSkoarNoadKinds& desires, SpellOfNoadPtrs writer) {
     for (auto x : desires)
         if (p->kind == x)
             writer (p);
 }
 
-void SkoarNoad::match (SkoarNoadPtr p, list<ESkoarToke::Kind>& desires, SpellOfNoadPtrs writer) {
+void SkoarNoad::match (SkoarNoadPtr p, ListOfSkoarTokeKinds& desires, SpellOfNoadPtrs writer) {
     for (auto x : desires)
         if (p->kind == x)
             writer (p);

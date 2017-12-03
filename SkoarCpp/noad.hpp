@@ -31,7 +31,7 @@ public:
     SkoarNoadAddress address;     // a list code to find the noad quickly
     SkoarNoadPtr parent;          // the parent noad
 
-    list<SkoarNoadPtr> children;  // a list of child noads
+    vector<SkoarNoadPtr> children;  // a list of child noads
 
     const SkoarString name;       // name of the nonterminal
     const ESkoarNoad::Kind kind;
@@ -132,10 +132,10 @@ public:
     // searching the tree
     // ------------------
 
-    static list<SkoarNoadPtr> collect(SkoarNoadPtr, list<ESkoarNoad::Kind>&);
-    static list<SkoarNoadPtr> collect(SkoarNoadPtr, list<ESkoarToke::Kind>&);
-    static void match(SkoarNoadPtr, list<ESkoarNoad::Kind>&, SpellOfNoadPtrs);
-    static void match(SkoarNoadPtr, list<ESkoarToke::Kind>&, SpellOfNoadPtrs);
+    static ListOfSkoarNoadPtrs collect(SkoarNoadPtr, vector<ESkoarNoad::Kind>&);
+    static ListOfSkoarNoadPtrs collect(SkoarNoadPtr, vector<ESkoarToke::Kind>&);
+    static void match(SkoarNoadPtr, vector<ESkoarNoad::Kind>&, SpellOfNoadPtrs);
+    static void match(SkoarNoadPtr, vector<ESkoarToke::Kind>&, SpellOfNoadPtrs);
 
     ListOfSkoarpusclesPtr collect_skoarpuscles(int = 0);
 

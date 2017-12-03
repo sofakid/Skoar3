@@ -511,7 +511,7 @@ class SkoarpuscleDeref : public Skoarpuscle {
 public:
     const SkoarString val;
 
-    list<SkoarString> msg_arr;
+    ListOfSkoarStrings msg_arr;
     SkoarpusclePtr args; // is actually shared_ptr<SkoarpuscleArgs> args;
 
     SkoarpuscleDeref(SkoarString, SkoarpusclePtr);
@@ -537,7 +537,7 @@ class SkoarpuscleConditional : public Skoarpuscle {
 public:
     static const SkoarString id (bool reset = false);
 
-    list<tuple<SkoarpionPtr, SkoarpionPtr, SkoarpionPtr>> ifs;
+    vector<tuple<SkoarpionPtr, SkoarpionPtr, SkoarpionPtr>> ifs;
 
     SkoarpuscleConditional(Skoar*, SkoarNoadPtr);
     ~SkoarpuscleConditional() override;

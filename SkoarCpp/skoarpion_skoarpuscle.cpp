@@ -84,14 +84,11 @@ SkoarpuscleArgExpr::SkoarpuscleArgExpr(SkoarNoadPtr noad) {
     if (is_skoarpuscle<SkoarpuscleSymbolName> (x))
         name = skoarpuscle_ptr<SkoarpuscleSymbolName> (x)->val;
 
-    if (noad->children.size() > 1) {
-        auto kidderator = noad->children.begin();
-        auto next (*(++kidderator));
-        SkoarNoad::inorder (next, [&](SkoarNoadPtr x) {
+    if (noad->children.size() > 1) 
+        SkoarNoad::inorder (noad->children[1], [&](SkoarNoadPtr x) {
             if (x->on_enter != nullptr || x->skoarpuscle != nullptr)
                 expr.emplace_back (x);
         });
-    }
 }
 
 SkoarpuscleArgExpr::~SkoarpuscleArgExpr() {

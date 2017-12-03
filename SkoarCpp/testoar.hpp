@@ -2,9 +2,9 @@
 #include "skoarcery.hpp"
 #include "spells.hpp"
 
-typedef std::list<std::pair<std::string, size_t>> ListOfTagCountPairs;
-typedef std::list<std::string> ListOfTags;
-typedef std::list<std::string> ListOfTestCases;
+typedef std::vector<std::pair<std::string, size_t>> ListOfTagCountPairs;
+typedef std::vector<std::string> ListOfTags;
+typedef std::vector<std::string> ListOfTestCases;
 
 void TestoarInitialize(SpellOfUtterance out, SpellOfUtterance err);
 

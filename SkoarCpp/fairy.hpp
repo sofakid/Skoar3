@@ -6,7 +6,7 @@
 typedef map<size_t, SkoarInt> FairyTimesOffsMap;
 typedef map<ESkoarpuscle::Kind, FairyTimesOffsMap> FairyTimesMap;
 typedef shared_ptr<FairyTimesMap> FairyTimesMapPtr;
-typedef list<FairyTimesMapPtr> ListOfFairyTimesMaps;
+typedef vector<FairyTimesMapPtr> ListOfFairyTimesMaps;
 
 
 class SkoarFairy
@@ -81,9 +81,9 @@ public:
 private:
     AncientArcaneMagic magic;
 
-    list<ListOfSkoarpusclesPtr> listy_stack;
-    list<AncientArcaneMagic> magic_stack;
-    list<SkoarInt> i_stack;
+    vector<ListOfSkoarpusclesPtr> listy_stack;
+    vector<AncientArcaneMagic> magic_stack;
+    vector<SkoarInt> i_stack;
 
     ListOfSkoarpuscles compare_stack;
 
@@ -97,10 +97,10 @@ private:
     SkoarpusclePtr exact;
 
     bool noating;
-    list<bool> noating_stack;
+    vector<bool> noating_stack;
 
     bool noatworthy;
-    list<bool> noatworthy_stack;
+    vector<bool> noatworthy_stack;
 
     SkoarInt i;
     SkoarInt j;

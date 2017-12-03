@@ -162,7 +162,7 @@ void SkoarFairy::pop_times_seen() {
 typedef map<SkoarNoadAddress, SkoarInt> FairyTimesAddressSeen;
 typedef map<ESkoarpuscle::Kind, FairyTimesAddressSeen> FairyTimesMap;
 typedef shared_ptr<FairyTimesMap> FairyTimesMapPtr;
-typedef list<FairyTimesMapPtr> ListOfFairyTimesMaps;
+typedef vector<FairyTimesMapPtr> ListOfFairyTimesMaps;
 */
 SkoarInt SkoarFairy::how_many_times_have_you_seen(ESkoarpuscle::Kind kind, size_t offs) {
 

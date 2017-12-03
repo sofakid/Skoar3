@@ -60,7 +60,7 @@ class Code_Parser_Cpp(unittest.TestCase):
                 ____CPP.raw("    tokeFreq[ESkoarToke::" + token.name + "] = 0.0f;\n")
 
         ____CPP.nl()
-        ____CPP.stmt("desirables = new list<ESkoarToke::Kind>[" + str(num_productions) + "]")
+        ____CPP.stmt("desirables = new ListOfSkoarTokeKinds[" + str(num_productions) + "]")
        
         for A in N:
 
@@ -112,7 +112,8 @@ bool localCmp(const ESkoarToke::Kind &a, const ESkoarToke::Kind &b) {
     
 void localSortDesirables() {
     for (int i = 0; i < """ + str(num_productions) + """; ++i) {
-        skoarStats->desirables[i].sort(localCmp);    
+        auto& vec (skoarStats->desirables[i]);
+        sort(vec.begin(), vec.end(), localCmp);    
     }
 }
 
@@ -140,7 +141,7 @@ void SkoarParser::init() {
             AStrx = Arg("wstring", '"'+ A.name +'"')
             Noadx = Arg("SkoarNoadPtr", "noad")
             Parentx = Arg("SkoarNoadPtr", "parent")
-            Desiresx = Arg("list<ESkoarToke::Kind>*", "desires")
+            Desiresx = Arg("ListOfSkoarTokeKinds*", "desires")
             
             HPP.method_h(Ax, Parentx)
             CPP.method(Ax, Parentx)
@@ -244,7 +245,7 @@ struct SkoarStats {
     // use a float so it never overflows when adding a small constant to it, 
     // just eventually stops making a difference.
     map<ESkoarToke::Kind, float> tokeFreq;
-    list<ESkoarToke::Kind> *desirables;
+    ListOfSkoarTokeKinds* desirables;
 
 };
 
