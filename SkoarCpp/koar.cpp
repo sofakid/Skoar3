@@ -41,22 +41,43 @@ void SkoarKoar::clear () {
 // ---------------------
 // State and scope stuff
 // ---------------------
+SkoarDicPtr SkoarKoar::find_stack_level_for_var (SkoarString k) {
+    
+    for (auto rev_it = stack.rbegin (); rev_it != stack.rend (); rev_it++)
+    {
+        auto dic_ptr (*rev_it);
+        if (dic_ptr->at (k) != nullptr)
+            return dic_ptr;
+    }
+
+    return nullptr;
+}
+
 void SkoarKoar::put (SkoarString k, SkoarpusclePtr v) {
-    stack.back ()->put (k, v);
+    auto& dic (*stack.back ());
+    auto x (dic.at (k));
+    if (is_skoarpuscle<SkoarpuscleCapture> (x))
+        skoarpuscle_ptr<SkoarpuscleCapture> (x)->val = v;
+    else
+        dic.put (k, v);
 }
 
 SkoarpusclePtr SkoarKoar::at (const SkoarString &k) {
 
-    SkoarpusclePtr out (nullptr);
-
     for (auto rev_it = stack.rbegin (); rev_it != stack.rend (); rev_it++)
     {
-        out = (*rev_it)->at (k);
-        if (out != nullptr)
-            return out;
+        auto& dic (**rev_it);
+        auto x (dic.at (k));
+        if (x == nullptr)
+            continue;
+
+        if (is_skoarpuscle<SkoarpuscleCapture> (x))
+            return skoarpuscle_ptr<SkoarpuscleCapture> (x)->val;
+        
+        return x;
     }
 
-    return out;
+    return nullptr;
 }
 
 
@@ -124,7 +145,6 @@ SkoarEventPtr SkoarKoar::event (SkoarMinstrelPtr minstrel) {
 // make list of arg spec with named provided args removed (3)
 // line up (2) and (3) for positional args. 
 
-#include <iostream>
 ListOfSkoarpusclesPtr make_list_of_provided_named_args (SkoarpuscleList* p) {
     auto provided_named_args = make_shared<ListOfSkoarpuscles> ();
     auto provided_unnamed_args = make_shared<ListOfSkoarpuscles> ();
@@ -134,14 +154,9 @@ ListOfSkoarpusclesPtr make_list_of_provided_named_args (SkoarpuscleList* p) {
     for (auto& li : *listy)
     {
         if (is_skoarpuscle<SkoarpusclePair> (li))
-        {
             provided_named_args->push_back (li);
-        }
         else
-        {
             provided_unnamed_args->push_back (li);
-        }
-
     }
 
     return provided_named_args;
@@ -321,6 +336,19 @@ void SkoarKoar::do_skoarpion (
     const EExecStyle exec_style,
     SkoarpusclePtr args_provided) {
 
+    do_skoarpion (skoarpion, minstrel, exec_style, args_provided, nullptr, nullptr);
+}
+
+void SkoarKoar::do_skoarpion (
+    SkoarpionPtr skoarpion,
+    SkoarMinstrelPtr minstrel,
+    const EExecStyle exec_style,
+    SkoarpusclePtr args_provided,
+    ListOfSkoarpuscles* captures,
+    ListOfSkoarStrings* expoarts) {
+
+    auto& fairy (*minstrel->fairy);
+
     SkoarNoadPtr subtree;
     SkoarpionProjectionPtr projection = Skoarpion::projection (skoarpion, name);
 
@@ -329,8 +357,14 @@ void SkoarKoar::do_skoarpion (
     if (exec_style != EExecStyle::INLINE)
     {
         push_state ();
-        minstrel->fairy->push_times_seen ();
+        fairy.push_times_seen ();
+    
+        // load captures into this stack level
+        if (captures != nullptr)
+            for (auto& x : *captures)
+                put (skoarpuscle_ptr<SkoarpuscleCapture> (x)->name, x);
     }
+
 
     // load arg values into their names
     set_args (minstrel, skoarpion->arg_list, args_provided);
@@ -338,8 +372,18 @@ void SkoarKoar::do_skoarpion (
     SpellOfDecency cleanup = [&]() {
         if (exec_style != EExecStyle::INLINE)
         {
+            // save exports
+            vector<pair<SkoarString*, SkoarpusclePtr>> exp;
+            if (expoarts != nullptr)
+                for (auto& s : *expoarts)
+                    exp.push_back (make_pair (&s, at (s)));
+
             pop_state ();
-            minstrel->fairy->pop_times_seen ();
+            fairy.pop_times_seen ();
+
+            // apply exports
+            for (auto& x : exp)
+                put (*x.first, x.second);
         }
 
         minstrel->after_entering_skoarpion (minstrel, skoarpion);

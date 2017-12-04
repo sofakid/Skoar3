@@ -8,39 +8,57 @@
 
 // --- SkoarpuscleSkoarpion ------------------------------------------------
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(const SkoarpuscleSkoarpion *that) :
-    val(that->val),
-    args(that->args)
+    val (that->val),
+    args (that->args),
+    capture_names (that->capture_names),
+    expoart_names (that->expoart_names)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
+
+    for (auto& name : capture_names)
+        captures.push_back (make_shared<SkoarpuscleCapture>(name));
+
 }
 
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s) :
-    val(s),
-    args(nullptr)
+    val (s),
+    args (nullptr),
+    capture_names (s->capture_list),
+    expoart_names (s->expoart_list)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
+    for (auto& name : capture_names)
+        captures.push_back (make_shared<SkoarpuscleCapture> (name));
 }
 
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s, SkoarNoadPtr) :
-    val(s),
-    args(nullptr)
+    val (s),
+    args (nullptr),
+    capture_names (s->capture_list),
+    expoart_names (s->expoart_list)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
+    for (auto& name : capture_names)
+        captures.push_back (make_shared<SkoarpuscleCapture> (name));
 }
 
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpusclePtr s, SkoarpusclePtr args) :
-    val(skoarpuscle_ptr<SkoarpuscleSkoarpion>(s)->val),
-    args(args)
+    val (skoarpuscle_ptr<SkoarpuscleSkoarpion>(s)->val),
+    args (args),
+    capture_names (skoarpuscle_ptr<SkoarpuscleSkoarpion> (s)->capture_names),
+    expoart_names (skoarpuscle_ptr<SkoarpuscleSkoarpion> (s)->expoart_names)
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
+    for (auto& name : capture_names)
+        captures.push_back (make_shared<SkoarpuscleCapture> (name));
 }
 
 SkoarpuscleSkoarpion::~SkoarpuscleSkoarpion(){
@@ -58,17 +76,25 @@ void SkoarpuscleSkoarpion::clear ()
 
 
 void SkoarpuscleSkoarpion::on_enter(SkoarMinstrelPtr m) {
-    auto skrpskrp (make_shared<SkoarpuscleSkoarpion>(this));
+    auto skrpskrp (make_shared<SkoarpuscleSkoarpion> (this));
+    skrpskrp->bind_captures (m);
     m->fairy->impress (skrpskrp);
+
 }
 
 void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
     auto impression = m->fairy->impression;
-    m->koar->do_skoarpion(val, m, SkoarKoar::EExecStyle::NORMAL, impression);
+    m->koar->do_skoarpion(val, m, SkoarKoar::EExecStyle::NORMAL, impression, &captures, &expoart_names);
 }
 
 void SkoarpuscleSkoarpion::asString(wostream &out) { 
     out << L"Skoarpion :: " << val->name;
+}
+
+void SkoarpuscleSkoarpion::bind_captures (SkoarMinstrelPtr m)
+{
+    for (auto& x: captures) 
+        SkoarpuscleCapture::Capture (x, m);
 }
 
 // --- SkoarpuscleArgExpr ----------------------------------------------
@@ -138,8 +164,7 @@ SkoarpuscleArgList::SkoarpuscleArgList(SkoarNoadPtr noad) :
     SkoarMemories::o().allocSkoarpuscle(L"ArgList");
 #endif
     
-    auto skoarpuscles (noad->collect_skoarpuscles());
-    for (auto x : *skoarpuscles) {
+    for (auto& x : noad->collect_skoarpuscles ()) {
         if (is_skoarpuscle<SkoarpuscleArgExpr>(x)) {
             auto p = skoarpuscle_ptr<SkoarpuscleArgExpr>(x);
             args_dict[p->name] = x;
@@ -188,66 +213,6 @@ void SkoarpuscleArgList::asString(wostream &out) {
         out << " :: " << x ;
 }
 
-
-// --- SkoarpuscleCloasures ----------------------------------------------
-SkoarpuscleCloasures::SkoarpuscleCloasures (SkoarNoadPtr noad)
-{
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().allocSkoarpuscle (L"Cloasures");
-#endif
-
-    auto skoarpuscles (noad->collect_skoarpuscles ());
-    for (auto x : *skoarpuscles)
-        if (is_skoarpuscle<SkoarpuscleSymbolName> (x))
-            cloasure_names.push_back (skoarpuscle_ptr<SkoarpuscleSymbolName> (x)->val);
-
-    noad->children.clear ();
-}
-
-SkoarpuscleCloasures::~SkoarpuscleCloasures () {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().deallocSkoarpuscle (L"Cloasures");
-#endif
-}
-
-void SkoarpuscleCloasures::asString (wostream &out) {
-    out << "Cloasures";
-    for (auto& x : cloasure_names)
-        out << " :: " << x;
-}
-
-
-
-// --- SkoarpuscleExpoarts ----------------------------------------------
-SkoarpuscleExpoarts::SkoarpuscleExpoarts (SkoarNoadPtr noad)
-{
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().allocSkoarpuscle (L"Expoarts");
-#endif
-
-    auto skoarpuscles (noad->collect_skoarpuscles ());
-    for (auto x : *skoarpuscles)
-        if (is_skoarpuscle<SkoarpuscleSymbolName> (x))
-            expoart_names.push_back (skoarpuscle_ptr<SkoarpuscleSymbolName> (x)->val);
-    
-    noad->children.clear ();
-}
-
-SkoarpuscleExpoarts::~SkoarpuscleExpoarts () {
-#if SKOAR_DEBUG_MEMORY
-    SkoarMemories::o ().deallocSkoarpuscle (L"Expoarts");
-#endif
-}
-
-void SkoarpuscleExpoarts::asString (wostream &out) {
-    out << "Expoarts";
-    for (auto x : expoart_names)
-        out << " :: " << x;
-}
-
-
-
-
 // --- SkoarpuscleProjections ----------------------------------------------
 SkoarpuscleProjections::SkoarpuscleProjections (ListOfSkoarpionProjectionsPtr lospp) {
 #if SKOAR_DEBUG_MEMORY
@@ -274,4 +239,49 @@ void SkoarpuscleProjections::clear ()
 
 void SkoarpuscleProjections::asString (wostream &out) {
     out << "Projections";
+}
+
+
+// --- SkoarpuscleCapture ----------------------------------------------
+
+SkoarpuscleCapture::SkoarpuscleCapture (const SkoarString& name) :
+    name (name),
+    val (nullptr)
+{
+#if SKOAR_DEBUG_MEMORY
+        SkoarMemories::o ().allocSkoarpuscle (L"Capture");
+#endif 
+}
+SkoarpuscleCapture::~SkoarpuscleCapture () {
+#if SKOAR_DEBUG_MEMORY
+    SkoarMemories::o ().deallocSkoarpuscle (L"Capture");
+#endif
+}
+
+void SkoarpuscleCapture::Capture (SkoarpusclePtr& cap_p, SkoarMinstrelPtr m)
+{
+    auto& cap (*skoarpuscle_ptr<SkoarpuscleCapture> (cap_p));
+    auto dic_p (m->koar->find_stack_level_for_var (cap.name));
+
+    if (dic_p == nullptr)
+        throw SkoarRuntimeException (L"Capture failed.", cap_p);
+
+    auto& dic (*dic_p);
+    auto x = dic.at (cap.name);
+    if (is_skoarpuscle<SkoarpuscleCapture> (x))
+        cap_p = x;
+    else
+    {
+        cap.val = x;
+        dic.put (cap.name, cap_p);
+    }
+}
+
+void SkoarpuscleCapture::asString (wostream & out)
+{
+    out << L"Capture :: " << name << L" :: ";
+    if (val == nullptr)
+        out << L"nullptr";
+    else
+        val->asString (out);
 }

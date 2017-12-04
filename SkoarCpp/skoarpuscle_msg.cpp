@@ -162,8 +162,8 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
             auto arg (args->val->front ());
             if (is_skoarpuscle<SkoarpuscleInt> (arg))
             {
-                SkoarInt n (static_cast<SkoarInt>(v.size ()));
-                SkoarInt i (abs (skoarpuscle_ptr<SkoarpuscleInt>(arg)->val) % n);
+                const SkoarInt n (static_cast<SkoarInt>(v.size ()));
+                const SkoarInt i (abs (skoarpuscle_ptr<SkoarpuscleInt>(arg)->val) % n);
 
                 return make_skoarpuscle(v[i]);
             }
@@ -183,7 +183,7 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
 
         auto& generator (get_generator ());
         uniform_int_distribution<SkoarInt> distribution (0, n);
-        SkoarInt i (distribution (generator));
+        const SkoarInt i (distribution (generator));
         return make_skoarpuscle (v[i]);
     }
 
@@ -194,7 +194,7 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
         auto x (duplicate_shallow ());
         auto& vec (skoarpuscle_ptr<SkoarpuscleList> (x)->val);
         shuffle (vec->begin (), vec->end (), generator);
-        return make_skoarpuscle (x);
+        return x;
     }
 
 

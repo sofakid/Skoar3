@@ -72,8 +72,7 @@ class SkoarpuscleExactRest;
 class SkoarpuscleSkoarpion;
 class SkoarpuscleArgExpr;
 class SkoarpuscleArgList;
-class SkoarpuscleCloasures;
-class SkoarpuscleExpoarts;
+class SkoarpuscleCapture;
 class SkoarpuscleProjection;
 class SkoarpuscleProjections;
 

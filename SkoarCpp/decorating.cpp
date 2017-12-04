@@ -56,7 +56,7 @@ auto expr_spell (SpellOfSimpleSkoarmantics {
     auto needs_compile (false);
 
     auto listy (noad->collect_skoarpuscles ());
-    for (auto x : *listy)
+    for (auto x : listy)
         if (is_skoarpuscle<SkoarpuscleUGen> (x))
             needs_compile = true;
 
@@ -386,14 +386,6 @@ Skoarmantics::Skoarmantics () : table ({
 
     {ESkoarNoad::args_entries , SpellOfSimpleSkoarmantics {
         noad->skoarpuscle = make_shared<SkoarpuscleArgExpr> (noad);
-    }},
-
-    {ESkoarNoad::cloasures , SpellOfSimpleSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleCloasures> (noad);
-    }},
-
-    {ESkoarNoad::expoarts , SpellOfSimpleSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleExpoarts> (noad);
     }},
 
     {ESkoarNoad::assignment, expr_spell },

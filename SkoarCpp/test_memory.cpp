@@ -249,7 +249,7 @@ TEST_CASE ("Memories - Compiled - Skoarpions", "[memory]") {
         createSkoar (L"!! {! ))) !}");
     }
 
-    SECTION ("skoarpions_cloasure") {
+    SECTION ("skoarpions_capture") {
         createSkoar (L"!! <x> {! ))) !}");
     }
 

@@ -137,7 +137,7 @@ public:
     static void match(SkoarNoadPtr, vector<ESkoarNoad::Kind>&, SpellOfNoadPtrs);
     static void match(SkoarNoadPtr, vector<ESkoarToke::Kind>&, SpellOfNoadPtrs);
 
-    ListOfSkoarpusclesPtr collect_skoarpuscles(int = 0);
+    ListOfSkoarpuscles collect_skoarpuscles(int = 0);
 
     friend std::wostream & operator<<(wostream &out, SkoarNoad &noad) {
         out << L"SkoarNoad: offs: " << noad.offs 

@@ -229,28 +229,24 @@ template<>
 SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
     //("$:" ++name++ ".impression: " ++x.asString).postln;
     
-    if (x == nullptr) {
+    if (is_skoarpuscle<SkoarpuscleCapture> (x))
+        x = skoarpuscle_ptr<SkoarpuscleCapture> (x)->val;
+
+    if (x == nullptr) 
         x = make_skoarpuscle(nullptr);
-    }
-
-    if (is_skoarpuscle<SkoarpuscleFairy>(x)) {
-        return impression;
-    };
-
-
-    if (is_skoarpuscle<SkoarpusclePair>(x)) {
-        auto p = skoarpuscle_ptr<SkoarpusclePair> (x);
-        p->assign (minstrel);
-    };
-
-    if (is_skoarpuscle<SkoarpuscleDeref>(x)) {
-        x = skoarpuscle_ptr<SkoarpuscleDeref>(x)->lookup(minstrel);
-    };
     
+    if (is_skoarpuscle<SkoarpuscleFairy>(x)) 
+        return impression;
 
-    if (x->isImpressionable() == false) {
+    if (is_skoarpuscle<SkoarpusclePair>(x))
+        skoarpuscle_ptr<SkoarpusclePair> (x)->assign (minstrel);
+
+    if (is_skoarpuscle<SkoarpuscleDeref>(x))
+        x = skoarpuscle_ptr<SkoarpuscleDeref>(x)->lookup(minstrel);
+
+    if (x->isImpressionable() == false)
         return x;
-    }
+    
     
     impression = x;
 
@@ -266,28 +262,30 @@ SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
     else {
         noatworthy = false;
     }
-    minstrel->koar->put(L"impression", impression);
+
+    auto& koar (*minstrel->koar);
+    koar.put(L"impression", impression);
 
     if (is_skoarpuscle<SkoarpuscleUGen>(x)) {
         //lute.impress(impression);
     }
     else if (is_skoarpuscle<SkoarpuscleInt>(x) || is_skoarpuscle<SkoarpuscleFloat>(x)) {
-        minstrel->koar->put(L"num_impression", impression);
+        koar.put(L"num_impression", impression);
         //num_impression = impression;
         
         // this inserts it all over the place whenever numbers are used.. why?
-        //minstrel->koar->put(L"exact_dur", impression);
+        //koar.put(L"exact_dur", impression);
     }
     else if (is_skoarpuscle<SkoarpuscleSymbol>(x)) {
-        minstrel->koar->put(L"sym_impression", impression);
+        koar.put(L"sym_impression", impression);
         //sym_impression = impression;
     }
     else if (is_skoarpuscle<SkoarpuscleDynamic>(x)) {
-        minstrel->koar->put(L"dyn_impression", impression);
+        koar.put(L"dyn_impression", impression);
         //dyn_impression = impression;
     }
     else if (is_skoarpuscle<SkoarpuscleDuration>(x)) {
-        minstrel->koar->put(L"exact_dur", impression);
+        koar.put(L"exact_dur", impression);
     }
 
     return impression;

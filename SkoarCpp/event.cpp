@@ -81,6 +81,10 @@ void SkoarEvent::from (SkoarDicPtr dic) {
             continue;
 
         auto skoarpuscle (pair.second);
+
+        if (is_skoarpuscle<SkoarpuscleCapture> (skoarpuscle))
+            skoarpuscle = skoarpuscle_ptr<SkoarpuscleCapture> (skoarpuscle)->val;
+
         if (is_skoarpuscle<SkoarpuscleSkoarpion> (skoarpuscle))
             continue;
 

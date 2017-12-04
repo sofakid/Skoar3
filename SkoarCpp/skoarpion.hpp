@@ -21,8 +21,8 @@ public:
     SkoarNoadPtr body;
     SkoarString name;
     SkoarpusclePtr arg_list;
-    SkoarpusclePtr cloasure_list;
-    SkoarpusclePtr expoart_list;
+    ListOfSkoarStrings capture_list;
+    ListOfSkoarStrings expoart_list;
     SkoarInt n;
 
     const SkoarString made_from;

@@ -150,12 +150,19 @@ void Skoarpion::init_from_noad (Skoar* skr, SkoarNoadPtr noad) {
             arg_list = child->skoarpuscle;
             break;
 
-        case ESkoarNoad::cloasures:
-            cloasure_list = child->skoarpuscle;
+        case ESkoarNoad::captures:
+        {
+            for (auto& x : child->collect_skoarpuscles ())
+                if (is_skoarpuscle<SkoarpuscleSymbolName>(x))
+                    capture_list.push_back (skoarpuscle_ptr<SkoarpuscleSymbolName>(x)->val);
+            child->children.clear ();
             break;
+        }
         
         case ESkoarNoad::expoarts:
-            expoart_list = child->skoarpuscle;
+            for (auto& x : child->collect_skoarpuscles ())
+                if (is_skoarpuscle<SkoarpuscleSymbolName> (x))
+                    expoart_list.push_back (skoarpuscle_ptr<SkoarpuscleSymbolName> (x)->val);
             break;
         
         case ESkoarNoad::skrp_suffix:
@@ -278,3 +285,4 @@ void SkoarpionProjection::draw (wostringstream &out) {
     }
     
 }
+

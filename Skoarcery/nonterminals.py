@@ -24,7 +24,7 @@ opt_voiced_phrases : optional_voice phrases
 +phrasishes        : phrasish phrasishes | <e>
 +phrasish          : Comment | marker | expr | al_goto | beat | Newline optional_voice
 
-+opt_sig            : SkoarpionArgs opt_args opt_cloasures opt_expoarts | <e>
++opt_sig            : SkoarpionArgs opt_args opt_captures opt_expoarts | <e>
 +opt_args           : args | <e>
 args                : opt_newline args_entries 
 args_entries        : SymbolColon expr moar_args_entries | SymbolName moar_args_entries
@@ -35,12 +35,12 @@ args_entries        : SymbolColon expr moar_args_entries | SymbolName moar_args_
 skoarpion          : opt_sig SkoarpionStart skrp_suffix
 skrp_suffix        : skrp_lines SkoarpionEnd
 
-+opt_cloasures         : cloasures | <e>
-cloasures              : ListS cloasures_suffix
-+cloasures_suffix      : opt_newline cloasures_entries cloasures_end
-+cloasures_end         : ListE opt_newline
-+cloasures_entries     : SymbolName moar_cloasures_entries
-+moar_cloasures_entries: ListSep moar_cloasures_entries | Newline moar_cloasures_entries | cloasures_entries | <e>
++opt_captures         : captures | <e>
+captures              : ListS captures_suffix
++captures_suffix      : opt_newline captures_entries captures_end
++captures_end         : ListE opt_newline
++captures_entries     : SymbolName moar_captures_entries
++moar_captures_entries: ListSep moar_captures_entries | Newline moar_captures_entries | captures_entries | <e>
 
 +opt_expoarts         : expoarts | <e>
 expoarts              : ExpoartsS expoarts_suffix

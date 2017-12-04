@@ -456,21 +456,18 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
 
         SkoarpionPtr run (nullptr), expect (nullptr);
 
-        auto skoarpuscles = test_skoarpion->body->collect_skoarpuscles ();
+        for (auto x : test_skoarpion->body->collect_skoarpuscles ())
+            if (is_skoarpuscle<SkoarpuscleSkoarpion> (x))
+            {
+                auto p = skoarpuscle_ptr<SkoarpuscleSkoarpion> (x)->val;
 
-        if (skoarpuscles != nullptr)
-            for (auto x : *(skoarpuscles))
-                if (is_skoarpuscle<SkoarpuscleSkoarpion> (x))
-                {
-                    auto p = skoarpuscle_ptr<SkoarpuscleSkoarpion> (x)->val;
+                if (p->name == sRun)
+                    run = p;
 
-                    if (p->name == sRun)
-                        run = p;
+                if (p->name == sExpect)
+                    expect = p;
 
-                    if (p->name == sExpect)
-                        expect = p;
-
-                }
+            }
 
         if (run == nullptr || expect == nullptr)
             continue;

@@ -44,8 +44,9 @@ public:
     // ---------------------
     // State and scope stuff
     // ---------------------
-    void put(SkoarString k, SkoarpusclePtr v);
-    SkoarpusclePtr at(const SkoarString &k);
+    SkoarDicPtr find_stack_level_for_var (SkoarString k);
+    void put (SkoarString k, SkoarpusclePtr v);
+    SkoarpusclePtr at (const SkoarString &k);
 
     void state_put (SkoarString &k, SkoarpusclePtr v);
     void state_put (const wchar_t* k, SkoarpusclePtr v);
@@ -64,6 +65,15 @@ public:
         SkoarMinstrelPtr minstrel, 
         const EExecStyle,
         SkoarpusclePtr args_provided);
+
+    void do_skoarpion (
+        SkoarpionPtr skoarpion,
+        SkoarMinstrelPtr minstrel,
+        const EExecStyle,
+        SkoarpusclePtr args_provided,
+        ListOfSkoarpuscles*,
+        ListOfSkoarStrings*
+        );
 
     void nav_loop(
         SkoarpionProjectionPtr projection, 
