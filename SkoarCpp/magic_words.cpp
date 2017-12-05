@@ -1,7 +1,7 @@
 #include "magic_words.hpp"
 #include "skoarpuscle.hpp"
 #include "minstrel.hpp"
-
+#include <cmath>
 
 bool handle_magic_words (SkoarString word, SkoarpusclePtr v, SkoarMinstrelPtr m)
 {
