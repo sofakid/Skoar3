@@ -6,7 +6,7 @@
 #include <regex>
 #include "make_skoarpuscle.hpp"
 #include "pitchy.hpp"
-#include "math.h"
+#include <cmath>
 
 void flatten_list_r (ListOfSkoarpuscles* listy, SkoarpusclePtr p) {
     
