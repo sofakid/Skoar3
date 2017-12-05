@@ -81,7 +81,7 @@ SkoarToke* SkoarDispensary::match_toke(ESkoarToke::Kind want, wstring *buf, size
         ____CPP = CPP = emissions.CPP
         CPP.raw("""
 namespace ESkoarToke {
-    enum Kind {
+    enum Kind : unsigned int {
         Unknown = 0,
         Eof,
         Whitespace,
@@ -95,7 +95,7 @@ namespace ESkoarToke {
 };
 
 namespace ESkoarNoad {
-    enum Kind {
+    enum Kind : unsigned int {
         unknown = 0,
         toke,
         artificial,
@@ -184,10 +184,10 @@ public:
         HPP.raw("""#pragma once
 
 namespace ESkoarToke {
-    enum Kind;
+    enum Kind : unsigned int;
 };
 namespace ESkoarNoad {
-    enum Kind;
+    enum Kind : unsigned int;
 };
 class SkoarDispensary;
 class SkoarToke;
