@@ -335,13 +335,13 @@ SkoarpuscleBooleanOp::SkoarpuscleBooleanOp (SkoarNoadPtr /*noad*/, SkoarToke* to
     else if (s == L"and")
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            return SkoarOps::getInstance ()->and (m, a, b);
+            return SkoarOps::getInstance ()->and_ (m, a, b);
         };
     }
     else if (s == L"or")
     {
         f = [](SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b) {
-            return SkoarOps::getInstance ()->or (m, a, b);
+            return SkoarOps::getInstance ()->or_ (m, a, b);
         };
     }
     else

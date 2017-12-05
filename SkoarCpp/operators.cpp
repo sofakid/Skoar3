@@ -1031,14 +1031,14 @@ SkoarpusclePtr SkoarOps::lte (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpuscleP
 }
 
 // -- might want a table for these at some point (ugens?)
-SkoarpusclePtr SkoarOps::and (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
+SkoarpusclePtr SkoarOps::and_ (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
 {
     if (is_skoarpuscle<SkoarpuscleTrue>(x) && is_skoarpuscle<SkoarpuscleTrue>(y) )
         return m->fairy->impress (x);
     return m->fairy->impress(make_skoarpuscle(false));
 }
 
-SkoarpusclePtr SkoarOps::or (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
+SkoarpusclePtr SkoarOps::or_ (SkoarMinstrelPtr m, SkoarpusclePtr x, SkoarpusclePtr y)
 {
     if (is_skoarpuscle<SkoarpuscleTrue>(x) || is_skoarpuscle<SkoarpuscleTrue>(y) )
         return m->fairy->impress (make_skoarpuscle(true));

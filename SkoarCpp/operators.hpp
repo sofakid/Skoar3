@@ -41,7 +41,7 @@ public:
     SkoarpusclePtr lt (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
     SkoarpusclePtr lte (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
 
-    SkoarpusclePtr and (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
-    SkoarpusclePtr or (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
+    SkoarpusclePtr and_ (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
+    SkoarpusclePtr or_ (SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr);
 
 };
