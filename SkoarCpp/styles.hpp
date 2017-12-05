@@ -5,7 +5,7 @@
 namespace SkoarStyles
 {
 
-    const enum class EStyle
+    enum class EStyle
     {
         nostyle = 0,
         parseFail,
