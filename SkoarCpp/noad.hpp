@@ -105,9 +105,9 @@ public:
     // -----------------
 
     // static versions for use with shared_ptrs
-    static void SkoarNoad::depth_visit(SkoarNoadPtr p, SpellOfNoadPtrs f);
-    static void SkoarNoad::inorder(SkoarNoadPtr p, SpellOfNoadPtrs f);
-    static void SkoarNoad::inorderBeforeAfter(SkoarNoadPtr p, SpellOfNoadPtrs f, SpellOfNoadPtrs g);
+    static void depth_visit(SkoarNoadPtr p, SpellOfNoadPtrs f);
+    static void inorder(SkoarNoadPtr p, SpellOfNoadPtrs f);
+    static void inorderBeforeAfter(SkoarNoadPtr p, SpellOfNoadPtrs f, SpellOfNoadPtrs g);
 
 
     void depth_visit(SpellOfNoads f);
