@@ -64,7 +64,7 @@ public:
 class SkoarpuscleProjections : public Skoarpuscle
 {
 public:
-    map<SkoarString, SkoarpionProjectionPtr> map;
+    map<SkoarString, SkoarpionProjectionPtr> mapp;
 
     SkoarpuscleProjections (ListOfSkoarpionProjectionsPtr);
     ~SkoarpuscleProjections () override;

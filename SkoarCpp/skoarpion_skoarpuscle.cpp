@@ -222,7 +222,7 @@ SkoarpuscleProjections::SkoarpuscleProjections (ListOfSkoarpionProjectionsPtr lo
         for (auto x : *lospp)
             if (x != nullptr)
                 // todo: there will be dups, what's up?
-                map[x->name] = x;
+                mapp[x->name] = x;
 }
 
 SkoarpuscleProjections::~SkoarpuscleProjections () {
