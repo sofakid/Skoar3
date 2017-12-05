@@ -234,7 +234,7 @@ SkoarpuscleProjections::~SkoarpuscleProjections () {
 
 void SkoarpuscleProjections::clear ()
 {
-    map.clear ();
+    mapp.clear ();
 }
 
 void SkoarpuscleProjections::asString (wostream &out) {

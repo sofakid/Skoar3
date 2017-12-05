@@ -225,8 +225,7 @@ SkoarpusclePtr SkoarFairy::impress_i() {
     return impress(i);
 }
 
-template<>
-SkoarpusclePtr SkoarFairy::impress(SkoarpusclePtr x) {
+SkoarpusclePtr SkoarFairy::impressSkoarpusclePtr (SkoarpusclePtr x) {
     //("$:" ++name++ ".impression: " ++x.asString).postln;
     
     if (is_skoarpuscle<SkoarpuscleCapture> (x))

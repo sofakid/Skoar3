@@ -61,11 +61,10 @@ public:
 
     template <typename T>
     SkoarpusclePtr impress (T x) {
-        return impress<SkoarpusclePtr> (make_skoarpuscle (x));
+        return impressSkoarpusclePtr (make_skoarpuscle (x));
     }
 
-    template<>
-    SkoarpusclePtr impress (SkoarpusclePtr);
+    SkoarpusclePtr impressSkoarpusclePtr (SkoarpusclePtr);
 
     void compile_ugen ();
 
