@@ -358,6 +358,7 @@ void SkoarKoar::do_skoarpion (
     {
         push_state ();
         fairy.push_times_seen ();
+        fairy.push_magic ();
     
         // load captures into this stack level
         if (captures != nullptr)
@@ -380,6 +381,7 @@ void SkoarKoar::do_skoarpion (
 
             pop_state ();
             fairy.pop_times_seen ();
+            fairy.pop_magic ();
 
             // apply exports
             for (auto& x : exp)
