@@ -11,10 +11,10 @@
 namespace Catch {
     // I #define CATCH_CONFIG_NOSTDOUT so then I must implement these functions
 
-    std::ostream& Catch::cout() {
+    std::ostream& cout() {
         return TestoarCatchStreamoar::getInstance()->outStream;
     }
-    std::ostream& Catch::cerr() {
+    std::ostream& cerr() {
         return TestoarCatchStreamoar::getInstance()->errStream;
     }
 }
