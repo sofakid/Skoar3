@@ -4,7 +4,7 @@
 class ISkoarLog
 {
 public:
-    const enum Level
+    enum Level
     {
         debug = 0,
         info,
