@@ -158,16 +158,18 @@ Skoarmantics::Skoarmantics () : table ({
         auto xp (noad->next_skoarpuscle ());
         noad->skoarpuscle = xp;
         
-        if (noad->parent->name != L"assignment") {
-            noad->on_enter = [=](SkoarMinstrelPtr m) {
-                if (is_skoarpuscle<SkoarpuscleBeat> (xp))
-                    skoarpuscle_ptr<SkoarpuscleBeat> (xp)->on_enter_sometimes(m);
+        // on_enter_sometimes is because we used to not enter is assigning to a beat
+        // (tempo) but we don't do that anymore. could be just on_enter and avoid all this.
+        noad->on_enter = [=](SkoarMinstrelPtr m) {
+            if (is_skoarpuscle<SkoarpuscleBeat> (xp))
+                skoarpuscle_ptr<SkoarpuscleBeat> (xp)->on_enter_sometimes(m);
                 
-                else if (is_skoarpuscle<SkoarpuscleRest> (xp))
-                    skoarpuscle_ptr<SkoarpuscleRest> (xp)->on_enter_sometimes(m);
+            else if (is_skoarpuscle<SkoarpuscleRest> (xp))
+                skoarpuscle_ptr<SkoarpuscleRest> (xp)->on_enter_sometimes(m);
                 
-            };
-        }
+        };
+
+        noad->clear_children ();
     }},
 
     {ESkoarNoad::exact_beat, SpellOfSimpleSkoarmantics {
