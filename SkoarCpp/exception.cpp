@@ -19,12 +19,10 @@ const char* SkoarError::what() const throw() {
 }
 
 
-
 // --- SkoarTokerException --------------------------------------------------------
 SkoarTokerException::SkoarTokerException() : 
     SkoarTokerException(L"Toker fail.") {
 }
-
 
 SkoarTokerException::SkoarTokerException(SkoarString s) :
     SkoarTokerException(s, nullptr) {
