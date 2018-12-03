@@ -2,10 +2,7 @@
 #include "skoarcery.hpp"
 #include <sstream>
 #include "spells.hpp"
-
-#ifdef JUCE_DEBUG
-#include "JuceHeader.h"
-#endif
+#include <mutex>
 
 typedef map<SkoarString, SkoarInt> MemoriesMap;
 
@@ -36,6 +33,7 @@ public:
     MemoriesMap SkoarDicsMap;
     MemoriesMap EventsMap;
 
+    std::mutex bottleneck;
 
     // --------------------------------------------------------------------------
     // for testing use only!
@@ -66,16 +64,12 @@ public:
     
     // --------------------------------------------------------------------------
     void alloc(SkoarString &name, MemoriesMap &Map) {
-#ifdef JUCE_DEBUG
-        const MessageManagerLock mmLock;
-#endif
+        std::lock_guard<std::mutex> lock(bottleneck);
         Map[name] += 1;
     }
 
     void dealloc(SkoarString &name, MemoriesMap &Map) {
-#ifdef JUCE_DEBUG
-        const MessageManagerLock mmLock;
-#endif
+        std::lock_guard<std::mutex> lock (bottleneck);
         Map[name] -= 1;
     }
 
