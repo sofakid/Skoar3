@@ -35,9 +35,13 @@ public:
     virtual void noteOn () = 0;
     virtual void noteOff () = 0;
     virtual void sleep (int ms) = 0;
+    virtual SkoarFloat getTime () = 0;
 };
 
 class SkoarMinstrel {
+    SkoarFloat t0;
+    SkoarFloat tAccumulated;
+
 public:
     const SkoarString name;
     Skoar* const skoar;

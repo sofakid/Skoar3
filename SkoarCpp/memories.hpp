@@ -3,7 +3,9 @@
 #include <sstream>
 #include "spells.hpp"
 
-
+#ifdef JUCE_DEBUG
+#include "JuceHeader.h"
+#endif
 
 typedef map<SkoarString, SkoarInt> MemoriesMap;
 
@@ -64,10 +66,16 @@ public:
     
     // --------------------------------------------------------------------------
     void alloc(SkoarString &name, MemoriesMap &Map) {
+#ifdef JUCE_DEBUG
+        const MessageManagerLock mmLock;
+#endif
         Map[name] += 1;
     }
 
     void dealloc(SkoarString &name, MemoriesMap &Map) {
+#ifdef JUCE_DEBUG
+        const MessageManagerLock mmLock;
+#endif
         Map[name] -= 1;
     }
 

@@ -1,12 +1,14 @@
 #include "minstrel.hpp"
 
 // --- SkoarMinstrel -------------------------------------
-SkoarMinstrel::SkoarMinstrel(
-    SkoarString minstrel_name, 
-    SkoarKoarPtr koar, 
-    Skoar* const skoar, 
-    const SpellOfHappening& spell) 
+SkoarMinstrel::SkoarMinstrel (
+    SkoarString minstrel_name,
+    SkoarKoarPtr koar,
+    Skoar* const skoar,
+    const SpellOfHappening& spell)
     :
+    t0 (0.0),
+    tAccumulated (0.0),
     name(minstrel_name),
     skoar(skoar),
     koar(koar),
@@ -107,6 +109,10 @@ SkoarMinstrelPtr SkoarMinstrel::NewDebuggingForSkoarpion (
 
 
 void SkoarMinstrel::start() {
+    if (musicker != nullptr)
+        t0 = musicker->getTime ();
+    tAccumulated = t0;
+
     skoar->one_more_running ();
     f();
 }
@@ -201,15 +207,20 @@ void SkoarMinstrel::happen(SkoarEventPtr p) {
         if (dur < 0.f)
             dur *= -1.f;
 
-        uint64_t durMs = static_cast<uint64_t>((1000.0 / bps) * dur);
+        SkoarFloat exactDur = (1000.0 / bps) * dur;
+        tAccumulated += exactDur;
+        SkoarFloat tNow = musicker->getTime ();
 
-        //uint64_t start = t;
-        //t += durMs;
-        //uint64_t end = t;
-        if (durMs > INT_MAX)
-            durMs = INT_MAX - 1;
+        SkoarFloat fSleepFor = tAccumulated - tNow;
 
-        musicker->sleep (static_cast<int>(durMs));
+        if (fSleepFor > 0.0)
+        {
+            uint64_t sleepFor = static_cast<uint64_t> (fSleepFor);
+            if (sleepFor > INT_MAX)
+                sleepFor = INT_MAX - 1;
+
+            musicker->sleep (static_cast<int>(sleepFor));
+        }
     
         if (!isRest)
             musicker->noteOff ();
