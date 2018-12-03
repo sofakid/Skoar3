@@ -7,7 +7,6 @@
 #include "skoarpion.hpp"
 
 struct MinstrelDebugConfig {
-
     MinstrelDebugConfig(
         const SpellOfDebuggingNoads& before_entering_noad_spell,
         const SpellOfDebuggingNoads& after_entering_noad_spell,
@@ -16,7 +15,7 @@ struct MinstrelDebugConfig {
         const SpellOfDebuggingSkoarpions& before_entering_skoarpion_spell,
         const SpellOfDebuggingSkoarpions& after_entering_skoarpion_spell,
         const SpellOfDebuggingExiting& exiting_spell
-        );
+    );
 
     const SpellOfDebuggingNoads& before_entering_noad;
     const SpellOfDebuggingNoads& after_entering_noad;
@@ -25,13 +24,21 @@ struct MinstrelDebugConfig {
     const SpellOfDebuggingSkoarpions& before_entering_skoarpion;
     const SpellOfDebuggingSkoarpions& after_entering_skoarpion;
     const SpellOfDebuggingExiting& exiting;
+};
 
+class ISkoarMinstrelMusicker
+{
+public:
+    virtual ~ISkoarMinstrelMusicker () = default;
 
+    virtual void config (SkoarEventPtr event) = 0;
+    virtual void noteOn () = 0;
+    virtual void noteOff () = 0;
+    virtual void sleep (int ms) = 0;
 };
 
 class SkoarMinstrel {
 public:
-
     const SkoarString name;
     Skoar* const skoar;
 
@@ -44,6 +51,8 @@ public:
     SpellOfSimplicity f;
 
     bool isDebugging;
+
+    std::unique_ptr<ISkoarMinstrelMusicker> musicker;
 
     //SkoarControls controls;
 
@@ -77,22 +86,6 @@ public:
     virtual void before_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionPtr skoarpion);
     virtual void after_entering_skoarpion (SkoarMinstrelPtr m, SkoarpionPtr skoarpion);
     virtual void exiting ();
-
-};
-
-
-// ----------------------------------
-// Skoarchestra - A band of minstrels
-// ----------------------------------
-class Skoarchestra {
-public:
-
-    ListOfMinstrels minstrels;
-    //SkoarTroll troll;
-    const SpellOfHappening& happenSpell;
-
-    Skoarchestra(Skoar*, const SpellOfHappening&);
-
 };
 
 class DebuggingMinstrel : public SkoarMinstrel {
@@ -115,5 +108,16 @@ public:
     void before_entering_skoarpion(SkoarMinstrelPtr m, SkoarpionPtr skoarpion) override;
     void after_entering_skoarpion (SkoarMinstrelPtr m, SkoarpionPtr skoarpion) override;
     void exiting() override;
+};
 
+// ----------------------------------
+// Skoarchestra - A band of minstrels
+// ----------------------------------
+class Skoarchestra
+{
+    const SpellOfHappening& happenSpell;
+public:
+    //SkoarTroll troll;
+    ListOfMinstrels minstrels;
+    Skoarchestra (Skoar* const, const SpellOfHappening&);
 };
