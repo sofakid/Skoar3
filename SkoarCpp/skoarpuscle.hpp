@@ -201,6 +201,7 @@ public:
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
 
+    bool isNoatworthy () override;
     void *asNoat() override;
     SkoarInt asCount() override;
 

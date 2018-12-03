@@ -610,7 +610,7 @@ SkoarpuscleList::SkoarpuscleList (ListOfSkoarpusclesPtr x) :
     SkoarMemories::o ().allocSkoarpuscle (L"List");
 #endif
 
-    noaty = false;
+    noaty = true;
     impressionable = true;
 }
 

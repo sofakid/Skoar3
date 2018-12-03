@@ -61,6 +61,11 @@ SkoarpusclePtr SkoarpuscleInt::duplicate ()
 
 void *SkoarpuscleInt::asNoat () { return nullptr; }
 
+bool SkoarpuscleInt::isNoatworthy () {
+    return true;
+}
+
+
 // --- SkoarpuscleFloat ---------------------------------------------------------
 void SkoarpuscleFloat::on_enter (SkoarMinstrelPtr m) {
     m->fairy->impress (val);

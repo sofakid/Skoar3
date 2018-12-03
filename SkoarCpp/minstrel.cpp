@@ -178,39 +178,42 @@ void SkoarMinstrel::reset_colons() {
 }
 
 void SkoarMinstrel::happen(SkoarEventPtr p) {
-    if (musicker == nullptr)
-        return;
-    musicker->config (p);
-
     bool isRest = is_skoarpuscle<SkoarpuscleTrue> (p->at (L"isRest"));
-    if (!isRest)
-        musicker->noteOn ();
-    
+    if (musicker != nullptr)
+    {
+        musicker->config (p);
+        if (!isRest)
+            musicker->noteOn ();
+    }
+
     happenSpell (p);
-
-    auto bps = skoarpuscle_ptr<SkoarpuscleFloat> (p->at (L"bps"))->val;
-    auto dur = skoarpuscle_ptr<SkoarpuscleFloat> (p->at (L"dur"))->val;
-
-    if (bps < 0.f)
-        bps *= -1.f;
-    if (bps == 0.f)
-        bps = 120.f;
-
-    if (dur < 0.f)
-        dur *= -1.f;
-
-    uint64_t durMs = static_cast<uint64_t>((1000.0 / bps) * dur);
-
-    //uint64_t start = t;
-    //t += durMs;
-    //uint64_t end = t;
-    if (durMs > INT_MAX)
-        durMs = INT_MAX - 1;
-
-    musicker->sleep (static_cast<int>(durMs));
     
-    if (!isRest)
-        musicker->noteOff ();
+    if (musicker != nullptr)
+    {
+        auto bps = skoarpuscle_ptr<SkoarpuscleFloat> (p->at (L"bps"))->val;
+        auto dur = skoarpuscle_ptr<SkoarpuscleFloat> (p->at (L"dur"))->val;
+
+        if (bps < 0.f)
+            bps *= -1.f;
+        if (bps == 0.f)
+            bps = 120.f;
+
+        if (dur < 0.f)
+            dur *= -1.f;
+
+        uint64_t durMs = static_cast<uint64_t>((1000.0 / bps) * dur);
+
+        //uint64_t start = t;
+        //t += durMs;
+        //uint64_t end = t;
+        if (durMs > INT_MAX)
+            durMs = INT_MAX - 1;
+
+        musicker->sleep (static_cast<int>(durMs));
+    
+        if (!isRest)
+            musicker->noteOff ();
+    }
 }
 
 
