@@ -71,10 +71,10 @@ inline bool is_skoarpuscle(SkoarpusclePtr p) {
 }
 
 template <class T, typename V>
-inline V skoarpuscle_val (SkoarpusclePtr p, V default) {
+inline V skoarpuscle_val (SkoarpusclePtr p, V defaultValue) {
     if (is_skoarpuscle<T> (p))
         return skoarpuscle_ptr<T> (p)->val;
-    return default;
+    return defaultValue;
 }
 
 // move this to lex.hpp after it works

@@ -1,8 +1,18 @@
 #include "operators.hpp"
 #include "magic_words.hpp"
 
-#define MathMagic [](SkoarpusclePtr x, SkoarpusclePtr y, SkoarMinstrelPtr m)
+#define MathMagicWithM [](SkoarpusclePtr x, SkoarpusclePtr y, SkoarMinstrelPtr m)
+#define MathMagicJustX [](SkoarpusclePtr x, SkoarpusclePtr, SkoarMinstrelPtr)
+#define MathMagicJustY [](SkoarpusclePtr, SkoarpusclePtr y, SkoarMinstrelPtr)
+#define MathMagicNoArgs [](SkoarpusclePtr, SkoarpusclePtr, SkoarMinstrelPtr)
+#define MathMagic [](SkoarpusclePtr x, SkoarpusclePtr y, SkoarMinstrelPtr)
 #define EMath ESkoarpuscle
+
+#define JustACat MathMagicNoArgs { return make_skoarpuscle (nullptr); }
+#define JustX MathMagicJustX { return x; }
+#define JustY MathMagicJustY { return y; }
+#define JustZero MathMagicNoArgs { return 0.0; }
+#define JustOne MathMagicNoArgs { return 1.0; }
 
 class SkoarOpsTables
 {
@@ -10,7 +20,7 @@ public:
 
     XTable assignment = {
         { EMath::Symbol, { {
-            EMath::Any, MathMagic {
+            EMath::Any, MathMagicWithM {
                 auto str (skoarpuscle_ptr<SkoarpuscleSymbol> (x)->val);
                 if (handle_magic_words (str, y, m))
                     return y;
@@ -18,7 +28,7 @@ public:
             } } },
 
         { EMath::SymbolColon, { {
-            EMath::Any, MathMagic {
+            EMath::Any, MathMagicWithM {
             auto str (skoarpuscle_ptr<SkoarpuscleSymbolColon> (x)->val);
             if (handle_magic_words (str, y, m))
                 return y;
@@ -29,30 +39,30 @@ public:
 
 
     XTable addition = {
-        { EMath::Cat, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
-        { EMath::False, { { EMath::Any, MathMagic { return x; } } } },
-        { EMath::True, { { EMath::Any, MathMagic { return y; } } } },
+        { EMath::Cat, { { EMath::Any, MathMagicNoArgs { return make_skoarpuscle (nullptr); } } } },
+        { EMath::False, { { EMath::Any, JustX } } },
+        { EMath::True, { { EMath::Any, JustY } } },
 
-        { EMath::Envelope, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+        { EMath::Envelope, { { EMath::Any, MathMagicNoArgs { return make_skoarpuscle (nullptr); } } } },
 
         { EMath::UGen, {
             { EMath::Int,       MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->add (y); } },
             { EMath::Float,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->add (y); } },
             { EMath::HashLevel, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->add (y); } },
-            { EMath::Freq,      MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Freq,      JustACat },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, MathMagicJustX { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::List,     JustACat },
             { EMath::UGen,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (y)->add (x); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Int, {
@@ -82,18 +92,18 @@ public:
                 );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List,     JustACat },
+            { EMath::UGen,     JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Float, {
@@ -122,18 +132,18 @@ public:
                 );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List, JustACat },
+            { EMath::UGen, JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::HashLevel, {
@@ -162,48 +172,48 @@ public:
                     );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List, JustACat},
+            { EMath::UGen, JustACat },
+            { EMath::Envelope, JustACat }
         } }
 
 
     };
 
     XTable subtraction = {
-        { EMath::Cat, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
-        { EMath::False, { { EMath::Any, MathMagic { return x; } } } },
-        { EMath::True, { { EMath::Any, MathMagic { return y; } } } },
+        { EMath::Cat, { { EMath::Any, JustACat } } },
+        { EMath::False, { { EMath::Any, JustX } } },
+        { EMath::True, { { EMath::Any, JustY } } },
 
-        { EMath::Envelope, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+        { EMath::Envelope, { { EMath::Any, JustACat } } },
 
         { EMath::UGen, {
             { EMath::Int,       MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->sub (y); } },
             { EMath::Float,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->sub (y); } },
             { EMath::HashLevel, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->sub (y); } },
-            { EMath::Freq,      MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Freq,      JustACat },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat},
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, MathMagicJustX { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::List,     JustACat },
             { EMath::UGen,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (y)->sub (x); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Int, {
@@ -233,18 +243,18 @@ public:
                     );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List,     JustACat },
+            { EMath::UGen,     JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Float, {
@@ -273,18 +283,18 @@ public:
                     );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List, JustACat },
+            { EMath::UGen, JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::HashLevel, {
@@ -313,48 +323,48 @@ public:
                     );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List, JustACat },
+            { EMath::UGen, JustACat },
+            { EMath::Envelope, JustACat }
         } }
 
 
     };
 
     XTable multiplication = {
-        { EMath::Cat, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
-        { EMath::False, { { EMath::Any, MathMagic { return x; } } } },
-        { EMath::True, { { EMath::Any, MathMagic { return y; } } } },
+        { EMath::Cat, { { EMath::Any, JustACat } } },
+        { EMath::False, { { EMath::Any, JustX } } },
+        { EMath::True, { { EMath::Any, JustY } } },
 
-        { EMath::Envelope, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+        { EMath::Envelope, { { EMath::Any, JustACat } } },
 
         { EMath::UGen, {
             { EMath::Int,       MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (y); } },
             { EMath::Float,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (y); } },
             { EMath::HashLevel, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (y); } },
-            { EMath::Freq,      MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Freq,      JustACat },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, MathMagicJustX { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::List,     JustACat },
             { EMath::UGen,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (y)->add (x); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Int, {
@@ -384,18 +394,18 @@ public:
                     );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List,     JustACat },
+            { EMath::UGen,     JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Float, {
@@ -424,18 +434,18 @@ public:
                     );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List, JustACat },
+            { EMath::UGen, JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::HashLevel, {
@@ -464,48 +474,48 @@ public:
                     );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List, JustACat },
+            { EMath::UGen, JustACat },
+            { EMath::Envelope, JustACat }
         } }
 
 
     };
 
     XTable division = {
-        { EMath::Cat, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
-        { EMath::False, { { EMath::Any, MathMagic { return x; } } } },
-        { EMath::True, { { EMath::Any, MathMagic { return y; } } } },
+        { EMath::Cat, { { EMath::Any, JustACat } } },
+        { EMath::False, { { EMath::Any, JustX } } },
+        { EMath::True, { { EMath::Any, JustY } } },
 
-        { EMath::Envelope, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+        { EMath::Envelope, { { EMath::Any, JustACat } } },
 
         { EMath::UGen, {
             { EMath::Int,       MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->divBy (y); } },
             { EMath::Float,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->divBy (y); } },
             { EMath::HashLevel, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->divBy (y); } },
-            { EMath::Freq,      MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Freq,      JustACat },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, MathMagicJustX { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::List,     JustACat },
             { EMath::UGen,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (y)->divBy (x); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Int, {
@@ -538,18 +548,18 @@ public:
                 );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List,     JustACat },
+            { EMath::UGen,     JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Float, {
@@ -581,18 +591,18 @@ public:
                 );
             } },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List, JustACat },
+            { EMath::UGen, JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::HashLevel, {
@@ -624,46 +634,46 @@ public:
             } },
 
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List, JustACat },
+            { EMath::UGen, JustACat },
+            { EMath::Envelope, JustACat }
         } }
     };
 
     XTable modulo = {
-        { EMath::Cat, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
-        { EMath::False, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
-        { EMath::True, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+        { EMath::Cat, { { EMath::Any, JustACat } } },
+        { EMath::False, { { EMath::Any, JustACat } } },
+        { EMath::True, { { EMath::Any, JustACat } } },
 
-        { EMath::Envelope, { { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } } } },
+        { EMath::Envelope, { { EMath::Any, JustACat } } },
 
         { EMath::UGen, {
             { EMath::Int,       MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->divBy (y); } },
             { EMath::Float,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->divBy (y); } },
             { EMath::HashLevel, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->divBy (y); } },
-            { EMath::Freq,      MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Freq,      JustACat },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, MathMagicJustX { return skoarpuscle_ptr<SkoarpuscleUGen> (x)->mul (make_skoarpuscle (0.0)); } },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::List,     JustACat },
             { EMath::UGen,     MathMagic { return skoarpuscle_ptr<SkoarpuscleUGen> (y)->divBy (x); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Int, {
@@ -688,20 +698,20 @@ public:
                 );
             } },
 
-            { EMath::HashLevel, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::HashLevel, JustACat },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen,     MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List,     JustACat },
+            { EMath::UGen,     JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::Float, {
@@ -727,77 +737,77 @@ public:
                     )
                 );
             } },
-            { EMath::HashLevel, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::HashLevel, JustACat },
 
-            { EMath::Noat,   MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Choard, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Noat,   JustACat },
+            { EMath::Choard, JustACat },
 
-            { EMath::False, MathMagic { return y; } },
-            { EMath::True,  MathMagic { return x; } },
+            { EMath::False, JustY },
+            { EMath::True,  JustX },
 
-            { EMath::Symbol, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::String, MathMagic { return make_skoarpuscle (nullptr); } },
+            { EMath::Symbol, JustACat },
+            { EMath::String, JustACat },
 
-            { EMath::List, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::UGen, MathMagic { return make_skoarpuscle (nullptr); } },
-            { EMath::Envelope, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::List, JustACat },
+            { EMath::UGen, JustACat },
+            { EMath::Envelope, JustACat }
         } },
 
         { EMath::HashLevel, {
-            { EMath::Any, MathMagic { return make_skoarpuscle (nullptr); } }
+            { EMath::Any, JustACat }
         } }
     };
 
     // --- cmp -----------------------------------------------------------------------------
     XCmpTable cmp = {
         { EMath::Cat, { 
-            { EMath::Cat,       MathMagic { return 0.0; } },
-            { EMath::Int,       MathMagic { return 1.0; } },
-            { EMath::Float,     MathMagic { return 1.0; } },
-            { EMath::HashLevel, MathMagic { return 1.0; } },
-            { EMath::Noat,      MathMagic { return 1.0; } },
-            { EMath::Choard,    MathMagic { return 1.0; } },
-            { EMath::False,     MathMagic { return 1.0; } },
-            { EMath::True,      MathMagic { return 1.0; } },
-            { EMath::Symbol,    MathMagic { return 1.0; } },
-            { EMath::String,    MathMagic { return 1.0; } },
-            { EMath::List,      MathMagic { return 1.0; } },
-            { EMath::UGen,      MathMagic { return 1.0; } },
-            { EMath::Envelope,  MathMagic { return 1.0; } }
+            { EMath::Cat,       JustZero },
+            { EMath::Int,       JustOne },
+            { EMath::Float,     JustOne },
+            { EMath::HashLevel, JustOne },
+            { EMath::Noat,      JustOne },
+            { EMath::Choard,    JustOne },
+            { EMath::False,     JustOne },
+            { EMath::True,      JustOne },
+            { EMath::Symbol,    JustOne },
+            { EMath::String,    JustOne },
+            { EMath::List,      JustOne },
+            { EMath::UGen,      JustOne },
+            { EMath::Envelope,  JustOne }
         } },
         { EMath::False, { 
-            { EMath::Cat,       MathMagic { return 1.0; } },
-            { EMath::Int,       MathMagic { return 1.0; } },
-            { EMath::Float,     MathMagic { return 1.0; } },
-            { EMath::HashLevel, MathMagic { return 1.0; } },
-            { EMath::Noat,      MathMagic { return 1.0; } },
-            { EMath::Choard,    MathMagic { return 1.0; } },
-            { EMath::False,     MathMagic { return 0.0; } },
-            { EMath::True,      MathMagic { return 1.0; } },
-            { EMath::Symbol,    MathMagic { return 1.0; } },
-            { EMath::String,    MathMagic { return 1.0; } },
-            { EMath::List,      MathMagic { return 1.0; } },
-            { EMath::UGen,      MathMagic { return 1.0; } },
-            { EMath::Envelope,  MathMagic { return 1.0; } }
+            { EMath::Cat,       JustOne },
+            { EMath::Int,       JustOne },
+            { EMath::Float,     JustOne },
+            { EMath::HashLevel, JustOne },
+            { EMath::Noat,      JustOne },
+            { EMath::Choard,    JustOne },
+            { EMath::False,     JustZero },
+            { EMath::True,      JustOne },
+            { EMath::Symbol,    JustOne },
+            { EMath::String,    JustOne },
+            { EMath::List,      JustOne },
+            { EMath::UGen,      JustOne },
+            { EMath::Envelope,  JustOne }
         } },
         { EMath::True, { 
-            { EMath::Cat,       MathMagic { return 1.0; } },
-            { EMath::Int,       MathMagic { return 1.0; } },
-            { EMath::Float,     MathMagic { return 1.0; } },
-            { EMath::HashLevel, MathMagic { return 1.0; } },
-            { EMath::Noat,      MathMagic { return 1.0; } },
-            { EMath::Choard,    MathMagic { return 1.0; } },
-            { EMath::False,     MathMagic { return 1.0; } },
-            { EMath::True,      MathMagic { return 0.0; } },
-            { EMath::Symbol,    MathMagic { return 1.0; } },
-            { EMath::String,    MathMagic { return 1.0; } },
-            { EMath::List,      MathMagic { return 1.0; } },
-            { EMath::UGen,      MathMagic { return 1.0; } },
-            { EMath::Envelope,  MathMagic { return 1.0; } }
+            { EMath::Cat,       JustOne },
+            { EMath::Int,       JustOne },
+            { EMath::Float,     JustOne },
+            { EMath::HashLevel, JustOne },
+            { EMath::Noat,      JustOne },
+            { EMath::Choard,    JustOne },
+            { EMath::False,     JustOne },
+            { EMath::True,      JustZero },
+            { EMath::Symbol,    JustOne },
+            { EMath::String,    JustOne },
+            { EMath::List,      JustOne },
+            { EMath::UGen,      JustOne },
+            { EMath::Envelope,  JustOne }
         } },
 
-        { EMath::Envelope, { { EMath::Any, MathMagic { return 1.0; } } } },
-        { EMath::UGen,     { { EMath::Any, MathMagic { return 1.0; } } } },
+        { EMath::Envelope, { { EMath::Any, JustOne } } },
+        { EMath::UGen,     { { EMath::Any, JustOne } } },
         
         { EMath::Int, {
             { EMath::Int,       MathMagic {
@@ -818,15 +828,15 @@ public:
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (y)->val;
             } },
 
-            { EMath::Noat,      MathMagic { return 1.0; } },
-            { EMath::Choard,    MathMagic { return 1.0; } },
-            { EMath::False,     MathMagic { return 1.0; } },
-            { EMath::True,      MathMagic { return 1.0; } },
-            { EMath::Symbol,    MathMagic { return 1.0; } },
-            { EMath::String,    MathMagic { return 1.0; } },
-            { EMath::List,      MathMagic { return 1.0; } },
-            { EMath::UGen,      MathMagic { return 1.0; } },
-            { EMath::Envelope,  MathMagic { return 1.0; } }
+            { EMath::Noat,      JustOne },
+            { EMath::Choard,    JustOne },
+            { EMath::False,     JustOne },
+            { EMath::True,      JustOne },
+            { EMath::Symbol,    JustOne },
+            { EMath::String,    JustOne },
+            { EMath::List,      JustOne },
+            { EMath::UGen,      JustOne },
+            { EMath::Envelope,  JustOne }
         } },
 
         { EMath::Float, {
@@ -846,15 +856,15 @@ public:
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (y)->val;
             } },
 
-            { EMath::Noat,      MathMagic { return 1.0; } },
-            { EMath::Choard,    MathMagic { return 1.0; } },
-            { EMath::False,     MathMagic { return 1.0; } },
-            { EMath::True,      MathMagic { return 1.0; } },
-            { EMath::Symbol,    MathMagic { return 1.0; } },
-            { EMath::String,    MathMagic { return 1.0; } },
-            { EMath::List,      MathMagic { return 1.0; } },
-            { EMath::UGen,      MathMagic { return 1.0; } },
-            { EMath::Envelope,  MathMagic { return 1.0; } }
+            { EMath::Noat,      JustOne },
+            { EMath::Choard,    JustOne },
+            { EMath::False,     JustOne },
+            { EMath::True,      JustOne },
+            { EMath::Symbol,    JustOne },
+            { EMath::String,    JustOne },
+            { EMath::List,      JustOne },
+            { EMath::UGen,      JustOne },
+            { EMath::Envelope,  JustOne }
         } },
 
         { EMath::HashLevel, {
@@ -874,15 +884,15 @@ public:
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (y)->val;
             } },
 
-            { EMath::Noat,      MathMagic { return 1.0; } },
-            { EMath::Choard,    MathMagic { return 1.0; } },
-            { EMath::False,     MathMagic { return 1.0; } },
-            { EMath::True,      MathMagic { return 1.0; } },
-            { EMath::Symbol,    MathMagic { return 1.0; } },
-            { EMath::String,    MathMagic { return 1.0; } },
-            { EMath::List,      MathMagic { return 1.0; } },
-            { EMath::UGen,      MathMagic { return 1.0; } },
-            { EMath::Envelope,  MathMagic { return 1.0; } }
+            { EMath::Noat,      JustOne },
+            { EMath::Choard,    JustOne },
+            { EMath::False,     JustOne },
+            { EMath::True,      JustOne },
+            { EMath::Symbol,    JustOne },
+            { EMath::String,    JustOne },
+            { EMath::List,      JustOne },
+            { EMath::UGen,      JustOne },
+            { EMath::Envelope,  JustOne }
         } }
 
     };
