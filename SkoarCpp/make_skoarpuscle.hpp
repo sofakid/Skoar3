@@ -70,6 +70,13 @@ inline bool is_skoarpuscle(SkoarpusclePtr p) {
     return (typeid(*p) == typeid(T));
 }
 
+template <class T, typename V>
+inline V skoarpuscle_val (SkoarpusclePtr p, V default) {
+    if (is_skoarpuscle<T> (p))
+        return skoarpuscle_ptr<T> (p)->val;
+    return default;
+}
+
 // move this to lex.hpp after it works
 
 template <ESkoarToke::Kind T>
