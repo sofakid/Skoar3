@@ -614,7 +614,7 @@ public:
     void typeAsString(wostream &out) override;
     void valAsString(wostream &out) override;
 
-    void on_enter (SkoarMinstrelPtr m);
+    void on_enter (SkoarMinstrelPtr m) override;
 
 };
 

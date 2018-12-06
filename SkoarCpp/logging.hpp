@@ -4,6 +4,8 @@
 class ISkoarLog
 {
 public:
+    virtual ~ISkoarLog () = default;
+
     enum Level
     {
         debug = 0,

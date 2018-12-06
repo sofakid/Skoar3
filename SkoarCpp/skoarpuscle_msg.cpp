@@ -29,7 +29,7 @@ auto& get_generator () {
     return generator;
 }
 
-SkoarpusclePtr SkoarpuscleInt::skoar_msg (SkoarString sel, SkoarpusclePtr args, SkoarMinstrelPtr m) {
+SkoarpusclePtr SkoarpuscleInt::skoar_msg (SkoarString sel, SkoarpusclePtr /*args*/, SkoarMinstrelPtr /*m*/) {
 
     if (sel == L"random")
     {
@@ -60,7 +60,7 @@ SkoarpusclePtr SkoarpuscleInt::skoar_msg (SkoarString sel, SkoarpusclePtr args, 
 
 // --- SkoarpuscleFloat ---------------------------------------------------------
 
-SkoarpusclePtr SkoarpuscleFloat::skoar_msg (SkoarString sel, SkoarpusclePtr args, SkoarMinstrelPtr m) {
+SkoarpusclePtr SkoarpuscleFloat::skoar_msg (SkoarString sel, SkoarpusclePtr /*args*/, SkoarMinstrelPtr /*m*/) {
     
     if (sel == L"random")
     {
