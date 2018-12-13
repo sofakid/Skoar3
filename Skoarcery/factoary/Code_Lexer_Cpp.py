@@ -39,7 +39,7 @@ SkoarDispensary::SkoarDispensary() :
                 emissions.CPP.raw(comma)
                 comma = ",\n"
                 emissions.CPP.raw("        { ESkoarToke::"+ token.name +""", 
-            [](wstring *buf, size_t offs) {
+            [](std::wstring *buf, size_t offs) {
                 return """+ token.toker_name +"""::match_toke(buf, offs);
             }
         }""")            
@@ -48,7 +48,7 @@ SkoarDispensary::SkoarDispensary() :
 {
 }
 
-SkoarToke* SkoarDispensary::match_toke(ESkoarToke::Kind want, wstring *buf, size_t offs) {
+SkoarToke* SkoarDispensary::match_toke(ESkoarToke::Kind want, std::wstring *buf, size_t offs) {
     auto f = table[want];
     if (f) 
         return f(buf, offs);
@@ -114,10 +114,10 @@ namespace ESkoarNoad {
     def dispensary_h(self):
         emissions.CPP.raw("""
 class SkoarDispensary {
-    map<ESkoarToke::Kind, function<SkoarToke* (wstring *buf, size_t offs)>> table;
+    std::map<ESkoarToke::Kind, std::function<SkoarToke* (std::wstring *buf, size_t offs)>> table;
 public: 
     SkoarDispensary();   
-    SkoarToke* match_toke(ESkoarToke::Kind want, wstring *buf, size_t offs);
+    SkoarToke* match_toke(ESkoarToke::Kind want, std::wstring *buf, size_t offs);
 };
 """)
 

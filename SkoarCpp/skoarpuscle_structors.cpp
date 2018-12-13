@@ -347,7 +347,7 @@ SkoarpuscleBooleanOp::SkoarpuscleBooleanOp (SkoarNoadPtr /*noad*/, SkoarToke* to
     else
     {
         f = [](SkoarMinstrelPtr, SkoarpusclePtr, SkoarpusclePtr) {
-            return make_shared<SkoarpuscleCat> ();
+            return std::make_shared<SkoarpuscleCat> ();
         };
     }
 }
@@ -463,15 +463,15 @@ SkoarpuscleConditional::~SkoarpuscleConditional () {
     for (auto x : ifs)
     {
         SkoarpionPtr z;
-        z = get<0> (x);
+        z = std::get<0> (x);
         if (z != nullptr)
             z->clear ();
 
-        z = get<1> (x);
+        z = std::get<1> (x);
         if (z != nullptr)
             z->clear ();
 
-        z = get<2> (x);
+        z = std::get<2> (x);
         if (z != nullptr)
             z->clear ();
 
@@ -599,7 +599,7 @@ SkoarpuscleListEnd::~SkoarpuscleListEnd () {
 
 // --- SkoarpuscleList ---------------------------------------------------------
 SkoarpuscleList::SkoarpuscleList () :
-    SkoarpuscleList (make_shared<ListOfSkoarpuscles> ())
+    SkoarpuscleList (std::make_shared<ListOfSkoarpuscles> ())
 {}
 
 SkoarpuscleList::SkoarpuscleList (ListOfSkoarpusclesPtr x) :
@@ -617,7 +617,7 @@ SkoarpuscleList::SkoarpuscleList (ListOfSkoarpusclesPtr x) :
 
 SkoarpuscleList::SkoarpuscleList (const ListOfSkoarpuscles& x) :
     Skoarpuscle (ESkoarpuscle::List),
-    val (make_shared<ListOfSkoarpuscles>(x))
+    val (std::make_shared<ListOfSkoarpuscles>(x))
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"List");
@@ -716,10 +716,10 @@ SkoarpuscleCoda::SkoarpuscleCoda (SkoarNoadPtr /*noad*/, SkoarToke* toke) {
 
     offs = toke->offs;
 
-    wregex re (L":\\s*(.+)");
-    wsmatch matches;
+    std::wregex re (L":\\s*(.+)");
+    std::wsmatch matches;
 
-    label = regex_search (toke->lexeme, matches, re) ? matches.str (1) : SkoarString (L"");
+    label = std::regex_search (toke->lexeme, matches, re) ? matches.str (1) : SkoarString (L"");
 
 }
 
@@ -741,10 +741,10 @@ SkoarpuscleGoto::SkoarpuscleGoto (SkoarNoadPtr noad) {
     {
         nav_cmd = SkoarNav::CODA;
 
-        wregex re (L":\\s*(.+)");
-        wsmatch matches;
+        std::wregex re (L":\\s*(.+)");
+        std::wsmatch matches;
 
-        label = regex_search (toke->lexeme, matches, re) ? matches.str (1) : SkoarString (L"");
+        label = std::regex_search (toke->lexeme, matches, re) ? matches.str (1) : SkoarString (L"");
     }
 }
 

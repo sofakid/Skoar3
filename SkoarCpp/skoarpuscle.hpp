@@ -64,31 +64,31 @@ public:
     //    return val;
     //}
 
-    virtual void asString(wostream &out) {
+    virtual void asString(std::wostream &out) {
         out << L"Skoarpuscle";
     }
 
     SkoarString asString() {
-        wostringstream out;
+        std::wostringstream out;
         asString(out);
         return out.str();
     }
 
-    virtual void typeAsString(wostream &out) {
+    virtual void typeAsString(std::wostream &out) {
         asString(out);
     }
 
     SkoarString typeAsString() {
-        wostringstream out;
+        std::wostringstream out;
         typeAsString(out);
         return out.str();
     }
 
-    virtual void valAsString(wostream &) {
+    virtual void valAsString(std::wostream &) {
     }
 
     SkoarString valAsString() {
-        wostringstream out;
+        std::wostringstream out;
         valAsString(out);
         return out.str();
     }
@@ -98,7 +98,7 @@ public:
         return false;
     }
 
-    friend std::wostream & operator<<(wostream &out, Skoarpuscle &x) {
+    friend std::wostream & operator<<(std::wostream &out, Skoarpuscle &x) {
         x.asString(out);
         return out;
     }
@@ -120,9 +120,9 @@ public:
     SkoarpuscleUnknown();
     ~SkoarpuscleUnknown() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 };
 
 // Cats show up in unexpected places.
@@ -131,9 +131,9 @@ public:
     SkoarpuscleCat();
     SkoarpuscleCat(nullptr_t);
     ~SkoarpuscleCat() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
@@ -147,9 +147,9 @@ public:
     SkoarpuscleTrue(bool);
     ~SkoarpuscleTrue() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
@@ -163,9 +163,9 @@ public:
     SkoarpuscleFalse(bool);
     ~SkoarpuscleFalse() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
@@ -180,9 +180,9 @@ public:
     SkoarpuscleFreq(SkoarInt);
     ~SkoarpuscleFreq() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
@@ -197,9 +197,9 @@ public:
     SkoarpuscleInt(SkoarInt v);
     ~SkoarpuscleInt() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     bool isNoatworthy () override;
     void *asNoat() override;
@@ -217,9 +217,9 @@ public:
     const SkoarFloat val;
     SkoarpuscleFloat(SkoarFloat);
     ~SkoarpuscleFloat() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void *asNoat() override;
     void on_enter(SkoarMinstrelPtr) override;
@@ -235,9 +235,9 @@ public:
 
     SkoarpuscleString(SkoarString);
     ~SkoarpuscleString() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
@@ -250,9 +250,9 @@ public:
 
     SkoarpuscleSymbol(SkoarString);
     ~SkoarpuscleSymbol() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr skoar_msg (SkoarString, SkoarpusclePtr, SkoarMinstrelPtr) override;
@@ -265,9 +265,9 @@ public:
 
     SkoarpuscleSymbolColon(SkoarString);
     ~SkoarpuscleSymbolColon() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
     SkoarpusclePtr duplicate () override;
 };
 
@@ -279,9 +279,9 @@ public:
 
     SkoarpuscleSymbolName (SkoarString);
     ~SkoarpuscleSymbolName () override;
-    void asString (wostream &out) override;
-    void typeAsString (wostream &out) override;
-    void valAsString (wostream &out) override;
+    void asString (std::wostream &out) override;
+    void typeAsString (std::wostream &out) override;
+    void valAsString (std::wostream &out) override;
     SkoarpusclePtr duplicate () override;
 
 };
@@ -292,8 +292,8 @@ public:
 
     SkoarpuscleTimes(SkoarNoadPtr);
     ~SkoarpuscleTimes() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
 
@@ -311,9 +311,9 @@ public:
     SkoarNoadPtr noad;
     SkoarpuscleBars(SkoarToke*, SkoarNoadPtr);
     ~SkoarpuscleBars() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr m) override;
 
@@ -325,9 +325,9 @@ public:
 
     SkoarpuscleCarrots(SkoarToke *);
     ~SkoarpuscleCarrots() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
 };
 
@@ -336,9 +336,9 @@ public:
     const SkoarInt val;
     SkoarpuscleTuplet(SkoarToke *);
     ~SkoarpuscleTuplet() override;
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
 };
 
@@ -349,9 +349,9 @@ public:
     SkoarpuscleDynamic(SkoarToke *);
     ~SkoarpuscleDynamic() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     SkoarFloat amp();
     void on_enter (SkoarMinstrelPtr m) override;
@@ -363,19 +363,19 @@ public:
     SkoarpuscleOctaveShift(SkoarToke *);
     ~SkoarpuscleOctaveShift() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
 };
 
 class SkoarpuscleBooleanOp : public Skoarpuscle {
 public:
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
-    function<SkoarpusclePtr(SkoarMinstrelPtr m, SkoarpusclePtr, SkoarpusclePtr)> f;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
+    std::function<SkoarpusclePtr(SkoarMinstrelPtr m, SkoarpusclePtr, SkoarpusclePtr)> f;
 
     SkoarpuscleBooleanOp(SkoarNoadPtr, SkoarToke *);
     ~SkoarpuscleBooleanOp() override;
@@ -391,9 +391,9 @@ public:
     SkoarpuscleVoice(SkoarToke *);
     ~SkoarpuscleVoice() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
 };
 
@@ -406,9 +406,9 @@ public:
     SkoarpuscleCoda (SkoarNoadPtr, SkoarToke *);
     ~SkoarpuscleCoda () override;
 
-    void asString (wostream &out) override;
-    void typeAsString (wostream &out) override;
-    void valAsString (wostream &out) override;
+    void asString (std::wostream &out) override;
+    void typeAsString (std::wostream &out) override;
+    void valAsString (std::wostream &out) override;
 
     void on_enter (SkoarMinstrelPtr m) override;
 
@@ -420,9 +420,9 @@ public:
     SkoarpuscleMsgName(SkoarString);
     ~SkoarpuscleMsgName() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
 };
 
@@ -432,9 +432,9 @@ public:
     SkoarpuscleMsgNameWithArgs(SkoarString);
     ~SkoarpuscleMsgNameWithArgs() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
 };
@@ -443,14 +443,14 @@ class SkoarpuscleMathOp : public Skoarpuscle {
 public:
     const SkoarString val;
 
-    function<void(SkoarMinstrelPtr m, SkoarpusclePtr, SkoarpusclePtr)> f;
+    std::function<void(SkoarMinstrelPtr m, SkoarpusclePtr, SkoarpusclePtr)> f;
 
     SkoarpuscleMathOp(SkoarToke *);
     ~SkoarpuscleMathOp() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter (SkoarMinstrelPtr) override;
     void calculate(SkoarMinstrelPtr m, SkoarpusclePtr a, SkoarpusclePtr b);
@@ -467,9 +467,9 @@ public:
     ~SkoarpuscleList() ;
     void clear () override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     bool isNoatworthy() override;
     void *asNoat() override;
@@ -478,9 +478,9 @@ public:
     SkoarpusclePtr duplicate () override;
     SkoarpusclePtr duplicate_shallow ();
 
-    shared_ptr<SkoarpuscleList> mul(SkoarMinstrelPtr, SkoarpusclePtr);
-    shared_ptr<SkoarpuscleList> div(SkoarMinstrelPtr, SkoarpusclePtr);
-    shared_ptr<SkoarpuscleList> divBy(SkoarMinstrelPtr, SkoarpusclePtr);
+    std::shared_ptr<SkoarpuscleList> mul(SkoarMinstrelPtr, SkoarpusclePtr);
+    std::shared_ptr<SkoarpuscleList> div(SkoarMinstrelPtr, SkoarpusclePtr);
+    std::shared_ptr<SkoarpuscleList> divBy(SkoarMinstrelPtr, SkoarpusclePtr);
     SkoarInt size();
 
 };
@@ -491,9 +491,9 @@ public:
     SkoarpuscleListSep();
     ~SkoarpuscleListSep() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
     void on_enter(SkoarMinstrelPtr) override;
 };
 
@@ -502,9 +502,9 @@ public:
     SkoarpuscleListEnd();
     ~SkoarpuscleListEnd() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
 };
@@ -519,9 +519,9 @@ public:
     SkoarpuscleDeref(SkoarString, SkoarpusclePtr);
     ~SkoarpuscleDeref() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     SkoarpusclePtr lookup(SkoarMinstrelPtr);
 
@@ -539,14 +539,14 @@ class SkoarpuscleConditional : public Skoarpuscle {
 public:
     static const SkoarString id (bool reset = false);
 
-    vector<tuple<SkoarpionPtr, SkoarpionPtr, SkoarpionPtr>> ifs;
+    std::vector<std::tuple<SkoarpionPtr, SkoarpionPtr, SkoarpionPtr>> ifs;
 
     SkoarpuscleConditional(Skoar*, SkoarNoadPtr);
     ~SkoarpuscleConditional() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
 
@@ -557,9 +557,9 @@ public:
     SkoarpuscleBoolean(SkoarNoadPtr);
     ~SkoarpuscleBoolean() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
 
@@ -581,9 +581,9 @@ public:
     SkoarpuscleLoop(Skoar*, SkoarNoadPtr);
     ~SkoarpuscleLoop() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void foreach(SkoarpusclePtr listy);
     void on_enter(SkoarMinstrelPtr) override;
@@ -596,9 +596,9 @@ public:
     SkoarpuscleLoopMsg(SkoarpusclePtr);
     ~SkoarpuscleLoopMsg() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
 };
 
@@ -610,9 +610,9 @@ public:
     SkoarpuscleGoto(SkoarNoadPtr);
     ~SkoarpuscleGoto() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter (SkoarMinstrelPtr m) override;
 
@@ -625,9 +625,9 @@ public:
     SkoarpuscleArgs();
     ~SkoarpuscleArgs() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
     void on_deref_exit(SkoarMinstrelPtr);
@@ -639,9 +639,9 @@ public:
     SkoarpuscleExprEnd();
     ~SkoarpuscleExprEnd() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
     void on_enter (SkoarMinstrelPtr) override;
 };
 
@@ -654,9 +654,9 @@ public:
 
     ~SkoarpuscleHashLevel() override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     void on_enter(SkoarMinstrelPtr) override;
     SkoarpusclePtr duplicate () override;
@@ -666,16 +666,16 @@ public:
 
 class SkoarpusclePair : public Skoarpuscle {
 public:
-    const pair<SkoarString, SkoarpusclePtr> val;
+    const std::pair<SkoarString, SkoarpusclePtr> val;
 
     SkoarpusclePair(SkoarString, SkoarpusclePtr);
     ~SkoarpusclePair() override;
 
     void clear () override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     SkoarpusclePtr assign(SkoarMinstrelPtr);
 };
@@ -688,9 +688,9 @@ public:
     ~SkoarpuscleExpr() override;
     void clear () override;
 
-    void asString(wostream &out) override;
-    void typeAsString(wostream &out) override;
-    void valAsString(wostream &out) override;
+    void asString(std::wostream &out) override;
+    void typeAsString(std::wostream &out) override;
+    void valAsString(std::wostream &out) override;
 
     SkoarpusclePtr flatten(SkoarMinstrelPtr m);
 

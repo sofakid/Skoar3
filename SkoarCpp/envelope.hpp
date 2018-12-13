@@ -4,7 +4,7 @@
 
 class SkoarpuscleEnvelope : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleEnvelope" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleEnvelope" << " :: " ; }
     SkoarpuscleEnvelope();
 
 };

@@ -11,17 +11,17 @@ _ = _____ = _________ = _____________ = _________________ = ____________________
 # Symbols
 # -------
 SkoarToke_ = "SkoarToke"
-lexeme_ = Arg("wstring", "lexeme")
-regex_ = Arg("const wregex", "rgx")
+lexeme_ = Arg("std::wstring", "lexeme")
+regex_ = Arg("const std::wregex", "rgx")
 size_ = Arg("size_t", "size")
 inspectable_ = "inspectable"
 burn_ = Arg("size_t", "burn")
-match_obj_ = Arg("wsmatch", "matches")
-buf_ = Arg("wstring *", "buf")
+match_obj_ = Arg("std::wsmatch", "matches")
+buf_ = Arg("std::wstring *", "buf")
 offs_ = Arg("size_t", "offs")
 toke_class_ = "toke_class"
 match_toke_ = Arg("SkoarToke*", "match_toke")
-s_ = Arg("wstring", "s")
+s_ = Arg("std::wstring", "s")
 n_ = Arg("size_t", "n")
 kind_ = Arg("ESkoarToke::Kind", "kind");
 style_ = Arg("SkoarStyles::EStyle", "style")
@@ -133,7 +133,7 @@ def whitespace_token():
     #_____.var(match_obj_)
 
     _____.stmt("auto found = std::regex_search(buf->cbegin() + offs, buf->cend(), "+ match_obj_.name +", "+ 
-               Whitespace.toker_name +"::"+ regex_.name +", regex_constants::match_continuous)")
+               Whitespace.toker_name +"::"+ regex_.name +", std::regex_constants::match_continuous)")
     
     _____.if_("!found")
     _________.return_("0")
@@ -247,12 +247,12 @@ def typical_token_cpp(token):
     _.method(match_toke_, buf_, offs_)
     #_____.var(match_obj_)
     _____.stmt("auto found = std::regex_search(buf->cbegin() + offs, buf->cend(), "+ match_obj_.name +", "+ 
-               token.toker_name +"::"+ regex_.name +", regex_constants::match_continuous)")
+               token.toker_name +"::"+ regex_.name +", std::regex_constants::match_continuous)")
     
     _____.if_("!found")
     _________.return_(_.null)
     _____.end_if()
-    _____.stmt("auto s = wstring("+ match_obj_.name +".str())")
+    _____.stmt("auto s = std::wstring("+ match_obj_.name +".str())")
     _____.return_("new "+ token.toker_name +"(s, offs, s.length())")
     #_________.return_(SkoarToke_ + _.v_static_accessor() + match_toke_.name +"<"+ token.toker_name +">("+ buf_.name +", "+ offs_.name +")")
     _.end()

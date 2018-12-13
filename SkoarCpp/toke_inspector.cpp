@@ -34,22 +34,22 @@ SkoarTokeInspector* SkoarTokeInspector::instance() {
 SkoarTokeInspector::SkoarTokeInspector() : table({
 
     { ESkoarToke::Fairy, SpellOfSimpleToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleFairy>();
+        noad->skoarpuscle = std::make_shared<SkoarpuscleFairy>();
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Cat, SpellOfSimpleToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleCat>();
+        noad->skoarpuscle = std::make_shared<SkoarpuscleCat>();
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::True, SpellOfSimpleToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleTrue>();
+        noad->skoarpuscle = std::make_shared<SkoarpuscleTrue>();
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::False, SpellOfSimpleToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleFalse>();
+        noad->skoarpuscle = std::make_shared<SkoarpuscleFalse>();
         noad->toke = nullptr;
     } },
 
@@ -57,7 +57,7 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
     { ESkoarToke::Freq, SpellOfToking {
         try
         {
-            noad->skoarpuscle = make_shared<SkoarpuscleFreq> (toke->lexeme);
+            noad->skoarpuscle = std::make_shared<SkoarpuscleFreq> (toke->lexeme);
             noad->toke = nullptr;
         }
         catch (const std::invalid_argument& /*ia*/)
@@ -72,7 +72,7 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
 
     { ESkoarToke::Int, SpellOfToking {
         try {
-            noad->skoarpuscle = make_shared<SkoarpuscleInt> (stoll (toke->lexeme));
+            noad->skoarpuscle = std::make_shared<SkoarpuscleInt> (stoll (toke->lexeme));
             noad->toke = nullptr;
         }
         catch (const std::invalid_argument& /*ia*/) {
@@ -87,7 +87,7 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
     { ESkoarToke::Float, SpellOfToking {
         
         try {
-            noad->skoarpuscle = make_shared<SkoarpuscleFloat> (stod (toke->lexeme));
+            noad->skoarpuscle = std::make_shared<SkoarpuscleFloat> (stod (toke->lexeme));
             noad->toke = nullptr;
         }
         catch (const std::invalid_argument& /*ia*/) {
@@ -100,12 +100,12 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
     
     // -----------------------------------------------------------------
     { ESkoarToke::NamedNoat, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleNoat> (toke->lexeme);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleNoat> (toke->lexeme);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Choard, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleChoard> (toke->lexeme);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleChoard> (toke->lexeme);
         noad->toke = nullptr;
     } },
     
@@ -113,22 +113,22 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
     { ESkoarToke::String, SpellOfToking {
         auto s (toke->lexeme);
         auto n (s.length());
-        noad->skoarpuscle = make_shared<SkoarpuscleString> (s.substr (1, n - 2));
+        noad->skoarpuscle = std::make_shared<SkoarpuscleString> (s.substr (1, n - 2));
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Symbol, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleSymbol> (toke->lexeme.substr (1));
+        noad->skoarpuscle = std::make_shared<SkoarpuscleSymbol> (toke->lexeme.substr (1));
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::SymbolColon, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleSymbolColon> (toke->lexeme);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleSymbolColon> (toke->lexeme);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::SymbolName, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleSymbolName> (toke->lexeme);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleSymbolName> (toke->lexeme);
         noad->toke = nullptr;
     } },
 
@@ -136,181 +136,181 @@ SkoarTokeInspector::SkoarTokeInspector() : table({
     // rests
     // } }} }}}
     { ESkoarToke::Crotchets, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleRest> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleRest> (toke);
         noad->toke = nullptr;
     } },
     // o/ oo/ ooo/
     { ESkoarToke::Quavers, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleRest> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleRest> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Quarters, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleBeat> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleBeat> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Eighths, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleBeat> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleBeat> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::ExactBeat, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleExactBeat> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleExactBeat> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::ExactRest, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleExactRest> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleExactRest> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Duration, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleDuration> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleDuration> (toke);
         noad->toke = nullptr;
     } },
     
     // -----------------------------------------------------------------
     { ESkoarToke::Bars, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleBars> (toke, noad);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleBars> (toke, noad);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Carrot, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleCarrots> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleCarrots> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Tuplet, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleTuplet> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleTuplet> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::OctaveShift, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleOctaveShift> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleOctaveShift> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Coda, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleCoda> (noad, toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleCoda> (noad, toke);
         noad->toke = nullptr;
     } },
  
     // -----------------------------------------------------------------
     { ESkoarToke::BooleanOr, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleBooleanOp> (noad, toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleBooleanOp> (noad, toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::BooleanAnd, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleBooleanOp> (noad, toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleBooleanOp> (noad, toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::CmpEqNeq, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleBooleanOp> (noad, toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleBooleanOp> (noad, toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::CmpGtLt, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleBooleanOp> (noad, toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleBooleanOp> (noad, toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::Voice, SpellOfTokingItAll {
-        shared_ptr<SkoarpuscleVoice> v = make_shared<SkoarpuscleVoice> (toke);
+        std::shared_ptr<SkoarpuscleVoice> v = std::make_shared<SkoarpuscleVoice> (toke);
         noad->skoarpuscle = v;
         noad->toke = nullptr;
         noad->voice = skoar->get_voice (v->val);
     } },
 
     { ESkoarToke::MsgName, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleMsgName> (toke->lexeme);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleMsgName> (toke->lexeme);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::MsgNameWithArgs, SpellOfToking {
         auto s (toke->lexeme);
         auto n (s.length () - 1);
-        noad->skoarpuscle = make_shared<SkoarpuscleMsgNameWithArgs> (s.substr (0, n));
+        noad->skoarpuscle = std::make_shared<SkoarpuscleMsgNameWithArgs> (s.substr (0, n));
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::MathOpAddSub, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleMathOp> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleMathOp> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::MathOpMulDivMod, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleMathOp> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleMathOp> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::ListSep, SpellOfSimpleToking {
-        auto x (make_shared<SkoarpuscleListSep> ());
+        auto x (std::make_shared<SkoarpuscleListSep> ());
         noad->skoarpuscle = x;
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::ListE, SpellOfSimpleToking {
-        auto x (make_shared<SkoarpuscleListEnd> ());
+        auto x (std::make_shared<SkoarpuscleListEnd> ());
         noad->skoarpuscle = x;
         noad->toke = nullptr;
     } },
 
     // -----------------------------------------------------------------
     { ESkoarToke::Times, SpellOfSimpleToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleTimes> (noad);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleTimes> (noad);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::HashLevel, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleHashLevel> (toke->lexeme);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleHashLevel> (toke->lexeme);
         noad->toke = nullptr;
     } },
         
     // -----------------------------------------------------------------
     { ESkoarToke::AUGen, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleUGen> (toke->lexeme.substr (1), SkoarpuscleUGen::Type::audio);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleUGen> (toke->lexeme.substr (1), SkoarpuscleUGen::Type::audio);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::KUGen, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleUGen> (toke->lexeme.substr (1), SkoarpuscleUGen::Type::control);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleUGen> (toke->lexeme.substr (1), SkoarpuscleUGen::Type::control);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::DUGen, SpellOfToking {
-       noad->skoarpuscle = make_shared<SkoarpuscleUGen>(toke->lexeme.substr (1), SkoarpuscleUGen::Type::demand);
+       noad->skoarpuscle = std::make_shared<SkoarpuscleUGen>(toke->lexeme.substr (1), SkoarpuscleUGen::Type::demand);
        noad->toke = nullptr;
     } },
 
     { ESkoarToke::AUGenWithArgs, SpellOfToking {
         auto s (toke->lexeme);
-        noad->skoarpuscle = make_shared<SkoarpuscleUGenWithArgs>(s.substr(1, s.size () - 2), SkoarpuscleUGen::Type::audio);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleUGenWithArgs>(s.substr(1, s.size () - 2), SkoarpuscleUGen::Type::audio);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::KUGenWithArgs, SpellOfToking {
         auto s (toke->lexeme);
-        noad->skoarpuscle = make_shared<SkoarpuscleUGenWithArgs>(s.substr(1, s.size () - 2), SkoarpuscleUGen::Type::control);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleUGenWithArgs>(s.substr(1, s.size () - 2), SkoarpuscleUGen::Type::control);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::DUGenWithArgs, SpellOfToking {
         auto s (toke->lexeme);
-        noad->skoarpuscle = make_shared<SkoarpuscleUGenWithArgs>(s.substr(1, s.size () - 2), SkoarpuscleUGen::Type::demand);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleUGenWithArgs>(s.substr(1, s.size () - 2), SkoarpuscleUGen::Type::demand);
         noad->toke = nullptr;
     } },
 
     // -----------------------------------------------------------------
     { ESkoarToke::Lute, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleLute> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleLute> (toke);
         noad->toke = nullptr;
     } },
 
     { ESkoarToke::LuteWithArgs, SpellOfToking {
-        noad->skoarpuscle = make_shared<SkoarpuscleLute> (toke);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleLute> (toke);
         noad->toke = nullptr;
     } }
 

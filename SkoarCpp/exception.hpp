@@ -3,7 +3,7 @@
 #include "noad_fwd.hpp"
 #include "spells.hpp"
 
-class SkoarError : public exception
+class SkoarError : public std::exception
 {
 public:
     SkoarString sWhat;

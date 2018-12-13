@@ -30,17 +30,17 @@ std::wostream& operator << (std::wostream& out, const SkoarMem& o) {
         L"\n SkoarDics: " << o.SkoarDics <<
         L"\n Events: " << o.Events;
 
-    vector<pair<SkoarString, const MemoriesMap*>> maps = {
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Tokes"), &o.TokesMap),
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Noads"), &o.NoadsMap),
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Skoarpuscles"), &o.SkoarpusclesMap),
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Skoarpions"), &o.SkoarpionsMap),
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Projections"), &o.ProjectionsMap),
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Koars"), &o.KoarsMap),
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Fairies"), &o.FairiesMap),
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Minstrels"), &o.MinstrelsMap),
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"SkoarDics"), &o.SkoarDicsMap),
-        make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Events"), &o.EventsMap)
+    std::vector<std::pair<SkoarString, const MemoriesMap*>> maps = {
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Tokes"), &o.TokesMap),
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Noads"), &o.NoadsMap),
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Skoarpuscles"), &o.SkoarpusclesMap),
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Skoarpions"), &o.SkoarpionsMap),
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Projections"), &o.ProjectionsMap),
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Koars"), &o.KoarsMap),
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Fairies"), &o.FairiesMap),
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Minstrels"), &o.MinstrelsMap),
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"SkoarDics"), &o.SkoarDicsMap),
+        std::make_pair<SkoarString, const MemoriesMap*>(SkoarString(L"Events"), &o.EventsMap)
     };
     
 
@@ -65,10 +65,10 @@ std::wostream& operator << (std::wostream& out, const SkoarMem& o) {
 
 // for Catch
 std::ostream& operator << (std::ostream& out, const SkoarMem& o) {
-    wostringstream wout;
+    std::wostringstream wout;
     wout << o;
     auto ws = wout.str();
-    string s(ws.begin(), ws.end());
+    std::string s(ws.begin(), ws.end());
     out << s;
     return out;
 

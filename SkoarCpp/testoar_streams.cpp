@@ -19,13 +19,13 @@ TestoarOutStream::StreamBuffer::StreamBuffer(std::ostream& str, const SpellOfUtt
 {
 }
 
-static unique_ptr<TestoarCatchStreamoar> instance;
+static std::unique_ptr<TestoarCatchStreamoar> instance;
 TestoarCatchStreamoar* TestoarCatchStreamoar::getInstance() {
     return instance.get();
 };
 
 void TestoarCatchStreamoar::setInstance(SpellOfUtterance outSpell, SpellOfUtterance errSpell) {
-    instance = make_unique<TestoarCatchStreamoar>(outSpell, errSpell);
+    instance = std::make_unique<TestoarCatchStreamoar>(outSpell, errSpell);
 }
 
 

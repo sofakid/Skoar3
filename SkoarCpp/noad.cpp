@@ -35,7 +35,7 @@ SkoarNoad::SkoarNoad (const wchar_t *nameArg, SkoarNoadPtr parentArg, const ESko
 
 SkoarNoadPtr SkoarNoad::New (const wchar_t *nameArg, SkoarNoadPtr parentArg, SkoarTokePtr toke)
 {
-    SkoarNoadPtr x (make_shared<SkoarNoad> (nameArg, parentArg, ESkoarNoad::toke, toke->style));
+    SkoarNoadPtr x (std::make_shared<SkoarNoad> (nameArg, parentArg, ESkoarNoad::toke, toke->style));
     x->size = toke->size;
     x->toke = move (toke);
 
@@ -165,7 +165,7 @@ void SkoarNoad::log_tree (ISkoarLog *log, int tab) {
     if (log->getLevel () != ISkoarLog::debug)
         return;
 
-    wostringstream out;
+    std::wostringstream out;
     SkoarString s (tab * 2, L' ');
 
     if (voice != nullptr)
@@ -187,7 +187,7 @@ void SkoarNoad::log_tree (ISkoarLog *log, int tab) {
 
 }
 
-void SkoarNoad::draw_tree (wostringstream &out, int tab) {
+void SkoarNoad::draw_tree (std::wostringstream &out, int tab) {
 
     SkoarString s (tab * 2, L' ');
 

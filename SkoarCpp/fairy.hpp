@@ -3,10 +3,10 @@
 #include "all_skoarpuscles.hpp"
 #include "spells.hpp"
 
-typedef map<size_t, SkoarInt> FairyTimesOffsMap;
-typedef map<ESkoarpuscle::Kind, FairyTimesOffsMap> FairyTimesMap;
-typedef shared_ptr<FairyTimesMap> FairyTimesMapPtr;
-typedef vector<FairyTimesMapPtr> ListOfFairyTimesMaps;
+typedef std::map<size_t, SkoarInt> FairyTimesOffsMap;
+typedef std::map<ESkoarpuscle::Kind, FairyTimesOffsMap> FairyTimesMap;
+typedef std::shared_ptr<FairyTimesMap> FairyTimesMapPtr;
+typedef std::vector<FairyTimesMapPtr> ListOfFairyTimesMaps;
 
 
 class SkoarFairy
@@ -80,9 +80,9 @@ public:
 private:
     AncientArcaneMagic magic;
 
-    vector<ListOfSkoarpusclesPtr> listy_stack;
-    vector<AncientArcaneMagic> magic_stack;
-    vector<SkoarInt> i_stack;
+    std::vector<ListOfSkoarpusclesPtr> listy_stack;
+    std::vector<AncientArcaneMagic> magic_stack;
+    std::vector<SkoarInt> i_stack;
 
     ListOfSkoarpuscles compare_stack;
 
@@ -96,10 +96,10 @@ private:
     SkoarpusclePtr exact;
 
     bool noating;
-    vector<bool> noating_stack;
+    std::vector<bool> noating_stack;
 
     bool noatworthy;
-    vector<bool> noatworthy_stack;
+    std::vector<bool> noatworthy_stack;
 
     SkoarInt i;
     SkoarInt j;
@@ -111,7 +111,7 @@ private:
 class SkoarpuscleFairy : public Skoarpuscle
 {
 public:
-    void asString (wostream &out) override { out << "SkoarpuscleFairy" << " :: $"; }
+    void asString (std::wostream &out) override { out << "SkoarpuscleFairy" << " :: $"; }
     SkoarpuscleFairy ();
 
 };

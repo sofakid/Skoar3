@@ -5,7 +5,7 @@
 #include "all_skoarpuscles.hpp"
 #include "memories.hpp"
 
-string SkoarString_to_s(SkoarString ws);
+std::string SkoarString_to_s(SkoarString ws);
 
 bool check_skoarpuscle_int(SkoarpusclePtr p, SkoarInt v);
 bool check_skoarpuscle_float(SkoarpusclePtr p, SkoarFloat v);
@@ -16,7 +16,7 @@ bool check_skoarpuscle_num(SkoarpusclePtr p, SkoarFloat v);
 bool check_skoarpuscle_string(SkoarpusclePtr p, SkoarString v);
 bool check_skoarpuscle_symbol(SkoarpusclePtr p, SkoarString v);
 
-typedef shared_ptr<vector<SkoarEventPtr>> EventsPtr;
+typedef std::shared_ptr<std::vector<SkoarEventPtr>> EventsPtr;
 
 
 VectorOfSkoarEventsPtr skoar_get_events (Skoar* skoar);
@@ -40,7 +40,7 @@ void make_event_r(SkoarEventPtr);
 
 template<typename... Args>
 SkoarEventPtr make_event(const Args&... args) {
-    SkoarEventPtr e = make_shared<SkoarEvent>();
+    SkoarEventPtr e = std::make_shared<SkoarEvent>();
     make_event_r(e, args...);
     return e;
 }
@@ -60,7 +60,7 @@ template<typename... Args>
 void make_events_vec_r(VectorOfSkoarEventsPtr vec, SkoarEventPtr e, const MakeEventSep&, const Args&... args)
 {
     vec->push_back(e);
-    SkoarEventPtr e_new = make_shared<SkoarEvent>();
+    SkoarEventPtr e_new = std::make_shared<SkoarEvent>();
     make_events_vec_r(vec, e_new, args...);
 }
 
@@ -68,8 +68,8 @@ void make_events_vec_r(VectorOfSkoarEventsPtr, SkoarEventPtr);
 
 template<typename... Args>
 VectorOfSkoarEventsPtr make_events_vec(const Args&... args) {
-    VectorOfSkoarEventsPtr vec = make_shared<VectorOfSkoarEvents>();
-    SkoarEventPtr e = make_shared<SkoarEvent>();
+    VectorOfSkoarEventsPtr vec = std::make_shared<VectorOfSkoarEvents>();
+    SkoarEventPtr e = std::make_shared<SkoarEvent>();
     make_events_vec_r(vec, e, args...);
     return vec;
 }
@@ -87,7 +87,7 @@ void make_listy_r(ListOfSkoarpusclesPtr);
 
 template<typename... Args>
 ListOfSkoarpusclesPtr make_listy(const Args&... args) {
-    auto listy = make_shared<ListOfSkoarpuscles>();
+    auto listy = std::make_shared<ListOfSkoarpuscles>();
     make_listy_r(listy, args...);
     return listy;
 }

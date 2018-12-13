@@ -4,7 +4,7 @@
 
 class SkoarpuscleUGen : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleUGen" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleUGen" << " :: " ; }
     enum class Type {
         audio,
         control,
@@ -26,12 +26,12 @@ public:
 
 class SkoarpuscleUGenWithArgs : public SkoarpuscleUGen {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleUGenWithArgs" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleUGenWithArgs" << " :: " ; }
     SkoarpuscleUGenWithArgs(SkoarString, SkoarpuscleUGen::Type);
 };
 
 class SkoarpuscleUGenArgs : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleUGenArgs" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleUGenArgs" << " :: " ; }
     SkoarpuscleUGenArgs(SkoarToke *);
 };

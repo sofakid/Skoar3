@@ -102,8 +102,8 @@ void SkoarpuscleKey::apply (SkoarEventPtr e)
 
 // --- SkoarpuscleNoat ---------------------------------------------------------
 
-const wregex noat_regex (wregex (L"^(_?)([a-g])", regex_constants::optimize));
-const wregex sharps_regex (wregex (L"[a-g](#*|b*)$", regex_constants::optimize)); // leave this => " quote char for emacs.
+const std::wregex noat_regex (std::wregex (L"^(_?)([a-g])", std::regex_constants::optimize));
+const std::wregex sharps_regex (std::wregex (L"[a-g](#*|b*)$", std::regex_constants::optimize)); // leave this => " quote char for emacs.
 
 SkoarpuscleNoat::SkoarpuscleNoat (SkoarString& lex) :
     Skoarpuscle (ESkoarpuscle::Noat),
@@ -117,7 +117,7 @@ SkoarpuscleNoat::SkoarpuscleNoat (SkoarString& lex) :
     SkoarString s = lex;
     SkoarString sletter;
 
-    wsmatch r;
+    std::wsmatch r;
     std::regex_search (s.cbegin (), s.cend (), r, noat_regex);
 
     low = r[1] != L"";
@@ -198,7 +198,7 @@ void SkoarpuscleNoat::on_enter (SkoarMinstrelPtr m) {
 
 SkoarpusclePtr SkoarpuscleNoat::duplicate ()
 {
-    return make_shared<SkoarpuscleNoat>(lexeme, low, val, sharps);
+    return std::make_shared<SkoarpuscleNoat>(lexeme, low, val, sharps);
 }
 
 void SkoarpuscleNoat::execute (SkoarMinstrelPtr m) {
@@ -213,14 +213,14 @@ void SkoarpuscleNoat::execute (SkoarMinstrelPtr m) {
 // --- SkoarpuscleChoard ---------------------------------------------------------
 
 // lexeme was matched by: (D(?![a.])|[ABCEFG])(#|b)?([Mm0-9]|sus|dim)*
-const wregex ch_noat_regex (wregex (L"^~*([A-G])", regex_constants::optimize));
-const wregex ch_sharps_regex (wregex (L"^~*[A-G](#|b)?", regex_constants::optimize));
-const wregex ch_im_regex (wregex (L"[^i]m", regex_constants::optimize));
+const std::wregex ch_noat_regex (std::wregex (L"^~*([A-G])", std::regex_constants::optimize));
+const std::wregex ch_sharps_regex (std::wregex (L"^~*[A-G](#|b)?", std::regex_constants::optimize));
+const std::wregex ch_im_regex (std::wregex (L"[^i]m", std::regex_constants::optimize));
 
 SkoarpuscleChoard::SkoarpuscleChoard (SkoarString& lex) :
     Skoarpuscle (ESkoarpuscle::Choard),
     lexeme (lex),
-    val (make_shared<ListOfSkoarpuscles>())
+    val (std::make_shared<ListOfSkoarpuscles>())
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocSkoarpuscle (L"Choard");
@@ -230,7 +230,7 @@ SkoarpuscleChoard::SkoarpuscleChoard (SkoarString& lex) :
 
     SkoarString s (lex);
 
-    wsmatch r;
+    std::wsmatch r;
     std::regex_search (s.cbegin (), s.cend (), r, ch_noat_regex);
     letter = r[1];
     wchar_t& c_letter (letter.front ());
@@ -345,11 +345,11 @@ void SkoarpuscleChoard::on_enter (SkoarMinstrelPtr m) {
 
 SkoarpusclePtr SkoarpuscleChoard::duplicate ()
 {
-    auto new_list (make_shared<ListOfSkoarpuscles> ());
+    auto new_list (std::make_shared<ListOfSkoarpuscles> ());
     for (auto &s : *val)
         new_list->push_back (s->duplicate ());
 
-    return make_shared<SkoarpuscleChoard>(lexeme, letter, sharps, new_list);
+    return std::make_shared<SkoarpuscleChoard>(lexeme, letter, sharps, new_list);
 }
 
 void SkoarpuscleChoard::execute (SkoarMinstrelPtr m) {

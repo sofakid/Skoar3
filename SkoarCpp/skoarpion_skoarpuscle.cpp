@@ -18,7 +18,7 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(const SkoarpuscleSkoarpion *that) :
 #endif
 
     for (auto& name : capture_names)
-        captures.push_back (make_shared<SkoarpuscleCapture>(name));
+        captures.push_back (std::make_shared<SkoarpuscleCapture>(name));
 
 }
 
@@ -32,7 +32,7 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s) :
     SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
     for (auto& name : capture_names)
-        captures.push_back (make_shared<SkoarpuscleCapture> (name));
+        captures.push_back (std::make_shared<SkoarpuscleCapture> (name));
 }
 
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s, SkoarNoadPtr) :
@@ -45,7 +45,7 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpionPtr s, SkoarNoadPtr) :
     SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
     for (auto& name : capture_names)
-        captures.push_back (make_shared<SkoarpuscleCapture> (name));
+        captures.push_back (std::make_shared<SkoarpuscleCapture> (name));
 }
 
 SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpusclePtr s, SkoarpusclePtr args) :
@@ -58,7 +58,7 @@ SkoarpuscleSkoarpion::SkoarpuscleSkoarpion(SkoarpusclePtr s, SkoarpusclePtr args
     SkoarMemories::o().allocSkoarpuscle(L"Skoarpion");
 #endif
     for (auto& name : capture_names)
-        captures.push_back (make_shared<SkoarpuscleCapture> (name));
+        captures.push_back (std::make_shared<SkoarpuscleCapture> (name));
 }
 
 SkoarpuscleSkoarpion::~SkoarpuscleSkoarpion(){
@@ -76,7 +76,7 @@ void SkoarpuscleSkoarpion::clear ()
 
 
 void SkoarpuscleSkoarpion::on_enter(SkoarMinstrelPtr m) {
-    auto skrpskrp (make_shared<SkoarpuscleSkoarpion> (this));
+    auto skrpskrp (std::make_shared<SkoarpuscleSkoarpion> (this));
     skrpskrp->bind_captures (m);
     m->fairy->impress (skrpskrp);
 
@@ -87,7 +87,7 @@ void SkoarpuscleSkoarpion::run(SkoarMinstrelPtr m) {
     m->koar->do_skoarpion(val, m, SkoarKoar::EExecStyle::NORMAL, impression, &captures, &expoart_names);
 }
 
-void SkoarpuscleSkoarpion::asString(wostream &out) { 
+void SkoarpuscleSkoarpion::asString(std::wostream &out) { 
     out << L"Skoarpion :: " << val->name;
 }
 
@@ -130,7 +130,7 @@ void SkoarpuscleArgExpr::clear ()
     name = L"";
 }
 
-void SkoarpuscleArgExpr::asString(wostream &out) {
+void SkoarpuscleArgExpr::asString(std::wostream &out) {
     out << "ArgExpr" << " :: " << name;
     //if (is_skoarpuscle<SkoarpuscleExpr>(expr)) {
     //    out << " :: ";
@@ -207,7 +207,7 @@ void SkoarpuscleArgList::on_enter(SkoarMinstrelPtr m) {
     fairy.push();
 }
 
-void SkoarpuscleArgList::asString(wostream &out) {
+void SkoarpuscleArgList::asString(std::wostream &out) {
     out << "ArgList";
     for (auto x : args_names)
         out << " :: " << x ;
@@ -237,7 +237,7 @@ void SkoarpuscleProjections::clear ()
     mapp.clear ();
 }
 
-void SkoarpuscleProjections::asString (wostream &out) {
+void SkoarpuscleProjections::asString (std::wostream &out) {
     out << "Projections";
 }
 
@@ -277,7 +277,7 @@ void SkoarpuscleCapture::Capture (SkoarpusclePtr& cap_p, SkoarMinstrelPtr m)
     }
 }
 
-void SkoarpuscleCapture::asString (wostream & out)
+void SkoarpuscleCapture::asString (std::wostream & out)
 {
     out << L"Capture :: " << name << L" :: ";
     if (val == nullptr)

@@ -255,13 +255,13 @@ class CppTongue(Tongue):
         return "this->" + attr.name
 
     def v_def_regex(self, regex):
-        return 'wregex(L"' + regex.replace('\\','\\\\') + '", regex_constants::optimize)'
+        return 'std::wregex(L"' + regex.replace('\\','\\\\') + '", std::regex_constants::optimize)'
 
     def v_match(self, match):
         return match
 
     def dict_new(self, name):
-        self.stmt("map<wstring,list<SkoarToke*>> *" + name + " = new map<wstring, list<SkoarToke*>>;", end="\n")
+        self.stmt("std::map<std::wstring,std::list<SkoarToke*>> *" + name + " = new std::map<std::wstring, std::list<SkoarToke*>>;", end="\n")
 
     def dict_set(self, name, str_key, value, end="\n"):
         self.stmt(name + '[L"' + str_key + '"] = ' + value, end=end)
@@ -270,7 +270,7 @@ class CppTongue(Tongue):
         return name + '[L"' + str_key + '"]'
 
     def array_new(self, name, length):
-        self.stmt("list<ESkoarToke::Kind> " + name + "[" + str(length) + "];", end="\n")
+        self.stmt("std::list<ESkoarToke::Kind> " + name + "[" + str(length) + "];", end="\n")
 
     def array_set(self, name, index, value, end="\n"):
         self.stmt(name + '[' + str(index) + '] = ' + value, end=end)

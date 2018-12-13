@@ -42,7 +42,7 @@ void SkoarpuscleMeditation::clear ()
 
 SkoarpusclePtr SkoarpuscleMeditation::duplicate ()
 {
-    return make_shared<SkoarpuscleMeditation>(skoarpion);
+    return std::make_shared<SkoarpuscleMeditation>(skoarpion);
 }
 
 void SkoarpuscleMeditation::on_enter (SkoarMinstrelPtr m)

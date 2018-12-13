@@ -95,9 +95,9 @@ void SkoarEvent::from (SkoarDicPtr dic) {
     }
 }
 
-shared_ptr<SkoarEvent> SkoarEvent::duplicate ()
+std::shared_ptr<SkoarEvent> SkoarEvent::duplicate ()
 {
-    auto ev (make_shared<SkoarEvent> ());
+    auto ev (std::make_shared<SkoarEvent> ());
 
     for (auto& kv : table)
     {

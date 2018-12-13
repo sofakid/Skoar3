@@ -9,10 +9,10 @@ typedef std::vector<std::string> ListOfTestCases;
 void TestoarInitialize(SpellOfUtterance out, SpellOfUtterance err);
 
 ListOfTags TestoarGetListOfTags();
-ListOfTestCases TestoarGetListOfTestCases(string tag);
+ListOfTestCases TestoarGetListOfTestCases(std::string tag);
 
 
 int TestoarRunTests();
-int TestoarRunTestsByTag(string tag);
-int TestoarRunTestsByTestCase(string tag);
-int TestoarRunTestsByTestCaseSection(string tc, string section);
+int TestoarRunTestsByTag(std::string tag);
+int TestoarRunTestsByTestCase(std::string tag);
+int TestoarRunTestsByTestCaseSection(std::string tc, std::string section);

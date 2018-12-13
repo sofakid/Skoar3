@@ -12,80 +12,80 @@
 
 typedef long long SkoarInt;
 typedef double SkoarFloat;
-typedef wstring SkoarString;
+typedef std::wstring SkoarString;
 
-typedef vector<SkoarInt> ListOfSkoarInts;
-typedef vector<SkoarFloat> ListOfSkoarFloats;
-typedef vector<SkoarString> ListOfSkoarStrings;
+typedef std::vector<SkoarInt> ListOfSkoarInts;
+typedef std::vector<SkoarFloat> ListOfSkoarFloats;
+typedef std::vector<SkoarString> ListOfSkoarStrings;
 
-typedef shared_ptr<vector<SkoarInt>> ListOfSkoarIntsPtr;
-typedef shared_ptr<vector<SkoarFloat>> ListOfSkoarFloatsPtr;
-typedef shared_ptr<vector<SkoarString>> ListOfSkoarStringsPtr;
+typedef std::shared_ptr<std::vector<SkoarInt>> ListOfSkoarIntsPtr;
+typedef std::shared_ptr<std::vector<SkoarFloat>> ListOfSkoarFloatsPtr;
+typedef std::shared_ptr<std::vector<SkoarString>> ListOfSkoarStringsPtr;
 
-typedef shared_ptr<SkoarNoad> SkoarNoadPtr;
-typedef vector<SkoarNoadPtr> ListOfSkoarNoadPtrs;
-typedef vector<ESkoarNoad::Kind> ListOfSkoarNoadKinds;
+typedef std::shared_ptr<SkoarNoad> SkoarNoadPtr;
+typedef std::vector<SkoarNoadPtr> ListOfSkoarNoadPtrs;
+typedef std::vector<ESkoarNoad::Kind> ListOfSkoarNoadKinds;
 
-typedef unique_ptr<SkoarToke> SkoarTokePtr;
-typedef vector<ESkoarToke::Kind> ListOfSkoarTokeKinds;
+typedef std::unique_ptr<SkoarToke> SkoarTokePtr;
+typedef std::vector<ESkoarToke::Kind> ListOfSkoarTokeKinds;
 
-typedef shared_ptr<Skoarpuscle> SkoarpusclePtr;
-typedef shared_ptr<SkoarDic> SkoarDicPtr;
-typedef shared_ptr<SkoarMinstrel> SkoarMinstrelPtr;
-typedef shared_ptr<Skoarpion> SkoarpionPtr;
-typedef shared_ptr<SkoarpionProjection> SkoarpionProjectionPtr;
-typedef shared_ptr<SkoarKoar> SkoarKoarPtr;
-typedef shared_ptr<SkoarEvent> SkoarEventPtr;
-typedef shared_ptr<SkoarEventStream> SkoarEventStreamPtr;
+typedef std::shared_ptr<Skoarpuscle> SkoarpusclePtr;
+typedef std::shared_ptr<SkoarDic> SkoarDicPtr;
+typedef std::shared_ptr<SkoarMinstrel> SkoarMinstrelPtr;
+typedef std::shared_ptr<Skoarpion> SkoarpionPtr;
+typedef std::shared_ptr<SkoarpionProjection> SkoarpionProjectionPtr;
+typedef std::shared_ptr<SkoarKoar> SkoarKoarPtr;
+typedef std::shared_ptr<SkoarEvent> SkoarEventPtr;
+typedef std::shared_ptr<SkoarEventStream> SkoarEventStreamPtr;
 
-typedef shared_ptr<SkoarFairy> SkoarFairyPtr;
+typedef std::shared_ptr<SkoarFairy> SkoarFairyPtr;
 
-typedef vector<SkoarMinstrelPtr> ListOfMinstrels;
+typedef std::vector<SkoarMinstrelPtr> ListOfMinstrels;
 
-typedef vector<SkoarDicPtr> ListOfSkoarDics;
-typedef unique_ptr<ListOfSkoarDics> ListOfSkoarDicsPtr;
+typedef std::vector<SkoarDicPtr> ListOfSkoarDics;
+typedef std::unique_ptr<ListOfSkoarDics> ListOfSkoarDicsPtr;
 
-typedef vector<SkoarEventPtr> ListOfSkoarEvents;
-typedef shared_ptr<ListOfSkoarEvents> ListOfSkoarEventsPtr;
-
-
-typedef vector<SkoarEventPtr> VectorOfSkoarEvents;
-typedef shared_ptr<VectorOfSkoarEvents> VectorOfSkoarEventsPtr;
-
-typedef vector<SkoarNoadite> VectorOfNoadites;
-
-typedef vector<SkoarpusclePtr> ListOfSkoarpuscles;
-typedef shared_ptr<ListOfSkoarpuscles> ListOfSkoarpusclesPtr;
-
-typedef vector<SkoarpionPtr> ListOfSkoarpions;
-typedef shared_ptr<ListOfSkoarpions> ListOfSkoarpionsPtr;
-
-typedef vector<SkoarpionProjectionPtr> ListOfSkoarpionProjections;
-typedef shared_ptr<ListOfSkoarpionProjections> ListOfSkoarpionProjectionsPtr;
-
-typedef function<void(SkoarMinstrelPtr)> SpellOfMinstrels;
-typedef function<void(SkoarNoad *)> SpellOfNoads;
-typedef function<void(SkoarNoadPtr)> SpellOfNoadPtrs;
-
-typedef function<void(SkoarpusclePtr)> SpellOfSkoarpucles;
-
-typedef function<void(SkoarMinstrelPtr, SkoarNoadite*)> SpellOfDebuggingNoads;
-typedef function<void(SkoarMinstrelPtr, SkoarpusclePtr)> SpellOfDebuggingSkoarpuscles;
-typedef function<void(SkoarMinstrelPtr, SkoarpionPtr)> SpellOfDebuggingSkoarpions;
-typedef function<void()> SpellOfDebuggingExiting;
-
-typedef function<void(Skoar*, SkoarNoadPtr, SkoarToke*)> SpellOfTokeyDecoration;
-typedef function<void(Skoar*, SkoarNoadPtr)> SpellOfNoadyDecoration;
-
-typedef function<void()> SpellOfDecency;
+typedef std::vector<SkoarEventPtr> ListOfSkoarEvents;
+typedef std::shared_ptr<ListOfSkoarEvents> ListOfSkoarEventsPtr;
 
 
-typedef function<void()> AncientArcaneMagic;
-typedef function<SkoarpusclePtr()> ArcaneMagic;
+typedef std::vector<SkoarEventPtr> VectorOfSkoarEvents;
+typedef std::shared_ptr<VectorOfSkoarEvents> VectorOfSkoarEventsPtr;
+
+typedef std::vector<SkoarNoadite> VectorOfNoadites;
+
+typedef std::vector<SkoarpusclePtr> ListOfSkoarpuscles;
+typedef std::shared_ptr<ListOfSkoarpuscles> ListOfSkoarpusclesPtr;
+
+typedef std::vector<SkoarpionPtr> ListOfSkoarpions;
+typedef std::shared_ptr<ListOfSkoarpions> ListOfSkoarpionsPtr;
+
+typedef std::vector<SkoarpionProjectionPtr> ListOfSkoarpionProjections;
+typedef std::shared_ptr<ListOfSkoarpionProjections> ListOfSkoarpionProjectionsPtr;
+
+typedef std::function<void(SkoarMinstrelPtr)> SpellOfMinstrels;
+typedef std::function<void(SkoarNoad *)> SpellOfNoads;
+typedef std::function<void(SkoarNoadPtr)> SpellOfNoadPtrs;
+
+typedef std::function<void(SkoarpusclePtr)> SpellOfSkoarpucles;
+
+typedef std::function<void(SkoarMinstrelPtr, SkoarNoadite*)> SpellOfDebuggingNoads;
+typedef std::function<void(SkoarMinstrelPtr, SkoarpusclePtr)> SpellOfDebuggingSkoarpuscles;
+typedef std::function<void(SkoarMinstrelPtr, SkoarpionPtr)> SpellOfDebuggingSkoarpions;
+typedef std::function<void()> SpellOfDebuggingExiting;
+
+typedef std::function<void(Skoar*, SkoarNoadPtr, SkoarToke*)> SpellOfTokeyDecoration;
+typedef std::function<void(Skoar*, SkoarNoadPtr)> SpellOfNoadyDecoration;
+
+typedef std::function<void()> SpellOfDecency;
+
+
+typedef std::function<void()> AncientArcaneMagic;
+typedef std::function<SkoarpusclePtr()> ArcaneMagic;
 #define HarmlessMagic [](){}
 
-typedef function<void()> SpellOfSimplicity;
-typedef function<void(SkoarEventPtr)> SpellOfHappening;
+typedef std::function<void()> SpellOfSimplicity;
+typedef std::function<void(SkoarEventPtr)> SpellOfHappening;
 
 
-typedef function<void(string&)> SpellOfUtterance;
+typedef std::function<void(std::string&)> SpellOfUtterance;

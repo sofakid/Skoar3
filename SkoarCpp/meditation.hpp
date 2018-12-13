@@ -3,7 +3,7 @@
 
 class SkoarpuscleMeditation : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleMeditation" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleMeditation" << " :: " ; }
     SkoarpuscleMeditation (Skoar*, SkoarNoadPtr);
     SkoarpuscleMeditation (SkoarpionPtr);
     ~SkoarpuscleMeditation () override;
@@ -22,6 +22,6 @@ private:
 
 class SkoarpuscleMeditationMsg : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleMeditationMsg" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleMeditationMsg" << " :: " ; }
     SkoarpuscleMeditationMsg(Skoar*, SkoarNoadPtr);
 };

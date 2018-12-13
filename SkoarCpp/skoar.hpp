@@ -27,15 +27,15 @@ public:
 
     SkoarString skoarce;                   // the skoarce code
     SkoarNoadPtr tree;                     // root of tree
-    map<SkoarString, SkoarKoarPtr> voices; // all the voices
+    std::map<SkoarString, SkoarKoarPtr> voices; // all the voices
     SkoarKoarPtr all_voice;                // the all voice
     ListOfSkoarpions skoarpions;           // all the skoarpions
 
     SkoarInt running;
 
-    list<size_t> markers_colon;
-    list<size_t> markers_coda;
-    map<SkoarString, size_t> markers_coda_named;
+    std::list<size_t> markers_colon;
+    std::list<size_t> markers_coda;
+    std::map<SkoarString, size_t> markers_coda_named;
 
     bool parsedOk;
     bool decoratedOk;

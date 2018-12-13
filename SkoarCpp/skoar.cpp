@@ -53,7 +53,7 @@ Skoar::Skoar (SkoarString src, ISkoarLog *log) :
     SkoarToker toker (skoarce);
     SkoarParser parser (&toker);
 
-    all_voice = make_shared<SkoarKoar> (this, SkoarString (L"all"));
+    all_voice = std::make_shared<SkoarKoar> (this, SkoarString (L"all"));
     voices[L"all"] = all_voice;
 
     log->d (">>> parsing skoar...");
@@ -215,7 +215,7 @@ void Skoar::clear () {
 
 void Skoar::decorate_offs_size_style () {
     SkoarStyles::EStyle current_style (SkoarStyles::EStyle::nostyle);
-    vector<SkoarStyles::EStyle> style_stack { current_style };
+    std::vector<SkoarStyles::EStyle> style_stack { current_style };
     size_t pos (0);
 
     auto before ([&](SkoarNoadPtr noad) {
@@ -293,7 +293,7 @@ SkoarKoarPtr Skoar::get_voice (const SkoarString &k) {
     if (voice != nullptr)
         return voice;
 
-    voice = make_shared<SkoarKoar> (this, k);
+    voice = std::make_shared<SkoarKoar> (this, k);
     voices[k] = voice;
 
     return voice;
@@ -317,7 +317,7 @@ void Skoar::draw_skoarpions () {
     if (log->getLevel () != ISkoarLog::debug)
         return;
 
-    wostringstream stream;
+    std::wostringstream stream;
 
     for (auto x : skoarpions)
     {
@@ -339,7 +339,7 @@ void Skoar::draw_skoarpions () {
 }
 
 ListOfSkoarpionProjectionsPtr Skoar::get_all_projections () {
-    auto listy (make_shared<ListOfSkoarpionProjections> ());
+    auto listy (std::make_shared<ListOfSkoarpionProjections> ());
 
     for (auto x : skoarpions)
         for (auto pairs : voices)
@@ -353,7 +353,7 @@ ListOfSkoarpionProjectionsPtr Skoar::get_all_projections () {
 }
 
 ListOfSkoarpionProjectionsPtr Skoar::get_projections (SkoarString koar_name) {
-    auto listy (make_shared<ListOfSkoarpionProjections> ());
+    auto listy (std::make_shared<ListOfSkoarpionProjections> ());
 
     for (auto x : skoarpions)
     {
@@ -497,7 +497,7 @@ SkoarLite::SkoarLite (SkoarString s, ISkoarLog *log) :
 void SkoarLite::decorate_offs_size_style() 
 {
     SkoarStyles::EStyle current_style (SkoarStyles::EStyle::nostyle);
-    vector<SkoarStyles::EStyle> style_stack { current_style };
+    std::vector<SkoarStyles::EStyle> style_stack { current_style };
     size_t pos (0);
 
     auto before ([&](SkoarNoadPtr noad) {

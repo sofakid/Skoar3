@@ -138,7 +138,7 @@ void SkoarParser::init() {
             #CPP.cmt(str(A))
             
             Ax = Arg("SkoarNoadPtr", A.name)
-            AStrx = Arg("wstring", '"'+ A.name +'"')
+            AStrx = Arg("std::wstring", '"'+ A.name +'"')
             Noadx = Arg("SkoarNoadPtr", "noad")
             Parentx = Arg("SkoarNoadPtr", "parent")
             Desiresx = Arg("ListOfSkoarTokeKinds*", "desires")
@@ -244,7 +244,7 @@ struct SkoarStats {
 
     // use a float so it never overflows when adding a small constant to it, 
     // just eventually stops making a difference.
-    map<ESkoarToke::Kind, float> tokeFreq;
+    std::map<ESkoarToke::Kind, float> tokeFreq;
     ListOfSkoarTokeKinds* desirables;
 
 };

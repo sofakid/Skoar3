@@ -6,7 +6,7 @@
 
 class SkoarpuscleDuration : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleDuration" << " :: " << minutes << ":" << seconds; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleDuration" << " :: " << minutes << ":" << seconds; }
 
     SkoarInt minutes;
     SkoarFloat seconds;
@@ -20,7 +20,7 @@ public:
 
 class SkoarpuscleExactBeat : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleExactBeat" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleExactBeat" << " :: " ; }
     SkoarpuscleExactBeat(SkoarToke *);
     ~SkoarpuscleExactBeat() override;
 
@@ -30,7 +30,7 @@ public:
 
 class SkoarpuscleExactRest : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleExactRest" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleExactRest" << " :: " ; }
     SkoarpuscleExactRest(SkoarToke *);
     ~SkoarpuscleExactRest() override;
 
@@ -41,7 +41,7 @@ public:
 
 class SkoarpuscleBeat : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleBeat" << " :: " << val; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleBeat" << " :: " << val; }
     static SkoarFloat beat_short(SkoarString, SkoarInt);
     static SkoarFloat beat_long(SkoarString, SkoarInt);
 
@@ -61,7 +61,7 @@ public:
 
 class SkoarpuscleRest : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleRest" << " :: " << val; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleRest" << " :: " << val; }
 
     SkoarFloat val;
 

@@ -13,7 +13,7 @@ public:
     static void init();
     static Skoarmantics* instance();
 
-	const map<ESkoarNoad::Kind, SpellOfNoadyDecoration> table;
+	const std::map<ESkoarNoad::Kind, SpellOfNoadyDecoration> table;
 
 	Skoarmantics();
 

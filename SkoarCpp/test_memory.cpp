@@ -4,7 +4,7 @@
 #include "testing_util.hpp"
 
 
-void createSkoarLite (wstring skoarce) {
+void createSkoarLite (std::wstring skoarce) {
     SkoarNullLogger SkoarLog;
     INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
     SkoarLite (skoarce, &SkoarLog);
@@ -12,7 +12,7 @@ void createSkoarLite (wstring skoarce) {
 
 }
 
-void createSkoar (wstring skoarce) {
+void createSkoar (std::wstring skoarce) {
     SkoarNullLogger SkoarLog;
     INFO ("SkoarBegin :: \"" << SkoarString_to_s (skoarce) << "\" :: SkoarEnd");
     Skoar (skoarce, &SkoarLog);

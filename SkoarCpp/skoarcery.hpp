@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace std;
-
 // if SKOAR_DEBUG_MEMORY is enabled, all allocations of tokes, noads, 
 // skoarpuscles, koars, fairies, etc will be counted. 
 // we define it as 1 for debug builds, 0 for release.

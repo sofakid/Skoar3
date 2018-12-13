@@ -70,7 +70,7 @@ auto expr_spell (SpellOfSimpleSkoarmantics {
         end_noad->on_enter = [=](SkoarMinstrelPtr m) {
             auto& fairy (*m->fairy);
             auto x (fairy.cast_arcane_magic ());
-            SkoarpusclePtr p (make_shared<SkoarpusclePair> (
+            SkoarpusclePtr p (std::make_shared<SkoarpusclePair> (
                 skoarpuscle_ptr<SkoarpuscleSymbolColon> (child)->val, x));
 
             fairy.impress (p);
@@ -129,22 +129,22 @@ auto math_spell (SpellOfSimpleSkoarmantics {
 Skoarmantics::Skoarmantics () : table ({
 
     {ESkoarNoad::skoar, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion> (Skoarpion::NewFromSkoar (skoar));
+        noad->skoarpuscle = std::make_shared<SkoarpuscleSkoarpion> (Skoarpion::NewFromSkoar (skoar));
         noad->children.clear ();
     }},
 
     {ESkoarNoad::skoarpion, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleSkoarpion> (Skoarpion::NewFromSkoarNoad (skoar, noad));
+        noad->skoarpuscle = std::make_shared<SkoarpuscleSkoarpion> (Skoarpion::NewFromSkoarNoad (skoar, noad));
         noad->children.clear ();
     }},
 
     {ESkoarNoad::meditation, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleMeditation> (skoar, noad);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleMeditation> (skoar, noad);
         noad->children.clear ();
     }},
 
     {ESkoarNoad::conditional, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleConditional> (skoar, noad);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleConditional> (skoar, noad);
     }},
 
     {ESkoarNoad::boolean_or,  math_spell },
@@ -193,7 +193,7 @@ Skoarmantics::Skoarmantics () : table ({
     }},
 
     {ESkoarNoad::loop, SpellOfSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleLoop> (skoar, noad);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleLoop> (skoar, noad);
         noad->children.clear ();
     }},
 
@@ -210,7 +210,7 @@ Skoarmantics::Skoarmantics () : table ({
     }},
 
     {ESkoarNoad::al_goto, SpellOfSimpleSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleGoto> (noad);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleGoto> (noad);
     }},
 
     {ESkoarNoad::marker, SpellOfSimpleSkoarmantics {
@@ -245,9 +245,9 @@ Skoarmantics::Skoarmantics () : table ({
 
         SkoarpusclePtr args = nullptr;
         if (noad->children.size () > 2)
-            args = make_shared<SkoarpuscleArgs> ();
+            args = std::make_shared<SkoarpuscleArgs> ();
 
-        auto x (make_shared<SkoarpuscleDeref> (msg_name, args));
+        auto x (std::make_shared<SkoarpuscleDeref> (msg_name, args));
         noad->skoarpuscle = x;
 
         end_noad->on_enter = [=](SkoarMinstrelPtr m) {
@@ -259,7 +259,7 @@ Skoarmantics::Skoarmantics () : table ({
     }},
 
     {ESkoarNoad::listy, SpellOfSimpleSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleList> ();
+        noad->skoarpuscle = std::make_shared<SkoarpuscleList> ();
     }},
 
     {ESkoarNoad::msg, SpellOfSimpleSkoarmantics {
@@ -288,7 +288,7 @@ Skoarmantics::Skoarmantics () : table ({
                 noad->children.clear();
             
             else if (is_skoarpuscle<SkoarpuscleLoop>(msg)) {
-                noad->skoarpuscle = make_shared<SkoarpuscleLoopMsg> (msg);
+                noad->skoarpuscle = std::make_shared<SkoarpuscleLoopMsg> (msg);
                 noad->on_enter = [=](SkoarMinstrelPtr m) {
                     auto listy (m->fairy->impression);
                     auto loopy (skoarpuscle_ptr<SkoarpuscleLoop> (msg));
@@ -358,7 +358,7 @@ Skoarmantics::Skoarmantics () : table ({
 
     {ESkoarNoad::ugen_with_args, SpellOfSimpleSkoarmantics {
         auto ugen (noad->next_skoarpuscle ());
-        auto args (make_shared<SkoarpuscleArgs> ());
+        auto args (std::make_shared<SkoarpuscleArgs> ());
         //auto msg (make_shared<SkoarpuscleMsg>(skoarpuscle_ptr<SkoarpuscleUGen> (ugen)->defaultMsg (), args));
         //msg->dest = ugen;
         
@@ -372,7 +372,7 @@ Skoarmantics::Skoarmantics () : table ({
         auto lute_ptr (skoarpuscle_ptr<SkoarpuscleLute> (lute));
         
         if (lute_ptr->has_messages) {
-            auto args (make_shared<SkoarpuscleArgs> ());
+            auto args (std::make_shared<SkoarpuscleArgs> ());
             //auto msg (make_shared<SkoarpuscleMsg> (L"string", args));
             //msg->dest = lute;
 
@@ -383,11 +383,11 @@ Skoarmantics::Skoarmantics () : table ({
     }},
 
     {ESkoarNoad::args , SpellOfSimpleSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleArgList> (noad);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleArgList> (noad);
     }},
 
     {ESkoarNoad::args_entries , SpellOfSimpleSkoarmantics {
-        noad->skoarpuscle = make_shared<SkoarpuscleArgExpr> (noad);
+        noad->skoarpuscle = std::make_shared<SkoarpuscleArgExpr> (noad);
     }},
 
     {ESkoarNoad::assignment, expr_spell },

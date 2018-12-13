@@ -1,7 +1,7 @@
 #include "testing_util.hpp"
 
-string SkoarString_to_s (SkoarString ws) {
-    return string (ws.begin (), ws.end ());
+std::string SkoarString_to_s (SkoarString ws) {
+    return std::string (ws.begin (), ws.end ());
 }
 
 bool check_skoarpuscle_int (SkoarpusclePtr p, SkoarInt v) {
@@ -84,7 +84,7 @@ bool check_skoarpuscle_symbol (SkoarpusclePtr p, SkoarString v) {
 
 
 VectorOfSkoarEventsPtr skoar_get_events (Skoar* skoar) {
-    auto events (make_shared<VectorOfSkoarEvents> ());
+    auto events (std::make_shared<VectorOfSkoarEvents> ());
     try
     {
         skoar->play ([&](SkoarEventPtr e) {
@@ -99,7 +99,7 @@ VectorOfSkoarEventsPtr skoar_get_events (Skoar* skoar) {
 }
 
 VectorOfSkoarEventsPtr skoar_get_events_inf (Skoar* skoar, size_t num) {
-    auto events (make_shared<VectorOfSkoarEvents> ());
+    auto events (std::make_shared<VectorOfSkoarEvents> ());
     try
     {
         size_t i (0);
@@ -113,7 +113,7 @@ VectorOfSkoarEventsPtr skoar_get_events_inf (Skoar* skoar, size_t num) {
     }
     catch (SkoarError &e)
     {
-        if (wstring (e.wwhat ()) != wstring (L"skoar_get_events_inf"))
+        if (std::wstring (e.wwhat ()) != std::wstring (L"skoar_get_events_inf"))
             FAIL (SkoarString_to_s (e.wwhat ()));
     }
     return events;
@@ -121,7 +121,7 @@ VectorOfSkoarEventsPtr skoar_get_events_inf (Skoar* skoar, size_t num) {
 
 
 VectorOfSkoarEventsPtr skoar_get_events_for_voice (Skoar* skoar, SkoarString voice) {
-    auto events (make_shared<VectorOfSkoarEvents> ());
+    auto events (std::make_shared<VectorOfSkoarEvents> ());
     try
     {
         skoar->play_voice (voice, [&](SkoarEventPtr e) {
@@ -137,7 +137,7 @@ VectorOfSkoarEventsPtr skoar_get_events_for_voice (Skoar* skoar, SkoarString voi
 
 
 VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion (Skoar* skoar, SkoarString voice, SkoarpionPtr skoarpion) {
-    auto events (make_shared<VectorOfSkoarEvents> ());
+    auto events (std::make_shared<VectorOfSkoarEvents> ());
     try
     {
         skoar->play_voice_skoarpion (voice, skoarpion, [&](SkoarEventPtr e) {
@@ -153,7 +153,7 @@ VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion (Skoar* skoar, Skoar
 
 
 VectorOfSkoarEventsPtr skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (Skoar* skoar, SkoarString voice, SkoarpionPtr skoarpion) {
-    auto events (make_shared<VectorOfSkoarEvents> ());
+    auto events (std::make_shared<VectorOfSkoarEvents> ());
     try
     {
         skoar->play_voice_skoarpion (voice, skoarpion, [&](SkoarEventPtr e) {
@@ -245,7 +245,7 @@ void require_desire_in_event (SkoarString k, SkoarpusclePtr v, SkoarEventPtr ev)
 
     REQUIRE (event_entry != nullptr);
 
-    wostringstream stream;
+    std::wostringstream stream;
     stream << "reality :: " << *event_entry;
     INFO (SkoarString_to_s (stream.str ()));
 
@@ -263,7 +263,7 @@ void require_subset_of_event (SkoarEventPtr desire, SkoarEventPtr ev) {
         if (v == nullptr)
             continue;
 
-        wostringstream stream;
+        std::wostringstream stream;
         stream << "desire :: " << k << " : " << *v;
         INFO (SkoarString_to_s (stream.str ()));
 
@@ -298,7 +298,7 @@ void compare_lists (ListOfSkoarpusclesPtr desires, ListOfSkoarpusclesPtr realiti
         auto des_x (*(des_it++));
         auto real_x (*(real_it++));
 
-        wostringstream stream;
+        std::wostringstream stream;
         stream << " :: desire: " << *des_x << " :: reality " << *real_x;
         INFO ("list i: " << i << SkoarString_to_s (stream.str ()));
 
@@ -380,8 +380,8 @@ void run_skoar_test (SkoarString skoarce)
     REQUIRE (run != nullptr);
     REQUIRE (expect != nullptr);
 
-    map<SkoarString, VectorOfSkoarEventsPtr> expectations;
-    map<SkoarString, VectorOfSkoarEventsPtr> runs;
+    std::map<SkoarString, VectorOfSkoarEventsPtr> expectations;
+    std::map<SkoarString, VectorOfSkoarEventsPtr> runs;
 
     auto voices (skoar.get_all_voices ());
 
@@ -395,8 +395,8 @@ void run_skoar_test (SkoarString skoarce)
         if (voices.size () > 1 && voice == SkoarString (L"all"))
             continue;
 
-        string prefix ("Voice: ");
-        string s (prefix + SkoarString_to_s (voice));
+        std::string prefix ("Voice: ");
+        std::string s (prefix + SkoarString_to_s (voice));
         INFO (s);
 
         auto desires (skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (&skoar, voice, expect));
@@ -413,7 +413,7 @@ void run_skoar_test (SkoarString skoarce)
 }
 
 
-void run_skoar_multi_test (SkoarString skoarce, string filename)
+void run_skoar_multi_test (SkoarString skoarce, std::string filename)
 {
     SkoarNullLogger SkoarLog;
 
@@ -451,7 +451,7 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
 
     for (auto test_skoarpion : top_level_skoarpions)
     {
-        const string section_name (test_skoarpion->name == sSkoar ? 
+        const std::string section_name (test_skoarpion->name == sSkoar ?
             filename : SkoarString_to_s (test_skoarpion->name));
 
         SkoarpionPtr run (nullptr), expect (nullptr);
@@ -474,8 +474,8 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
 
         SECTION (section_name) {
 
-            map<SkoarString, VectorOfSkoarEventsPtr> expectations;
-            map<SkoarString, VectorOfSkoarEventsPtr> runs;
+            std::map<SkoarString, VectorOfSkoarEventsPtr> expectations;
+            std::map<SkoarString, VectorOfSkoarEventsPtr> runs;
 
             auto voices (skoar.get_all_voices ());
 
@@ -486,8 +486,8 @@ void run_skoar_multi_test (SkoarString skoarce, string filename)
                 if (voices.size () > 1 && voice == SkoarString (L"all"))
                     continue;
 
-                string prefix ("Voice: ");
-                string s (prefix + SkoarString_to_s (voice));
+                std::string prefix ("Voice: ");
+                std::string s (prefix + SkoarString_to_s (voice));
                 INFO (s);
 
                 auto desires (skoar_get_events_for_voice_skoarpion_chance_of_cthulhu (&skoar, voice, expect));

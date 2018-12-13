@@ -4,7 +4,7 @@
 #include "spells.hpp"
 #include <mutex>
 
-typedef map<SkoarString, SkoarInt> MemoriesMap;
+typedef std::map<SkoarString, SkoarInt> MemoriesMap;
 
 class SkoarMem {
 public:

@@ -12,14 +12,14 @@
 
 // --- SkoarpuscleInt ---------------------------------------------------------
 auto& get_generator () {
-    static default_random_engine generator;
+    static std::default_random_engine generator;
     static bool is_initialized (false);
 
     if (is_initialized == false)
     {
         uint32_t seed (
             static_cast<uint32_t>(
-                chrono::system_clock::now ().time_since_epoch ().count ()
+                std::chrono::system_clock::now ().time_since_epoch ().count ()
             )
         );
         generator.seed (seed);
@@ -44,7 +44,7 @@ SkoarpusclePtr SkoarpuscleInt::skoar_msg (SkoarString sel, SkoarpusclePtr /*args
         --v;
 
         auto& generator (get_generator ());
-        uniform_int_distribution<SkoarInt> distribution (0, v);
+        std::uniform_int_distribution<SkoarInt> distribution (0, v);
         v = distribution (generator);
         if (neg)
             v *= -1;
@@ -54,7 +54,7 @@ SkoarpusclePtr SkoarpuscleInt::skoar_msg (SkoarString sel, SkoarpusclePtr /*args
     else if (sel == L"abs")
         return make_skoarpuscle (abs (val));
     
-    return make_shared<SkoarpuscleCat> ();
+    return std::make_shared<SkoarpuscleCat> ();
 }
 
 
@@ -76,7 +76,7 @@ SkoarpusclePtr SkoarpuscleFloat::skoar_msg (SkoarString sel, SkoarpusclePtr /*ar
             return make_skoarpuscle(0.0);
 
         auto& generator (get_generator ());
-        uniform_real_distribution<SkoarFloat> distribution (0.0, v_minus_epsilon);
+        std::uniform_real_distribution<SkoarFloat> distribution (0.0, v_minus_epsilon);
         v = distribution (generator);
         if (neg)
             v *= -1.0;
@@ -137,7 +137,7 @@ SkoarpusclePtr SkoarpuscleFloat::skoar_msg (SkoarString sel, SkoarpusclePtr /*ar
     else if (sel == L"cbrt")
         return make_skoarpuscle (cbrt (val));
 
-    return make_shared<SkoarpuscleCat> ();
+    return std::make_shared<SkoarpuscleCat> ();
 }
 
 
@@ -182,7 +182,7 @@ SkoarpusclePtr SkoarpuscleList::skoar_msg (SkoarString sel, SkoarpusclePtr args_
         --n;
 
         auto& generator (get_generator ());
-        uniform_int_distribution<SkoarInt> distribution (0, n);
+        std::uniform_int_distribution<SkoarInt> distribution (0, n);
         const SkoarInt i (distribution (generator));
         return make_skoarpuscle (v[i]);
     }
@@ -357,7 +357,7 @@ SkoarpusclePtr SkoarpuscleString::skoar_msg (SkoarString sel, SkoarpusclePtr arg
     //if (sel == L"sample") {
     //    return make_shared<SkoarpuscleSample>(val);
     //}
-    return make_shared<SkoarpuscleCat> ();
+    return std::make_shared<SkoarpuscleCat> ();
 }
 
 SkoarpusclePtr SkoarpuscleSymbol::skoar_msg (SkoarString sel, SkoarpusclePtr args, SkoarMinstrelPtr m) {
@@ -365,7 +365,7 @@ SkoarpusclePtr SkoarpuscleSymbol::skoar_msg (SkoarString sel, SkoarpusclePtr arg
     /* this was how we called underlying SC class methods..
     don't know what I want to do with this anymore. */
 
-    return make_shared<SkoarpuscleCat> ();
+    return std::make_shared<SkoarpuscleCat> ();
 }
 
 

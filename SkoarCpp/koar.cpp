@@ -11,7 +11,7 @@
 SkoarKoar::SkoarKoar (Skoar *skoar, const SkoarString &name) :
     skoar (skoar),
     name (name),
-    skoarboard (make_shared<SkoarDic> ())
+    skoarboard (std::make_shared<SkoarDic> ())
 {
 #if SKOAR_DEBUG_MEMORY
     SkoarMemories::o ().allocKoar (name);
@@ -109,7 +109,7 @@ SkoarpusclePtr SkoarKoar::state_at (SkoarString &k) {
 }
 
 SkoarEventPtr SkoarKoar::event (SkoarMinstrelPtr minstrel) {
-    auto e = make_shared<SkoarEvent> ();
+    auto e = std::make_shared<SkoarEvent> ();
 
     // going from global to local, overwriting existing entries with the more local one. 
     for (auto skrb : stack)
@@ -146,8 +146,8 @@ SkoarEventPtr SkoarKoar::event (SkoarMinstrelPtr minstrel) {
 // line up (2) and (3) for positional args. 
 
 ListOfSkoarpusclesPtr make_list_of_provided_named_args (SkoarpuscleList* p) {
-    auto provided_named_args = make_shared<ListOfSkoarpuscles> ();
-    auto provided_unnamed_args = make_shared<ListOfSkoarpuscles> ();
+    auto provided_named_args = std::make_shared<ListOfSkoarpuscles> ();
+    auto provided_unnamed_args = std::make_shared<ListOfSkoarpuscles> ();
 
     auto &listy = p->val;
 
@@ -199,7 +199,7 @@ void SkoarKoar::set_args (
     }*/
     else
     {
-        args_provided = make_shared<ListOfSkoarpuscles> ();
+        args_provided = std::make_shared<ListOfSkoarpuscles> ();
         //if (args_prov != nullptr)
         //    args_provided->push_back (args_prov);
 
@@ -312,16 +312,16 @@ void SkoarKoar::set_args (
 
 void SkoarKoar::push_state () {
 
-    auto state (make_shared<SkoarDic> ());
-    auto projections (make_shared<ListOfSkoarpionProjections> ());
+    auto state (std::make_shared<SkoarDic> ());
+    auto projections (std::make_shared<ListOfSkoarpionProjections> ());
 
     state_stack.push_back (state);
 
-    state->put (L"colons_burned", make_shared<SkoarpuscleList> ());
+    state->put (L"colons_burned", std::make_shared<SkoarpuscleList> ());
     state->put (L"al_fine", make_skoarpuscle (false));
-    state->put (L"projections", make_shared<SkoarpuscleProjections> (projections));
+    state->put (L"projections", std::make_shared<SkoarpuscleProjections> (projections));
 
-    stack.push_back (make_shared<SkoarDic> ());
+    stack.push_back (std::make_shared<SkoarDic> ());
 
 }
 
@@ -374,10 +374,10 @@ void SkoarKoar::do_skoarpion (
         if (exec_style != EExecStyle::INLINE)
         {
             // save exports
-            vector<pair<SkoarString*, SkoarpusclePtr>> exp;
+            std::vector<std::pair<SkoarString*, SkoarpusclePtr>> exp;
             if (expoarts != nullptr)
                 for (auto& s : *expoarts)
-                    exp.push_back (make_pair (&s, at (s)));
+                    exp.push_back (std::make_pair (&s, at (s)));
 
             pop_state ();
             fairy.pop_times_seen ();

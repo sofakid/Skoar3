@@ -104,7 +104,7 @@ ListOfTags TestoarGetListOfTags() {
     return out;
 }
 
-ListOfTestCases TestoarGetListOfTestCases(string tag) {
+ListOfTestCases TestoarGetListOfTestCases(std::string tag) {
     Catch::ConfigData configData;
     configData.listTests = true;
     configData.testsOrTags.push_back(tag);
@@ -118,18 +118,18 @@ int TestoarRunTests() {
 
 }
 
-int TestoarRunTestsByTag(string tag) {
+int TestoarRunTestsByTag(std::string tag) {
     const char* argv[] = { "Testoar", "-r", "skoar", tag.c_str() };
     Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
     return 0;
 }
 
-int TestoarRunTestsByTestCase(string tc) {
+int TestoarRunTestsByTestCase(std::string tc) {
     const char* argv[] = { "Testoar", "-r", "skoar", tc.c_str() };
     return Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
 }
 
-int TestoarRunTestsByTestCaseSection(string tc, string section) {
+int TestoarRunTestsByTestCaseSection(std::string tc, std::string section) {
     const char* argv[] = { "Testoar", "-r", "skoar", tc.c_str(), "-c", section.c_str() };
     return Catch::Session().run(sizeof(argv) / sizeof(*argv), argv);
 }

@@ -86,7 +86,7 @@ public:
                 );
             } },
             { EMath::Freq,      MathMagic {
-                return make_shared<SkoarpuscleFreq> (
+                return std::make_shared<SkoarpuscleFreq> (
                     static_cast<SkoarFloat>(skoarpuscle_ptr<SkoarpuscleInt> (x)->val) +
                     skoarpuscle_ptr<SkoarpuscleFreq> (y)->val
                 );
@@ -126,7 +126,7 @@ public:
                 );
             } },
             { EMath::Freq, MathMagic {
-                return make_shared<SkoarpuscleFreq> (
+                return std::make_shared<SkoarpuscleFreq> (
                     skoarpuscle_ptr<SkoarpuscleFloat> (x)->val +
                     skoarpuscle_ptr<SkoarpuscleFreq> (y)->val
                 );
@@ -160,13 +160,13 @@ public:
                 );
             } },
             { EMath::HashLevel, MathMagic {
-                return make_shared<SkoarpuscleHashLevel> (
+                return std::make_shared<SkoarpuscleHashLevel> (
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (x)->val +
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (y)->val
                 );
             } },
             { EMath::Freq, MathMagic {
-                return make_shared<SkoarpuscleFreq> (
+                return std::make_shared<SkoarpuscleFreq> (
                     skoarpuscle_ptr<SkoarpuscleFloat> (x)->val +
                     skoarpuscle_ptr<SkoarpuscleFreq> (y)->val
                     );
@@ -237,7 +237,7 @@ public:
                 );
             } },
             { EMath::Freq,      MathMagic {
-                return make_shared<SkoarpuscleFreq> (
+                return std::make_shared<SkoarpuscleFreq> (
                     static_cast<SkoarFloat>(skoarpuscle_ptr<SkoarpuscleInt> (x)->val) -
                     skoarpuscle_ptr<SkoarpuscleFreq> (y)->val
                     );
@@ -277,7 +277,7 @@ public:
                 );
             } },
             { EMath::Freq, MathMagic {
-                return make_shared<SkoarpuscleFreq> (
+                return std::make_shared<SkoarpuscleFreq> (
                     skoarpuscle_ptr<SkoarpuscleFloat> (x)->val -
                     skoarpuscle_ptr<SkoarpuscleFreq> (y)->val
                     );
@@ -311,13 +311,13 @@ public:
                 );
             } },
             { EMath::HashLevel, MathMagic {
-                return make_shared<SkoarpuscleHashLevel> (
+                return std::make_shared<SkoarpuscleHashLevel> (
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (x)->val -
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (y)->val
                     );
             } },
             { EMath::Freq, MathMagic {
-                return make_shared<SkoarpuscleFreq> (
+                return std::make_shared<SkoarpuscleFreq> (
                     skoarpuscle_ptr<SkoarpuscleFloat> (x)->val -
                     skoarpuscle_ptr<SkoarpuscleFreq> (y)->val
                     );
@@ -388,7 +388,7 @@ public:
                 );
             } },
             { EMath::Freq,      MathMagic {
-                return make_shared<SkoarpuscleFreq> (
+                return std::make_shared<SkoarpuscleFreq> (
                     static_cast<SkoarFloat>(skoarpuscle_ptr<SkoarpuscleInt> (x)->val) *
                     skoarpuscle_ptr<SkoarpuscleFreq> (y)->val
                     );
@@ -428,7 +428,7 @@ public:
                 );
             } },
             { EMath::Freq, MathMagic {
-                return make_shared<SkoarpuscleFreq> (
+                return std::make_shared<SkoarpuscleFreq> (
                     skoarpuscle_ptr<SkoarpuscleFloat> (x)->val *
                     skoarpuscle_ptr<SkoarpuscleFreq> (y)->val
                     );
@@ -462,13 +462,13 @@ public:
                 );
             } },
             { EMath::HashLevel, MathMagic {
-                return make_shared<SkoarpuscleHashLevel> (
+                return std::make_shared<SkoarpuscleHashLevel> (
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (x)->val *
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (y)->val
                     );
             } },
             { EMath::Freq, MathMagic {
-                return make_shared<SkoarpuscleFreq> (
+                return std::make_shared<SkoarpuscleFreq> (
                     skoarpuscle_ptr<SkoarpuscleFloat> (x)->val *
                     skoarpuscle_ptr<SkoarpuscleFreq> (y)->val
                     );
@@ -628,7 +628,7 @@ public:
                 if (denom == 0.0)
                     return make_skoarpuscle (nullptr);
                 return static_cast<SkoarpusclePtr> (
-                    make_shared<SkoarpuscleHashLevel> (
+                    std::make_shared<SkoarpuscleHashLevel> (
                     skoarpuscle_ptr<SkoarpuscleHashLevel> (x)->val / denom
                     ));
             } },

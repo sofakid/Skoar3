@@ -170,9 +170,9 @@ TEST_CASE ("Ints Floats and Freqs", "[sanity]") {
             a, 400, b, 401.02, X,
             a, 0.002, b, 702, X,
 
-            a, make_shared<SkoarpuscleFreq> (point_one_hz),
-            b, make_shared<SkoarpuscleFreq> (420.5),
-            c, make_shared<SkoarpuscleFreq> (static_cast<SkoarInt> (2600)), X
+            a, std::make_shared<SkoarpuscleFreq> (point_one_hz),
+            b, std::make_shared<SkoarpuscleFreq> (420.5),
+            c, std::make_shared<SkoarpuscleFreq> (static_cast<SkoarInt> (2600)), X
         ));
     }
 }

@@ -9,11 +9,11 @@
 #include "styles.hpp"
 
 
-class SkoarNoadAddress : public vector<SkoarInt> {
+class SkoarNoadAddress : public std::vector<SkoarInt> {
 public:
 
     SkoarString code() {
-        wostringstream kode;
+        std::wostringstream kode;
         for (auto x : *this) {
             kode << L"." << x;
         }
@@ -31,7 +31,7 @@ public:
     SkoarNoadAddress address;     // a list code to find the noad quickly
     SkoarNoadPtr parent;          // the parent noad
 
-    vector<SkoarNoadPtr> children;  // a list of child noads
+    std::vector<SkoarNoadPtr> children;  // a list of child noads
 
     const SkoarString name;       // name of the nonterminal
     const ESkoarNoad::Kind kind;
@@ -98,7 +98,7 @@ public:
     // showing the tree
     // ----------------
     void log_tree(ISkoarLog *log, int tab = 1);
-    void draw_tree(wostringstream &out, int tab = 1);
+    void draw_tree(std::wostringstream &out, int tab = 1);
     
     // -----------------
     // climbing the Tree
@@ -132,14 +132,14 @@ public:
     // searching the tree
     // ------------------
 
-    static ListOfSkoarNoadPtrs collect(SkoarNoadPtr, vector<ESkoarNoad::Kind>&);
-    static ListOfSkoarNoadPtrs collect(SkoarNoadPtr, vector<ESkoarToke::Kind>&);
-    static void match(SkoarNoadPtr, vector<ESkoarNoad::Kind>&, SpellOfNoadPtrs);
-    static void match(SkoarNoadPtr, vector<ESkoarToke::Kind>&, SpellOfNoadPtrs);
+    static ListOfSkoarNoadPtrs collect(SkoarNoadPtr, std::vector<ESkoarNoad::Kind>&);
+    static ListOfSkoarNoadPtrs collect(SkoarNoadPtr, std::vector<ESkoarToke::Kind>&);
+    static void match(SkoarNoadPtr, std::vector<ESkoarNoad::Kind>&, SpellOfNoadPtrs);
+    static void match(SkoarNoadPtr, std::vector<ESkoarToke::Kind>&, SpellOfNoadPtrs);
 
     ListOfSkoarpuscles collect_skoarpuscles(int = 0);
 
-    friend std::wostream & operator<<(wostream &out, SkoarNoad &noad) {
+    friend std::wostream & operator<<(std::wostream &out, SkoarNoad &noad) {
         out << L"SkoarNoad: offs: " << noad.offs 
             << L", size: " << noad.size 
             << L", " << noad.name;

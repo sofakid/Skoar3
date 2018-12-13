@@ -11,7 +11,7 @@ void SkoarToker::init () {
     dispensary = new SkoarDispensary ();
 }
 
-SkoarToker::SkoarToker (wstring &s) :
+SkoarToker::SkoarToker (std::wstring &s) :
     i_am_here (0),
     i_saw (nullptr),
     skoarce (&s)
@@ -60,7 +60,7 @@ SkoarTokePtr SkoarToker::burn (ESkoarToke::Kind want, SkoarNoadPtr noad) {
         i_saw = nullptr;
         i_am_here = i_am_here + toke->burn ();
         i_am_here = i_am_here + Toke_Whitespace::burn (skoarce, i_am_here);
-        return unique_ptr<SkoarToke> (toke);
+        return std::unique_ptr<SkoarToke> (toke);
     };
 
     //msg = "Tried to burn " + want->name + ", but saw " + toke->asString;
@@ -68,7 +68,7 @@ SkoarTokePtr SkoarToker::burn (ESkoarToke::Kind want, SkoarNoadPtr noad) {
     //puts("Toker Fail.");
     //this->dump();
 
-    throw SkoarTokerException (wstring (L"toker fail"), noad);
+    throw SkoarTokerException (std::wstring (L"toker fail"), noad);
 }
 
 void SkoarToker::eof () {

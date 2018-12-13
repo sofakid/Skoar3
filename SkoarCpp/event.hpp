@@ -5,7 +5,7 @@
 
 class SkoarDic {
 public:
-    map<SkoarString, SkoarpusclePtr> table;
+    std::map<SkoarString, SkoarpusclePtr> table;
 
     //Skoarpuscle *not_found;
 
@@ -27,7 +27,7 @@ public:
 
     void from(SkoarDicPtr);
 
-    shared_ptr<SkoarEvent> duplicate ();
+    std::shared_ptr<SkoarEvent> duplicate ();
 };
 
 class SkoarEventStream {

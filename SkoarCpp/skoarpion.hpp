@@ -33,17 +33,15 @@ public:
 
     void clear();
 
-
     void init_from_skoar(Skoar*);                 // the entire skoar gets put in a skoarpion
     void init_from_noad(Skoar*, SkoarNoadPtr);    // a literal skoarpion, like {! derp !! ... !}
     void init_from_subtree(Skoar*, SkoarNoadPtr); // chunks of the tree sucked into skoarpions
                                                   // i.e. conditions, if bodies, else bodies
-
     static SkoarpionProjectionPtr projection(SkoarpionPtr skoarpion, SkoarString);
 
     static ListOfSkoarpionProjectionsPtr get_projections(SkoarpionPtr skoarpion, const ListOfSkoarStrings&);
 
-    void draw_tree(wostringstream &stream);
+    void draw_tree(std::wostringstream &stream);
 };
 
 
@@ -59,7 +57,7 @@ public:
 
     //SkoarNoadAddress map_dst(SkoarNoadPtr);
 
-    void draw(wostringstream &stream);
+    void draw(std::wostringstream &stream);
 
 private:
     //SkoarNoadAddress skip_to;

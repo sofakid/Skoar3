@@ -59,8 +59,8 @@ SkoarMinstrelPtr SkoarMinstrel::New(
     Skoar* const skoar,
     const SpellOfHappening& spell) 
 {
-    auto m = make_shared<SkoarMinstrel>(name, koar, skoar, spell);
-    m->fairy = make_shared<SkoarFairy>(L"$" + name, m);
+    auto m = std::make_shared<SkoarMinstrel>(name, koar, skoar, spell);
+    m->fairy = std::make_shared<SkoarFairy>(L"$" + name, m);
     SkoarMinstrel::ready_stream (m);
     return m;
 }
@@ -72,8 +72,8 @@ SkoarMinstrelPtr SkoarMinstrel::NewForSkoarpion (
     SkoarpionPtr skoarpion, 
     const SpellOfHappening& spell)
 {
-    auto m = make_shared<SkoarMinstrel> (name, koar, skoar, spell);
-    m->fairy = make_shared<SkoarFairy> (L"$" + name, m);
+    auto m = std::make_shared<SkoarMinstrel> (name, koar, skoar, spell);
+    m->fairy = std::make_shared<SkoarFairy> (L"$" + name, m);
     SkoarMinstrel::ready_skoarpion (m, skoarpion);
     return m;
 }
@@ -86,8 +86,8 @@ SkoarMinstrelPtr SkoarMinstrel::NewDebugging(
     const SpellOfHappening& spell, 
     const MinstrelDebugConfig& config) 
 {
-    auto m = make_shared<DebuggingMinstrel>(name, koar, skoar, spell, config);
-    m->fairy = make_shared<SkoarFairy>(L"$" + name, m);
+    auto m = std::make_shared<DebuggingMinstrel>(name, koar, skoar, spell, config);
+    m->fairy = std::make_shared<SkoarFairy>(L"$" + name, m);
     SkoarMinstrel::ready_stream (m);
     return m;
 }
@@ -101,8 +101,8 @@ SkoarMinstrelPtr SkoarMinstrel::NewDebuggingForSkoarpion (
     const SpellOfHappening& spell,
     const MinstrelDebugConfig& config)
 {
-    auto m = make_shared<DebuggingMinstrel> (name, koar, skoar, spell, config);
-    m->fairy = make_shared<SkoarFairy> (L"$" + name, m);
+    auto m = std::make_shared<DebuggingMinstrel> (name, koar, skoar, spell, config);
+    m->fairy = std::make_shared<SkoarFairy> (L"$" + name, m);
     SkoarMinstrel::ready_skoarpion (m, skoarpion);
     return m;
 }

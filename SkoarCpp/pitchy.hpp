@@ -11,7 +11,7 @@ public:
     ~SkoarpuscleKey () override;
 
     void apply (SkoarEventPtr);
-    void asString (wostream&) override;
+    void asString (std::wostream&) override;
 
 };
 
@@ -29,9 +29,9 @@ public:
     SkoarpuscleNoat (SkoarString&);
     SkoarpuscleNoat (SkoarString&, bool, int, int);
     ~SkoarpuscleNoat () override;
-    void asString (wostream&) override;
-    void typeAsString (wostream&) override;
-    void valAsString (wostream&) override;
+    void asString (std::wostream&) override;
+    void typeAsString (std::wostream&) override;
+    void valAsString (std::wostream&) override;
 
     //void *asNoat () override;
     void on_enter (SkoarMinstrelPtr) override;
@@ -52,9 +52,9 @@ public:
     SkoarpuscleChoard (SkoarString&);
     SkoarpuscleChoard (SkoarString&, SkoarString&, int, ListOfSkoarpusclesPtr);
     ~SkoarpuscleChoard () override;
-    void asString (wostream&) override;
-    void typeAsString (wostream&) override;
-    void valAsString (wostream&) override;
+    void asString (std::wostream&) override;
+    void typeAsString (std::wostream&) override;
+    void valAsString (std::wostream&) override;
 
     //void *asNoat () override;
     void on_enter (SkoarMinstrelPtr) override;

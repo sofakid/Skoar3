@@ -9,7 +9,7 @@ SkoarFairy::SkoarFairy (SkoarString nom, SkoarMinstrelPtr m) :
     name (nom),
     minstrel (m),
     magic (HarmlessMagic),
-    times_seen (make_shared<FairyTimesMap> ()),
+    times_seen (std::make_shared<FairyTimesMap> ()),
     fly_to_dest (0),
     al_fine (false),
     noat (make_skoarpuscle (nullptr)),
@@ -99,7 +99,7 @@ void SkoarFairy::pop_magic () {
 void SkoarFairy::push() {
     push_magic ();
 
-    listy_stack.push_back(make_shared<ListOfSkoarpuscles>());
+    listy_stack.push_back(std::make_shared<ListOfSkoarpuscles>());
     //"$.push;".postln;
 
     minstrel->koar->push_state();
@@ -116,7 +116,7 @@ SkoarpusclePtr SkoarFairy::pop() {
     auto listy = listy_stack.back();
     listy_stack.pop_back();
 
-    impress(make_shared<SkoarpuscleList>(listy));
+    impress(std::make_shared<SkoarpuscleList>(listy));
 
     //"popped listy: ".post; impression.postln;
 
@@ -150,7 +150,7 @@ void SkoarFairy::incr_i() {
 
 void SkoarFairy::push_times_seen() {
     times_seen_stack.push_back(times_seen);
-    times_seen = make_shared<FairyTimesMap>();
+    times_seen = std::make_shared<FairyTimesMap>();
 }
 
 void SkoarFairy::pop_times_seen() {

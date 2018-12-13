@@ -5,14 +5,14 @@
 #include "minstrel.hpp"
 #include "koar.hpp"
 
-typedef function<SkoarpusclePtr(SkoarpusclePtr, SkoarpusclePtr, SkoarMinstrelPtr)> SpellOfMath;
-typedef function<SkoarFloat(SkoarpusclePtr, SkoarpusclePtr, SkoarMinstrelPtr)> SpellOfCmp;
+typedef std::function<SkoarpusclePtr(SkoarpusclePtr, SkoarpusclePtr, SkoarMinstrelPtr)> SpellOfMath;
+typedef std::function<SkoarFloat(SkoarpusclePtr, SkoarpusclePtr, SkoarMinstrelPtr)> SpellOfCmp;
 
-typedef map<ESkoarpuscle::Kind, SpellOfMath> YTable;
-typedef map<ESkoarpuscle::Kind, YTable> XTable;
+typedef std::map<ESkoarpuscle::Kind, SpellOfMath> YTable;
+typedef std::map<ESkoarpuscle::Kind, YTable> XTable;
 
-typedef map<ESkoarpuscle::Kind, SpellOfCmp> YCmpTable;
-typedef map<ESkoarpuscle::Kind, YCmpTable> XCmpTable;
+typedef std::map<ESkoarpuscle::Kind, SpellOfCmp> YCmpTable;
+typedef std::map<ESkoarpuscle::Kind, YCmpTable> XCmpTable;
 
 class SkoarOps {
 public:

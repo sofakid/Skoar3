@@ -10,7 +10,7 @@ public:
     static SkoarTokeInspector* instance();
     SkoarTokeInspector ();
     
-    const map<ESkoarToke::Kind, SpellOfTokeyDecoration> table;
+    const std::map<ESkoarToke::Kind, SpellOfTokeyDecoration> table;
 
     void decorate (Skoar* skoar, SkoarNoadPtr noad, SkoarToke* toke);
 };

@@ -22,7 +22,7 @@ public:
 
     void run (SkoarMinstrelPtr m);
     void on_enter (SkoarMinstrelPtr) override;
-    void asString (wostream &out) override;
+    void asString (std::wostream &out) override;
 
     void bind_captures (SkoarMinstrelPtr m);
 
@@ -39,7 +39,7 @@ public:
     ~SkoarpuscleArgExpr () override;
     void clear () override;
 
-    void asString (wostream &out) override;
+    void asString (std::wostream &out) override;
 
     SkoarpusclePtr flatten (SkoarMinstrelPtr);
 
@@ -48,7 +48,7 @@ public:
 class SkoarpuscleArgList : public Skoarpuscle
 {
 public:
-    map<SkoarString, SkoarpusclePtr> args_dict;
+    std::map<SkoarString, SkoarpusclePtr> args_dict;
     ListOfSkoarStrings args_names;
     SkoarNoadPtr noad;
 
@@ -57,20 +57,20 @@ public:
     void clear () override;
 
     void on_enter (SkoarMinstrelPtr) override;
-    void asString (wostream &out) override;
+    void asString (std::wostream &out) override;
 };
 
 // for koar->state, we don't pass these around
 class SkoarpuscleProjections : public Skoarpuscle
 {
 public:
-    map<SkoarString, SkoarpionProjectionPtr> mapp;
+    std::map<SkoarString, SkoarpionProjectionPtr> mapp;
 
     SkoarpuscleProjections (ListOfSkoarpionProjectionsPtr);
     ~SkoarpuscleProjections () override;
     void clear () override;
 
-    void asString (wostream &out) override;
+    void asString (std::wostream &out) override;
 };
 
 class SkoarpuscleCapture : public Skoarpuscle
@@ -83,5 +83,5 @@ public:
     SkoarpusclePtr val;
 
     static void Capture (SkoarpusclePtr&, SkoarMinstrelPtr);
-    void asString (wostream &out) override;
+    void asString (std::wostream &out) override;
 };

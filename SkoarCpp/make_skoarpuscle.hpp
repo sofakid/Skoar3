@@ -5,7 +5,7 @@
 // --- make_skoarpuscle -----------------------------------------------------
 
 inline SkoarpusclePtr make_skoarpuscle (nullptr_t) {
-    return make_shared<SkoarpuscleCat> ();
+    return std::make_shared<SkoarpuscleCat> ();
 }
 
 inline SkoarpusclePtr make_skoarpuscle (SkoarpusclePtr x) {
@@ -13,11 +13,11 @@ inline SkoarpusclePtr make_skoarpuscle (SkoarpusclePtr x) {
 }
 
 inline SkoarpusclePtr make_skoarpuscle (SkoarpionPtr x) {
-    return make_shared<SkoarpuscleSkoarpion> (x);
+    return std::make_shared<SkoarpuscleSkoarpion> (x);
 }
 
 inline SkoarpusclePtr make_skoarpuscle (SkoarInt x) {
-    return make_shared<SkoarpuscleInt> (x);
+    return std::make_shared<SkoarpuscleInt> (x);
 }
 
 inline SkoarpusclePtr make_skoarpuscle (int x) {
@@ -25,29 +25,29 @@ inline SkoarpusclePtr make_skoarpuscle (int x) {
 }
 
 inline SkoarpusclePtr make_skoarpuscle (SkoarFloat x) {
-    return make_shared<SkoarpuscleFloat> (x);
+    return std::make_shared<SkoarpuscleFloat> (x);
 }
 
 inline SkoarpusclePtr make_skoarpuscle (SkoarString x) {
-    return make_shared<SkoarpuscleString> (x);
+    return std::make_shared<SkoarpuscleString> (x);
 }
 
 inline SkoarpusclePtr make_skoarpuscle (SkoarString x, SkoarpusclePtr p) {
-    return make_shared<SkoarpusclePair> (x, p);
+    return std::make_shared<SkoarpusclePair> (x, p);
 }
 
 inline SkoarpusclePtr make_skoarpuscle (bool x) {
     if (x)
-        return make_shared<SkoarpuscleTrue> ();
-    return make_shared<SkoarpuscleFalse> ();
+        return std::make_shared<SkoarpuscleTrue> ();
+    return std::make_shared<SkoarpuscleFalse> ();
 }
 
 inline SkoarpusclePtr make_skoarpuscle (ListOfSkoarpusclesPtr x) {
-    return make_shared<SkoarpuscleList> (x);
+    return std::make_shared<SkoarpuscleList> (x);
 }
 
 inline SkoarpusclePtr make_skoarpuscle (const ListOfSkoarpuscles& x) {
-    return make_shared<SkoarpuscleList> (x);
+    return std::make_shared<SkoarpuscleList> (x);
 }
 
 
@@ -115,7 +115,7 @@ bool check_skoarpuscle_val(SkoarpusclePtr p, V val) {
 }
 
 template <class T, typename V>
-bool check_skoarpuscle_val_in(SkoarpusclePtr p, vector<V> &in) {
+bool check_skoarpuscle_val_in(SkoarpusclePtr p, std::vector<V> &in) {
     auto x = is_skoarpuscle<T> (p);
     if (x == false)
         return false;

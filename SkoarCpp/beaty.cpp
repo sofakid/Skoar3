@@ -38,7 +38,7 @@ void flatten_list_r (ListOfSkoarpuscles* listy, SkoarpusclePtr p) {
 }
 
 SkoarpusclePtr flatten_list (SkoarpusclePtr p) {
-    auto listy = make_shared<ListOfSkoarpuscles> ();
+    auto listy = std::make_shared<ListOfSkoarpuscles> ();
     flatten_list_r (listy.get (), p);
     return make_skoarpuscle (listy);
 }
@@ -128,7 +128,7 @@ SkoarpuscleDuration::~SkoarpuscleDuration() {
 }
 
 void SkoarpuscleDuration::on_enter(SkoarMinstrelPtr m) {
-    m->fairy->impress(make_shared<SkoarpuscleDuration>(minutes, seconds));
+    m->fairy->impress(std::make_shared<SkoarpuscleDuration>(minutes, seconds));
 }
 
 
@@ -260,14 +260,14 @@ SkoarpuscleBeat::SkoarpuscleBeat(SkoarToke *toke) {
     
     auto tie_pos (s.find(SkoarString(L"__"), 0));
 
-    if (tie_pos != wstring::npos) {
+    if (tie_pos != std::wstring::npos) {
         has_tie = true;
         is_grace = false;
         n -= 2;
     }
     else {
         auto grace_pos = s.find(SkoarString(L"_"), 0);
-        if (grace_pos != wstring::npos) {
+        if (grace_pos != std::wstring::npos) {
             has_tie = true;
             is_grace = false;
             n -= 2;

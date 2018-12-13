@@ -8,21 +8,21 @@
 
 // --- Skoarpion ------------------------------------------------
 SkoarpionPtr Skoarpion::NewFromSkoar (Skoar* skoar) {
-    auto skoarpion (make_shared<Skoarpion> (L"from skoar"));
+    auto skoarpion (std::make_shared<Skoarpion> (L"from skoar"));
     skoarpion->init_from_skoar (skoar);
     skoar->skoarpions.push_back (skoarpion);
     return skoarpion;
 }
 
 SkoarpionPtr Skoarpion::NewFromSkoarNoad (Skoar* skoar, SkoarNoadPtr noad) {
-    auto skoarpion (make_shared<Skoarpion> (L"from noad"));
+    auto skoarpion (std::make_shared<Skoarpion> (L"from noad"));
     skoarpion->init_from_noad (skoar, noad);
     skoar->skoarpions.push_back (skoarpion);
     return skoarpion;
 }
 
 SkoarpionPtr Skoarpion::NewFromSubtree (Skoar* skoar, SkoarNoadPtr subtree) {
-    auto skoarpion (make_shared<Skoarpion> (L"from subtree"));
+    auto skoarpion (std::make_shared<Skoarpion> (L"from subtree"));
     skoarpion->init_from_subtree (skoar, subtree);
     skoar->skoarpions.push_back (skoarpion);
     return skoarpion;
@@ -207,14 +207,14 @@ void Skoarpion::init_from_noad (Skoar* skr, SkoarNoadPtr noad) {
 
 // this is static, need a shared_ptr to the skoarpion.
 SkoarpionProjectionPtr Skoarpion::projection (SkoarpionPtr skoarpion, SkoarString koar_name) {
-    return make_shared<SkoarpionProjection> (skoarpion, koar_name);
+    return std::make_shared<SkoarpionProjection> (skoarpion, koar_name);
 }
 
 ListOfSkoarpionProjectionsPtr Skoarpion::get_projections (
     SkoarpionPtr skoarpion, 
     const ListOfSkoarStrings& voices
 ) {
-    auto listy (make_shared<ListOfSkoarpionProjections> ());
+    auto listy (std::make_shared<ListOfSkoarpionProjections> ());
 
     for (auto x : voices)
     {
@@ -225,7 +225,7 @@ ListOfSkoarpionProjectionsPtr Skoarpion::get_projections (
     return listy;
 }
 
-void Skoarpion::draw_tree (wostringstream &out) {
+void Skoarpion::draw_tree (std::wostringstream &out) {
     out << "--< Skoarpion " << name << " >---\n";
 
     if (is_skoarpuscle<SkoarpuscleArgList> (arg_list))
@@ -277,7 +277,7 @@ SkoarpionProjection::~SkoarpionProjection ()
 }
 
 
-void SkoarpionProjection::draw (wostringstream &out) {
+void SkoarpionProjection::draw (std::wostringstream &out) {
     out << "--< Projection " << name << " >---\n";
 
     for (auto& x : noadites)

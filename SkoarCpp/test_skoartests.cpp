@@ -7,10 +7,10 @@
 #include <codecvt>
 
 
-wstring read_file_contents (string filename) {
-    wifstream infile { filename };
+std::wstring read_file_contents (std::string filename) {
+    std::wifstream infile { filename };
     infile.imbue (std::locale (infile.getloc (), new std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>));
-    wstring file_contents { istreambuf_iterator<wchar_t> (infile), istreambuf_iterator<wchar_t> () };
+    std::wstring file_contents { std::istreambuf_iterator<wchar_t> (infile), std::istreambuf_iterator<wchar_t> () };
     return file_contents;
 }
 /*

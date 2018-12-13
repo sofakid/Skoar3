@@ -5,7 +5,7 @@
 
 class SkoarpuscleLute : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleLute" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleLute" << " :: " ; }
     bool has_messages;
     SkoarpuscleLute(SkoarToke *);
 
@@ -13,7 +13,7 @@ public:
 
 class SkoarpuscleLuteWithArgs : public Skoarpuscle {
 public:
-    void asString(wostream &out) override { out << "SkoarpuscleLuteWithArgs" << " :: " ; }
+    void asString(std::wostream &out) override { out << "SkoarpuscleLuteWithArgs" << " :: " ; }
     bool has_messages;
     SkoarpuscleLuteWithArgs(SkoarToke *);
 
