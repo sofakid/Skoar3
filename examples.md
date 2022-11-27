@@ -1,6 +1,9 @@
 Skoar Examples
 ==============
 
+ALSO OLD AND WRONG
+==================
+
 # MIDI example - [listen on soundcloud](https://soundcloud.com/lucas-cornelisse/windwaker-sv1)
 
     <? Zelda Wind Waker Theme - inspired by piano arrangement by Shinobu Amayake ?>
