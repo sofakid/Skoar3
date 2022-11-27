@@ -3,7 +3,7 @@ Skoar and Skoarcery
 
 
 THIS IS OLD AND WRONG.
-======================
+=====================
 
 __Skoar__ is a high-level language for coding music.
 
